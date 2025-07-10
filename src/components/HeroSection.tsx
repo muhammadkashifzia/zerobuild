@@ -1,9 +1,14 @@
+"use client";
 import Link from "next/link";
 import React from "react";
 import { Spotlight } from "./ui/Spotlight";
 import { Button } from "./ui/moving-border";
+import { motion } from "framer-motion";
+import { ContainerTextFlip } from "./ui/container-text-flip";
+import { cn } from "@/utils/cn";
 
 const HeroSection = () => {
+  const words = ["faster", "smarter", "simpler", "better"];
   return (
     <div className="h-auto md:h-[40rem] w-full rounded-md flex flex-col items-center justify-center relative overflow-hidden mx-auto py-10 md:py-0">
       <Spotlight
@@ -11,22 +16,36 @@ const HeroSection = () => {
         fill="white"
       />
       <div className="p-4 relative z-10 w-full text-center">
-        <h1 className="mt-20 md:mt-0 text-4xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400">
-          Master the Art of Music
-        </h1>
-        <p className="mt-4 font-normal text-base md:text-lg text-neutral-300 max-w-lg mx-auto">
-          Dive into our comprehensive music courses and transform your musical
-          journey today. Wheather you are a beginner or looking to refine your
-          skills, join us to unlock your true potential.
+        <motion.h1
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          className={cn(
+            "relative mb-6 max-w-[65rem] text-center text-4xl leading-normal font-bold tracking-tight text-zinc-700 md:text-7xl  mx-auto"
+          )}
+          layout
+        >
+          <div className="inline-block">
+            Building decarbonisation is complex.
+            <ContainerTextFlip words={words} />
+            {/* <Blips /> */}
+          </div>
+        </motion.h1>
+        <p className="mt-4 font-normal text-base md:text-lg text-black max-w-2xl mx-auto">
+          Take the guesswork out of Net Zero. We give you the clarity and tools
+          to design high-performing, low-carbon buildings with confidence.
         </p>
-        <div className="mt-6 ">
-          <Link href={"/courses"}>
-            <Button
-              borderRadius="2rem"
-              className="bg-white dark:bg-black text-black dark:text-white border-neutral-200 dark:border-slate-800 p-5"
-            >
-              Explore
-            </Button>
+        <div className="mt-6 flex w-full gap-[10px] justify-center">
+          <Link
+            href={"/"}
+            className="w-full bg-[#484AB7] text-white border-neutral-200 dark:border-[#484AB7] p-5 rounded-2xl max-w-[256px] h-[56px] flex items-center justify-center text-lg font-semibold hover:bg-[#3c3f9d] transition-colors duration-200"
+          >
+            Get a Demo
+          </Link>
+          <Link
+            href={"/"}
+            className="w-full bg-[#484AB7] text-white border-neutral-200 dark:border-[#484AB7] p-5 rounded-2xl max-w-[256px] h-[56px] flex items-center justify-center text-lg font-semibold hover:bg-[#3c3f9d] transition-colors duration-200"
+          >
+            Learn How
           </Link>
         </div>
       </div>

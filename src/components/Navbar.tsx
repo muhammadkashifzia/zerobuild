@@ -11,7 +11,7 @@ const Navbar = ({ className }: { className?: string }) => {
   return (
     <div
       className={cn(
-        "fixed top-10 inset-x-0 max-w-[350px] mx-auto z-50",
+        "fixed top-0 inset-x-0 max-w-full mx-auto z-50",
         className
       )}
     >
@@ -20,7 +20,7 @@ const Navbar = ({ className }: { className?: string }) => {
           <MenuItem
             setActive={setActive}
             active={active}
-            item="Home"
+            item="About"
           ></MenuItem>
         </HoveredLink>
         <MenuItem setActive={setActive} active={active} item="Our Courses">
@@ -32,11 +32,26 @@ const Navbar = ({ className }: { className?: string }) => {
             <HoveredLink href="/courses">Music Production</HoveredLink>
           </div>
         </MenuItem>
+         <Link href={"/projects"}>
+          <MenuItem
+            setActive={setActive}
+            active={active}
+            item="Projects"
+          ></MenuItem>
+        </Link>
+        <Link href={"/services"}>
+          <MenuItem
+            setActive={setActive}
+            active={active}
+            item="Services"
+          ></MenuItem>
+        </Link>
+       
         <Link href={"/contact"}>
           <MenuItem
             setActive={setActive}
             active={active}
-            item="Contact Us"
+            item="Contact"
           ></MenuItem>
         </Link>
       </Menu>
