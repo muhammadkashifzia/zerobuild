@@ -48,3 +48,9 @@ body {
 .scrollbar-hidden .max-w-2xl {
   overflow: hidden;
 }
+.recharts-label{
+  font-size: 12px;
+}
+.recharts-legend-wrapper{
+  bottom:-5px!important;
+}

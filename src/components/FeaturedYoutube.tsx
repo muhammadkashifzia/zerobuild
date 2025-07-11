@@ -64,8 +64,8 @@ const YouTuberShowcase: React.FC = () => {
 
   return (
     <div>
-      {" "}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-[80px]">
         <h2
           id="reviews-title"
           className="text-3xl font-medium tracking-tight text-neutral-900 sm:text-center"
