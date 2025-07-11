@@ -23,6 +23,6 @@ Follow these instructions to set up the project locally.
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/akash202004/experiencing-nextjs-aceternity-ui
+   git clone https://github.com/muhammadkashifzia/zerobuild
    cd acertunes
    ```
