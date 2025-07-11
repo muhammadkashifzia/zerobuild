@@ -1,6 +1,7 @@
 // import FeaturedSection from "@/components/FeaturedSection";
 import HeroSection from "@/components/HeroSection";
 import FeaturedByYoutubers from "@/components/FeaturedYoutube";
+import ObservabilityChart from '@/components/ObservabilityChart'
 // import TestimonialCard from "@/components/TestimonialCard";
 // import WhyChooseUs from "@/components/WhyChooseUs";
 import "./globals.css";
@@ -15,7 +16,7 @@ export default function Home() {
       <HeroSection />
           <PerformanceSection />
       <FeaturedByYoutubers />
-
+     <ObservabilityChart />
       {/* <FeaturedSection />
       <WhyChooseUs />
       <TestimonialCard />
