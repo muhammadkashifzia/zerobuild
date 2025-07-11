@@ -17,7 +17,7 @@ export default function PerformanceSection() {
           <p><span className="font-bold text-white">_zapier</span> saw <span className="text-white">24x</span> faster builds.</p>
         </div>
 
-        <div className="space-y-6">
+        <div className="space-y-6"> 
           <p className="text-gray-400">
             Get started using our pre-built templates. Easily stream long-running LLM responses for a better user experience with zero-config infrastructure that’s always globally performant.
           </p>
