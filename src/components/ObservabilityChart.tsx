@@ -1,8 +1,8 @@
 'use client';
 
 import {
-  LineChart,
-  Line,
+  ScatterChart,
+  Scatter,
   XAxis,
   YAxis,
   Tooltip,
@@ -12,8 +12,23 @@ import {
 } from 'recharts';
 import { useState } from 'react';
 
-const data = [
-     {
+type DataPoint = {
+  name: string;
+  Fabric: string;
+  Orientation: string;
+  UserBehaviour: string;
+  Compliance: string;
+  Comfort: string;
+  Cost: string;
+  CostNum: number;
+  Carbon: string;
+  CarbonNum: number;
+  Circularity: number;
+  index?: number;
+};
+
+const rawData: DataPoint[] = [
+   {
     name: '1',
     Fabric: 'Standard timber frame with rigid PIR insulation and brick cladding',
     Orientation: 'North-South',
@@ -169,7 +184,23 @@ const data = [
     CarbonNum: 52000,
     Circularity: 63,
   },
+     {
+    name: '12',
+    Fabric: 'Standard timber frame with rigid PIR insulation and brick cladding',
+    Orientation: 'East-West',
+    UserBehaviour: 'Unaware',
+    Compliance: 'Current regulations',
+    Comfort: 'Feels nice',
+    Cost: '336419.069557001',
+    CostNum: 386613,
+    Carbon: '-330426',
+    CarbonNum: 52000,
+    Circularity: 63,
+  },
 ];
+
+// Add index to each data point
+const data: DataPoint[] = rawData.map((item, index) => ({ ...item, index }));
 
 const CustomTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
@@ -189,8 +220,33 @@ const CustomTooltip = ({ active, payload }: any) => {
   return null;
 };
 
+// Custom dot shape for highlighting on hover
+const CustomDot = ({
+  cx,
+  cy,
+  fill,
+  index,
+  hoveredIndex,
+}: {
+  cx: number;
+  cy: number;
+  fill: string;
+  index: number;
+  hoveredIndex: number | null;
+}) => (
+  <circle
+    cx={cx}
+    cy={cy}
+    r={hoveredIndex === index ? 8 : 5}
+    fill={hoveredIndex === index ? '#000' : fill}
+    stroke="#333"
+    strokeWidth={hoveredIndex === index ? 2 : 1}
+  />
+);
+
 export default function ObservabilityChart() {
   const [xAxisType, setXAxisType] = useState<'CostNum' | 'CarbonNum'>('CostNum');
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   const xAxisLabel = xAxisType === 'CostNum' ? 'Lifecycle Cost (£)' : 'Whole Life Carbon (kg)';
   const xAxisFormatter = (v: number) =>
@@ -207,11 +263,31 @@ export default function ObservabilityChart() {
       <p className="text-gray-600 mb-4">
         Toggle between cost or carbon as X-axis to visualize trends.
       </p>
-   
+
+      <div className="mb-4">
+        <button
+          onClick={() => setXAxisType('CostNum')}
+          className={`px-4 py-2 mr-2 rounded ${
+            xAxisType === 'CostNum' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'
+          }`}
+        >
+          Cost
+        </button>
+        <button
+          onClick={() => setXAxisType('CarbonNum')}
+          className={`px-4 py-2 rounded ${
+            xAxisType === 'CarbonNum' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'
+          }`}
+        >
+          Carbon
+        </button>
+      </div>
+
       <ResponsiveContainer width="100%" height={400}>
-        <LineChart data={data}>
+        <ScatterChart>
           <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
           <XAxis
+            type="number"
             dataKey={xAxisType}
             stroke="#000"
             tickFormatter={xAxisFormatter}
@@ -223,6 +299,9 @@ export default function ObservabilityChart() {
             }}
           />
           <YAxis
+            type="number"
+            dataKey={xAxisType === 'CostNum' ? 'CarbonNum' : 'CostNum'}
+            domain={['dataMin - 10000', 'dataMax + 10000']} // Supports negative
             stroke="#000"
             tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`}
             label={{
@@ -232,35 +311,34 @@ export default function ObservabilityChart() {
                   : 'Lifecycle Cost (£)',
               angle: -90,
               position: 'insideLeft',
-              offset: -0,
               fill: '#555',
             }}
           />
-          <Tooltip content={<CustomTooltip />} />
+          <Tooltip
+            content={({ active, payload }) => {
+              if (active && payload && payload.length) {
+                setHoveredIndex(payload[0].payload.index);
+              } else {
+                setHoveredIndex(null);
+              }
+              return <CustomTooltip active={active} payload={payload} />;
+            }}
+            cursor={{ stroke: '#8884d8', strokeWidth: 1 }}
+          />
           <Legend />
-
-          {/* Carbon Line (Red) */}
-          <Line
-            type="monotone"
-            dataKey="CarbonNum"
-            stroke="#e63946"
-            strokeWidth={3}
-            dot
-            name="Whole Life Carbon"
-            offset={200}
-            
+          <Scatter
+            name="Data Points"
+            data={data}
+            fill={xAxisType === 'CostNum' ? '#f4a261' : '#e63946'}
+            shape={(props) => (
+              <CustomDot
+                {...props}
+                index={props.payload.index}
+                hoveredIndex={hoveredIndex}
+              />
+            )}
           />
-
-          {/* Cost Line (Orange) */}
-          <Line
-            type="monotone"
-            dataKey="CostNum"
-            stroke="#f4a261"
-            strokeWidth={3}
-            dot
-            name="Lifecycle Cost"
-          />
-        </LineChart>
+        </ScatterChart>
       </ResponsiveContainer>
     </div>
   );

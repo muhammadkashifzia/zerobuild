@@ -50,14 +50,14 @@ const YouTuberShowcase: React.FC = () => {
       gradient: "from-indigo-500 to-indigo-300",
       videoSrc: "https://www.youtube.com/embed/RPa3_AD1_Vs",
       channelName: "Fireship",
-      description: "Jeff from",
+      description: "Jeff from talks about how Aceternity UI can help you build awesome landing pages with speed",
     },
     {
       title: "SAAS Automation Builder",
       gradient: "from-pink-500 to-pink-300",
       videoSrc: "https://www.youtube.com/embed/XkOXNlHJP6M",
       channelName: "Web Prodigies",
-      description: "Watch",
+      description: "Watch build an entire SaaS application from scratch with Aceternity UI",
     },
 
   ];

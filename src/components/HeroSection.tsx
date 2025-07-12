@@ -19,8 +19,7 @@ const HeroSection = () => {
       />
       <div className="p-4 relative z-10 w-full text-center">
         <motion.h1
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+       
           className={cn(
             "relative mb-6 max-w-[65rem] text-center text-4xl leading-normal font-bold tracking-tight text-zinc-700 md:text-7xl  mx-auto"
           )}
