@@ -1,36 +1,36 @@
 "use client";
 
 // import { FaBalanceScale, FaChartBar, FaCloud, FaSun, FaThermometerHalf, FaCheckDouble } from "lucide-react";
-
+import Image from "next/image";
 const accelerators = [
   {
     title: "Results Comparison",
-    icon:"",
+    icon:"/assets/images/imgi_44_PRM.png",
     description: "Compare multiple models or scenarios at once, cutting down manual analysis time and helping you optimise design decisions faster."
   },
   {
-    title: "Mod,el Validation",
-    icon: "",
+    title: "Model Validation",
+    icon: "/assets/images/imgi_58_EMID.png",
     description: "Cuts the time to extract mechanical data from hours to seconds, enabling faster issue detection and error-free model validation."
   },
   {
     title: "Operational Carbon and Cost",
-    icon: "",
+    icon: "/assets/images/imgi_15_OCOC.png",
     description: "Estimate annual operational carbon and costs, with or without PV and battery, in under a minute—helping you make informed decisions fast."
   },
   {
     title: "Heat Balance Breakdown",
-    icon: "",
+    icon: "/assets/images/imgi_63_HBB.png",
     description: "Breaks down heat gains and losses across the model in minutes rather than days, giving you key insights into retrofit priorities and peak loads."
   },
   {
     title: "Indoor Air Quality",
-    icon: "",
+    icon: "/assets/images/imgi_53_IAQ.png",
     description: "Instantly evaluate indoor air quality by analysing CO₂ concentrations, ensuring healthier environments in a fraction of the time."
   },
   {
     title: "Daylight Performance",
-    icon: "",
+    icon: "/assets/images/imgi_67_DIA.png",
     description: "Assess daylight performance for all rooms quickly and accurately, accelerating compliance and improving visual comfort."
   }
 ];
@@ -49,12 +49,12 @@ export default function AcceleratorSuite() {
             build or retrofit.
           </p>
           <img
-            src="/ies-logo.png"
+            src="/assets/images/imgi_24_IES_v2.png"
             alt="IES Logo"
             className="h-12 my-4"
           />
           <p className="text-gray-600 mb-6">Explore how each accelerator can transform your workflow:</p>
-          <button className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-full font-semibold shadow">
+          <button className="bg-[#484AB7] text-white px-6 py-3 rounded-full font-semibold shadow">
             BUY COMPLETE SUITE →
           </button>
         </div>
@@ -66,7 +66,7 @@ export default function AcceleratorSuite() {
               key={idx}
               className="bg-gray-50 border border-gray-200 rounded-lg p-5 hover:shadow-md transition"
             >
-              <div className="mb-3">{item.icon}</div>
+              <div className="mb-3"><Image src={item.icon} alt="resource-image" width={63} height={63}/></div>
               <h3 className="font-semibold text-lg mb-2 text-purple-800">{item.title}</h3>
               <p className="text-sm text-gray-700">{item.description}</p>
             </div>
