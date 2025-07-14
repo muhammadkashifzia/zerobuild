@@ -46,21 +46,25 @@ const Navbar = ({ className }: { className?: string }) => {
               item="About"
             />
           </HoveredLink>
-          <Link href="/projects">
+          <HoveredLink href="/projects">
+           <div className={pathname === "/contact" ? "text-white font-semibold w-full border-b-[#484AB7] rounded-[4px] px-2 py-3" : "w-full text-black px-2 py-3"}>
             <MenuItem
               setActive={setActive}
               active={active}
               item="Projects"
             />
-          </Link>
-          <Link href="/services">
+            </div>
+          </HoveredLink>
+          <HoveredLink href="/services">
+          <div className={pathname === "/contact" ? "text-white font-semibold w-full border-b-[#484AB7] rounded-[4px] px-2 py-3" : "w-full text-black px-2 py-3"}>
             <MenuItem
               setActive={setActive}
               active={active}
               item="Services"
             />
-          </Link>
-          <Link href="/contact">
+            </div>
+          </HoveredLink>
+          <HoveredLink href="/contact">
           <div className={pathname === "/contact" ? "text-white font-semibold w-full border-b-[#484AB7] rounded-[4px] px-2 py-3" : "w-full text-black px-2 py-3"}>
             <MenuItem
               setActive={setActive}
@@ -68,7 +72,7 @@ const Navbar = ({ className }: { className?: string }) => {
               item="Contact"
             />
             </div>
-          </Link>
+          </HoveredLink>
         </Menu>
       </div>
 
@@ -107,14 +111,14 @@ const Navbar = ({ className }: { className?: string }) => {
 
      <div className="pt-[15px]">
          <div className="flex items-center justify-center pt-2">
-          <Link
+          <HoveredLink
             className="flex items-center justify-center space-x-2 text-2xl font-bold text-center text-neutral-600 dark:text-gray-100"
             href="/"
           >
             <div className="relative h-8 w-[200px] flex items-center justify-center md:justify-center rounded-md text-[32px] antialiased">
               <h1 className="text-black font-sans">Zero Build</h1>
             </div>
-          </Link>
+          </HoveredLink>
         </div>
 
         <div className="flex flex-col items-start px-[16px] pt-[50px]">
