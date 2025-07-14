@@ -1873,7 +1873,7 @@ const CustomDot = (props: any) => {
 };
 
 export default function ObservabilityChart() {
-  const [xAxisType, setXAxisType] = useState<'CostNum' | 'CarbonNum'>('CostNum');
+  const [xAxisType, setXAxisType] = useState<'CostNum' | 'CarbonNum'>('CarbonNum');
 
   const xAxisLabel = xAxisType === 'CostNum' ? 'Lifecycle Cost (£)' : 'Whole Life Carbon (kg)';
   const xAxisFormatter = (v: number) =>

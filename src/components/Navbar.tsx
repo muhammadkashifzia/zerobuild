@@ -1,75 +1,164 @@
 "use client";
 
 import React, { useState } from "react";
-import { HoveredLink, Menu, MenuItem, ProductItem } from "./ui/navbar-menu";
+import { HoveredLink, Menu, MenuItem } from "./ui/navbar-menu";
 import { cn } from "@/utils/cn";
 import Link from "next/link";
-import Image from "next/image";
+import { usePathname } from "next/navigation";
+
 const Navbar = ({ className }: { className?: string }) => {
   const [active, setActive] = useState<string | null>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const pathname = usePathname();
+
+  const handleCloseSidebar = () => {
+    setSidebarOpen(false);
+  };
 
   return (
     <div
-      className={cn("fixed top-0 z-[50] w-full border-b border-neutral-200 bg-white h-[64px] px-[30px] items-center flex" , className)}
+      className={cn(
+        "fixed top-0 z-[50] w-full border-b border-neutral-200 bg-white h-[64px] px-[15px] items-center flex justify-between md:px-[16px]",
+        className
+      )}
     >
-    <div className="flex">
-        <div className="mr-4 hidden md:flex">
-        <Link
-          className="flex items-center justify-center space-x-2 text-2xl font-bold  text-center text-neutral-600 dark:text-gray-100 selection:bg-emerald-500 mr-10"
-          href="/"
-        >
-          <div className="relative h-8 w-[200px] text-white   flex items-center justify-center rounded-md text-[32px] antialiased">
-          
-          <div className="flex  w-full">
-            <h1 className="text-black font-sans">
-        
-          Zero Build
-            </h1>
-          </div>
-          </div>
-        </Link>
+      {/* Logo Section */}
+      <div className="flex items-center space-x-4">
+        <div className="mr-4 flex">
+          <Link
+            className="flex items-center justify-center space-x-2 text-2xl font-bold text-center text-neutral-600 dark:text-gray-100"
+            href="/"
+          >
+            <div className="relative h-8 w-[200px] flex items-center justify-start md:justify-center rounded-md text-[32px] antialiased">
+              <h1 className="text-black font-sans">Zero Build</h1>
+            </div>
+          </Link>
+        </div>
       </div>
-      <Menu setActive={setActive}>
-        <HoveredLink href={"/"}>
-          <MenuItem
-            setActive={setActive}
-            active={active}
-            item="About"
-          ></MenuItem>
-        </HoveredLink>
-        {/* <MenuItem setActive={setActive} active={active} item="Our Courses">
-          <div className="flex flex-col gap-5 space-v-4 text-sm">
-            <HoveredLink href="/courses">All Courses</HoveredLink>
-            <HoveredLink href="/courses">Basic Music Theory</HoveredLink>
-            <HoveredLink href="/courses">Advanced Composition</HoveredLink>
-            <HoveredLink href="/courses">Songwriting</HoveredLink>
-            <HoveredLink href="/courses">Music Production</HoveredLink>
-          </div>
-        </MenuItem> */}
-        <Link href={"/projects"}>
-          <MenuItem
-            setActive={setActive}
-            active={active}
-            item="Projects"
-          ></MenuItem>
-        </Link>
-        <Link href={"/services"}>
-          <MenuItem
-            setActive={setActive}
-            active={active}
-            item="Services"
-          ></MenuItem>
-        </Link>
 
-        <Link href={"/contact"}>
-          <MenuItem
-            setActive={setActive}
-            active={active}
-            item="Contact"
-          ></MenuItem>
-        </Link>
-      </Menu>
-    </div>
+      {/* Desktop Menu */}
+      <div className="hidden md:flex items-center space-x-6 md:flex-row md:space-x-8">
+        <Menu setActive={setActive}>
+          <HoveredLink href="/about">
+            <MenuItem
+              setActive={setActive}
+              active={active}
+              item="About"
+            />
+          </HoveredLink>
+          <Link href="/projects">
+            <MenuItem
+              setActive={setActive}
+              active={active}
+              item="Projects"
+            />
+          </Link>
+          <Link href="/services">
+            <MenuItem
+              setActive={setActive}
+              active={active}
+              item="Services"
+            />
+          </Link>
+          <Link href="/contact">
+          <div className={pathname === "/contact" ? "text-white font-semibold w-full border-b-[#484AB7] rounded-[4px] px-2 py-3" : "w-full text-black px-2 py-3"}>
+            <MenuItem
+              setActive={setActive}
+              active={active}
+              item="Contact"
+            />
+            </div>
+          </Link>
+        </Menu>
+      </div>
+
+      {/* Mobile Menu Toggle */}
+      <button
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+        className="md:hidden mr-4 focus:outline-none absolute right-[0px] top-[50%] transform -translate-y-1/2"
+      >
+        <div className="w-[30px] h-6 relative flex flex-col justify-center items-center">
+          {sidebarOpen ? (
+            <>
+              <span className="absolute h-0.5 w-full bg-[#2c3237] rotate-45" />
+              <span className="absolute h-0.5 w-full bg-[#2c3237] -rotate-45" />
+            </>
+          ) : (
+            <>
+              <span className="absolute h-0.5 w-full bg-[#2c3237] top-[0%]" />
+              <span className="absolute h-0.5 w-full bg-[#2c3237] top-[30%]" />
+              <span className="absolute h-0.5 w-full bg-[#2c3237] top-[60%]" />
+            </>
+          )}
+        </div>
+      </button>
+
+      {/* Mobile Sidebar */}
+      <div
+        className={`${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } fixed top-0 left-0 h-full w-80 bg-[#F4F4F4] shadow-lg transition-transform duration-300 z-50`}
+      >
+        <div className="absolute right-2 top-2">
+          <button onClick={handleCloseSidebar}>
+            <span className="text-[40px] text-[#5f5e5e] font-[300]">×</span>
+          </button>
+        </div>
+
+     <div className="pt-[15px]">
+         <div className="flex items-center justify-center pt-2">
+          <Link
+            className="flex items-center justify-center space-x-2 text-2xl font-bold text-center text-neutral-600 dark:text-gray-100"
+            href="/"
+          >
+            <div className="relative h-8 w-[200px] flex items-center justify-center md:justify-center rounded-md text-[32px] antialiased">
+              <h1 className="text-black font-sans">Zero Build</h1>
+            </div>
+          </Link>
+        </div>
+
+        <div className="flex flex-col items-start px-[16px] pt-[50px]">
+          <HoveredLink href="/about">
+            <div className={pathname === "/about" ? "text-white font-semibold w-full bg-[#484AB7] rounded-[4px] px-2 py-3" : "w-full text-black px-2 py-3"}>
+              <MenuItem
+                setActive={setActive}
+                active={active}
+                item="About"
+               
+              />
+            </div>
+          </HoveredLink>
+          <HoveredLink href="/services">
+            <div className={pathname === "/services" ? "text-white font-semibold w-full bg-[#484AB7] rounded-[4px] px-2 py-3" : "w-full text-black px-2 py-3"}>
+              <MenuItem
+                setActive={setActive}
+                active={active}
+                item="Services"
+              />
+            </div>
+          </HoveredLink>
+          <HoveredLink href="/projects">
+            <div className={pathname === "/projects" ? "text-white font-semibold w-full bg-[#484AB7] rounded-[4px] px-2 py-3" : "w-full text-black px-2 py-3"}>
+              <MenuItem
+                setActive={setActive}
+                active={active}
+                item="Projects"
+              />
+            </div>
+          </HoveredLink>
+          
+          <HoveredLink href="/contact">
+            <div className={pathname === "/contact" ? "text-white font-semibold w-full bg-[#484AB7] rounded-[4px] px-2 py-3" : "w-full text-black px-2 py-3"}>
+              <MenuItem
+                setActive={setActive}
+                active={active}
+                item="Contact"
+              />
+            </div>
+          </HoveredLink>
+        </div>
+     </div>
+      </div>
     </div>
   );
 };

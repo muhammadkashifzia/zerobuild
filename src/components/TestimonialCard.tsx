@@ -46,7 +46,7 @@ function TestimonialCard() {
   return (
     <div className="w-full relative flex flex-col items-center justify-center overflow-hidden">
     
-      <div className="flex justify-center w-full overflow-hidden px-6 sm:px-6 lg:px-8">
+      <div className="flex justify-center w-full overflow-hidden px-0 sm:px-6 lg:px-8">
         <div className="w-full">
           <InfiniteMovingCards
             items={musicSchoolTestimonials}
