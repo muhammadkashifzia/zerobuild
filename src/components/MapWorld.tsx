@@ -5,8 +5,8 @@ import { motion } from "motion/react";
 export function MapWorld() {
   return (
     <div className=" py-0  bg-white w-full">
-      <div className="max-w-7xl mx-auto text-center">
-        <p className="font-bold text-xl md:text-4xl  text-black">
+      <div className="max-w-7xl mx-auto text-center mb-[40px]">
+        <p className="font-bold text-[48px] text-black">
          Trusted by teams 
 
           <span className="text-[#484AB7] ml-[5px]">
