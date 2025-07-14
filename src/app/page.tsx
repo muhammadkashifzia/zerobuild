@@ -11,11 +11,12 @@ import "./globals.css";
 // import UpcomingWebinar from "@/components/UpcomingWebinar";
 // import GeminiEffect from "@/components/GeminiEffect";
 // import Instructor from "@/components/Instructor";
-
+import Image from "next/image";
 import PerformanceSection from "@/components/PerformanceSection";
 export default function Home() {
   return (
-    <main className="min-h-screen  antialiased hide-scrollbar">
+    <main className="min-h-screen  antialiased hide-scrollbar relative">
+      <Image src="/assets/svg/pattern-svg.svg" alt="patten" width={1000} height={1000} className="absolute top-[65px] right-[0px] w-[890px] h-auto object-cover"/>
       <HeroSection />
       <PerformanceSection />
       <ObservabilityChart />

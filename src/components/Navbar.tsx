@@ -40,14 +40,16 @@ const Navbar = ({ className }: { className?: string }) => {
       <div className="hidden md:flex items-center space-x-6 md:flex-row md:space-x-8">
         <Menu setActive={setActive}>
           <HoveredLink href="/about">
+           <div className={pathname === "/about" ? "text-black font-bold w-full border-b-[#484AB7] rounded-[4px] px-2 py-3" : "w-full text-black px-2 py-3"}>
             <MenuItem
               setActive={setActive}
               active={active}
               item="About"
             />
+            </div>
           </HoveredLink>
           <HoveredLink href="/projects">
-           <div className={pathname === "/contact" ? "text-white font-semibold w-full border-b-[#484AB7] rounded-[4px] px-2 py-3" : "w-full text-black px-2 py-3"}>
+           <div className={pathname === "/projects" ? "text-black font-bold w-full border-b-[#484AB7] rounded-[4px] px-2 py-3" : "w-full text-black px-2 py-3"}>
             <MenuItem
               setActive={setActive}
               active={active}
@@ -56,7 +58,7 @@ const Navbar = ({ className }: { className?: string }) => {
             </div>
           </HoveredLink>
           <HoveredLink href="/services">
-          <div className={pathname === "/contact" ? "text-white font-semibold w-full border-b-[#484AB7] rounded-[4px] px-2 py-3" : "w-full text-black px-2 py-3"}>
+          <div className={pathname === "/services" ? "text-black font-bold w-full border-b-[#484AB7] rounded-[4px] px-2 py-3" : "w-full text-black px-2 py-3"}>
             <MenuItem
               setActive={setActive}
               active={active}
@@ -65,7 +67,7 @@ const Navbar = ({ className }: { className?: string }) => {
             </div>
           </HoveredLink>
           <HoveredLink href="/contact">
-          <div className={pathname === "/contact" ? "text-white font-semibold w-full border-b-[#484AB7] rounded-[4px] px-2 py-3" : "w-full text-black px-2 py-3"}>
+          <div className={pathname === "/contact" ? "text-black font-bold w-full border-b-[#484AB7] rounded-[4px] px-2 py-3" : "w-full text-black px-2 py-3"}>
             <MenuItem
               setActive={setActive}
               active={active}
@@ -123,7 +125,7 @@ const Navbar = ({ className }: { className?: string }) => {
 
         <div className="flex flex-col items-start px-[16px] pt-[50px]">
           <HoveredLink href="/about">
-            <div className={pathname === "/about" ? "text-white font-semibold w-full bg-[#484AB7] rounded-[4px] px-2 py-3" : "w-full text-black px-2 py-3"}>
+            <div className={pathname === "/about" ? "text-white font-bold w-full bg-[#484AB7] rounded-[4px] px-2 py-3" : "w-full text-black px-2 py-3"}>
               <MenuItem
                 setActive={setActive}
                 active={active}
@@ -133,7 +135,7 @@ const Navbar = ({ className }: { className?: string }) => {
             </div>
           </HoveredLink>
           <HoveredLink href="/services">
-            <div className={pathname === "/services" ? "text-white font-semibold w-full bg-[#484AB7] rounded-[4px] px-2 py-3" : "w-full text-black px-2 py-3"}>
+            <div className={pathname === "/services" ? "text-white font-bold w-full bg-[#484AB7] rounded-[4px] px-2 py-3" : "w-full text-black px-2 py-3"}>
               <MenuItem
                 setActive={setActive}
                 active={active}
