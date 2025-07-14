@@ -65,7 +65,7 @@ const YouTuberShowcase: React.FC = () => {
 
   return (
     <div
-      className="my-[80px] py-[60px]"
+      className="mb-[80px] py-[60px]"
       style={{
         backgroundBlendMode: "overlay",
         backgroundSize: "cover",

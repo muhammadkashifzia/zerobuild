@@ -1,17 +1,8 @@
-'use client';
-
-import { useState } from 'react';
-
-
-const categories = ['AI Apps', 'Web Apps', 'Ecommerce', 'Marketing', 'Platforms'];
-
 export default function PerformanceSection() {
-  const [activeTab, setActiveTab] = useState('AI Apps');
-
   return (
-    <section className="bg-[#fafafa] text-black py-16 px-4 md:px-24 mb-[80px]">
+    <section className="bg-[#fafafa] text-black py-[60px] px-4 md:px-24 mb-[80px]">
       <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8 items-center">
-        <div className="text-[32px] leading-[1.3]">
+        <div className="text-[28px] leading-[1.3]">
           <p>Explore how our client used our Five C Zero Framework to evaluate 1000+ design options in under 24 hours, unlocking smarter decisions from day one..</p>
         </div>
 
