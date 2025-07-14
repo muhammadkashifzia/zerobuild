@@ -2,7 +2,7 @@
 import HeroSection from "@/components/HeroSection";
 import FeaturedByYoutubers from "@/components/FeaturedYoutube";
 import ObservabilityChart from "@/components/ObservabilityChart";
-import CtaSection from '@/components/CtaSection'
+// import CtaSection from '@/components/CtaSection'
 import { MapWorld } from "@/components/MapWorld";
 import TestimonialCard from "@/components/TestimonialCard";
 import Resources from "@/components/Resources";
@@ -22,7 +22,7 @@ export default function Home() {
       <Resources />
       <FeaturedByYoutubers />
 
-      <CtaSection />
+      {/* <CtaSection /> */}
       <MapWorld />
 
       {/* <FeaturedSection /> */}
