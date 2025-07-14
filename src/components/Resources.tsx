@@ -37,11 +37,11 @@ const accelerators = [
 
 export default function AcceleratorSuite() {
   return (
-    <section className="bg-white py-[80px]">
+    <section className="bg-white py-[40px] md:py-[80px]">
       <div className="max-w-7xl mx-auto px-4 md:px-8 grid md:grid-cols-3 gap-8">
         {/* Left Column */}
         <div className="md:col-span-1">
-          <h2 className="text-[32px] font-bold text-[#484AB7] mb-4">Accelerator suite</h2>
+          <h2 className="text-[28px] md:text-[32px] font-bold text-[#484AB7] mb-4">Accelerator suite</h2>
           <p className="text-gray-700 mb-4">
             The IES verified suite of innovative tools{" "}
             <strong>reduces the resources spent on building simulations</strong>, helping teams focus on what really

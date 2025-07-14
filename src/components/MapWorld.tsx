@@ -6,7 +6,7 @@ export function MapWorld() {
   return (
     <div className=" py-0  bg-white w-full">
       <div className="max-w-7xl mx-auto text-center mb-[40px]">
-        <p className="font-bold text-[48px] text-black">
+        <p className="font-bold text-[32px] md:text-[48px] text-black max-w-[290px] md:max-w-full mx-auto md:mx-0">
          Trusted by teams 
 
           <span className="text-[#484AB7] ml-[5px]">

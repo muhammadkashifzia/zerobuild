@@ -65,7 +65,7 @@ const YouTuberShowcase: React.FC = () => {
 
   return (
     <div
-      className="mb-[80px] py-[60px]"
+      className="mb-[40px] md:mb-[80px] pb-[10px] pt-[30px] md:py-[60px]"
       style={{
         backgroundBlendMode: "overlay",
         backgroundSize: "cover",
@@ -75,7 +75,7 @@ const YouTuberShowcase: React.FC = () => {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <h2
           id="reviews-title"
-          className="text-[48px] font-bold text-white sm:text-center"
+          className="text-[28px] md:text-[48px] font-bold text-white sm:text-center"
         >
           Featured by popular YouTubers
         </h2>

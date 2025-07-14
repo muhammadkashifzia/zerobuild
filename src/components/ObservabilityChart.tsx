@@ -1880,8 +1880,9 @@ export default function ObservabilityChart() {
     xAxisType === 'CostNum' ? `£${(v / 1000).toFixed(0)}k` : `${(v / 1000).toFixed(0)}k`;
 
   return (
-    <div className="bg-white text-gray-900 p-6 rounded-lg shadow-md w-full max-w-6xl mx-auto border border-gray-200">
-      <h3 className="text-sm text-gray-500 mb-1">📊 Observability</h3>
+    <div className="px-[16px]">
+      <div className='bg-white text-gray-900 px-2 py-4 md:p-6 rounded-lg shadow-md w-full max-w-6xl md:mx-auto border border-gray-200'>
+        <h3 className="text-sm text-gray-500 mb-1">📊 Observability</h3>
       <h2 className="text-2xl font-bold text-gray-800 mb-2">
         {xAxisType === 'CostNum'
           ? 'Lifecycle Cost vs Whole Life Carbon'
@@ -1954,6 +1955,7 @@ export default function ObservabilityChart() {
           />
         </ScatterChart>
       </ResponsiveContainer>
+      </div>
     </div>
   );
 }
