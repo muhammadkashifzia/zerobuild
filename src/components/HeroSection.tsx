@@ -27,7 +27,7 @@ const HeroSection = () => {
         >
           <div className="inline-block">
             Building decarbonisation is complex
-            <ContainerTextFlip words={words} className="ml-3"/>.
+           We make it 10× <ContainerTextFlip words={words} className="ml-3"/>.
             {/* <Blips /> */}
           </div>
         </motion.h1>
