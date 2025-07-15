@@ -18,7 +18,7 @@ const Navbar = ({ className }: { className?: string }) => {
   return (
     <div
       className={cn(
-        "fixed top-0 z-[50] w-full border-b border-neutral-200 bg-white h-[64px] px-[15px] items-center flex justify-between md:px-[16px]",
+        "fixed top-0 z-[50] w-full border-b border-neutral-200 bg-white h-[64px] px-[15px] items-center flex justify-between md:px-[16px] shadow-[0_1px_2px_1px_rgba(6,10,36,0.08)]",
         className
       )}
     >
