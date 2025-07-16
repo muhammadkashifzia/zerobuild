@@ -1,15 +1,22 @@
 "use client";
 
-import React, { useState } from "react";
-import { HoveredLink, Menu, MenuItem } from "./ui/navbar-menu";
-import { cn } from "@/utils/cn";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { HoveredLink, Menu, MenuItem } from "./ui/navbar-menu";
+import { cn } from "@/utils/cn";
 
 const Navbar = ({ className }: { className?: string }) => {
+  const pathname = usePathname();
+
   const [active, setActive] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const pathname = usePathname();
+  const [currentPath, setCurrentPath] = useState<string>("");
+
+  useEffect(() => {
+    // Set the pathname after hydration to avoid mismatch
+    setCurrentPath(pathname);
+  }, [pathname]);
 
   const handleCloseSidebar = () => {
     setSidebarOpen(false);
@@ -39,42 +46,19 @@ const Navbar = ({ className }: { className?: string }) => {
       {/* Desktop Menu */}
       <div className="hidden md:flex items-center space-x-6 md:flex-row md:space-x-8">
         <Menu setActive={setActive}>
-          <HoveredLink href="/about">
-           <div className={pathname === "/about" ? "text-black font-bold w-full border-b-[#484AB7] rounded-[4px] px-2 py-3" : "w-full text-black px-2 py-3"}>
-            <MenuItem
-              setActive={setActive}
-              active={active}
-              item="About"
-            />
-            </div>
-          </HoveredLink>
-          <HoveredLink href="/projects">
-           <div className={pathname === "/projects" ? "text-black font-bold w-full border-b-[#484AB7] rounded-[4px] px-2 py-3" : "w-full text-black px-2 py-3"}>
-            <MenuItem
-              setActive={setActive}
-              active={active}
-              item="Projects"
-            />
-            </div>
-          </HoveredLink>
-          <HoveredLink href="/services">
-          <div className={pathname === "/services" ? "text-black font-bold w-full border-b-[#484AB7] rounded-[4px] px-2 py-3" : "w-full text-black px-2 py-3"}>
-            <MenuItem
-              setActive={setActive}
-              active={active}
-              item="Services"
-            />
-            </div>
-          </HoveredLink>
-          <HoveredLink href="/contact">
-          <div className={pathname === "/contact" ? "text-black font-bold w-full border-b-[#484AB7] rounded-[4px] px-2 py-3" : "w-full text-black px-2 py-3"}>
-            <MenuItem
-              setActive={setActive}
-              active={active}
-              item="Contact"
-            />
-            </div>
-          </HoveredLink>
+          {["about", "projects", "services", "contact"].map((item) => (
+            <HoveredLink key={item} href={`/${item}`}>
+              <div
+                className={
+                  currentPath === `/${item}`
+                    ? "text-black font-bold w-full border-b-[#484AB7] rounded-[4px] px-2 py-3"
+                    : "w-full text-black px-2 py-3"
+                }
+              >
+                <MenuItem setActive={setActive} active={active} item={item.charAt(0).toUpperCase() + item.slice(1)} />
+              </div>
+            </HoveredLink>
+          ))}
         </Menu>
       </div>
 
@@ -111,59 +95,38 @@ const Navbar = ({ className }: { className?: string }) => {
           </button>
         </div>
 
-     <div className="pt-[15px]">
-         <div className="flex items-center justify-center pt-2">
-          <HoveredLink
-            className="flex items-center justify-center space-x-2 text-2xl font-bold text-center text-neutral-600 dark:text-gray-100"
-            href="/"
-          >
-            <div className="relative h-8 w-[200px] flex items-center justify-center md:justify-center rounded-md text-[32px] antialiased">
-              <h1 className="text-black font-sans">Zero Build</h1>
-            </div>
-          </HoveredLink>
-        </div>
+        <div className="pt-[15px]">
+          <div className="flex items-center justify-center pt-2">
+            <HoveredLink
+              className="flex items-center justify-center space-x-2 text-2xl font-bold text-center text-neutral-600 dark:text-gray-100"
+              href="/"
+            >
+              <div className="relative h-8 w-[200px] flex items-center justify-center md:justify-center rounded-md text-[32px] antialiased">
+                <h1 className="text-black font-sans">Zero Build</h1>
+              </div>
+            </HoveredLink>
+          </div>
 
-        <div className="flex flex-col items-start px-[16px] pt-[50px]">
-          <HoveredLink href="/about">
-            <div className={pathname === "/about" ? "text-white font-bold w-full bg-[#484AB7] rounded-[4px] px-2 py-3" : "w-full text-black px-2 py-3"}>
-              <MenuItem
-                setActive={setActive}
-                active={active}
-                item="About"
-               
-              />
-            </div>
-          </HoveredLink>
-          <HoveredLink href="/services">
-            <div className={pathname === "/services" ? "text-white font-bold w-full bg-[#484AB7] rounded-[4px] px-2 py-3" : "w-full text-black px-2 py-3"}>
-              <MenuItem
-                setActive={setActive}
-                active={active}
-                item="Services"
-              />
-            </div>
-          </HoveredLink>
-          <HoveredLink href="/projects">
-            <div className={pathname === "/projects" ? "text-white font-semibold w-full bg-[#484AB7] rounded-[4px] px-2 py-3" : "w-full text-black px-2 py-3"}>
-              <MenuItem
-                setActive={setActive}
-                active={active}
-                item="Projects"
-              />
-            </div>
-          </HoveredLink>
-          
-          <HoveredLink href="/contact">
-            <div className={pathname === "/contact" ? "text-white font-semibold w-full bg-[#484AB7] rounded-[4px] px-2 py-3" : "w-full text-black px-2 py-3"}>
-              <MenuItem
-                setActive={setActive}
-                active={active}
-                item="Contact"
-              />
-            </div>
-          </HoveredLink>
+          <div className="flex flex-col items-start px-[16px] pt-[50px]">
+            {["about", "services", "projects", "contact"].map((item) => (
+              <HoveredLink key={item} href={`/${item}`}>
+                <div
+                  className={
+                    currentPath === `/${item}`
+                      ? "text-white font-bold w-full bg-[#484AB7] rounded-[4px] px-2 py-3"
+                      : "w-full text-black px-2 py-3"
+                  }
+                >
+                  <MenuItem
+                    setActive={setActive}
+                    active={active}
+                    item={item.charAt(0).toUpperCase() + item.slice(1)}
+                  />
+                </div>
+              </HoveredLink>
+            ))}
+          </div>
         </div>
-     </div>
       </div>
     </div>
   );

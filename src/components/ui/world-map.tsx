@@ -62,7 +62,7 @@ export function WorldMap({
     <div className="w-full bg-white relative font-sans">
       <img
         src={`data:image/svg+xml;utf8,${encodeURIComponent(svgMap)}`}
-        className="[mask-image:linear-gradient(to_bottom,transparent,white_10%,white_90%,transparent)] pointer-events-none select-none h-auto md:h-[395px] w-full object-cover object-top"
+        className="[mask-image:linear-gradient(to_bottom,transparent,white_10%,white_90%,transparent)] pointer-events-none select-none h-auto md:h-full w-full object-cover object-top"
         alt="world map"
         height="395"
         width="1056"

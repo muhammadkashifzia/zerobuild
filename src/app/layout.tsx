@@ -17,8 +17,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="darks">
-      <body className={NotoSans.className} suppressHydrationWarning={true}>
+    <html lang="en" className="darks" suppressHydrationWarning>
+      <body className={NotoSans.className} suppressHydrationWarning>
         <div className="relative w-full flex items-center justify-center">
           <Navbar />
         </div>

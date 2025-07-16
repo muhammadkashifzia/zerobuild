@@ -66,7 +66,7 @@ export default function AcceleratorSuite() {
               key={idx}
               className="bg-gray-50 border border-gray-200 rounded-lg p-5 hover:shadow-md transition"
             >
-              <div className="mb-3"><Image src={item.icon} alt="resource-image" width={63} height={63}/></div>
+              <div className="mb-3"><Image src={item.icon} alt="resourceImage" width={63} height={63} className="w-[63px] h-[63px]"/></div>
               <h3 className="font-semibold text-lg mb-2 text-[#484AB7]">{item.title}</h3>
               <p className="text-sm text-gray-700">{item.description}</p>
             </div>
