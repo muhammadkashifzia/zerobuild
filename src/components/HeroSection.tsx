@@ -19,12 +19,12 @@ const HeroSection = () => {
         <div className="p-4 relative z-10 w-full text-center mt-[40px] md:mt-0">
           <motion.h1
             className={cn(
-              "relative mb-6 max-w-[65rem] text-center text-4xl leading-normal font-bold tracking-tight text-zinc-700 md:text-7xl  mx-auto"
+              "relative mb-6 max-w-[65rem] text-center text-4xl leading-normal font-bold tracking-tight text-zinc-700 md:text-6xl  mx-auto"
             )}
             layout
           >
             <div className="inline-block">
-              Building decarbonisation is complex
+              Building decarbonisation is complex<br/>
             We make it 10×  <ContainerTextFlip words={words} className="ml-3" />.
               {/* <Blips /> */}
             </div>

@@ -1,8 +1,7 @@
 "use client";
 import { useRef } from "react";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import DottedMap from "dotted-map";
-
 import { useTheme } from "next-themes";
 
 interface MapProps {
@@ -14,7 +13,22 @@ interface MapProps {
 }
 
 export function WorldMap({
-  dots = [],
+  dots = [
+    { start: { lat: 30.3753, lng: 69.3451 }, end: { lat: 20.5937, lng: 78.9629 } }, // Pakistan → India
+    { start: { lat: 30.3753, lng: 69.3451 }, end: { lat: 35.8617, lng: 104.1954 } }, // Pakistan → China
+    { start: { lat: 30.3753, lng: 69.3451 }, end: { lat: 23.4241, lng: 53.8478 } }, // Pakistan → UAE
+    { start: { lat: 30.3753, lng: 69.3451 }, end: { lat: 24.7136, lng: 46.6753 } }, // Pakistan → Saudi Arabia
+    { start: { lat: 30.3753, lng: 69.3451 }, end: { lat: 25.276987, lng: 51.520008 } }, // Pakistan → Qatar
+    { start: { lat: 30.3753, lng: 69.3451 }, end: { lat: 38.9637, lng: 35.2433 } }, // Pakistan → Turkey
+    { start: { lat: 30.3753, lng: 69.3451 }, end: { lat: 51.5074, lng: -0.1278 } }, // Pakistan → UK
+    { start: { lat: 30.3753, lng: 69.3451 }, end: { lat: 40.7128, lng: -74.006 } }, // Pakistan → USA
+    { start: { lat: 30.3753, lng: 69.3451 }, end: { lat: 45.4215, lng: -75.6972 } }, // Pakistan → Canada
+    { start: { lat: 30.3753, lng: 69.3451 }, end: { lat: 52.52, lng: 13.405 } }, // Pakistan → Germany
+    { start: { lat: 30.3753, lng: 69.3451 }, end: { lat: 48.8566, lng: 2.3522 } }, // Pakistan → France
+    { start: { lat: 30.3753, lng: 69.3451 }, end: { lat: -33.8688, lng: 151.2093 } }, // Pakistan → Australia
+    { start: { lat: 30.3753, lng: 69.3451 }, end: { lat: 35.6762, lng: 139.6503 } }, // Pakistan → Japan
+    { start: { lat: 30.3753, lng: 69.3451 }, end: { lat: -30.5595, lng: 22.9375 } }, // Pakistan → South Africa
+  ],
   lineColor = "#0ea5e9",
 }: MapProps) {
   const svgRef = useRef<SVGSVGElement>(null);
@@ -45,7 +59,7 @@ export function WorldMap({
   };
 
   return (
-    <div className="w-full bg-white  relative font-sans">
+    <div className="w-full bg-white relative font-sans">
       <img
         src={`data:image/svg+xml;utf8,${encodeURIComponent(svgMap)}`}
         className="[mask-image:linear-gradient(to_bottom,transparent,white_10%,white_90%,transparent)] pointer-events-none select-none h-auto md:h-[395px] w-full object-cover object-top"
@@ -69,19 +83,14 @@ export function WorldMap({
                 fill="none"
                 stroke="url(#path-gradient)"
                 strokeWidth="1"
-                initial={{
-                  pathLength: 0,
-                }}
-                animate={{
-                  pathLength: 1,
-                }}
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
                 transition={{
                   duration: 1,
                   delay: 0.5 * i,
                   ease: "easeOut",
                 }}
-                key={`start-upper-${i}`}
-              ></motion.path>
+              />
             </g>
           );
         })}
@@ -95,74 +104,54 @@ export function WorldMap({
           </linearGradient>
         </defs>
 
-        {dots.map((dot, i) => (
-          <g key={`points-group-${i}`}>
-            <g key={`start-${i}`}>
-              <circle
-                cx={projectPoint(dot.start.lat, dot.start.lng).x}
-                cy={projectPoint(dot.start.lat, dot.start.lng).y}
-                r="2"
-                fill={lineColor}
-              />
-              <circle
-                cx={projectPoint(dot.start.lat, dot.start.lng).x}
-                cy={projectPoint(dot.start.lat, dot.start.lng).y}
-                r="2"
-                fill={lineColor}
-                opacity="0.5"
-              >
-                <animate
-                  attributeName="r"
-                  from="2"
-                  to="8"
-                  dur="1.5s"
-                  begin="0s"
-                  repeatCount="indefinite"
-                />
-                <animate
-                  attributeName="opacity"
-                  from="0.5"
-                  to="0"
-                  dur="1.5s"
-                  begin="0s"
-                  repeatCount="indefinite"
-                />
-              </circle>
-            </g>
-            <g key={`end-${i}`}>
-              <circle
-                cx={projectPoint(dot.end.lat, dot.end.lng).x}
-                cy={projectPoint(dot.end.lat, dot.end.lng).y}
-                r="2"
-                fill={lineColor}
-              />
-              <circle
-                cx={projectPoint(dot.end.lat, dot.end.lng).x}
-                cy={projectPoint(dot.end.lat, dot.end.lng).y}
-                r="2"
-                fill={lineColor}
-                opacity="0.5"
-              >
-                <animate
-                  attributeName="r"
-                  from="2"
-                  to="8"
-                  dur="1.5s"
-                  begin="0s"
-                  repeatCount="indefinite"
-                />
-                <animate
-                  attributeName="opacity"
-                  from="0.5"
-                  to="0"
-                  dur="1.5s"
-                  begin="0s"
-                  repeatCount="indefinite"
-                />
-              </circle>
-            </g>
-          </g>
-        ))}
+       {dots.map((dot, i) => (
+  <g key={`points-group-${i}`}>
+    {/* Start Point */}
+    <g>
+      <circle
+        cx={projectPoint(dot.start.lat, dot.start.lng).x}
+        cy={projectPoint(dot.start.lat, dot.start.lng).y}
+        r="4"
+        fill={lineColor}
+      >
+        {dot.start.label && <title>{dot.start.label}</title>}
+      </circle>
+      <circle
+        cx={projectPoint(dot.start.lat, dot.start.lng).x}
+        cy={projectPoint(dot.start.lat, dot.start.lng).y}
+        r="4"
+        fill={lineColor}
+        opacity="0.5"
+      >
+        <animate attributeName="r" from="4" to="12" dur="1.5s" repeatCount="indefinite" />
+        <animate attributeName="opacity" from="0.5" to="0" dur="1.5s" repeatCount="indefinite" />
+      </circle>
+    </g>
+
+    {/* End Point */}
+    <g>
+      <circle
+        cx={projectPoint(dot.end.lat, dot.end.lng).x}
+        cy={projectPoint(dot.end.lat, dot.end.lng).y}
+        r="4"
+        fill={lineColor}
+      >
+        {dot.end.label && <title>{dot.end.label}</title>}
+      </circle>
+      <circle
+        cx={projectPoint(dot.end.lat, dot.end.lng).x}
+        cy={projectPoint(dot.end.lat, dot.end.lng).y}
+        r="4"
+        fill={lineColor}
+        opacity="0.5"
+      >
+        <animate attributeName="r" from="4" to="12" dur="1.5s" repeatCount="indefinite" />
+        <animate attributeName="opacity" from="0.5" to="0" dur="1.5s" repeatCount="indefinite" />
+      </circle>
+    </g>
+  </g>
+))}
+
       </svg>
     </div>
   );
