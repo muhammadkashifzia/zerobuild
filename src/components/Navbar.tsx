@@ -37,7 +37,7 @@ const Navbar = ({ className }: { className?: string }) => {
               className="flex items-center justify-center space-x-2 text-2xl font-bold text-center text-neutral-600 dark:text-gray-100"
               href="/"
             >
-              <div className="relative h-8 w-[200px] flex items-center justify-start md:justify-start rounded-md text-[32px] antialiased">
+              <div className="relative h-8 w-[156px] flex items-center justify-start md:justify-start rounded-md text-[32px] antialiased">
                 <h1 className="text-black font-sans">Zero Build</h1>
               </div>
             </Link>
@@ -45,7 +45,7 @@ const Navbar = ({ className }: { className?: string }) => {
         </div>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex items-center space-x-6 md:flex-row md:space-x-8">
+        <div className="hidden md:flex items-center  w-full justify-between">
           <Menu setActive={setActive}>
             {["about", "projects", "services", "contact"].map((item) => (
               <HoveredLink key={item} href={`/${item}`}>
@@ -67,7 +67,7 @@ const Navbar = ({ className }: { className?: string }) => {
           </Menu>
           <Link
             href="/"
-            className="w-full bg-[#484AB7] text-white border-neutral-200 dark:border-[#484AB7] px-5 rounded-full max-w-[256px] h-[45px] flex items-center justify-center text-[16px] font-semibold hover:bg-[#3c3f9d] transition-colors duration-200"
+            className=" w-full bg-[#484AB7] text-white border-neutral-200 dark:border-[#484AB7] px-2 rounded-full max-w-[185px] h-[45px] flex items-center justify-center text-[16px] font-semibold hover:bg-[#3c3f9d] transition-colors duration-200"
           >
             View all Resources
           </Link>
