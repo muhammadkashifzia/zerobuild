@@ -133,10 +133,10 @@ const ServicesPage = () => {
         }}
       >
         <div className="px-4 lg:px-8">
-          <h1 className="text-[58px] font-normal text-white mb-8 max-w-[850px]">
+          <h1 className="text-[32px] md:text-[58px] font-normal text-white  max-w-[850px]">
             Explore our services across the built and natural environments
           </h1>
-          <p className="text-[28px] text-[#ffffff] max-w-3xl mt-[2rem]">
+          <p className="text-[16px] md:text-[28px] text-[#ffffff] max-w-3xl mt-[1rem] md:mt-[2rem]">
             We offer a wide range of services, that address every priority in
             the built and natural environments. Search below to learn more about
             our expertise, or use the filters to explore services by market.
@@ -144,7 +144,7 @@ const ServicesPage = () => {
         </div>
       </section>
 
-    <div className="py-[80px]">
+    <div className="py-[40px] md:py-[80px]">
         {/* Filters */}
       <section className="px-4 lg:px-8">
         <div className="flex flex-wrap items-center gap-3">
@@ -187,7 +187,7 @@ const ServicesPage = () => {
               key={i}
             >
               <Link href="/">
-                <div className="hover:px-[20px] hover:translate-x-2 transition py-[1.5rem] flex justify-between items-center">
+                <div className="hover:px-[20px] hover:translate-x-2 transition py-[1rem] md:py-[1.5rem] flex justify-between items-center">
                   <div>
                     <h3 className="text-[28px] font-normal text-black">
                       {service.title}
@@ -206,8 +206,8 @@ const ServicesPage = () => {
 
       {/* Pagination */}
       <section className="py-8 bg-white border-t border-gray-200">
-        <div className="max-w-7xl px-4 lg:px-8 flex justify-between">
-          <div className="flex items-center space-x-2">
+        <div className="max-w-7xl px-[16px] lg:px-8 flex justify-between">
+          <div className="flex items-center space-x-2 flex-wrap">
             <button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
