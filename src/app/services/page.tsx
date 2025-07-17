@@ -153,7 +153,7 @@ const ServicesPage = () => {
               key={filter}
               className={`px-4 py-2 rounded-full text-sm border transition ${
                 selectedMarket === filter
-                  ? "bg-black text-white"
+                  ? "bg-[#484AB7] text-white border-[#484AB7]"
                   : "text-black border-gray-300 hover:bg-gray-100"
               }`}
               onClick={() => {

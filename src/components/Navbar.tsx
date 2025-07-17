@@ -25,64 +25,75 @@ const Navbar = ({ className }: { className?: string }) => {
   return (
     <div
       className={cn(
-        "fixed top-0 z-[50] w-full border-b border-neutral-200 bg-white h-[64px] px-[15px] items-center flex justify-between md:px-[16px] shadow-[0_1px_2px_1px_rgba(6,10,36,0.08)]",
+        "fixed top-0 z-[50] w-full border-b border-neutral-200 bg-white items-center flex  shadow-[0_1px_2px_1px_rgba(6,10,36,0.08)]",
         className
       )}
     >
-      {/* Logo Section */}
-      <div className="flex items-center space-x-4">
-        <div className="mr-4 flex">
+      <div className="container flex justify-between h-[64px] mx-auto px-[16px]">
+        {/* Logo Section */}
+        <div className="flex items-center space-x-4">
+          <div className="mr-4 flex">
+            <Link
+              className="flex items-center justify-center space-x-2 text-2xl font-bold text-center text-neutral-600 dark:text-gray-100"
+              href="/"
+            >
+              <div className="relative h-8 w-[200px] flex items-center justify-start md:justify-start rounded-md text-[32px] antialiased">
+                <h1 className="text-black font-sans">Zero Build</h1>
+              </div>
+            </Link>
+          </div>
+        </div>
+
+        {/* Desktop Menu */}
+        <div className="hidden md:flex items-center space-x-6 md:flex-row md:space-x-8">
+          <Menu setActive={setActive}>
+            {["about", "projects", "services", "contact"].map((item) => (
+              <HoveredLink key={item} href={`/${item}`}>
+                <div
+                  className={
+                    currentPath === `/${item}`
+                      ? "text-black font-bold w-full border-b-[#484AB7] rounded-[4px] px-2 py-3"
+                      : "w-full text-black px-2 py-3"
+                  }
+                >
+                  <MenuItem
+                    setActive={setActive}
+                    active={active}
+                    item={item.charAt(0).toUpperCase() + item.slice(1)}
+                  />
+                </div>
+              </HoveredLink>
+            ))}
+          </Menu>
           <Link
-            className="flex items-center justify-center space-x-2 text-2xl font-bold text-center text-neutral-600 dark:text-gray-100"
             href="/"
+            className="w-full bg-[#484AB7] text-white border-neutral-200 dark:border-[#484AB7] px-5 rounded-full max-w-[256px] h-[45px] flex items-center justify-center text-[16px] font-semibold hover:bg-[#3c3f9d] transition-colors duration-200"
           >
-            <div className="relative h-8 w-[200px] flex items-center justify-start md:justify-center rounded-md text-[32px] antialiased">
-              <h1 className="text-black font-sans">Zero Build</h1>
-            </div>
+            View all Resources
           </Link>
         </div>
+
+        {/* Mobile Menu Toggle */}
+        <button
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          className="md:hidden mr-4 focus:outline-none absolute right-[0px] top-[50%] transform -translate-y-1/2"
+        >
+          <div className="w-[30px] h-6 relative flex flex-col justify-center items-center">
+            {sidebarOpen ? (
+              <>
+                <span className="absolute h-0.5 w-full bg-[#2c3237] rotate-45" />
+                <span className="absolute h-0.5 w-full bg-[#2c3237] -rotate-45" />
+              </>
+            ) : (
+              <>
+                <span className="absolute h-0.5 w-full bg-[#2c3237] top-[0%]" />
+                <span className="absolute h-0.5 w-full bg-[#2c3237] top-[30%]" />
+                <span className="absolute h-0.5 w-full bg-[#2c3237] top-[60%]" />
+              </>
+            )}
+          </div>
+        </button>
       </div>
-
-      {/* Desktop Menu */}
-      <div className="hidden md:flex items-center space-x-6 md:flex-row md:space-x-8">
-        <Menu setActive={setActive}>
-          {["about", "projects", "services", "contact"].map((item) => (
-            <HoveredLink key={item} href={`/${item}`}>
-              <div
-                className={
-                  currentPath === `/${item}`
-                    ? "text-black font-bold w-full border-b-[#484AB7] rounded-[4px] px-2 py-3"
-                    : "w-full text-black px-2 py-3"
-                }
-              >
-                <MenuItem setActive={setActive} active={active} item={item.charAt(0).toUpperCase() + item.slice(1)} />
-              </div>
-            </HoveredLink>
-          ))}
-        </Menu>
-      </div>
-
-      {/* Mobile Menu Toggle */}
-      <button
-        onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="md:hidden mr-4 focus:outline-none absolute right-[0px] top-[50%] transform -translate-y-1/2"
-      >
-        <div className="w-[30px] h-6 relative flex flex-col justify-center items-center">
-          {sidebarOpen ? (
-            <>
-              <span className="absolute h-0.5 w-full bg-[#2c3237] rotate-45" />
-              <span className="absolute h-0.5 w-full bg-[#2c3237] -rotate-45" />
-            </>
-          ) : (
-            <>
-              <span className="absolute h-0.5 w-full bg-[#2c3237] top-[0%]" />
-              <span className="absolute h-0.5 w-full bg-[#2c3237] top-[30%]" />
-              <span className="absolute h-0.5 w-full bg-[#2c3237] top-[60%]" />
-            </>
-          )}
-        </div>
-      </button>
-
       {/* Mobile Sidebar */}
       <div
         className={`${
