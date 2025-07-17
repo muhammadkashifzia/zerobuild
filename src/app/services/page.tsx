@@ -211,7 +211,7 @@ const ServicesPage = () => {
             <button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
-              className="px-3 py-2 text-sm text-gray-700 hover:text-black disabled:text-gray-400"
+              className=" py-2 text-sm text-gray-700 hover:text-black disabled:text-gray-400"
             >
               Previous
             </button>
@@ -219,7 +219,7 @@ const ServicesPage = () => {
               <button
                 key={idx}
                 onClick={() => handlePageChange(idx + 1)}
-                className={`px-3 py-2 text-sm ${
+                className={`px-2 py-1 text-sm rounded ${
                   currentPage === idx + 1
                     ? "bg-black text-white"
                     : "text-gray-700 hover:text-black hover:bg-gray-100"
@@ -231,7 +231,7 @@ const ServicesPage = () => {
             <button
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className="px-3 py-2 text-sm text-gray-700 hover:text-black disabled:text-gray-400"
+              className=" py-2 text-sm text-gray-700 hover:text-black disabled:text-gray-400"
             >
               Next
             </button>
