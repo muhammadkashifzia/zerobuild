@@ -5,7 +5,7 @@ import Link from "next/link";
 const ServiceSection = () => {
   return (
     <section
-      className=" text-black py-16 px-4 lg:px-20 mt-[80px] service-section relative"
+      className=" text-black py-16  mt-[80px] service-section relative"
       style={{
         backgroundBlendMode: "overlay",
         backgroundSize: "cover",
