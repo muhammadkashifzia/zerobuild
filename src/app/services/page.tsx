@@ -183,7 +183,7 @@ const ServicesPage = () => {
         </section>
 
         {/* Services List */}
-        <section className="py-8 bg-white">
+        <section className="py-8 bg-white container mx-auto">
           <div className="max-w-[958px] px-[16px]">
             <div className="text-sm text-gray-600 mb-[8px]">
               Showing {startIndex + 1}–{Math.min(startIndex + itemsPerPage, filteredServices.length)} of {filteredServices.length}
