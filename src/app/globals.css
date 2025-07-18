@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -20,7 +18,6 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-
 }
 
 @layer utilities {
@@ -51,23 +48,44 @@ body {
 .scrollbar-hidden .max-w-2xl {
   overflow: hidden;
 }
-.recharts-label{
+.recharts-label {
   font-size: 12px;
 }
-.recharts-legend-wrapper{
-  bottom:-5px!important;
+.recharts-legend-wrapper {
+  bottom: -5px !important;
 }
-.graph-icon::after{
-    
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    background-image: url('/assets/images/blog1-bg.png');
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    z-index: -3;
+.graph-icon::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-image: url("/assets/images/blog1-bg.png");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: -3;
+}
+.navLink .menuItem::before {
+  position: absolute;
+  content: "";
+  bottom: 0px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: #484ab7;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.5s ease 0s;
+}
+.navLink a:hover .menuItem::before {
+  visibility: visible;
+  opacity: 1;
+  width: 100%;
+}
+.navLink .activeMenuItem::before {
+  visibility: visible;
+  opacity: 1;
+  width: 100%;
 }

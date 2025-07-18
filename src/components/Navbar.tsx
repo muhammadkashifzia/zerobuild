@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import { HoveredLink, Menu, MenuItem } from "./ui/navbar-menu";
 import { cn } from "@/utils/cn";
 
-
 const Navbar = ({ className }: { className?: string }) => {
   const pathname = usePathname();
 
@@ -49,26 +48,30 @@ const Navbar = ({ className }: { className?: string }) => {
         </div>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex items-center w-full justify-between relative">
+        <div className="hidden lg:flex items-center w-full justify-between relative navLink">
           <Menu setActive={setActive}>
-            {["home", "about", "services", "projects", "contact"].map((item) => (
-              <HoveredLink key={item} href={getLinkPath(item)}>
-                <div
-                  className={
-                    isActive(item)
-                      ? "text-black font-bold w-full border-b border-[#484AB7]  px-2 py-3"
-                      : "w-full text-black px-2 py-3 hover:border-b border-[#484AB7] transition-[1s]"
-                  }
+            {["home", "about", "services", "projects", "contact"].map(
+              (item) => (
+                <HoveredLink
+                  key={item}
+                  href={getLinkPath(item)}
+             
                 >
-                  <MenuItem
-                    setActive={setActive}
-                    active={active}
-                    item={item.charAt(0).toUpperCase() + item.slice(1)}
-                  />
-                </div>
-              </HoveredLink>
-            ))}
-
+                  <div
+                    className={cn(
+                      "relative px-2 py-3 transition-[1s] text-black menuItem",
+                      isActive(item) && "font-bold activeMenuItem"
+                    )}
+                  >
+                    <MenuItem
+                      setActive={setActive}
+                      active={active}
+                      item={item.charAt(0).toUpperCase() + item.slice(1)}
+                    />
+                  </div>
+                </HoveredLink>
+              )
+            )}
           </Menu>
 
           <Link
@@ -82,7 +85,7 @@ const Navbar = ({ className }: { className?: string }) => {
         {/* Mobile Menu Button */}
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="md:hidden mr-4 focus:outline-none absolute right-[0px] top-[50%] transform -translate-y-1/2"
+          className="lg:hidden focus:outline-none"
         >
           <div className="w-[30px] h-6 relative flex flex-col justify-center items-center">
             {sidebarOpen ? (
@@ -107,7 +110,7 @@ const Navbar = ({ className }: { className?: string }) => {
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         } fixed top-0 left-0 h-full w-80 bg-[#F4F4F4] shadow-lg transition-transform duration-300 z-50`}
       >
-        <div className="absolute right-2 top-2">
+        <div className="absolute right-2 top-2 z-50">
           <button onClick={handleCloseSidebar}>
             <span className="text-[40px] text-[#5f5e5e] font-[300]">×</span>
           </button>
@@ -127,13 +130,18 @@ const Navbar = ({ className }: { className?: string }) => {
 
           <div className="flex flex-col items-start px-[16px] pt-[50px] space-y-1">
             {["home", "about", "projects", "contact"].map((item) => (
-              <HoveredLink key={item} href={getLinkPath(item)}>
+              <HoveredLink
+                key={item}
+                href={getLinkPath(item)}
+                className={cn(isActive(item) ? "active" : "")}
+              >
                 <div
-                  className={
+                  className={cn(
+                    "w-full px-2 py-3 rounded-[4px]",
                     isActive(item)
-                      ? "text-white font-bold w-full bg-[#484AB7] rounded-[4px] px-2 py-3"
-                      : "w-full text-black px-2 py-3"
-                  }
+                      ? "text-white font-bold bg-[#484AB7]"
+                      : "text-black"
+                  )}
                 >
                   <MenuItem
                     setActive={setActive}
@@ -143,8 +151,6 @@ const Navbar = ({ className }: { className?: string }) => {
                 </div>
               </HoveredLink>
             ))}
-
-       
           </div>
         </div>
       </div>

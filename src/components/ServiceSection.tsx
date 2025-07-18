@@ -12,7 +12,7 @@ const ServiceSection = () => {
         backgroundImage: `url("/assets/images/coding-background-texture.jpg"), linear-gradient(180deg, #484AB7 0%, #9271f6 100%)`,
       }}
     >
-      <div className="max-w-7xl mx-auto space-y-6 md:space-y-10">
+      <div className="container px-[16px] mx-auto space-y-6 md:space-y-10">
         {/* Header Row */}
         <div className="flex justify-between items-start flex-col md:flex-row gap-[20px]">
           <div>

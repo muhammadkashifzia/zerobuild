@@ -1,7 +1,7 @@
 export default function PerformanceSection() {
   return (
-    <section className="bg-[#faf7f7] text-black py-[30px] md:py-[60px] px-4 md:px-24 mb-[40px] md:mb-[80px]">
-      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8 items-center">
+    <section className="bg-[#faf7f7] text-black py-[30px] md:py-[60px] mb-[40px] md:mb-[80px]">
+      <div className="container mx-auto px-[16px]  grid md:grid-cols-2 gap-8 items-center">
         <div className="text-[28px] leading-[1.3]">
           <p>Explore how our client used our Five C Zero Framework to evaluate 1000+ design options in under 24 hours, unlocking smarter decisions from day one..</p>
         </div>

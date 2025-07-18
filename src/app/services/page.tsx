@@ -229,7 +229,7 @@ const ServicesPage = () => {
                   onClick={() => handlePageChange(idx + 1)}
                   className={`px-2 py-1 text-sm rounded ${
                     currentPage === idx + 1
-                      ? "bg-black text-white"
+                      ? "bg-[#484AB7] text-white"
                       : "text-gray-700 hover:text-black hover:bg-gray-100"
                   }`}
                 >

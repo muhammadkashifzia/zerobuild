@@ -1950,7 +1950,7 @@ export default function ObservabilityChart() {
           <Scatter
             name="Data Points"
             data={data}
-            fill={xAxisType === 'CostNum' ? '#f4a261' : '#e63946'}
+            fill={xAxisType === 'CostNum' ? '#484AB7' : '#484AB7'}
             shape={<CustomDot />}
           />
         </ScatterChart>
