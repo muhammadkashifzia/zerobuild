@@ -5,11 +5,11 @@ import Link from "next/link";
 const ServiceSection = () => {
   return (
     <section
-      className=" text-black py-16 px-4 lg:px-20 mt-[80px]"
+      className=" text-black py-16 px-4 lg:px-20 mt-[80px] service-section relative"
       style={{
         backgroundBlendMode: "overlay",
         backgroundSize: "cover",
-        backgroundImage: `url("/assets/images/coding-background-texture.jpg"), linear-gradient(180deg, #474ab6 0%, #9271f6 100%)`,
+        backgroundImage: `url("/assets/images/coding-background-texture.jpg"), linear-gradient(180deg, #484AB7 0%, #9271f6 100%)`,
       }}
     >
       <div className="max-w-7xl mx-auto space-y-6 md:space-y-10">

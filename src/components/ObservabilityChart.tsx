@@ -1880,7 +1880,7 @@ export default function ObservabilityChart() {
     xAxisType === 'CostNum' ? `£${(v / 1000).toFixed(0)}k` : `${(v / 1000).toFixed(0)}k`;
 
   return (
-    <div className="px-[16px]">
+    <div className="px-[16px] graph-icon relative">
       <div className='bg-white text-gray-900 px-2 py-4 md:p-6 rounded-lg shadow-md w-full max-w-6xl md:mx-auto border border-gray-200'>
         <h3 className="text-sm text-gray-500 mb-1">📊 Observability</h3>
       <h2 className="text-2xl font-bold text-gray-800 mb-2">

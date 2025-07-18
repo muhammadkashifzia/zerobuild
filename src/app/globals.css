@@ -57,3 +57,17 @@ body {
 .recharts-legend-wrapper{
   bottom:-5px!important;
 }
+.graph-icon::after{
+    
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-image: url('/assets/images/blog1-bg.png');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: -3;
+}

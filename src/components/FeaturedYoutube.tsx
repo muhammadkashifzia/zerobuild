@@ -69,7 +69,7 @@ const YouTuberShowcase: React.FC = () => {
       style={{
         backgroundBlendMode: "overlay",
         backgroundSize: "cover",
-        backgroundImage: `url("/assets/images/coding-background-texture.jpg"), linear-gradient(180deg, #474ab6 0%, #9271f6 100%)`,
+        backgroundImage: `url("/assets/images/coding-background-texture.jpg"), linear-gradient(180deg, #484AB7 0%, #9271f6 100%)`,
       }}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
