@@ -155,7 +155,7 @@ const ServicesPage = () => {
 
       {/* Filters */}
       <div className="py-[40px] md:py-[80px]">
-        <section className="px-4 lg:px-8">
+        <section className="container mx-auto px-[16px]">
           <div className="flex flex-wrap items-center gap-3">
             {mainFilters.map((filter) => (
               <button
@@ -184,7 +184,7 @@ const ServicesPage = () => {
 
         {/* Services List */}
         <section className="py-8 bg-white">
-          <div className="max-w-[958px] px-4 lg:px-8">
+          <div className="max-w-[958px] px-[16px]">
             <div className="text-sm text-gray-600 mb-[8px]">
               Showing {startIndex + 1}–{Math.min(startIndex + itemsPerPage, filteredServices.length)} of {filteredServices.length}
             </div>
