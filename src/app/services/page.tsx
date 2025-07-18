@@ -141,7 +141,7 @@ const ServicesPage = () => {
           backgroundImage: `url("/assets/images/coding-background-texture.jpg"), linear-gradient(180deg, #474ab6 0%, #9271f6 100%)`,
         }}
       >
-        <div className="px-4 lg:px-8">
+        <div className="container mx-auto px-[16px]">
           <h1 className="text-[32px] md:text-[58px] font-normal text-white max-w-[850px]">
             Explore our services across the built and natural environments
           </h1>
