@@ -123,7 +123,7 @@ const Navbar = ({ className }: { className?: string }) => {
               href="/"
             >
               <div className="relative h-8 w-[200px] flex items-center justify-center rounded-md text-[32px] antialiased">
-                <h1 className="text-black font-sans">Zero Build</h1>
+               <Image src="/assets/images/5CZLogo.png" alt="logo" width={100} height={100} className="h-[50px] w-auto" />
               </div>
             </HoveredLink>
           </div>
