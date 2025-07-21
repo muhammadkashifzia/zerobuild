@@ -1862,10 +1862,39 @@ type CustomDotProps = {
 
 const CustomDot = (props: CustomDotProps) => {
   const { cx, cy, payload, priority } = props;
+
+  // Helper to interpolate between two hex colors
+  function lerpColor(a: string, b: string, t: number) {
+    const ah = a.replace('#', '');
+    const bh = b.replace('#', '');
+    const ar = parseInt(ah.substring(0, 2), 16);
+    const ag = parseInt(ah.substring(2, 4), 16);
+    const ab = parseInt(ah.substring(4, 6), 16);
+    const br = parseInt(bh.substring(0, 2), 16);
+    const bg = parseInt(bh.substring(2, 4), 16);
+    const bb = parseInt(bh.substring(4, 6), 16);
+    const rr = Math.round(ar + (br - ar) * t);
+    const rg = Math.round(ag + (bg - ag) * t);
+    const rb = Math.round(ab + (bb - ab) * t);
+    return `#${rr.toString(16).padStart(2, '0')}${rg.toString(16).padStart(2, '0')}${rb.toString(16).padStart(2, '0')}`;
+  }
+
   let fill = '#8884d8';
-  if (priority === 'Comfort') fill = '#22c55e'; // green
-  if (priority === 'Compliance') fill = '#2563eb'; // blue
-  if (priority === 'Circularity') fill = '#f59e42'; // orange
+
+  if (priority === 'Circularity' && payload && typeof payload.Circularity === 'number') {
+    // Circularity gradient: light green (#bbf7d0) to dark green (#166534)
+    const minCirc = 55; // lowest in your data
+    const maxCirc = 82; // highest in your data
+    const t = Math.max(0, Math.min(1, (payload.Circularity - minCirc) / (maxCirc - minCirc)));
+    fill = lerpColor('#bbf7d0', '#166534', t);
+  } else if (payload && payload.Comfort) {
+    const comfort = payload.Comfort.toLowerCase();
+    if (comfort === 'underheating') fill = '#2563eb'; // blue
+    else if (comfort === 'overheating') fill = '#ef4444'; // red
+    else if (comfort === 'feels nice' || comfort === 'perfect!') fill = '#22c55e'; // green
+    else fill = '#8884d8'; // fallback
+  }
+
   return (
     <circle
       cx={cx}
@@ -1980,7 +2009,7 @@ export default function ObservabilityChart() {
 
   // Priority toggle button style
   const priorityBtn = (val: typeof priority) =>
-    `px-4 py-2 rounded mr-2 ${priority === val ? 'bg-[] text-white' : 'bg-gray-200 text-gray-700'}`;
+    `px-4 py-2 rounded mr-2 ${priority === val ? 'bg-[#484AB7] text-white' : 'bg-gray-200 text-gray-700'}`;
 
   // Filtered points in box
   const xKey = xAxisType;
@@ -2010,8 +2039,11 @@ export default function ObservabilityChart() {
         Choose what matters most
         </p>
         <div className="mb-4 flex flex-wrap gap-2">
-
           <span className="flex items-center justify-center font-semibold text-gray-700">Priority:</span>
+          {/* Cost and Carbon always selected, not clickable */}
+          <button className="px-4 py-2 rounded mr-2 bg-[#484AB7] text-white cursor-default" disabled>Cost</button>
+          <button className="px-4 py-2 rounded mr-2 bg-[#484AB7] text-white cursor-default" disabled>Carbon</button>
+          {/* Only one of Comfort, Compliance, Circularity can be selected */}
           <button onClick={() => setPriority('Comfort')} className={priorityBtn('Comfort')}>Comfort</button>
           <button onClick={() => setPriority('Compliance')} className={priorityBtn('Compliance')}>Compliance</button>
           <button onClick={() => setPriority('Circularity')} className={priorityBtn('Circularity')}>Circularity</button>
