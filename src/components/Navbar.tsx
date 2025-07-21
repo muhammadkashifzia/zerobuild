@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { HoveredLink, Menu, MenuItem } from "./ui/navbar-menu";
 import { cn } from "@/utils/cn";
-
+import Image from "next/image";
 const Navbar = ({ className }: { className?: string }) => {
   const pathname = usePathname();
 
@@ -41,7 +41,7 @@ const Navbar = ({ className }: { className?: string }) => {
               href="/"
             >
               <div className="relative h-8 w-[156px] flex items-center justify-start rounded-md text-[32px] antialiased">
-                <h1 className="text-black font-sans">Zero Build</h1>
+                <Image src="/assets/images/5CZLogo.png" alt="logo" width={100} height={100} className="h-[50px] w-auto" />
               </div>
             </Link>
           </div>
