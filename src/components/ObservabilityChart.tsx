@@ -10,7 +10,7 @@ import {
   CartesianGrid,
   Legend,
 } from 'recharts';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 type DataPoint = {
   name: string;
@@ -1843,11 +1843,8 @@ const CustomTooltip = ({ active, payload }: any) => {
       <div className="bg-white border border-gray-200 p-4 rounded shadow text-sm text-gray-800">
         <p><strong>Fabric:</strong> {d.Fabric}</p>
         <p><strong>Orientation:</strong> {d.Orientation}</p>
-        <p><strong>User Behaviour:</strong> {d.UserBehaviour}</p>
         <p><strong>Compliance:</strong> {d.Compliance}</p>
         <p><strong>Comfort:</strong> {d.Comfort}</p>
-        <p><strong>Cost:</strong> {d.Cost}</p>
-        <p><strong>Carbon:</strong> {d.Carbon}</p>
         <p><strong>Circularity:</strong> {d.Circularity}</p>
       </div>
     );
@@ -1855,106 +1852,295 @@ const CustomTooltip = ({ active, payload }: any) => {
   return null;
 };
 
-// Custom dot shape for highlighting on hover
-const CustomDot = (props: any) => {
-  const { cx, cy, payload } = props;
-  const isHovered = payload && payload.index !== undefined;
-  
+// Custom dot shape for highlighting on hover and priority
+type CustomDotProps = {
+  cx?: number;
+  cy?: number;
+  payload: any;
+  priority: 'Comfort' | 'Compliance' | 'Circularity';
+};
+
+const CustomDot = (props: CustomDotProps) => {
+  const { cx, cy, payload, priority } = props;
+  let fill = '#8884d8';
+  if (priority === 'Comfort') fill = '#22c55e'; // green
+  if (priority === 'Compliance') fill = '#2563eb'; // blue
+  if (priority === 'Circularity') fill = '#f59e42'; // orange
   return (
     <circle
       cx={cx}
       cy={cy}
-      r={isHovered ? 8 : 5}
-      fill={isHovered ? '#484ab7' : '#8884d8'}
+      r={payload && payload.index !== undefined ? 8 : 5}
+      fill={fill}
       stroke="#156082"
-      strokeWidth={isHovered ? 2 : 1}
+      strokeWidth={payload && payload.index !== undefined ? 2 : 1}
+      opacity={1}
     />
   );
 };
 
 export default function ObservabilityChart() {
   const [xAxisType, setXAxisType] = useState<'CostNum' | 'CarbonNum'>('CarbonNum');
+  const [priority, setPriority] = useState<'Comfort' | 'Compliance' | 'Circularity'>('Comfort');
+  const [box, setBox] = useState({
+    x: 0.2, // percent (0-1)
+    y: 0.2,
+    width: 0.3,
+    height: 0.3,
+    dragging: false,
+    resizing: false,
+    dragStart: { x: 0, y: 0 },
+    boxStart: { x: 0, y: 0, width: 0, height: 0 },
+    resizeDir: '',
+  });
+  const [ctaVisible, setCtaVisible] = useState(false);
+  const chartRef = useRef<HTMLDivElement>(null);
+  const [chartDims, setChartDims] = useState({ left: 0, top: 0, width: 1, height: 1 });
 
-  const xAxisLabel = xAxisType === 'CostNum' ? 'Lifecycle Cost (£)' : 'Whole Life Carbon (kg)';
-  const xAxisFormatter = (v: number) =>
-    xAxisType === 'CostNum' ? `£${(v / 1000).toFixed(0)}k` : `${(v / 1000).toFixed(0)}k`;
+  // Get chart dimensions for overlay
+  useEffect(() => {
+    if (chartRef.current) {
+      const rect = chartRef.current.getBoundingClientRect();
+      setChartDims({ left: rect.left, top: rect.top, width: rect.width, height: rect.height });
+    }
+  }, []);
+
+  // Show CTA after box is moved or resized
+  const showCTA = () => {
+    if (!ctaVisible) setCtaVisible(true);
+  };
+
+  // Mouse/touch handlers for drag/resize
+  const onBoxMouseDown = (e: React.MouseEvent | React.TouchEvent, resizeDir = '') => {
+    e.stopPropagation();
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+    setBox((prev) => ({
+      ...prev,
+      dragging: !resizeDir,
+      resizing: !!resizeDir,
+      dragStart: { x: clientX, y: clientY },
+      boxStart: { x: prev.x, y: prev.y, width: prev.width, height: prev.height },
+      resizeDir,
+    }));
+    document.body.style.userSelect = 'none';
+  };
+  useEffect(() => {
+    const onMove = (e: MouseEvent | TouchEvent) => {
+      if (!box.dragging && !box.resizing) return;
+      const clientX = 'touches' in e ? e.touches[0].clientX : (e as MouseEvent).clientX;
+      const clientY = 'touches' in e ? e.touches[0].clientY : (e as MouseEvent).clientY;
+      let dx = (clientX - box.dragStart.x) / chartDims.width;
+      let dy = (clientY - box.dragStart.y) / chartDims.height;
+      let newBox = { ...box };
+      if (box.dragging) {
+        newBox.x = Math.max(0, Math.min(1 - box.width, box.boxStart.x + dx));
+        newBox.y = Math.max(0, Math.min(1 - box.height, box.boxStart.y + dy));
+      } else if (box.resizing) {
+        // Only bottom-right resize for simplicity
+        if (box.resizeDir === 'br') {
+          newBox.width = Math.max(0.05, Math.min(1 - box.x, box.boxStart.width + dx));
+          newBox.height = Math.max(0.05, Math.min(1 - box.y, box.boxStart.height + dy));
+        }
+      }
+      setBox({ ...newBox, dragging: box.dragging, resizing: box.resizing, dragStart: box.dragStart, boxStart: box.boxStart, resizeDir: box.resizeDir });
+      showCTA();
+    };
+    const onUp = () => {
+      setBox((prev) => ({ ...prev, dragging: false, resizing: false }));
+      document.body.style.userSelect = '';
+    };
+    if (box.dragging || box.resizing) {
+      window.addEventListener('mousemove', onMove);
+      window.addEventListener('touchmove', onMove);
+      window.addEventListener('mouseup', onUp);
+      window.addEventListener('touchend', onUp);
+    }
+    return () => {
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('touchmove', onMove);
+      window.removeEventListener('mouseup', onUp);
+      window.removeEventListener('touchend', onUp);
+    };
+  }, [box, chartDims]);
+
+  // Axis labels and formatters
+  const xAxisLabel = xAxisType === 'CostNum' ? 'Lifecycle Cost (£/m²)' : 'Whole Life Carbon (kgCO₂e/m²)';
+  const yAxisLabel = xAxisType === 'CostNum' ? 'Whole Life Carbon (kgCO₂e/m²)' : 'Lifecycle Cost (£/m²)';
+  const xAxisFormatter = (v: number) => xAxisType === 'CostNum' ? `£${(v / 1000).toFixed(0)}k` : `${(v / 1000).toFixed(0)}k`;
+  const yAxisFormatter = (v: number) => xAxisType === 'CostNum' ? `${(v / 1000).toFixed(0)}k` : `£${(v / 1000).toFixed(0)}k`;
+
+  // Box pixel position/size
+  const boxPx = {
+    left: chartDims.width * box.x,
+    top: chartDims.height * box.y,
+    width: chartDims.width * box.width,
+    height: chartDims.height * box.height,
+  };
+
+  // Priority toggle button style
+  const priorityBtn = (val: typeof priority) =>
+    `px-4 py-2 rounded mr-2 ${priority === val ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`;
+
+  // Filtered points in box
+  const xKey = xAxisType;
+  const yKey = xAxisType === 'CostNum' ? 'CarbonNum' : 'CostNum';
+  const xMin = Math.min(...data.map((d) => d[xKey]));
+  const xMax = Math.max(...data.map((d) => d[xKey]));
+  const yMin = Math.min(...data.map((d) => d[yKey]));
+  const yMax = Math.max(...data.map((d) => d[yKey]));
+  const boxX0 = xMin + box.x * (xMax - xMin);
+  const boxX1 = xMin + (box.x + box.width) * (xMax - xMin);
+  const boxY0 = yMin + box.y * (yMax - yMin);
+  const boxY1 = yMin + (box.y + box.height) * (yMax - yMin);
+  const inBox = (d: DataPoint) => {
+    const x = d[xKey];
+    const y = d[yKey];
+    return x >= boxX0 && x <= boxX1 && y >= boxY0 && y <= boxY1;
+  };
 
   return (
     <div className="px-[16px] graph-icon relative">
       <div className='bg-white text-gray-900 px-2 py-4 md:p-6 rounded-lg shadow-md w-full max-w-6xl md:mx-auto border border-gray-200'>
         <h3 className="text-sm text-gray-500 mb-1">📊 Observability</h3>
-      <h2 className="text-2xl font-bold text-gray-800 mb-2">
-        {xAxisType === 'CostNum'
-          ? 'Lifecycle Cost vs Whole Life Carbon'
-          : 'Whole Life Carbon vs Lifecycle Cost'}
-      </h2>
-      <p className="text-gray-600 mb-4">
-        Toggle between cost or carbon as X-axis to visualize trends.
-      </p>
+        <h2 className="text-2xl font-bold text-gray-800 mb-2">
+          {xAxisType === 'CostNum'
+            ? 'Lifecycle Cost vs Whole Life Carbon'
+            : 'Whole Life Carbon vs Lifecycle Cost'}
+        </h2>
+        <p className="text-gray-600 mb-2">
+          Toggle between cost or carbon as X-axis to visualize trends.
+        </p>
+        <div className="mb-4 flex flex-wrap gap-2">
 
-      <div className="mb-4">
-        <button
-          onClick={() => setXAxisType('CostNum')}
-          className={`px-4 py-2 mr-2 rounded ${
-            xAxisType === 'CostNum' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'
-          }`}
-        >
-          Cost
-        </button>
-        <button
-          onClick={() => setXAxisType('CarbonNum')}
-          className={`px-4 py-2 rounded ${
-            xAxisType === 'CarbonNum' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'
-          }`}
-        >
-          Carbon
-        </button>
-      </div>
+          <span className="flex items-center justify-center font-semibold text-gray-700">Priority:</span>
+          <button onClick={() => setPriority('Comfort')} className={priorityBtn('Comfort')}>Comfort</button>
+          <button onClick={() => setPriority('Compliance')} className={priorityBtn('Compliance')}>Compliance</button>
+          <button onClick={() => setPriority('Circularity')} className={priorityBtn('Circularity')}>Circularity</button>
+        </div>
 
-      <ResponsiveContainer width="100%" height={400}>
-        <ScatterChart>
-          <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-          <XAxis
-            type="number"
-            dataKey={xAxisType}
-            stroke="#156082"
-            tickFormatter={xAxisFormatter}
-            label={{
-              value: xAxisLabel,
-              position: 'insideBottom',
-              offset: -6,
-              fill: '#156082',
-            }}
-          />
-          <YAxis
-            type="number"
-            dataKey={xAxisType === 'CostNum' ? 'CarbonNum' : 'CostNum'}
-            domain={['dataMin - 10000', 'dataMax + 10000']} // Supports negative
-            stroke="#156082"
-            tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`}
-            label={{
-              value:
-                xAxisType === 'CostNum'
-                  ? 'Whole Life Carbon (kg)'
-                  : 'Lifecycle Cost (£)',
-              angle: -90,
-              position: 'insideLeft',
-              fill: '#555',
-            }}
-          />
-          <Tooltip
-            content={<CustomTooltip />}
-            cursor={{ stroke: '#8884d8', strokeWidth: 1 }}
-          />
-          <Legend />
-          <Scatter
-            name="Data Points"
-            data={data}
-            fill={xAxisType === 'CostNum' ? '#484AB7' : '#484AB7'}
-            shape={<CustomDot />}
-          />
-        </ScatterChart>
-      </ResponsiveContainer>
+        <div ref={chartRef} className="relative w-full h-[600px]">
+          {/* Only render overlays if chartDims are valid */}
+          {chartDims.width > 10 && chartDims.height > 10 && (
+            <>
+              {/* Dimming overlay */}
+              <div style={{
+                position: 'absolute',
+                left: 0, top: 0, width: '100%', height: '100%',
+                pointerEvents: 'none',
+                zIndex: 2,
+              }}>
+                {/* Top */}
+                <div style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: boxPx.top, background: 'transparent' }} />
+                {/* Bottom */}
+                <div style={{ position: 'absolute', left: 0, top: boxPx.top + boxPx.height, width: '100%', height: chartDims.height - (boxPx.top + boxPx.height), background: 'transparent' }} />
+                {/* Left */}
+                <div style={{ position: 'absolute', left: 0, top: boxPx.top, width: boxPx.left, height: boxPx.height, background: 'transparent' }} />
+                {/* Right */}
+                <div style={{ position: 'absolute', left: boxPx.left + boxPx.width, top: boxPx.top, width: chartDims.width - (boxPx.left + boxPx.width), height: boxPx.height, background: 'transparent' }} />
+              </div>
+              {/* Draggable/Resizable Box */}
+              <div
+                style={{
+                  position: 'absolute',
+                  left: boxPx.left,
+                  top: boxPx.top,
+                  width: boxPx.width,
+                  height: boxPx.height,
+                  background: 'rgba(72,74,183,0.18)',
+                  border: '2px solid #484ab7',
+                  borderRadius: 8,
+                  zIndex: 3,
+                  cursor: box.dragging ? 'grabbing' : 'grab',
+                  boxShadow: '0 2px 8px rgba(72,74,183,0.12)',
+                  transition: 'box-shadow 0.2s',
+                  userSelect: 'none',
+                }}
+                onMouseDown={(e) => onBoxMouseDown(e)}
+                onTouchStart={(e) => onBoxMouseDown(e)}
+              >
+                {/* Resize handle (bottom-right) */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    right: 0, bottom: 0, width: 18, height: 18,
+                    background: '#484ab7',
+                    borderRadius: '0 0 8px 0',
+                    cursor: 'nwse-resize',
+                    zIndex: 4,
+                    display: 'flex', alignItems: 'flex-end', justifyContent: 'flex-end',
+                  }}
+                  onMouseDown={(e) => onBoxMouseDown(e, 'br')}
+                  onTouchStart={(e) => onBoxMouseDown(e, 'br')}
+                >
+                  <svg width="18" height="18"><rect x="6" y="12" width="6" height="2" fill="#fff" /><rect x="12" y="6" width="2" height="6" fill="#fff" /></svg>
+                </div>
+              </div>
+            </>
+          )}
+          {/* Chart */}
+          <ResponsiveContainer width="100%" height="100%">
+            <ScatterChart>
+              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+              <XAxis
+                type="number"
+                dataKey={xKey}
+                stroke="#156082"
+                tickFormatter={xAxisFormatter}
+                label={{
+                  value: xAxisLabel,
+                  position: 'insideBottom',
+                  offset: -6,
+                  fill: '#156082',
+                }}
+                domain={[xMin, xMax]}
+              />
+              <YAxis
+                type="number"
+                dataKey={yKey}
+                domain={[yMin, yMax]}
+                stroke="#156082"
+                tickFormatter={yAxisFormatter}
+                label={{
+                  value: yAxisLabel,
+                  angle: -90,
+                  position: 'insideLeft',
+                  fill: '#555',
+                }}
+              />
+              <Tooltip
+                content={({ active, payload }: any) => {
+                  if (active && payload && payload.length) {
+                    const d = payload[0].payload;
+                    return (
+                      <div className="bg-white border border-gray-200 p-4 rounded shadow text-sm text-gray-800">
+                        <p><strong>Fabric:</strong> {d.Fabric}</p>
+                        <p><strong>Orientation:</strong> {d.Orientation}</p>
+                        <p><strong>Compliance:</strong> {d.Compliance}</p>
+                        <p><strong>Comfort:</strong> {d.Comfort}</p>
+                        <p><strong>Circularity:</strong> {d.Circularity}</p>
+                      </div>
+                    );
+                  }
+                  return null;
+                }}
+                cursor={{ stroke: '#8884d8', strokeWidth: 1 }}
+              />
+              <Legend />
+              <Scatter
+                name="Data Points"
+                data={data}
+                shape={(props: any) => <CustomDot {...props} priority={priority} />}
+                opacity={1}
+              />
+            </ScatterChart>
+          </ResponsiveContainer>
+        </div>
+        {/* CTA Section */}
+        <div className={`mt-8 transition-all duration-700 ${ctaVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'} flex flex-col items-center`}>
+          <div className="text-lg font-semibold text-gray-800 mb-2 text-center">See how the Five C Framework helps you prioritise the right decisions.</div>
+          <button className="bg-[#484AB7]  text-white font-bold py-3 px-8 rounded-lg shadow-lg text-lg transition-all">Try the full toolset</button>
+        </div>
       </div>
     </div>
   );

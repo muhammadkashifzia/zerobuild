@@ -1,8 +1,8 @@
 export default function PerformanceSection() {
   return (
     <section className="bg-[#faf7f7] text-black py-[30px] md:py-[60px] mb-[40px] md:mb-[80px]">
-      <div className="max-w-[1058px] mx-auto px-[16px]">
-        <div className="text-[28px] leading-[1.3 text-center mb-[15px]">
+      <div className="max-w-[1150px] mx-auto px-[16px]">
+        <div className="text-[28px] leading-[1.3 text-center mb-[15px] font-bold">
           <p>Explore how our client used our Five C Zero Framework to evaluate 1000+ design options in under 24 hours, unlocking smarter decisions from day one..</p>
         </div>
 
