@@ -1980,7 +1980,7 @@ export default function ObservabilityChart() {
 
   // Priority toggle button style
   const priorityBtn = (val: typeof priority) =>
-    `px-4 py-2 rounded mr-2 ${priority === val ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`;
+    `px-4 py-2 rounded mr-2 ${priority === val ? 'bg-[] text-white' : 'bg-gray-200 text-gray-700'}`;
 
   // Filtered points in box
   const xKey = xAxisType;
@@ -2002,14 +2002,12 @@ export default function ObservabilityChart() {
   return (
     <div className="px-[16px] graph-icon relative">
       <div className='bg-white text-gray-900 px-2 py-4 md:p-6 rounded-lg shadow-md w-full max-w-6xl md:mx-auto border border-gray-200'>
-        <h3 className="text-sm text-gray-500 mb-1">📊 Observability</h3>
+
         <h2 className="text-2xl font-bold text-gray-800 mb-2">
-          {xAxisType === 'CostNum'
-            ? 'Lifecycle Cost vs Whole Life Carbon'
-            : 'Whole Life Carbon vs Lifecycle Cost'}
+    Explore how our client used our Five C Zero Framework to evaluate 1000+ design options in under 24 hours, unlocking smarter decisions from day one.
         </h2>
         <p className="text-gray-600 mb-2">
-          Toggle between cost or carbon as X-axis to visualize trends.
+        Choose what matters most
         </p>
         <div className="mb-4 flex flex-wrap gap-2">
 
