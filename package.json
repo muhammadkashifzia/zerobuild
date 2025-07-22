@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@sanity/client": "^7.8.0",
     "clsx": "^2.1.1",
     "dotted-map": "^2.2.3",
     "framer-motion": "^11.2.6",
