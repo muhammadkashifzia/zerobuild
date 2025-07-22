@@ -32,9 +32,9 @@ export default async function ServiceDetailPage({
   const featuredImage =
     service._embedded?.["wp:featuredmedia"]?.[0]?.source_url || null;
 
-  // ✅ Handle ACF gallery field (array of image objects)
-  const galleryImages: string[] =
-    service.acf?.services_thumbnail?.map((img: any) => img.url) || [];
+  // ✅ Fetch custom gallery images from meta field (set in WordPress functions.php)
+  const galleryImages: { url: string; thumbnail: string; alt: string }[] =
+    service.custom_gallery || [];
 
   return (
     <main className="text-gray-900 my-[120px]">
@@ -46,14 +46,14 @@ export default async function ServiceDetailPage({
         </Link>
       </div>
 
-      {/* ✅ ACF Gallery Images */}
+      {/* ✅ Gallery Section */}
       {galleryImages.length > 0 && (
         <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 p-4">
-          {galleryImages.slice(0, 3).map((src, i) => (
+          {galleryImages.slice(0, 6).map((img, i) => (
             <div key={i} className="relative aspect-[4/3]">
               <Image
-                src={src}
-                alt={`Thumbnail ${i + 1}`}
+                src={img.url}
+                alt={img.alt || `Image ${i + 1}`}
                 fill
                 className="object-cover rounded-md"
               />
