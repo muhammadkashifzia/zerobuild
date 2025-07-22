@@ -74,17 +74,10 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Search and Filter */}
+      {/* Search & Filter Trigger */}
       <div className="py-16">
         <div className="container mx-auto px-4">
-          <div className="flex justify-between flex-wrap gap-4">
-            <input
-              type="text"
-              placeholder="Search services..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="border px-4 py-2 rounded-md w-full max-w-md"
-            />
+          <div className="flex justify-end">
             <button
               onClick={() => setModalOpen(true)}
               className="flex items-center gap-2 border px-4 py-2 rounded-full text-sm text-gray-600 hover:bg-gray-100"
@@ -95,13 +88,18 @@ export default function ServicesPage() {
         </div>
       </div>
 
-      {/* Services List */}
+      {/* Filter name label */}
       <div className="container mx-auto px-4">
+        <p className="text-gray-700 text-lg font-medium mb-6">
+          {selectedMarket !== "All" ? `Filtered by: ${selectedMarket}` : "Showing all services"}
+        </p>
+
         <p className="text-sm text-gray-500 mb-4">
           Showing {startIndex + 1}–{Math.min(startIndex + itemsPerPage, filteredServices.length)} of{" "}
           {filteredServices.length}
         </p>
 
+        {/* Service List */}
         {paginatedServices.map((service) => (
           <Link key={service.id} href={`/services/${service.slug}`}>
             <div className="border-b py-6 hover:bg-gray-50 transition-all flex justify-between items-start">
@@ -134,7 +132,7 @@ export default function ServicesPage() {
         </div>
       </div>
 
-      {/* Modal for Filters */}
+      {/* Modal for Filter and Search */}
       {modalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white rounded-lg max-w-md w-full p-6 relative">
@@ -147,6 +145,22 @@ export default function ServicesPage() {
 
             <h2 className="text-xl font-semibold mb-4 text-black">Filter by Service</h2>
 
+            {/* Search inside Modal */}
+            <div className="mb-4 relative">
+              <input
+                type="text"
+                placeholder="Search services..."
+                value={searchTerm}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value);
+                  setCurrentPage(1);
+                }}
+                className="border px-4 py-2 rounded-md w-full pr-10"
+              />
+              <Search className="absolute right-3 top-2.5 text-gray-400" />
+            </div>
+
+            {/* Filter Buttons */}
             <button
               onClick={() => {
                 setSelectedMarket("All");
@@ -160,21 +174,23 @@ export default function ServicesPage() {
               All
             </button>
 
-            {services.map((s) => (
-              <button
-                key={s.slug}
-                onClick={() => {
-                  setSelectedMarket(s.title);
-                  setCurrentPage(1);
-                  setModalOpen(false);
-                }}
-                className={`w-full text-left py-2 px-3 rounded mb-1 ${
-                  selectedMarket === s.title ? "bg-gray-200 font-semibold" : "hover:bg-gray-100"
-                }`}
-              >
-                {s.title}
-              </button>
-            ))}
+            {services
+              .filter((s) => s.title.toLowerCase().includes(searchTerm.toLowerCase()))
+              .map((s) => (
+                <button
+                  key={s.slug}
+                  onClick={() => {
+                    setSelectedMarket(s.title);
+                    setCurrentPage(1);
+                    setModalOpen(false);
+                  }}
+                  className={`w-full text-left py-2 px-3 rounded mb-1 ${
+                    selectedMarket === s.title ? "bg-gray-200 font-semibold" : "hover:bg-gray-100"
+                  }`}
+                >
+                  {s.title}
+                </button>
+              ))}
           </div>
         </div>
       )}
