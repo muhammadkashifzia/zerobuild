@@ -27,6 +27,25 @@ export const serviceType = defineType({
       type: 'image',
     }),
     defineField({
+      name: 'description',
+      type: 'string',
+      title: 'Short Description',
+      validation: (rule) => rule.max(300),
+    }),
+    defineField({
+      name: 'categories',
+      type: 'array',
+      title: 'Categories',
+      of: [{ type: 'string' }],
+    }),
+   
+    defineField({
+      name: 'gallery',
+      type: 'array',
+      title: 'Gallery',
+      of: [{ type: 'image' }],
+    }),
+    defineField({
       name: 'body',
       type: 'array',
       of: [{type: 'block'}],
