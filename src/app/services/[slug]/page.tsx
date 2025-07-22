@@ -4,13 +4,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
-
-// Fetch single service by slug
+// ✅ Fetch single service by slug
 async function getServiceBySlug(slug: string) {
   const res = await fetch(
     `https://zerobuild.eastlogic.com/wp-json/wp/v2/services?slug=${slug}&_embed`,
     { next: { revalidate: 60 } }
   );
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch service");
+  }
+
   const data = await res.json();
   return data.length > 0 ? data[0] : null;
 }
@@ -28,6 +32,10 @@ export default async function ServiceDetailPage({
   const featuredImage =
     service._embedded?.["wp:featuredmedia"]?.[0]?.source_url || null;
 
+  // ✅ Handle ACF gallery field (array of image objects)
+  const galleryImages: string[] =
+    service.acf?.services_thumbnail?.map((img: any) => img.url) || [];
+
   return (
     <main className="text-gray-900 my-[120px]">
       {/* Back link */}
@@ -38,19 +46,21 @@ export default async function ServiceDetailPage({
         </Link>
       </div>
 
-      {/* Top Image Grid */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 p-4">
-        {[1, 2, 3].map((img, i) => (
-          <div key={i} className="relative aspect-[4/3]">
-            <Image
-              src={`/assets/images/image${img}.jpg`}
-              alt={`Hero ${i + 1}`}
-              fill
-              className="object-cover rounded-md"
-            />
-          </div>
-        ))}
-      </section>
+      {/* ✅ ACF Gallery Images */}
+      {galleryImages.length > 0 && (
+        <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 p-4">
+          {galleryImages.slice(0, 3).map((src, i) => (
+            <div key={i} className="relative aspect-[4/3]">
+              <Image
+                src={src}
+                alt={`Thumbnail ${i + 1}`}
+                fill
+                className="object-cover rounded-md"
+              />
+            </div>
+          ))}
+        </section>
+      )}
 
       {/* Main Section */}
       <div className="container grid grid-cols-1 lg:grid-cols-3 px-[16px] gap-[20px] mx-auto py-[80px]">
@@ -64,9 +74,6 @@ export default async function ServiceDetailPage({
             className="text-gray-700 space-y-4 prose prose-lg"
             dangerouslySetInnerHTML={{ __html: content }}
           />
-
-          {/* Accordion Section */}
-         
         </div>
 
         {/* Right: CTA */}
