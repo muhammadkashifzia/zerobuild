@@ -73,6 +73,25 @@ const ServicesPage = () => {
 
   return (
     <div className="min-h-screen bg-white">
+       <section
+        className="py-20 lg:py-32"
+        style={{
+          backgroundBlendMode: "overlay",
+          backgroundSize: "cover",
+          backgroundImage: `url("/assets/images/coding-background-texture.jpg"), linear-gradient(180deg, #474ab6 0%, #9271f6 100%)`,
+        }}
+      >
+        <div className="container mx-auto px-[16px]">
+          <h1 className="text-[32px] md:text-[58px] font-normal text-white max-w-[850px]">
+            Explore our services across the built and natural environments
+          </h1>
+          <p className="text-[16px] md:text-[28px] text-white max-w-3xl mt-[1rem] md:mt-[2rem]">
+            We offer a wide range of services, that address every priority in
+            the built and natural environments. Search below to learn more about
+            our expertise, or use the filters to explore services by market.
+          </p>
+        </div>
+      </section>
       <div className="py-[40px] md:py-[80px]">
         {/* Filters */}
         <section className="container mx-auto px-[16px]">
