@@ -6,7 +6,7 @@ import clientConfig from './config/client-config'
 export async function getServices(): Promise<Service[]> {
   return createClient(clientConfig).fetch(
     groq`*[_type == "service"]{
-     _id,
+  _id,
   _createdAt,
   title,
   "slug": slug.current,
