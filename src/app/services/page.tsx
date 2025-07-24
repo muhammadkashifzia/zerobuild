@@ -149,7 +149,7 @@ const ServicesPage = () => {
                 className="hover:bg-[#f2f2f2] border-b border-[#000000]"
                 key={service._id}
               >
-                <Link href={`/services/${service.slug.current}`}>
+                <button >
                   <div className="hover:px-[20px] hover:translate-x-2 transition py-[1rem] md:py-[1.5rem] flex justify-between items-center">
                     <div>
                       <h3 className="text-[16px] md:text-[28px] font-bold md:font-normal text-black">
@@ -161,7 +161,7 @@ const ServicesPage = () => {
                     </div>
                     <ArrowRight className="text-gray-400 hover:text-black" />
                   </div>
-                </Link>
+                </button>
               </div>
             ))}
           </div>
