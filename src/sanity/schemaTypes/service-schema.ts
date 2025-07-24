@@ -1,4 +1,5 @@
-import {defineField, defineType} from 'sanity'
+// schemas/service-schema.ts
+import { defineField, defineType } from 'sanity'
 
 export const serviceType = defineType({
   name: 'service',
@@ -7,48 +8,55 @@ export const serviceType = defineType({
   fields: [
     defineField({
       name: 'title',
+      title: 'Title',
       type: 'string',
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'slug',
+      title: 'Slug',
       type: 'slug',
-      options: {source: 'title'},
+      options: { source: 'title' },
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'publishedAt',
+      title: 'Published At',
       type: 'datetime',
       initialValue: () => new Date().toISOString(),
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'image',
+      title: 'Main Image',
       type: 'image',
+      options: {
+        hotspot: true,
+      },
     }),
     defineField({
       name: 'description',
-      type: 'string',
       title: 'Short Description',
+      type: 'string',
       validation: (rule) => rule.max(300),
     }),
     defineField({
       name: 'categories',
-      type: 'array',
       title: 'Categories',
+      type: 'array',
       of: [{ type: 'string' }],
     }),
-   
     defineField({
       name: 'gallery',
-      type: 'array',
       title: 'Gallery',
+      type: 'array',
       of: [{ type: 'image' }],
     }),
     defineField({
       name: 'body',
+      title: 'Body Content',
       type: 'array',
-      of: [{type: 'block'}],
+      of: [{ type: 'block' }],
     }),
   ],
 })
