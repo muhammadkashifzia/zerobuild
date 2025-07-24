@@ -70,7 +70,7 @@ export default function ServicesPage() {
     <div className="main-section  min-h-screen bg-white">
       {/* Hero */}
       <section
-        className="py-20 lg:py-32"
+        className="pt-20 pb-2 lg:pt-32 lg:pb-16"
         style={{
           backgroundBlendMode: "overlay",
           backgroundSize: "cover",
