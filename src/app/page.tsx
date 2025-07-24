@@ -6,7 +6,7 @@ import ObservabilityChart from "@/components/ObservabilityChart";
 import { MapWorld } from "@/components/MapWorld";
 import ServiceSection from "@/components/ServiceSection" 
 import TestimonialCard from "@/components/TestimonialCard";
-import Resources from "@/components/Resources";
+// import Resources from "@/components/Resources";
 // import WhyChooseUs from "@/components/WhyChooseUs";
 import "./globals.css";
 // import UpcomingWebinar from "@/components/UpcomingWebinar";
@@ -23,7 +23,7 @@ export default function Home() {
       <PerformanceSection />
       <ObservabilityChart />
       <ServiceSection />
-      <Resources />
+      {/* <Resources /> */}
       <FeaturedByYoutubers />
 
       {/* <CtaSection /> */}

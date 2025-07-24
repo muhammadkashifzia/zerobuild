@@ -2030,11 +2030,7 @@ export default function ObservabilityChart() {
 
   return (
     <div className="px-[16px] graph-icon relative">
-      <div className='bg-white text-gray-900 px-2 py-4 md:p-6 rounded-lg shadow-md w-full max-w-6xl md:mx-auto border border-gray-200'>
-
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">
-    Explore how our client used our Five C Zero Framework to evaluate 1000+ design options in under 24 hours, unlocking smarter decisions from day one.
-        </h2>
+      <div className='bg-white text-gray-900 px-2 py-4 md:p-6 w-full'>
         <p className="text-gray-600 mb-2">
         Choose what matters most
         </p>
@@ -2167,7 +2163,7 @@ export default function ObservabilityChart() {
           </ResponsiveContainer>
         </div>
         {/* CTA Section */}
-        <div className={`mt-8 transition-all duration-700 ${ctaVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'} flex flex-col items-center`}>
+        <div className={`mt-8 transition-all duration-700 opacity-100 translate-y-8 flex flex-col items-center`}>
           <div className="text-lg font-semibold text-gray-800 mb-2 text-center">See how the Five C Framework helps you prioritise the right decisions.</div>
           <button className="bg-[#484AB7]  text-white font-bold py-3 px-8 rounded-lg shadow-lg text-lg transition-all">Try the full toolset</button>
         </div>
