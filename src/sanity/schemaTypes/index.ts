@@ -4,4 +4,4 @@ import { serviceType } from './service-schema'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [serviceType],
-}
+} 
