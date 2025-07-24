@@ -3,54 +3,59 @@
 import React, { useState, useEffect } from "react";
 import { Search, ArrowRight, Plus, X } from "lucide-react";
 import Link from "next/link";
-import ServiceSkeleton from "@/components/shimmer/ServiceSkeleton";
-type Service = {
-  id: number;
-  slug: string;
-  title: string;
-  description: string;
-  image?: string | null;
-};
+import { getServices } from "@/sanity/sanity-utils"; // adjust path
+import { Service } from "@/types/Service"; // adjust according to your schema
 
-const fetchServices = async (): Promise<Service[]> => {
-  const res = await fetch(
-    "https://zerobuild.eastlogic.com/wp-json/wp/v2/services?_embed"
-  );
-  const data = await res.json();
-  return data.map((item: any) => ({
-    id: item.id,
-    slug: item.slug,
-    title: item.title?.rendered || "Untitled",
-    description: item.content?.rendered
-      ? item.content.rendered.replace(/(<([^>]+)>)/gi, "")
-      : "No description available",
-    image: item._embedded?.["wp:featuredmedia"]?.[0]?.source_url || null,
-  }));
-};
+const slugify = (text: string) =>
+  text
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/--+/g, "-")
+    .trim();
 
-export default function ServicesPage() {
-  const [services, setServices] = useState<Service[]>([]);
-  const [loading, setLoading] = useState(true);
+const ServicesPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedMarket, setSelectedMarket] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
+  const [services, setServices] = useState<Service[]>([]);
+
   const itemsPerPage = 15;
 
   useEffect(() => {
-    fetchServices()
-      .then(setServices)
-      .finally(() => setLoading(false));
+    const fetchData = async () => {
+      const res = await getServices();
+      setServices(res);
+    };
+    fetchData();
   }, []);
 
-  const mainFilters = services.slice(0, 6).map((s) => s.title);
+  const allCategories = Array.from(
+    new Set(services.flatMap((s) => s.categories || []))
+  ).sort();
+
+  const categoryCount: { [key: string]: number } = {};
+  services.forEach((s) => {
+    (s.categories || []).forEach((cat: string | number) => {
+      categoryCount[cat] = (categoryCount[cat] || 0) + 1;
+    });
+  });
+
+  const mainFilters = Object.entries(categoryCount)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 6)
+    .map(([name]) => name);
 
   const filteredServices = services.filter((service) => {
     const matchesSearch =
       searchTerm === "" ||
       service.title.toLowerCase().includes(searchTerm.toLowerCase());
+
     const matchesMarket =
-      selectedMarket === "All" || service.title === selectedMarket;
+      selectedMarket === "All" ||
+      service.categories?.includes(selectedMarket);
+
     return matchesSearch && matchesMarket;
   });
 
@@ -67,46 +72,62 @@ export default function ServicesPage() {
   };
 
   return (
-    <div className="main-section  min-h-screen bg-white">
-      {/* Hero */}
-      <section
-        className="pt-20 pb-2 lg:pt-32 lg:pb-16"
+    <div className="min-h-screen bg-white">
+       <section
+        className="py-20 lg:py-32"
         style={{
           backgroundBlendMode: "overlay",
           backgroundSize: "cover",
           backgroundImage: `url("/assets/images/coding-background-texture.jpg"), linear-gradient(180deg, #474ab6 0%, #9271f6 100%)`,
         }}
       >
-        <div className="container mx-auto px-4">
-          <h1 className="text-4xl md:text-6xl font-bold text-white max-w-4xl">
+        <div className="container mx-auto px-[16px]">
+          <h1 className="text-[32px] md:text-[58px] font-normal text-white max-w-[850px]">
             Explore our services across the built and natural environments
           </h1>
-          <p className="text-lg md:text-2xl text-white mt-6 max-w-2xl">
-            Search below to learn more about our expertise, or use the filters
-            to explore services.
+          <p className="text-[16px] md:text-[28px] text-white max-w-3xl mt-[1rem] md:mt-[2rem]">
+            We offer a wide range of services, that address every priority in
+            the built and natural environments. Search below to learn more about
+            our expertise, or use the filters to explore services by market.
           </p>
         </div>
       </section>
-      <div className="container mx-auto">
-        {/* Main Filters */}
-        <div className="container mx-auto px-4 mt-10 mb-6">
-          <div className="flex flex-wrap gap-2">
+      <div className="py-[40px] md:py-[80px]">
+        {/* Filters */}
+        <section className="container mx-auto px-[16px]">
+          <div className="flex flex-wrap items-center gap-3">
             {mainFilters.map((filter) => (
-              <button
-                key={filter}
-                onClick={() => {
-                  setSelectedMarket(filter);
-                  setCurrentPage(1);
-                }}
-                className={`px-4 py-2 rounded-full text-sm border transition ${
-                  selectedMarket === filter
-                    ? "bg-[#484AB7] text-white border-[#484AB7]"
-                    : "text-black border-gray-300 hover:bg-gray-100"
-                }`}
-              >
-                {filter}
-              </button>
+              <div key={filter} className="relative">
+                <button
+                  className={`px-4 py-2 rounded-full text-sm border transition pr-8 ${
+                    selectedMarket === filter
+                      ? "bg-[#484AB7] text-white border-[#484AB7]"
+                      : "text-black border-gray-300 hover:bg-gray-100"
+                  }`}
+                  onClick={() => {
+                    setSelectedMarket(filter);
+                    setCurrentPage(1);
+                  }}
+                >
+                  {filter}
+                </button>
+
+                {selectedMarket === filter && (
+                  <button
+                    onClick={() => {
+                      setSelectedMarket("All");
+                      setSearchTerm("");
+                      setCurrentPage(1);
+                    }}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-white text-xs hover:text-red-200"
+                    aria-label="Clear filter"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
             ))}
+
             <button
               onClick={() => setModalOpen(true)}
               className="px-4 py-2 rounded-full border border-gray-300 text-gray-600 flex items-center gap-1 hover:bg-gray-100"
@@ -114,144 +135,125 @@ export default function ServicesPage() {
               View all <Plus className="w-4 h-4" />
             </button>
           </div>
-        </div>
+        </section>
 
         {/* Services List */}
-        <div className="max-w-[958px] px-[16px]">
-          <p className="text-sm text-gray-500 mb-4">
-            {loading
-              ? "Loading services..."
-              : `Showing ${startIndex + 1}–${Math.min(
-                  startIndex + itemsPerPage,
-                  filteredServices.length
-                )} of ${filteredServices.length}`}
-          </p>
+        <section className="py-8 bg-white container mx-auto">
+          <div className="max-w-[958px] px-[16px]">
+            <div className="text-sm text-gray-600 mb-[8px]">
+              Showing {startIndex + 1}–{Math.min(startIndex + itemsPerPage, filteredServices.length)} of {filteredServices.length}
+            </div>
 
-          {loading
-            ? Array.from({ length: itemsPerPage }).map((_, idx) => (
-                <ServiceSkeleton key={idx} />
-              ))
-            : paginatedServices.map((service) => (
-                <Link key={service.id} href={`/services/${service.slug}`}>
-                  <div className="border-b py-6 hover:bg-gray-50 transition-all flex justify-between items-center gap-[25px] hover:px-[20px]">
+            {paginatedServices.map((service) => (
+              <div
+                className="hover:bg-[#f2f2f2] border-b border-[#000000]"
+                key={service._id}
+              >
+                <Link href={`/services/${service.slug.current}`}>
+                  <div className="hover:px-[20px] hover:translate-x-2 transition py-[1rem] md:py-[1.5rem] flex justify-between items-center">
                     <div>
-                      <h3 className="text-xl font-semibold text-black">
+                      <h3 className="text-[16px] md:text-[28px] font-bold md:font-normal text-black">
                         {service.title}
                       </h3>
-                      <p className="text-sm text-gray-600 mt-2 line-clamp-2">
+                      <p className="text-[14px] md:text-[16px] text-gray-600 mt-[10px] md:mt-[16px]">
                         {service.description}
                       </p>
                     </div>
-                  <div className="w-[32px] h-[32px]">
-                      <ArrowRight className="text-gray-400 hover:text-black w-[32px] h-[30px] icon--arrow-right" />
-                  </div>
+                    <ArrowRight className="text-gray-400 hover:text-black" />
                   </div>
                 </Link>
-              ))}
-        </div>
-
-        {/* Pagination */}
-        {!loading && (
-          <div className="py-10 border-t mt-10">
-            <div className="px-4 flex gap-2 flex-wrap">
-              {Array.from({ length: totalPages }).map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => handlePageChange(idx + 1)}
-                  className={`px-3 py-1 text-sm rounded ${
-                    currentPage === idx + 1
-                      ? "bg-[#484AB7] text-white"
-                      : "text-gray-700 hover:bg-gray-100"
-                  }`}
-                >
-                  {idx + 1}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Modal for Filters */}
-        {modalOpen && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-            <div className="bg-white rounded-lg max-w-md w-full p-6 relative max-h-[80vh] overflow-y-auto">
-              <button
-                onClick={() => setModalOpen(false)}
-                className="absolute top-3 right-3 text-black hover:text-red-600"
-              >
-                <X />
-              </button>
-
-              <h2 className="text-xl font-semibold mb-4 text-black">
-                Filter by Service
-              </h2>
-
-              {/* Search Field */}
-              <div className="mb-4 relative">
-                <input
-                  type="text"
-                  placeholder="Search services..."
-                  className="w-full pr-10 pl-4 py-2 border border-gray-300 focus:ring-2 focus:ring-black rounded-md text-black bg-white"
-                  value={searchTerm}
-                  onChange={(e) => {
-                    setSearchTerm(e.target.value);
-                    setCurrentPage(1);
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      setModalOpen(false);
-                    }
-                  }}
-                />
-                <button
-                  onClick={() => setModalOpen(false)}
-                  className="absolute right-3 top-[50%] -translate-y-[50%] text-gray-400 hover:text-black"
-                >
-                  <Search className="w-4 h-4" />
-                </button>
               </div>
+            ))}
+          </div>
+        </section>
 
-              {/* All Filters */}
-              <button
-                onClick={() => {
-                  setSelectedMarket("All");
-                  setCurrentPage(1);
-                  setModalOpen(false);
-                }}
-                className={`w-full text-left py-2 px-3 rounded mb-2 ${
-                  selectedMarket === "All"
-                    ? "bg-gray-200 font-semibold text-black"
-                    : "hover:bg-gray-100"
-                }`}
-              >
-                All
-              </button>
+        {/* Modal for All Categories */}
+        {modalOpen && (
+          <div className="fixed inset-0  bg-black bg-opacity-40 flex items-center justify-center z-50">
+            <div className="relative w-full max-w-[630px] mx-auto">
+              <div className="bg-white rounded-lg max-w-[630px] w-full p-6 max-h-[80vh] overflow-y-auto relative">
+                <button
+                  className="absolute top-4 right-4 text-gray-400 hover:text-black"
+                  onClick={() => setModalOpen(false)}
+                  aria-label="Close modal"
+                >
+                  <X className="w-6 h-6 hover:rotate-45 transition-transform" />
+                </button>
 
-              {services
-                .filter((s) =>
-                  s.title.toLowerCase().includes(searchTerm.toLowerCase())
-                )
-                .map((s) => (
+                <section className="py-4">
+                  <div className="relative">
+                    <input
+                      type="text"
+                      placeholder="Search services..."
+                      className="w-full pr-10 pl-4 py-2 border border-gray-300 focus:ring-2 focus:ring-black rounded-md text-black bg-white"
+                      value={searchTerm}
+                      onChange={(e) => {
+                        setSearchTerm(e.target.value);
+                        setCurrentPage(1);
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          setCurrentPage(1);
+                          setModalOpen(false);
+                        }
+                      }}
+                    />
+                    <button
+                      onClick={() => {
+                        setCurrentPage(1);
+                        setModalOpen(false);
+                      }}
+                      className="absolute right-3 top-[50%] -translate-y-[50%] text-gray-400 hover:text-black"
+                    >
+                      <Search />
+                    </button>
+                  </div>
+                </section>
+
+                <h2 className="text-xl font-semibold mb-4 text-black">Services</h2>
+                <div className="space-y-2">
                   <button
-                    key={s.slug}
+                    className={`w-full text-left py-2 px-3 rounded text-black hover:bg-gray-100 ${
+                      selectedMarket === "All" ? "bg-gray-200 font-semibold" : ""
+                    }`}
                     onClick={() => {
-                      setSelectedMarket(s.title);
+                      setSelectedMarket("All");
                       setCurrentPage(1);
                       setModalOpen(false);
                     }}
-                    className={`w-full text-left py-2 px-3 rounded mb-1 text-black ${
-                      selectedMarket === s.title
-                        ? "bg-gray-200 font-semibold text-black"
-                        : "hover:bg-gray-100 text-black"
-                    }`}
                   >
-                    {s.title}
+                    All
                   </button>
-                ))}
+
+                  {allCategories
+                    .filter((f) =>
+                      f.toLowerCase().includes(searchTerm.toLowerCase())
+                    )
+                    .map((filter) => (
+                      <button
+                        key={filter}
+                        className={`w-full text-left py-2 px-3 rounded hover:bg-gray-100 text-black ${
+                          selectedMarket === filter
+                            ? "bg-gray-200 font-semibold"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          setSelectedMarket(filter);
+                          setCurrentPage(1);
+                          setModalOpen(false);
+                        }}
+                      >
+                        {filter}
+                      </button>
+                    ))}
+                </div>
+              </div>
             </div>
           </div>
         )}
       </div>
     </div>
   );
-}
+};
+
+export default ServicesPage;
