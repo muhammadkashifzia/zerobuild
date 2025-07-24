@@ -10,4 +10,4 @@ const ServiceSkeleton = () => {
   );
 };
 
-export default ServiceSkeleton;
+export default ServiceSkeleton; 
