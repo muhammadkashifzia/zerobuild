@@ -5,6 +5,7 @@ import { Service } from "@/types/Service";
 import Link from "next/link";
 type Props = { params: { slug: string } };
 
+
 export default async function ServiceDetail({ params }: Props) {
   const service: Service = await getService(params.slug);
 
