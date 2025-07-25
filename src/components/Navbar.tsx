@@ -75,7 +75,7 @@ const Navbar = ({ className }: { className?: string }) => {
           </Menu>
 
           <Link
-            href="/"
+            href="/resources"
             className="w-full bg-[#484AB7] text-white border-neutral-200 px-2 rounded-xl max-w-[185px] h-[45px] flex items-center justify-center text-[16px] font-semibold hover:bg-[#3c3f9d] transition-colors duration-200"
           >
             View all Resources

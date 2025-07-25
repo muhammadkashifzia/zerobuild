@@ -1,6 +1,7 @@
 import { createClient, groq } from "next-sanity";
 import { Service } from "@/types/Service";
 import { Project } from "@/types/Project";
+import { Resource } from "@/types/Resource";
 import clientConfig from "./config/client-config";
 
 export async function getServices(): Promise<Service[]> {
@@ -70,5 +71,19 @@ export async function getProject(slug: string): Promise<Project> {
     }
   `,
     { slug }
+  );
+}
+
+/* Resources */
+export async function getResources(): Promise<Resource[]> {
+  return createClient(clientConfig).fetch(
+    groq`*[_type == "resource"]{
+  _id,
+  _createdAt,
+  title,
+  publishedAt,
+  image { asset->{url} },
+  description,
+    }`
   );
 }
