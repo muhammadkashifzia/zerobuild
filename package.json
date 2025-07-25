@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@portabletext/react": "^3.2.1",
     "@sanity/client": "^7.8.1",
     "@sanity/image-url": "^1.1.0",
     "@sanity/structure": "^2.36.2",
@@ -25,6 +26,7 @@
     "react": "^18",
     "react-dom": "^18",
     "recharts": "^3.1.0",
+    "rimraf": "^6.0.1",
     "sanity": "^3.99.0",
     "simplex-noise": "^4.0.1",
     "styled-components": "^6.1.19",

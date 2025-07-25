@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from "react";
 import { Search, ArrowRight, Plus, X } from "lucide-react";
 import Link from "next/link";
-import { getServices } from "@/sanity/sanity-utils"; // adjust path
-import { Service } from "@/types/Service"; // adjust according to your schema
+import { getServices } from "@/sanity/sanity-utils";
+import { Service } from "@/types/Service"; 
 
 const slugify = (text: string) =>
   text
@@ -149,7 +149,7 @@ const ServicesPage = () => {
                 className="hover:bg-[#f2f2f2] border-b border-[#000000]"
                 key={service._id}
               >
-                <button className="w-full">
+                <Link key={service._id} className="w-full"  href={`/services/${service.slug}`}>
                   <div className="hover:px-[20px] hover:translate-x-2 transition py-[1rem] md:py-[1.5rem] flex justify-between items-center">
                     <div>
                       <h3 className="text-[16px] md:text-[28px] font-bold md:font-normal text-black text-left">
@@ -161,7 +161,7 @@ const ServicesPage = () => {
                     </div>
                     <ArrowRight className="text-gray-400 hover:text-black" />
                   </div>
-                </button>
+                </Link>
               </div>
             ))}
           </div>

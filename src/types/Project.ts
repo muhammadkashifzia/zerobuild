@@ -1,4 +1,4 @@
-export interface Service {
+export interface Project {
   _id: string;
   title: string;
   slug: { current: string };
@@ -9,6 +9,3 @@ export interface Service {
   gallery?: { asset: { url: string } }[];
   body?: any;
 }
- 
-
- 

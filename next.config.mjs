@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    images: {
-        domains: ['zerobuild.eastlogic.com']
-    }
+   images: {
+    domains: ['cdn.sanity.io'],
+  },
 };
 
 export default nextConfig;

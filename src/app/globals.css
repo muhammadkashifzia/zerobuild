@@ -77,3 +77,12 @@ body {
   opacity: 1;
   width: 100%;
 }
+.service-body-content h2{
+  font-size: 28px;
+}
+.service-body-content h1{
+  font-size: 32px;
+}
+.service-body-content p{
+  font-size: 20px;
+}
