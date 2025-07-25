@@ -32,7 +32,7 @@ export default async function ServiceDetail({ params }: Props) {
           </div>
         </div>
       )}
-       <div className="container grid grid-cols-1 lg:grid-cols-3 px-[16px] gap-[20px] mx-auto py-[80px]">
+       <div className="container grid grid-cols-1 lg:grid-cols-3 px-[16px] gap-[20px] mx-auto pt-[40px] pb-[60px]">
         {/* Left: Content */}
         <div className="lg:col-span-2 space-y-2">
           {/* Cover Image */}

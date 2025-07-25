@@ -74,7 +74,7 @@ const ServicesPage = () => {
   return (
     <div className="min-h-screen bg-white">
        <section
-        className="py-20 lg:py-32"
+        className="pt-20 pb-20 lg:pt-32 lg:pb-24"
         style={{
           backgroundBlendMode: "overlay",
           backgroundSize: "cover",

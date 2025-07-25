@@ -48,7 +48,7 @@ export default function AcceleratorSuite() {
             matters: designing <strong>more efficient</strong>, Net Zero buildings, regardless of whether these are new
             build or retrofit.
           </p>
-          <img
+          <Image
             src="/assets/images/imgi_24_IES_v2.png"
             alt="IES Logo"
             className="h-12 my-4"
