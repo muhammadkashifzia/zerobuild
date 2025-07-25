@@ -149,10 +149,10 @@ const ServicesPage = () => {
                 className="hover:bg-[#f2f2f2] border-b border-[#000000]"
                 key={service._id}
               >
-                <button >
+                <button className="w-full">
                   <div className="hover:px-[20px] hover:translate-x-2 transition py-[1rem] md:py-[1.5rem] flex justify-between items-center">
                     <div>
-                      <h3 className="text-[16px] md:text-[28px] font-bold md:font-normal text-black">
+                      <h3 className="text-[16px] md:text-[28px] font-bold md:font-normal text-black text-left">
                         {service.title}
                       </h3>
                       <p className="text-[14px] md:text-[16px] text-gray-600 mt-[10px] md:mt-[16px]">
