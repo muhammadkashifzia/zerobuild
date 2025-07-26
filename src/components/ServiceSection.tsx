@@ -12,7 +12,7 @@ const ServiceSection = () => {
         {/* Header Row */}
         <div className="flex justify-between items-start flex-col md:flex-row gap-[20px]">
           <div>
-            <h2 className="text-3xl lg:text-4xl font-serif font-medium mt-2 text-black">
+            <h2 className="text-3xl lg:text-4xl font-medium mt-2 text-black">
              We guide, plan and design the future of the built environment. We are a global consultancy with advisory and technical expertise across more than 150 disciplines.
             </h2>
           </div>

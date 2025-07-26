@@ -6,7 +6,7 @@ import Link from "next/link";
 import { getResources } from "@/sanity/sanity-utils";
 import { Resource } from "@/types/Resource";
 
-const ServicesPage = () => {
+const ResourcePage = () => {
   const [resources, setResources] = useState<Resource[]>([]);
 
   useEffect(() => {
@@ -48,10 +48,7 @@ const ServicesPage = () => {
                 className="hover:bg-[#f2f2f2] border-b border-[#000000]"
                 key={resource._id}
               >
-                <button
-                 
-                  className="w-full block"
-                >
+                <Link href={`/resource/${resource.slug}`} className="w-full">
                   <div className="hover:px-[20px] hover:translate-x-2 transition py-[1rem] md:py-[1.5rem] flex justify-between items-center">
                     <div>
                       <h3 className="text-[16px] md:text-[28px] font-bold md:font-normal text-black text-left">
@@ -63,7 +60,7 @@ const ServicesPage = () => {
                     </div>
                     <ArrowRight className="text-gray-400 hover:text-black" />
                   </div>
-                </button>
+                </Link>
               </div>
             ))}
           </div>
@@ -73,4 +70,4 @@ const ServicesPage = () => {
   );
 };
 
-export default ServicesPage;
+export default ResourcePage;

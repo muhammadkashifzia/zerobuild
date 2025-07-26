@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import { Noto_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 
-const NotoSans = Noto_Sans({ subsets: ["latin"] });
+
 
 export const metadata: Metadata = {
   title: "Zero Build",
@@ -19,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="darks" suppressHydrationWarning>
-      <body className={NotoSans.className} suppressHydrationWarning>
+      <body suppressHydrationWarning>
         <div className="relative w-full flex items-center justify-center">
           <Navbar />
         </div>

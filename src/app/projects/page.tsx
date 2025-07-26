@@ -155,7 +155,7 @@ export default function Page() {
                 </div>
                 <div className="mt-3">
                   <Link href={`/projects/${project.slug}`}>
-                    <h3 className="text-lg font-medium font-serif leading-snug text-black mb-4 line-clamp-2">
+                    <h3 className="text-lg font-medium leading-snug text-black mb-4 line-clamp-2">
                       {project.title}
                     </h3>
                   </Link>

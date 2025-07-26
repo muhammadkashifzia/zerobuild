@@ -39,7 +39,7 @@ export async function getService(slug: string): Promise<Service> {
   );
 }
 
-export async function getProjects(): Promise<Project[]> { 
+export async function getProjects(): Promise<Project[]> {
   return createClient(clientConfig).fetch(
     groq`*[_type == "project"]{
   _id,
@@ -80,10 +80,32 @@ export async function getResources(): Promise<Resource[]> {
     groq`*[_type == "resource"]{
   _id,
   _createdAt,
-  title,
-  publishedAt,
-  image { asset->{url} },
-  description,
+ title,
+      slug,
+      publishedAt,
+      image { asset->{url} },
+      description,
+      categories,
+      gallery[]{ asset->{url} },
+      body
     }`
+  );
+}
+
+export async function getResource(slug: string): Promise<Resource> {
+  return createClient(clientConfig).fetch(
+    groq`
+    *[_type == "resource" && slug.current == $slug][0] {
+      title,
+      slug,
+      publishedAt,
+      image { asset->{url} },
+      description,
+      categories,
+      gallery[]{ asset->{url} },
+      body
+    }
+  `,
+    { slug }
   );
 }

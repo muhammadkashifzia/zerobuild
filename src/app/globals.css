@@ -22,7 +22,15 @@ body {
   color: rgb(var(--foreground-rgb));
    font-family: "Geist", sans-serif;
 }
-
+p, button, div{
+     font-family: "Geist", sans-serif;
+}
+h1, h2, h3, h4, h5, h6{
+     font-family: "Geist", sans-serif;
+}
+a{
+     font-family: "Geist", sans-serif;
+}
 @layer utilities {
   .text-balance {
     text-wrap: balance;
