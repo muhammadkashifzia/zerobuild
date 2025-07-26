@@ -48,7 +48,7 @@ const ResourcePage = () => {
                 className="hover:bg-[#f2f2f2] border-b border-[#000000]"
                 key={resource._id}
               >
-                <Link href={`/resources/${resource.slug}`} className="w-full">
+                <Link href={`/resources/${resource.slug.current}`} className="w-full">
                   <div className="hover:px-[20px] hover:translate-x-2 transition py-[1rem] md:py-[1.5rem] flex justify-between items-center">
                     <div>
                       <h3 className="text-[16px] md:text-[28px] font-bold md:font-normal text-black text-left">

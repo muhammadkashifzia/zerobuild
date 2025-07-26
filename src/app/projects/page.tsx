@@ -88,7 +88,7 @@ export default function Page() {
             {projects.map((project, idx) => (
               <SwiperSlide key={idx}>
                 <div className="relative rounded-xl overflow-hidden ">
-                  <Link href={`/projects/${project.slug}`}>
+                  <Link href={`/projects/${project.slug.current}`}>
                     <Image
                       src={project.image?.asset?.url ?? "/placeholder.png"}
                       alt={project.title}
@@ -143,7 +143,7 @@ export default function Page() {
           : projects.slice(0, 8).map((project, index) => (
               <div key={index} className="group">
                 <div className="rounded-md overflow-hidden aspect-[4/3] bg-gray-100">
-                  <Link href={`/projects/${project.slug}`}>
+                  <Link href={`/projects/${project.slug.current}`}>
                     <Image
                       src={project.image?.asset?.url ?? "/placeholder.png"}
                       alt={project.title}
@@ -154,7 +154,7 @@ export default function Page() {
                   </Link>
                 </div>
                 <div className="mt-3">
-                  <Link href={`/projects/${project.slug}`}>
+                  <Link href={`/projects/${project.slug.current}`}>
                     <h3 className="text-lg font-medium leading-snug text-black mb-4 line-clamp-2">
                       {project.title}
                     </h3>
