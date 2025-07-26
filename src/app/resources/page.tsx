@@ -20,26 +20,26 @@ const ResourcePage = () => {
   return (
     <div className="min-h-screen bg-white">
       <section
-        className="pt-20 pb-20 lg:pt-32 lg:pb-24"
+        className="pt-24 pb-10 lg:pb-12"
         style={{
           backgroundBlendMode: "overlay",
           backgroundSize: "cover",
           backgroundImage: `url("/assets/images/coding-background-texture.jpg"), linear-gradient(180deg, #474ab6 0%, #9271f6 100%)`,
         }}
       >
-        <div className="container mx-auto px-[16px]">
-          <h1 className="text-[32px] md:text-[68px] font-normal text-white max-w-[850px]">
+          <div className="container mx-auto px-4">
+          <h1 className="text-3xl md:text-6xl font-normal text-white max-w-[1000px] leading-[1.2]">
             Explore our services across the built and natural environments
           </h1>
-          <p className="text-[16px] md:text-[28px] text-white max-w-3xl mt-[1rem] md:mt-[2rem]">
-            We offer a wide range of services, that address every priority in
-            the built and natural environments. Search below to learn more about
-            our expertise, or use the filters to explore services by market.
+          <p className="text-base md:text-2xl text-white max-w-[1000px] mt-4 md:mt-7">
+            We offer a wide range of services that address every priority in the
+            built and natural environments. Search below or use the filters to
+            explore services by market.
           </p>
         </div>
       </section>
 
-      <div className="py-[40px] md:py-[80px]">
+      <div>
         {/* Resources List */}
         <section className="py-8 bg-white container mx-auto">
           <div className="max-w-[958px] px-[16px]">
