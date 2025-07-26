@@ -164,7 +164,7 @@ const ServicesPage = () => {
                 className="hover:bg-[#f2f2f2] border-b border-black"
                 key={service._id}
               >
-                <Link href={`/services/${service.slug.current}`} className="w-full">
+                <Link href={`/services/${service.slug}`} className="w-full">
                   <div className="hover:px-5 hover:translate-x-2 transition py-4 md:py-6 flex justify-between items-center">
                     <div>
                       <h3 className="text-lg md:text-2xl font-bold md:font-normal text-black">

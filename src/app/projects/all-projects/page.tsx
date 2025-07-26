@@ -76,7 +76,7 @@ export default function Page() {
                 </Link>
               </div>
               <div className="mt-3">
-                <Link href={`/projects/${project.slug.current}`}>
+                <Link href={`/projects/${project.slug}`}>
                   <h3 className="text-lg font-medium font-serif leading-snug text-black mb-[1rem] line-clamp-2">
                     {project.title}
                   </h3>
