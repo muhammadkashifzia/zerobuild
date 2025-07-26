@@ -28,7 +28,7 @@ const ServicesPage = () => {
         }}
       >
         <div className="container mx-auto px-[16px]">
-          <h1 className="text-[32px] md:text-[58px] font-normal text-white max-w-[850px]">
+          <h1 className="text-[32px] md:text-[68px] font-normal text-white max-w-[850px]">
             Explore our services across the built and natural environments
           </h1>
           <p className="text-[16px] md:text-[28px] text-white max-w-3xl mt-[1rem] md:mt-[2rem]">

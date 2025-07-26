@@ -40,7 +40,7 @@ const Navbar = ({ className }: { className?: string }) => {
               className="flex items-center justify-center space-x-2 text-2xl font-bold text-center text-neutral-600"
               href="/"
             >
-              <div className="relative h-8 w-[156px] flex items-center justify-start rounded-md text-[32px] antialiased">
+              <div className="relative h-8 w-[52px] flex items-center justify-start rounded-md text-[32px] antialiased">
                 <Image src="/assets/images/5CZLogo.png" alt="logo" width={100} height={100} className="h-[50px] w-auto" />
               </div>
             </Link>

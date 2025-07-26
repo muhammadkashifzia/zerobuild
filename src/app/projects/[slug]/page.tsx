@@ -1,8 +1,8 @@
 import { PortableText } from "@portabletext/react";
 import Image from "next/image";
 import Link from "next/link";
-import { getService } from "@/sanity/sanity-utils";
-import { Service } from "@/types/Service";
+import { getProject } from "@/sanity/sanity-utils";
+import { Project } from "@/types/Project";
 
 export default async function Page({
   params,
@@ -10,53 +10,36 @@ export default async function Page({
   params: Promise<{ slug: string }>; // Changed to Promise
 }) {
   const { slug } = await params; // Await the params
-  const service: Service = await getService(slug); // Use the awaited slug
+  const project: Project = await getProject(slug); // Use the awaited slug
 
-  if (!service) {
+  if (!project) {
     return (
       <div className="text-center mt-10 text-lg text-red-500">
-        Service not found
+        project not found
       </div>
     );
   }
 
   return (
-    <div className="px-[16px] md:p-8 mx-auto space-y-5">
-      {/* Gallery */}
-      {(service.gallery?.length ?? 0) > 0 && (
-        <div className="mt-8">
-          <h2 className="text-2xl font-semibold mb-4">Gallery</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {(service.gallery ?? []).map((img, idx) => (
-              <Image
-                key={idx}
-                src={img.asset.url}
-                alt={`Gallery image ${idx + 1}`}
-                width={400}
-                height={300}
-                className="rounded-md object-cover w-full h-auto md:h-[300px] lg:h-[515px] object-top"
-              />
-            ))}
-          </div>
-        </div>
-      )}
-      <div className="container grid grid-cols-1 lg:grid-cols-3 px-0 md:px-[16px] gap-[20px] mx-auto pt-0 md:pt-[40px] pb-[60px]">
+    <div className="px-[16px] md:py-28 mx-auto space-y-5">
+       {project.image?.asset?.url && (
+            <Image
+              src={project.image.asset.url}
+              alt={project.title}
+              width={900}
+              height={500}
+              className="rounded-xl object-cover w-full h-[663px]"
+            />
+          )}
+      <div className="container grid grid-cols-1 lg:grid-cols-3 px-0 md:px-[16px] gap-[20px] mx-auto pt-0 md:pt-[40px]">
         {/* Left: Content */}
         <div className="lg:col-span-2 space-y-2">
           {/* Cover Image */}
-          {service.image?.asset?.url && (
-            <Image
-              src={service.image.asset.url}
-              alt={service.title}
-              width={900}
-              height={500}
-              className="rounded-xl object-cover"
-            />
-          )}
+         
           {/* Categories */}
-          {(service.categories?.length ?? 0) > 0 && (
+          {(project.categories?.length ?? 0) > 0 && (
             <div className="flex flex-wrap gap-2 mt-4">
-              {(service.categories ?? []).map((cat, index) => (
+              {(project.categories ?? []).map((cat, index) => (
                 <span
                   key={index}
                   className="bg-blue-100 text-blue-700 text-sm px-3 py-1 rounded-full"
@@ -68,10 +51,10 @@ export default async function Page({
           )}
 
           {/* Rich Body Content */}
-          {service.body && (
-            <div className="prose prose-blue max-w-none mt-8 text-black service-body-content">
+          {project.body && (
+            <div className="prose prose-blue max-w-none mt-8 text-black project-body-content">
               <PortableText
-                value={service.body}
+                value={project.body}
                 components={{
                   block: {
                     h1: ({ children }) => <h1>{children}</h1>,

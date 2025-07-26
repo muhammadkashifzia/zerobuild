@@ -39,7 +39,7 @@ export async function getService(slug: string): Promise<Service> {
   );
 }
 
-export async function getProjects(): Promise<Project[]> {
+export async function getProjects(): Promise<Project[]> { 
   return createClient(clientConfig).fetch(
     groq`*[_type == "project"]{
   _id,
@@ -59,7 +59,7 @@ export async function getProjects(): Promise<Project[]> {
 export async function getProject(slug: string): Promise<Project> {
   return createClient(clientConfig).fetch(
     groq`
-    *[_type == "service" && slug.current == $slug][0] {
+    *[_type == "project" && slug.current == $slug][0] {
       title,
       slug,
       publishedAt,
