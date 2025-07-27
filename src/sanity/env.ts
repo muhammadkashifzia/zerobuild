@@ -29,6 +29,11 @@ export const recaptchaSecretKey = assertValue(
   'Missing environment variable: RECAPTCHA_SECRET_KEY'
 );
 
+export const m365apppassword = assertValue(
+  process.env.M365_APP_PASSWORD || 'Japan2021',
+  'Missing environment variable: M365_APP_PASSWORD'
+);
+
 function assertValue<T>(v: T | undefined, errorMessage: string): T {
   if (!v) {
     throw new Error(errorMessage);

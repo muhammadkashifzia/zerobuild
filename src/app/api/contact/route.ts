@@ -48,11 +48,11 @@ export async function POST(req: Request) {
 
     // 4. Send email via Microsoft 365 SMTP
     const transporter = nodemailer.createTransport({
-      host: "smtp.office365.com",
+      host: "smtp.muumuu-mail.com",
       port: 587,
       secure: false,
       auth: {
-        user: "hello@zerobuild.io",
+        user: "eastlogic.kashif@gmail.com",
         pass: process.env.M365_APP_PASSWORD!, // ✅ Set this in your Vercel project settings
       },
     });
