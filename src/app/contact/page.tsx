@@ -1,77 +1,66 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { useRouter } from "next/navigation";
-import { ContactSubmission } from "@/types/ContactSubmission";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 
 const ContactPage = () => {
-  const [form, setForm] = useState<ContactSubmission>({
-    name: "",
-    email: "",
-    company: "",
-    message: "",
-    purpose: [],
-    role: "",
-    honeypot: "",
-  });
-
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
   const router = useRouter();
+  const [loading, setLoading] = React.useState(false);
+  const [success, setSuccess] = React.useState(false);
 
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
-  ) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleCheckbox = (value: string) => {
-    setForm((prev) => ({
-      ...prev,
-      purpose: prev.purpose.includes(value)
-        ? prev.purpose.filter((p) => p !== value)
-        : [...prev.purpose, value],
-    }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
-    const res = await fetch("/api/contact", {
-      method: "POST",
-      body: JSON.stringify(form),
-    });
-
-    if (res.ok) {
-      setSuccess(true);
-      setForm({
-        name: "",
-        email: "",
-        company: "",
-        message: "",
-        purpose: [],
-        role: "",
-        honeypot: "",
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      email: "",
+      company: "",
+      message: "",
+      purpose: [] as string[],
+      role: "",
+      honeypot: "",
+    },
+    validationSchema: Yup.object({
+      name: Yup.string().required("Name is required"),
+      email: Yup.string().email("Invalid email").required("Email is required"),
+      company: Yup.string().required("Company is required"),
+      message: Yup.string().required("Message is required"),
+      honeypot: Yup.string().max(0),
+    }),
+    onSubmit: async (values) => {
+      setLoading(true);
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        body: JSON.stringify(values),
       });
 
-      setTimeout(() => {
-        router.push("/resources");
-      }, 4000);
-    }
+      if (res.ok) {
+        setSuccess(true);
+        formik.resetForm();
+        setTimeout(() => router.push("/resources"), 4000);
+      }
+      setLoading(false);
+    },
+  });
 
-    setLoading(false);
+  const toggleCheckbox = (value: string) => {
+    const current = formik.values.purpose;
+    if (current.includes(value)) {
+      formik.setFieldValue(
+        "purpose",
+        current.filter((v) => v !== value)
+      );
+    } else {
+      formik.setFieldValue("purpose", [...current, value]);
+    }
   };
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-12 pt-36 relative">
       <BackgroundBeams className="absolute top-0 left-0 w-full h-full z-0" />
       <div className="max-w-2xl mx-auto p-4 relative z-10">
-        <h1 className="text-4xl font-bold text-center text-black dark:text-white mb-6">
+        <h1 className="text-4xl font-bold text-center text-black mb-6">
           Contact Us
         </h1>
 
@@ -84,46 +73,52 @@ const ContactPage = () => {
             </a>
           </p>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={formik.handleSubmit} className="space-y-4">
             <input
               name="honeypot"
-              value={form.honeypot}
-              onChange={handleChange}
-              className="hidden"
+              value={formik.values.honeypot}
+              onChange={formik.handleChange}
+              className="hidden text-black"
             />
 
             <input
-              required
-              type="text"
               name="name"
               placeholder="Your name"
-              value={form.name}
-              onChange={handleChange}
-              className="w-full p-4 border rounded"
+              value={formik.values.name}
+              onChange={formik.handleChange}
+              className="w-full p-4 border rounded text-black"
             />
+            {formik.touched.name && formik.errors.name && (
+              <div className="text-red-500 text-sm">{formik.errors.name}</div>
+            )}
+
             <input
-              required
               type="email"
               name="email"
               placeholder="Your email"
-              value={form.email}
-              onChange={handleChange}
-              className="w-full p-4 border rounded"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              className="w-full p-4 border rounded text-black"
             />
+            {formik.touched.email && formik.errors.email && (
+              <div className="text-red-500 text-sm">{formik.errors.email}</div>
+            )}
+
             <input
-              required
-              type="text"
               name="company"
               placeholder="Company name"
-              value={form.company}
-              onChange={handleChange}
-              className="w-full p-4 border rounded"
+              value={formik.values.company}
+              onChange={formik.handleChange}
+              className="w-full p-4 border rounded text-black"
             />
+            {formik.touched.company && formik.errors.company && (
+              <div className="text-red-500 text-sm">{formik.errors.company}</div>
+            )}
 
-            <label className="block font-medium text-sm">
+            <label className="block font-medium text-sm text-black">
               What brings you to Zero Build today?
             </label>
-            <div className="grid grid-cols-2 gap-2 text-sm">
+            <div className="grid grid-cols-2 gap-2 text-sm text-black">
               {[
                 "General Enquiry",
                 "Retrofit",
@@ -144,22 +139,22 @@ const ContactPage = () => {
                 <label key={option} className="flex items-center gap-2">
                   <input
                     type="checkbox"
-                    checked={form.purpose.includes(option)}
-                    onChange={() => handleCheckbox(option)}
+                    checked={formik.values.purpose.includes(option)}
+                    onChange={() => toggleCheckbox(option)}
                   />
                   {option}
                 </label>
               ))}
             </div>
 
-            <label className="block font-medium text-sm">
+            <label className="block font-medium text-sm text-black">
               I&apos;m contacting you as a...
             </label>
             <select
               name="role"
-              value={form.role}
-              onChange={handleChange}
-              className="w-full p-3 border rounded text-sm"
+              value={formik.values.role}
+              onChange={formik.handleChange}
+              className="w-full p-3 border rounded text-sm text-black"
             >
               <option value="">Select role (optional)</option>
               {[
@@ -186,18 +181,20 @@ const ContactPage = () => {
             </select>
 
             <textarea
-              required
               name="message"
               placeholder="Your message"
-              value={form.message}
-              onChange={handleChange}
+              value={formik.values.message}
+              onChange={formik.handleChange}
               rows={5}
-              className="w-full p-4 border rounded"
+              className="w-full p-4 border rounded text-black"
             />
+            {formik.touched.message && formik.errors.message && (
+              <div className="text-red-500 text-sm">{formik.errors.message}</div>
+            )}
 
             <button
               type="submit"
-              className="bg-teal-600 text-white px-6 py-3 rounded hover:bg-teal-700"
+              className="bg-teal-600 text-black px-6 py-3 rounded hover:bg-teal-700"
               disabled={loading}
             >
               {loading ? "Sending..." : "Send Message"}

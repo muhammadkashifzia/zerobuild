@@ -9,7 +9,6 @@ export async function POST(req: Request) {
   try {
     const data: ContactSubmission = await req.json();
 
-    // 🛡️ Anti-spam
     if (data.honeypot && data.honeypot.trim() !== "") {
       return NextResponse.json({ success: true }); // silently drop spam
     }
