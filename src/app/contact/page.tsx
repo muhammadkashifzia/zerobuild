@@ -115,7 +115,7 @@ const ContactPage = () => {
 
           <div>
             <label className="block font-semibold text-black">Name *</label>
-            <input name="name" type="text" onChange={formik.handleChange} value={formik.values.name} className="w-full border rounded p-2" placeholder="Enter your name"/>
+            <input name="name" type="text" onChange={formik.handleChange} value={formik.values.name} className="w-full border rounded p-2 text-black" placeholder="Enter your name"/>
             {formik.touched.name && formik.errors.name && <p className="text-red-500 text-sm">{formik.errors.name}</p>}
           </div>
 
