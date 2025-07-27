@@ -20,7 +20,11 @@ const ContactPage = () => {
   const [success, setSuccess] = useState(false);
   const router = useRouter();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
@@ -56,7 +60,7 @@ const ContactPage = () => {
       });
 
       setTimeout(() => {
-        router.push("/resources"); // or show modal
+        router.push("/resources");
       }, 4000);
     }
 
@@ -67,17 +71,26 @@ const ContactPage = () => {
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-12 pt-36 relative">
       <BackgroundBeams className="absolute top-0 left-0 w-full h-full z-0" />
       <div className="max-w-2xl mx-auto p-4 relative z-10">
-        <h1 className="text-4xl font-bold text-center text-black dark:text-white mb-6">Contact Us</h1>
+        <h1 className="text-4xl font-bold text-center text-black dark:text-white mb-6">
+          Contact Us
+        </h1>
 
         {success ? (
           <p className="text-center text-green-600 font-semibold">
             Thanks for reaching out! We’ll be in touch soon.
             <br />
-            <a href="/resources" className="underline text-teal-500">Check out our latest tools</a>
+            <a href="/resources" className="underline text-teal-500">
+              Check out our latest tools
+            </a>
           </p>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
-            <input name="honeypot" value={form.honeypot} onChange={handleChange} className="hidden" />
+            <input
+              name="honeypot"
+              value={form.honeypot}
+              onChange={handleChange}
+              className="hidden"
+            />
 
             <input
               required
@@ -107,7 +120,9 @@ const ContactPage = () => {
               className="w-full p-4 border rounded"
             />
 
-            <label className="block font-medium text-sm">What brings you to Zero Build today?</label>
+            <label className="block font-medium text-sm">
+              What brings you to Zero Build today?
+            </label>
             <div className="grid grid-cols-2 gap-2 text-sm">
               {[
                 "General Enquiry",
@@ -137,7 +152,9 @@ const ContactPage = () => {
               ))}
             </div>
 
-            <label className="block font-medium text-sm">I'm contacting you as a...</label>
+            <label className="block font-medium text-sm">
+              I&apos;m contacting you as a...
+            </label>
             <select
               name="role"
               value={form.role}
