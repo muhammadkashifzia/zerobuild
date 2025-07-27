@@ -104,37 +104,37 @@ const ContactPage = () => {
   ];
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6">Contact Us</h1>
+    <div className="max-w-3xl mx-auto pt-[100px]">
+      <h1 className="text-3xl font-bold mb-6 text-black">Contact Us</h1>
 
       {success ? (
-        <div className="bg-green-100 text-green-800 p-4 rounded">Thank you! Your submission has been received.</div>
+        <div className="bg-green-100 text-green-800 p-4 rounded text-black">Thank you! Your submission has been received.</div>
       ) : (
         <form onSubmit={formik.handleSubmit} className="space-y-4">
           <input type="hidden" name="honeypot" value={formik.values.honeypot} onChange={formik.handleChange} />
 
           <div>
-            <label className="block font-semibold">Name *</label>
-            <input name="name" type="text" onChange={formik.handleChange} value={formik.values.name} className="w-full border rounded p-2" />
+            <label className="block font-semibold text-black">Name *</label>
+            <input name="name" type="text" onChange={formik.handleChange} value={formik.values.name} className="w-full border rounded p-2" placeholder="Enter your name"/>
             {formik.touched.name && formik.errors.name && <p className="text-red-500 text-sm">{formik.errors.name}</p>}
           </div>
 
           <div>
-            <label className="block font-semibold">Email *</label>
-            <input name="email" type="email" onChange={formik.handleChange} value={formik.values.email} className="w-full border rounded p-2" />
+            <label className="block font-semibold text-black">Email *</label>
+            <input name="email" type="email" onChange={formik.handleChange} value={formik.values.email} className="text-black w-full border rounded p-2" placeholder="Enter your email"/>
             {formik.touched.email && formik.errors.email && <p className="text-red-500 text-sm">{formik.errors.email}</p>}
           </div>
 
           <div>
-            <label className="block font-semibold">Company *</label>
-            <input name="company" type="text" onChange={formik.handleChange} value={formik.values.company} className="w-full border rounded p-2" />
+            <label className="block font-semibold text-black">Company *</label>
+            <input name="company" type="text" onChange={formik.handleChange} value={formik.values.company} className="text-black w-full border rounded p-2" placeholder="Enter your company"/>
             {formik.touched.company && formik.errors.company && <p className="text-red-500 text-sm">{formik.errors.company}</p>}
           </div>
 
           <div>
-           <label className="block font-semibold">I&apos;m contacting you as a...</label>
+           <label className="block font-semibold text-black">I&apos;m contacting you as a...</label>
 
-            <select name="role" onChange={formik.handleChange} value={formik.values.role} className="w-full border rounded p-2">
+            <select name="role" onChange={formik.handleChange} value={formik.values.role} className="text-black w-full border rounded p-2">
               <option value="">Select Role (Optional)</option>
               {roleOptions.map((option) => (
                 <option key={option} value={option}>{option}</option>
@@ -143,10 +143,10 @@ const ContactPage = () => {
           </div>
 
           <div>
-            <label className="block font-semibold">What brings you to Zero Build today? *</label>
+            <label className="block font-semibold text-black">What brings you to Zero Build today? *</label>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {purposeOptions.map((option) => (
-                <label key={option} className="flex items-center gap-2">
+                <label key={option} className="flex items-center gap-2 text-black">
                   <input
                     type="checkbox"
                     name="purpose"
@@ -162,8 +162,8 @@ const ContactPage = () => {
           </div>
 
           <div>
-            <label className="block font-semibold">Message *</label>
-            <textarea name="message" onChange={formik.handleChange} value={formik.values.message} rows={4} className="w-full border rounded p-2" />
+            <label className="block font-semibold text-black">Message *</label>
+            <textarea name="message" onChange={formik.handleChange} value={formik.values.message} rows={4} className="w-full border rounded p-2" placeholder="Enter your message"/>
             {formik.touched.message && formik.errors.message && <p className="text-red-500 text-sm">{formik.errors.message}</p>}
           </div>
 
