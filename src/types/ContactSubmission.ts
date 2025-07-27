@@ -1,11 +1,10 @@
-// types/ContactSubmission.ts
-
-export type ContactSubmission = {
+export interface ContactSubmission {
+  _type: "contactSubmission";
+  timestamp: string;
   name: string;
   email: string;
   company: string;
-  message: string;
   purpose: string[];
   role?: string;
-  honeypot?: string;
-};
+  message?: string;
+}
