@@ -12,7 +12,6 @@ const ContactPage = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [error, setError] = useState("");
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -42,7 +41,6 @@ const ContactPage = () => {
     onSubmit: async (values) => {
       if (values.honeypot !== "") return;
       setLoading(true);
-      setError(""); // Clear previous errors
 
       try {
         window.grecaptcha.ready(async () => {
@@ -54,20 +52,16 @@ const ContactPage = () => {
             body: JSON.stringify({ ...values, recaptchaToken: token }),
           });
 
-          const result = await res.json();
-
-          if (res.ok && result.success) {
+          if (res.ok) {
             setSuccess(true);
             formik.resetForm();
             setTimeout(() => router.push("/resources"), 3000);
           } else {
-            setError(result.error || "Something went wrong. Please try again.");
             setLoading(false);
           }
         });
       } catch (err) {
         console.error(err);
-        setError("Network error. Please check your connection and try again.");
         setLoading(false);
       }
     },
@@ -114,20 +108,14 @@ const ContactPage = () => {
       <h1 className="text-3xl font-bold mb-6 text-black">Contact Us</h1>
 
       {success ? (
-        <div className="bg-green-100 p-4 rounded text-black">Thank you! Your submission has been received.</div>
+        <div className="bg-green-100  p-4 rounded text-black">Thank you! Your submission has been received.</div>
       ) : (
         <form onSubmit={formik.handleSubmit} className="space-y-4">
-          {error && (
-            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-              {error}
-            </div>
-          )}
-          
           <input type="hidden" name="honeypot" value={formik.values.honeypot} onChange={formik.handleChange} />
 
           <div>
             <label className="block font-semibold text-black">Name *</label>
-            <input name="name" type="text" onChange={formik.handleChange} value={formik.values.name} className="w-full border rounded p-2 text-black" placeholder="Enter your name"/>
+            <input name="name" type="text" onChange={formik.handleChange} value={formik.values.name} className="w-full border rounded p-2" placeholder="Enter your name"/>
             {formik.touched.name && formik.errors.name && <p className="text-red-500 text-sm">{formik.errors.name}</p>}
           </div>
 
@@ -175,7 +163,7 @@ const ContactPage = () => {
 
           <div>
             <label className="block font-semibold text-black">Message *</label>
-            <textarea name="message" onChange={formik.handleChange} value={formik.values.message} rows={4} className="w-full border rounded p-2 text-black" placeholder="Enter your message"/>
+            <textarea name="message" onChange={formik.handleChange} value={formik.values.message} rows={4} className="w-full border rounded p-2" placeholder="Enter your message"/>
             {formik.touched.message && formik.errors.message && <p className="text-red-500 text-sm">{formik.errors.message}</p>}
           </div>
 
