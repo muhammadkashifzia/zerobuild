@@ -57,6 +57,6 @@ export const resourceType = defineType({
       title: 'Body Content',
       type: 'array',
       of: [{ type: 'block' }],
-})
+    }),
   ],
 })

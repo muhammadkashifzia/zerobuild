@@ -42,6 +42,12 @@ const contactSubmission = defineType({
       title: 'Timestamp',
       type: 'datetime',
     },
+    {
+      name: 'recaptcha_score',
+      title: 'reCAPTCHA Score',
+      type: 'number',
+      description: 'reCAPTCHA verification score (0.0 to 1.0)',
+    },
   ],
 });
 
