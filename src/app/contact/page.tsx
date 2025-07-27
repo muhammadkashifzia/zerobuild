@@ -131,7 +131,8 @@ const ContactPage = () => {
           </div>
 
           <div>
-            <label className="block font-semibold">I'm contacting you as a...</label>
+           <label className="block font-semibold">I&apos;m contacting you as a...</label>
+
             <select name="role" onChange={formik.handleChange} value={formik.values.role} className="w-full border rounded p-2">
               <option value="">Select Role (Optional)</option>
               {roleOptions.map((option) => (
