@@ -4,8 +4,9 @@ import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
+import { recaptchaSiteKey } from "@/sanity/env";
 
-const SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "";
+const SITE_KEY = recaptchaSiteKey;
 
 const ContactPage = () => {
   const router = useRouter();
