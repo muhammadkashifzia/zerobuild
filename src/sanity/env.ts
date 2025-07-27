@@ -14,7 +14,7 @@ export const projectId = assertValue(
 );
 
 export const sanityToken = assertValue(
-  process.env.SANITY_WRITE_TOKEN || 'skFLjj3rc2pAnHBLrJUzlRIRyx0SJ4ajimJJEdX1EwRAl8e2FmsIPx1ZDH4nb8zsgFy19U6K9Gim7SFeGROWlYIP9sMowtZ8lZlzaMTeDgHk2r6f51xj8FmMN9xATi5Fn7RgRPUDJTJt6ocLbOiDGHNLfDKEOUGGd2wFkovunkpSXSXkNd8x',
+  process.env.SANITY_WRITE_TOKEN,
   'Missing environment variable: SANITY_WRITE_TOKEN'
 );
 
@@ -30,7 +30,7 @@ export const recaptchaSecretKey = assertValue(
 );
 
 export const m365apppassword = assertValue(
-  process.env.M365_APP_PASSWORD || 'Japan2021',
+  process.env.M365_APP_PASSWORD,
   'Missing environment variable: M365_APP_PASSWORD'
 );
 

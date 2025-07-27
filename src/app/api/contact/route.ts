@@ -48,18 +48,18 @@ export async function POST(req: Request) {
 
     // 4. Send email via Microsoft 365 SMTP
     const transporter = nodemailer.createTransport({
-      host: "smtp.muumuu-mail.com",
+      host: "smtp.office365.com",
       port: 587,
       secure: false,
       auth: {
-        user: "eastlogic.kashif@gmail.com",
-        pass: process.env.M365_APP_PASSWORD!, // ✅ Set this in your Vercel project settings
+        user: "hello@zerobuild.io",
+        pass: process.env.M365_APP_PASSWORD!,
       },
     });
 
     const mailOptions = {
-      from: "eastlogic.kashif@gmail.com",
-      to: "eastlogic.kashif@gmail.com",
+      from: "hello@zerobuild.io",
+      to: "hello@zerobuild.io",
       subject: "📩 New Contact Form Submission - Zero Build",
       html: `
         <h2>New Contact Message</h2>
@@ -81,12 +81,22 @@ export async function POST(req: Request) {
     return NextResponse.json({
       success: true,
       submissionId: submission._id,
-      message: "Thanks for reaching out! We’ll be in touch soon. In the meantime, check out our latest tools.",
+      message: "Thanks for reaching out! We'll be in touch soon. In the meantime, check out our latest tools.",
       resourcesLink: "/resources",
     });
 
   } catch (error) {
     console.error("Error submitting contact form:", error);
-    return NextResponse.json({ success: false, error: "Internal server error" }, { status: 500 });
+    
+    // Log specific error details
+    if (error instanceof Error) {
+      console.error("Error message:", error.message);
+      console.error("Error stack:", error.stack);
+    }
+    
+    return NextResponse.json({ 
+      success: false, 
+      error: "Internal server error. Please try again later." 
+    }, { status: 500 });
   }
 }
