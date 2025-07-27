@@ -48,18 +48,18 @@ export async function POST(req: Request) {
 
     // 4. Send email via Microsoft 365 SMTP
     const transporter = nodemailer.createTransport({
-      host: "smtp.office365.com",
-      port: 587,
+      host: "mail.eastlogic.com",
+      port: 465,
       secure: false,
       auth: {
-        user: "hello@zerobuild.io",
+        user: "info@eastlogic.com",
         pass: process.env.M365_APP_PASSWORD!,
       },
     });
 
     const mailOptions = {
-      from: "hello@zerobuild.io",
-      to: "hello@zerobuild.io",
+      from: "eastlogic.kashif@gmail.com",
+      to: "eastlogic.kashif@gmail.com",
       subject: "📩 New Contact Form Submission - Zero Build",
       html: `
         <h2>New Contact Message</h2>
