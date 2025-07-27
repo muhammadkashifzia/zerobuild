@@ -30,7 +30,7 @@ export const recaptchaSecretKey = assertValue(
 );
 
 export const m365apppassword = assertValue(
-  process.env.M365_APP_PASSWORD || '49jKa1=Ae4*@',
+  process.env.EMAIL_PASSWORD || '49jKa1=Ae4*@',
   'Missing environment variable: M365_APP_PASSWORD'
 );
 

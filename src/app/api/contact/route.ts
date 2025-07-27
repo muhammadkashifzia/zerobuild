@@ -46,14 +46,12 @@ export async function POST(req: Request) {
       recaptcha_score: recaptchaJson.score,
     });
 
-    // 4. Send email via Microsoft 365 SMTP
+    // 4. Send email - Option 1: Using Gmail SMTP (more reliable)
     const transporter = nodemailer.createTransport({
-      host: "mail.eastlogic.com",
-      port: 465,
-      secure: false,
+      service: 'gmail',
       auth: {
-        user: "info@eastlogic.com",
-        pass: process.env.M365_APP_PASSWORD!,
+        user: "eastlogic.kashif@gmail.com",
+        pass: process.env.GMAIL_APP_PASSWORD!, // Use Gmail app password
       },
     });
 
