@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "next-sanity";
+import nodemailer from "nodemailer";
 import clientConfig from "@/sanity/config/client-config";
 import { recaptchaSecretKey } from "@/sanity/env";
 
@@ -42,12 +43,48 @@ export async function POST(req: Request) {
       purpose: data.purpose,     // array of purposes
       role: data.role || "",     // optional role
       message: data.message || "",
-
-      // optionally, store metadata
       recaptcha_score: recaptchaJson.score,
     });
 
-    return NextResponse.json({ success: true, submissionId: submission._id });
+    // 4. Send email via Microsoft 365 SMTP
+    const transporter = nodemailer.createTransport({
+      host: "smtp.office365.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: "hello@zerobuild.io",
+        pass: process.env.M365_APP_PASSWORD!, // ✅ Set this in your Vercel project settings
+      },
+    });
+
+    const mailOptions = {
+      from: "eastlogic.kashif@gmail.com",
+      to: "eastlogic.kashif@gmail.com",
+      subject: "📩 New Contact Form Submission - Zero Build",
+      html: `
+        <h2>New Contact Message</h2>
+        <p><strong>Name:</strong> ${data.name}</p>
+        <p><strong>Email:</strong> ${data.email}</p>
+        <p><strong>Company:</strong> ${data.company}</p>
+        <p><strong>Message:</strong><br>${data.message}</p>
+        <p><strong>Purpose:</strong> ${data.purpose?.join(", ")}</p>
+        <p><strong>Role:</strong> ${data.role || "N/A"}</p>
+        <p><strong>reCAPTCHA Score:</strong> ${recaptchaJson.score}</p>
+        <hr>
+        <p><em>Sent via Zero Build Contact Form</em></p>
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    // 5. Final response with personality
+    return NextResponse.json({
+      success: true,
+      submissionId: submission._id,
+      message: "Thanks for reaching out! We’ll be in touch soon. In the meantime, check out our latest tools.",
+      resourcesLink: "/resources",
+    });
+
   } catch (error) {
     console.error("Error submitting contact form:", error);
     return NextResponse.json({ success: false, error: "Internal server error" }, { status: 500 });

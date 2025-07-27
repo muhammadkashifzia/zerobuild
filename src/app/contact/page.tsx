@@ -108,7 +108,7 @@ const ContactPage = () => {
       <h1 className="text-3xl font-bold mb-6 text-black">Contact Us</h1>
 
       {success ? (
-        <div className="bg-green-100 text-green-800 p-4 rounded text-black">Thank you! Your submission has been received.</div>
+        <div className="bg-green-100 p-4 rounded text-black">Thank you! Your submission has been received.</div>
       ) : (
         <form onSubmit={formik.handleSubmit} className="space-y-4">
           <input type="hidden" name="honeypot" value={formik.values.honeypot} onChange={formik.handleChange} />
@@ -163,7 +163,7 @@ const ContactPage = () => {
 
           <div>
             <label className="block font-semibold text-black">Message *</label>
-            <textarea name="message" onChange={formik.handleChange} value={formik.values.message} rows={4} className="w-full border rounded p-2" placeholder="Enter your message"/>
+            <textarea name="message" onChange={formik.handleChange} value={formik.values.message} rows={4} className="w-full border rounded p-2 text-black" placeholder="Enter your message"/>
             {formik.touched.message && formik.errors.message && <p className="text-red-500 text-sm">{formik.errors.message}</p>}
           </div>
 
