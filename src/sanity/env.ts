@@ -4,28 +4,28 @@ export const apiVersion =
   process.env.NEXT_PUBLIC_SANITY_API_VERSION || '2025-07-24';
 
 export const dataset = assertValue(
-  process.env.NEXT_PUBLIC_SANITY_DATASET,
+  process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
   'Missing environment variable: NEXT_PUBLIC_SANITY_DATASET'
 );
 
 export const projectId = assertValue(
-  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
+  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || '7xgcerpq',
   'Missing environment variable: NEXT_PUBLIC_SANITY_PROJECT_ID'
 );
 
 export const sanityToken = assertValue(
-  process.env.SANITY_WRITE_TOKEN,
+  process.env.SANITY_WRITE_TOKEN || 'skFLjj3rc2pAnHBLrJUzlRIRyx0SJ4ajimJJEdX1EwRAl8e2FmsIPx1ZDH4nb8zsgFy19U6K9Gim7SFeGROWlYIP9sMowtZ8lZlzaMTeDgHk2r6f51xj8FmMN9xATi5Fn7RgRPUDJTJt6ocLbOiDGHNLfDKEOUGGd2wFkovunkpSXSXkNd8x',
   'Missing environment variable: SANITY_WRITE_TOKEN'
 );
 
 // reCAPTCHA keys
 export const recaptchaSiteKey = assertValue(
-  process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY,
+  process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6Lfda5ArAAAAAGK9dIU4PnEjjtkStRPXX0f-dtwz',
   'Missing environment variable: NEXT_PUBLIC_RECAPTCHA_SITE_KEY'
 );
 
 export const recaptchaSecretKey = assertValue(
-  process.env.RECAPTCHA_SECRET_KEY,
+  process.env.RECAPTCHA_SECRET_KEY || '6Lfda5ArAAAAABJN5YwnoBRUlRLWtqXh3XTxgwqZ',
   'Missing environment variable: RECAPTCHA_SECRET_KEY'
 );
 
