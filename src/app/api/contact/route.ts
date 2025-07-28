@@ -88,12 +88,12 @@ export async function POST(req: Request) {
     console.log('Email configuration - user: hello@zerobuild.io, password exists:', !!emailAppPassword);
     
     const transporter = nodemailer.createTransport({
-      host: "smtp.office365.com",
-      port: 587,
+      host: "smtp.muumuu-mail.com",
+      port: 465,
       secure: false,
       auth: {
-        user: "hello@zerobuild.io",
-        pass: "ynwsxvcgnfhsxzxg",
+        user: "kashif@idenbrid.com",
+        pass: "226514",
       },
     });
 
