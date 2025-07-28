@@ -5,7 +5,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
 import { recaptchaSiteKey } from "@/sanity/env";
-
+import Image from "next/image";
 const SITE_KEY = recaptchaSiteKey;
 
 const ContactPage = () => {
@@ -30,7 +30,6 @@ const ContactPage = () => {
       message: "",
       purpose: [] as string[],
       role: "",
-      honeypot: "",
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Required"),
@@ -40,7 +39,6 @@ const ContactPage = () => {
       purpose: Yup.array().min(1, "Select at least one purpose"),
     }),
     onSubmit: async (values) => {
-      if (values.honeypot !== "") return;
       setLoading(true);
       setError(""); // Clear previous errors
 
@@ -61,7 +59,7 @@ const ContactPage = () => {
           if (res.ok && result.success) {
             setSuccess(true);
             formik.resetForm();
-            setTimeout(() => router.push("/resources"), 3000);
+            setTimeout(() => router.push("/resources"), 6000);
           } else {
             setError(result.error || "Something went wrong. Please try again.");
             setLoading(false);
@@ -135,25 +133,7 @@ const ContactPage = () => {
               info@5czero.com
             </p>
           </div>
-          <div className="div relative mt-20 flex w-[600px] flex-shrink-0 -translate-x-10 items-center justify-center [perspective:800px] [transform-style:preserve-3d] sm:-translate-x-0 lg:-translate-x-32">
-            <div className="pointer-events-none absolute z-[60] flex h-40 w-96 items-center justify-center opacity-100 transition duration-500 top-0 right-1">
-              <div className="h-full w-full">
-                <div className="absolute inset-x-0 top-0 z-20 mx-auto inline-block w-fit rounded-lg bg-neutral-200 px-2 py-1 text-xs font-normal text-neutral-700 dark:bg-neutral-800 dark:text-white">
-                  We are here
-                  <span className="absolute -bottom-0 left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-gradient-to-r from-blue-400/0 via-blue-400/90 to-blue-400/0 transition-opacity duration-500"></span>
-                </div>
-                <div className="absolute top-1/2 left-1/2 mt-4 ml-[0.09375rem] -translate-x-1/2 -translate-y-1/2">
-                  <div className="absolute top-1/2 left-1/2 h-20 w-20 -translate-x-1/2 -translate-y-1/2 rounded-[50%] bg-sky-500/[0.08] shadow-[0_8px_16px_rgb(0_0_0/0.4)] dark:bg-sky-500/[0.2]"></div>
-                  <div className="absolute top-1/2 left-1/2 h-20 w-20 -translate-x-1/2 -translate-y-1/2 rounded-[50%] bg-sky-500/[0.08] shadow-[0_8px_16px_rgb(0_0_0/0.4)] dark:bg-sky-500/[0.2]"></div>
-                  <div className="absolute top-1/2 left-1/2 h-20 w-20 -translate-x-1/2 -translate-y-1/2 rounded-[50%] bg-sky-500/[0.08] shadow-[0_8px_16px_rgb(0_0_0/0.4)] dark:bg-sky-500/[0.2]"></div>
-                </div>
-                <div className="absolute right-1/2 bottom-1/2 h-20 w-px translate-y-[14px] bg-gradient-to-b from-transparent to-blue-500 blur-[2px]"></div>
-                <div className="absolute right-1/2 bottom-1/2 h-20 w-px translate-y-[14px] bg-gradient-to-b from-transparent to-blue-500"></div>
-                <div className="absolute right-1/2 bottom-1/2 z-40 h-[4px] w-[4px] translate-x-[1.5px] translate-y-[14px] rounded-full bg-blue-600 blur-[3px]"></div>
-                <div className="absolute right-1/2 bottom-1/2 z-40 h-[2px] w-[2px] translate-x-[0.5px] translate-y-[14px] rounded-full bg-blue-300"></div>
-              </div>
-            </div>
-          </div>
+          <Image src="/images/"
         </div>
 
         <div className="relative mx-auto flex w-full max-w-2xl flex-col items-start gap-4 overflow-hidden rounded-3xl bg-gradient-to-b from-gray-100 to-gray-200 pt-[30px] pb-[40px] px-[40px]  dark:from-neutral-900 dark:to-neutral-950">
@@ -163,13 +143,6 @@ const ContactPage = () => {
             </div>
           ) : (
             <form onSubmit={formik.handleSubmit} className="space-y-4">
-              <input
-                type="hidden"
-                name="honeypot"
-                value={formik.values.honeypot}
-                onChange={formik.handleChange}
-              />
-
               <div>
                 <label className="block font-semibold text-black mb-[8px]">
                   Name <span className="text-[#ff0000]">*</span>
@@ -261,9 +234,17 @@ const ContactPage = () => {
                         checked={formik.values.purpose.includes(option)}
                         onChange={(e) => {
                           if (e.target.checked) {
-                            formik.setFieldValue('purpose', [...formik.values.purpose, option]);
+                            formik.setFieldValue("purpose", [
+                              ...formik.values.purpose,
+                              option,
+                            ]);
                           } else {
-                            formik.setFieldValue('purpose', formik.values.purpose.filter(item => item !== option));
+                            formik.setFieldValue(
+                              "purpose",
+                              formik.values.purpose.filter(
+                                (item) => item !== option
+                              )
+                            );
                           }
                         }}
                       />
@@ -298,7 +279,10 @@ const ContactPage = () => {
               </div>
 
               {error && (
-                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                <div
+                  className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
+                  role="alert"
+                >
                   <strong className="font-bold">Error!</strong>
                   <span className="block sm:inline"> {error}</span>
                 </div>
