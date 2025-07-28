@@ -179,7 +179,7 @@ const ContactPage = () => {
                   type="text"
                   onChange={formik.handleChange}
                   value={formik.values.name}
-                  className="w-full border rounded p-2"
+                  className="w-full border rounded p-2 text-black"
                   placeholder="Enter your name"
                 />
                 {formik.touched.name && formik.errors.name && (
@@ -259,7 +259,13 @@ const ContactPage = () => {
                         name="purpose"
                         value={option}
                         checked={formik.values.purpose.includes(option)}
-                        onChange={formik.handleChange}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            formik.setFieldValue('purpose', [...formik.values.purpose, option]);
+                          } else {
+                            formik.setFieldValue('purpose', formik.values.purpose.filter(item => item !== option));
+                          }
+                        }}
                       />
                       {option}
                     </label>
@@ -281,7 +287,7 @@ const ContactPage = () => {
                   onChange={formik.handleChange}
                   value={formik.values.message}
                   rows={4}
-                  className="w-full border rounded p-2"
+                  className="w-full border rounded p-2 text-black"
                   placeholder="Enter your message"
                 />
                 {formik.touched.message && formik.errors.message && (

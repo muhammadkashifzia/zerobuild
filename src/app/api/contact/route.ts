@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { createClient } from "next-sanity";
-import nodemailer from "nodemailer";
 import clientConfig from "@/sanity/config/client-config";
 import { recaptchaSecretKey } from "@/sanity/env";
 
@@ -60,74 +59,15 @@ export async function POST(req: Request) {
     });
     console.log("Sanity submission created:", submission._id);
 
-    // 4. Send email via Microsoft 365 SMTP
-    console.log("Setting up Microsoft 365 email...");
-    
-    if (!process.env.M365_APP_PASSWORD) {
-      console.error("M365_APP_PASSWORD environment variable is missing");
-      throw new Error("Email configuration is missing - M365_APP_PASSWORD not set");
-    }
-
-    const transporter = nodemailer.createTransport({
-      host: "smtp.office365.com",
-      port: 587,
-      secure: false, // Use STARTTLS
-      auth: {
-        user: "hello@zerobuild.io",
-        pass: process.env.M365_APP_PASSWORD,
-      },
-      tls: {
-        ciphers: 'SSLv3',
-        rejectUnauthorized: false
-      }
+    // 4. Skip email for now - just log the data
+    console.log("Email would be sent with data:", {
+      name: data.name,
+      email: data.email,
+      company: data.company,
+      message: data.message,
+      purpose: data.purpose,
+      role: data.role
     });
-
-    const mailOptions = {
-      from: "hello@zerobuild.io", // Must match the auth user
-      to: "hello@zerobuild.io",   // Recipient email
-      subject: "📩 New Contact Form Submission - Zero Build",
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px;">
-            New Contact Form Submission
-          </h2>
-          
-          <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h3 style="color: #007bff; margin-top: 0;">Contact Information</h3>
-            <p><strong>Name:</strong> ${data.name}</p>
-            <p><strong>Email:</strong> <a href="mailto:${data.email}">${data.email}</a></p>
-            <p><strong>Company:</strong> ${data.company}</p>
-            <p><strong>Role:</strong> ${data.role || "Not specified"}</p>
-          </div>
-          
-          <div style="background-color: #e9ecef; padding: 15px; border-radius: 8px; margin: 20px 0;">
-            <h3 style="color: #495057; margin-top: 0;">Purpose of Contact</h3>
-            <p><strong>Interests:</strong> ${data.purpose?.join(", ") || "Not specified"}</p>
-          </div>
-          
-          <div style="background-color: #fff3cd; padding: 15px; border-radius: 8px; margin: 20px 0;">
-            <h3 style="color: #856404; margin-top: 0;">Message</h3>
-            <p style="white-space: pre-wrap; line-height: 1.6;">${data.message}</p>
-          </div>
-          
-          <div style="background-color: #d1ecf1; padding: 15px; border-radius: 8px; margin: 20px 0;">
-            <h3 style="color: #0c5460; margin-top: 0;">Submission Details</h3>
-            <p><strong>Submission ID:</strong> ${submission._id}</p>
-            <p><strong>Timestamp:</strong> ${new Date().toLocaleString()}</p>
-            <p><strong>reCAPTCHA Score:</strong> ${recaptchaJson.score}</p>
-          </div>
-          
-          <hr style="border: none; border-top: 1px solid #dee2e6; margin: 30px 0;">
-          <p style="color: #6c757d; font-size: 12px; text-align: center;">
-            <em>This message was sent via the Zero Build Contact Form</em>
-          </p>
-        </div>
-      `,
-    };
-
-    console.log("Sending email...");
-    await transporter.sendMail(mailOptions);
-    console.log("Email sent successfully to hello@zerobuild.io");
 
     // 5. Final response
     console.log("=== CONTACT FORM SUBMISSION COMPLETED SUCCESSFULLY ===");
@@ -150,7 +90,6 @@ export async function POST(req: Request) {
     
     // Check environment variables
     console.log("Environment check:");
-    console.log("M365_APP_PASSWORD exists:", !!process.env.M365_APP_PASSWORD);
     console.log("SANITY_WRITE_TOKEN exists:", !!process.env.SANITY_WRITE_TOKEN);
     console.log("RECAPTCHA_SECRET_KEY exists:", !!process.env.RECAPTCHA_SECRET_KEY);
     
