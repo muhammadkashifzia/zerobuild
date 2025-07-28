@@ -1,4 +1,3 @@
-// config/env.ts
 
 function assertValue<T>(v: T | undefined, errorMessage: string): T {
   if (!v) {
@@ -26,7 +25,6 @@ export const sanityToken = assertValue(
   'Missing environment variable: SANITY_WRITE_TOKEN'
 );
 
-// reCAPTCHA keys
 export const recaptchaSiteKey = assertValue(
   process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6LdFN5ErAAAAACC9jOKKXt5COxWid-RVuejbWJcS',
   'Missing environment variable: NEXT_PUBLIC_RECAPTCHA_SITE_KEY'

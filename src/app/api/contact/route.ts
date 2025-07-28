@@ -31,7 +31,7 @@ export async function POST(req: Request) {
     console.log('reCAPTCHA token length:', cleanToken.length);
     console.log('reCAPTCHA token preview:', cleanToken.substring(0, 50) + '...');
 
-    // Verify secret key exists
+
     if (!recaptchaSecretKey) {
       console.error('reCAPTCHA secret key not found');
       return NextResponse.json({ success: false, error: "Server configuration error" }, { status: 500 });
@@ -88,8 +88,8 @@ export async function POST(req: Request) {
     console.log('Email configuration - user: hello@zerobuild.io, password exists:', !!emailAppPassword);
     
     const transporter = nodemailer.createTransport({
-      host: "smtp.muumuu-mail.com",
-      port: 465,
+      host: "smtp.office365.com",
+      port: 587,
       secure: false,
       auth: {
         user: "hello@zerobuild.io",
@@ -98,8 +98,8 @@ export async function POST(req: Request) {
     });
 
     const mailOptions = {
-      from: "hello@zerobuild.io", // Must match the authenticated user
-      replyTo: data.email, // Allow replies to go to the submitter
+      from: "hello@zerobuild.io",
+      replyTo: data.email,
       to: "eastlogic.kashif@gmail.com",
       subject: "New Contact Form Submission - Zero Build",
       html: `
