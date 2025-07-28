@@ -20,7 +20,7 @@ export const sanityToken = assertValue(
 
 // reCAPTCHA keys
 export const recaptchaSiteKey = assertValue(
-  process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6Lfda5ArAAAAAGK9dIU4PnEjjtkStRPXX0f-dtwz',
+  process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6LfGDZErAAAAADm4EAGW4loMyYIl1-Zg3RtAG8Iz',
   'Missing environment variable: NEXT_PUBLIC_RECAPTCHA_SITE_KEY'
 );
 
