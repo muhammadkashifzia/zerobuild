@@ -92,8 +92,8 @@ export async function POST(req: Request) {
       port: 465,
       secure: false,
       auth: {
-        user: "kashif@idenbrid.com",
-        pass: "226514",
+        user: "hello@zerobuild.io",
+        pass: "ynwsxvcgnfhsxzxg",
       },
     });
 
