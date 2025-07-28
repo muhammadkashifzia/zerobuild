@@ -2030,7 +2030,7 @@ export default function ObservabilityChart() {
 
   return (
     <div className="px-[16px] graph-icon relative">
-      <div className='bg-white text-gray-900 px-2 py-4 md:p-6 rounded-lg shadow-md w-full  container mx-auto border border-gray-200'>
+      <div className='bg-white text-gray-900 px-4 py-5 md:p-6 rounded-lg shadow-md w-full  container mx-auto border border-gray-200'>
 
     
         <p className="text-gray-600 mb-2">
@@ -2047,7 +2047,7 @@ export default function ObservabilityChart() {
           <button onClick={() => setPriority('Circularity')} className={priorityBtn('Circularity')}>Circularity</button>
         </div>
 
-        <div ref={chartRef} className="relative w-full h-[700px]">
+        <div ref={chartRef} className="relative w-full h-[750px]">
           {/* Only render overlays if chartDims are valid */}
           {chartDims.width > 10 && chartDims.height > 10 && (
             <>
