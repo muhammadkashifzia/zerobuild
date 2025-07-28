@@ -2,7 +2,7 @@ import Link from "next/link";
 
 function Footer() {
   return (
-    <footer className="bg-[#f1efef] text-[#332f2f] pt-12">
+    <footer className="bg-[#fafafa] text-[#332f2f] pt-12">
       <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 px-[16px]">
         {/* About Us / Logo Column */}
         <div>

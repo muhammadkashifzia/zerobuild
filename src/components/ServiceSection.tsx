@@ -4,16 +4,15 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 const ServiceSection = () => {
   return (
-    <section
-      className=" text-black py-16  mt-[80px] service-section relative"
-     
-    >
+    <section className=" text-black py-16 service-section relative">
       <div className="container px-[16px] mx-auto space-y-6 md:space-y-10">
         {/* Header Row */}
-        <div className="flex justify-between items-start flex-col md:flex-row gap-[20px]">
-          <div>
+        <div className="flex  gap-[20px] justify-between">
+          <div className="max-w-[700px]">
             <h2 className="text-3xl lg:text-4xl font-medium mt-2 text-black">
-             We guide, plan and design the future of the built environment. We are a global consultancy with advisory and technical expertise across more than 150 disciplines.
+              We guide, plan and design the future of the built environment. We
+              are a global consultancy with advisory and technical expertise
+              across more than 150 disciplines.
             </h2>
           </div>
           {/* <Link
@@ -22,29 +21,15 @@ const ServiceSection = () => {
           >
             View all services
           </Link> */}
-        </div>
 
-        {/* Grid Rows */}
-        <div className="divide-y divide-gray-300 text-black">
-          {/* Services Row */}
-          <div className="py-3 md:py-6 grid grid-cols-1 sm:grid-cols-4 gap-4">
-            <h3 className="font-serif text-lg">Accessibility</h3>
-            <div className="col-span-3 grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <p className="text-lg">Acoustic consulting</p>
-              <p className="text-lg">Architecture</p>
-              <p className="text-lg">Asset management</p>
-            </div>
-          </div>
-
-          {/* Markets Row */}
-          <div className="py-3 md:py-6 grid grid-cols-1 sm:grid-cols-4 gap-4">
-            <h3 className="font-serif text-lg">Audio-visual systems</h3>
-            <div className="col-span-3 grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <p className="text-lg">Bridge engineering</p>
-              <p className="text-lg">Building physics</p>
-              <p className="text-lg">Building retrofit</p>
-            </div>
-          </div>
+          <ul className="col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-x-14 gap-y-4">
+            <li className="text-[28px]">Acoustic consulting</li>
+            <li className="text-[28px]">Architecture</li>
+            <li className="text-[28px]">Asset management</li>
+            <li className="text-[28px]">Bridge engineering</li>
+            <li className="text-[28px]">Building lihysics</li>
+            <li className="text-[28px]">Building retrofit</li>
+          </ul>
         </div>
       </div>
     </section>

@@ -11,23 +11,23 @@ export default function CTAButtons() {
     
   ];
   return (
-    <div className=" flex items-center justify-center gap-10 p-8">
+    <div className=" flex items-center gap-10 p-8 max-w-[1080px] mx-auto w-full bg-white rounded-lg shadow-md justify-between">
       {/* Main CTA Button */}
-      <button className="relative flex items-center justify-between px-8 py-4 rounded-full border border-black text-white bg-black group overflow-hidden min-w-[500px]">
+      <button className="relative flex items-center justify-between px-8 py-4 rounded-full border border-black   group overflow-hidden min-w-[500px]">
        
     
-       <span className="text-[48px] font-bold">Start</span> <TypewriterEffect words={words} />
+       <span className="text-[48px] font-bold text-black mr-[7px]">Start</span> <TypewriterEffect words={words} />
    
-        <span className="ml-4 relative z-10 w-10 h-10 flex items-center justify-center rounded-full bg-white text-black">
-          <ArrowRight className="w-5 h-5" />
+        <span className="ml-4 relative z-10 w-14 h-14 flex items-center justify-center rounded-full  text-white bg-[#484AB7]">
+          <ArrowRight className="w-8 h-8" />
         </span>
       </button>
 
       {/* Side Buttons */}
       <div className="flex flex-col gap-4">
-        <button className="flex items-center justify-between px-6 py-3 rounded-full bg-white text-black text-sm font-medium w-56 border border-black">
+        <button className="flex items-center justify-between px-6 py-3 rounded-full bg-[#484AB7] text-white text-sm font-medium w-56 border border-[#484AB7]">
           Talk to an Expert
-          <span className="ml-2 w-5 h-5 flex items-center justify-center rounded-full bg-black text-white">
+          <span className="ml-2 w-5 h-5 flex items-center justify-center rounded-full bg-white text-[#484AB7]">
             <ArrowRight className="w-3 h-3" />
           </span>
         </button>

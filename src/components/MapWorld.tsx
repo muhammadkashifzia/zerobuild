@@ -73,8 +73,8 @@ export function MapWorld() {
   }));
 
   return (
-    <div className="py-0 bg-white w-full">
-      <div className="max-w-7xl mx-auto text-center mb-[40px] px-4">
+    <div className="py-0 w-full">
+      <div className="max-w-7xl mx-auto text-center mt-[80px] mb-[40px] px-4">
         <p className="font-bold text-[32px] md:text-[48px] text-black max-w-[440px] md:max-w-full mx-auto md:mx-0">
          Trusted by teams
 

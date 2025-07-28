@@ -32,8 +32,8 @@ const VideoFeature: React.FC<VideoFeatureProps> = ({
         ></iframe>
       </div>
       <div>
-        <p className="font-sans text-xl font-normal tracking-tight text-white md:text-4xl">
-          {description}{" "}
+        <p className="text-xl font-normal tracking-tight text-white md:text-4xl">
+          {description}
           <span className="relative inline-block bg-white/20 px-2 py-2">
             <span className="font-medium text-white text-balance">{channelName}</span>
           </span>
