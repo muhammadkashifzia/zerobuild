@@ -9,6 +9,8 @@ const client = createClient(clientConfig);
 export async function POST(req: Request) {
   try {
     const data = await req.json();
+    
+    console.log('Received data keys:', Object.keys(data));
 
     // 1. Honeypot check
     if (data.honeypot && data.honeypot.trim() !== "") {
@@ -16,21 +18,51 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: true });
     }
 
-    // 2. reCAPTCHA verification
-    if (!data.recaptchaToken) {
-      return NextResponse.json({ success: false, error: "Missing reCAPTCHA token" }, { status: 400 });
+    // 2. reCAPTCHA verification with improved validation
+    if (!data.recaptchaToken || typeof data.recaptchaToken !== 'string' || data.recaptchaToken.trim() === '') {
+      console.log('Invalid reCAPTCHA token:', typeof data.recaptchaToken, data.recaptchaToken?.length);
+      return NextResponse.json({ success: false, error: "Invalid reCAPTCHA token" }, { status: 400 });
+    }
+
+    const cleanToken = data.recaptchaToken.trim();
+    console.log('reCAPTCHA token length:', cleanToken.length);
+    console.log('reCAPTCHA token preview:', cleanToken.substring(0, 50) + '...');
+
+    // Verify secret key exists
+    if (!recaptchaSecretKey) {
+      console.error('reCAPTCHA secret key not found');
+      return NextResponse.json({ success: false, error: "Server configuration error" }, { status: 500 });
     }
 
     const recaptchaResponse = await fetch("https://www.google.com/recaptcha/api/siteverify", {
       method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `secret=${recaptchaSecretKey}&response=${data.recaptchaToken}`,
+      headers: { 
+        "Content-Type": "application/x-www-form-urlencoded",
+        "User-Agent": "Mozilla/5.0 (compatible; Next.js Contact Form)"
+      },
+      body: `secret=${encodeURIComponent(recaptchaSecretKey)}&response=${encodeURIComponent(cleanToken)}`,
     });
 
-    const recaptchaJson = await recaptchaResponse.json();
+    if (!recaptchaResponse.ok) {
+      console.error('reCAPTCHA API request failed:', recaptchaResponse.status, recaptchaResponse.statusText);
+      return NextResponse.json({ success: false, error: "reCAPTCHA verification failed" }, { status: 500 });
+    }
 
-    if (!recaptchaJson.success || recaptchaJson.score < 0.5) {
-      return NextResponse.json({ success: false, error: "Failed reCAPTCHA check" }, { status: 403 });
+    const recaptchaJson = await recaptchaResponse.json();
+    console.log('reCAPTCHA response:', recaptchaJson);
+
+    if (!recaptchaJson.success) {
+      console.error('reCAPTCHA verification failed:', recaptchaJson['error-codes']);
+      return NextResponse.json({ 
+        success: false, 
+        error: "Failed reCAPTCHA check",
+        details: recaptchaJson['error-codes']
+      }, { status: 403 });
+    }
+
+    if (recaptchaJson.score < 0.5) {
+      console.log('reCAPTCHA score too low:', recaptchaJson.score);
+      return NextResponse.json({ success: false, error: "Security check failed" }, { status: 403 });
     }
 
     // 3. Store in Sanity
@@ -40,8 +72,8 @@ export async function POST(req: Request) {
       name: data.name,
       email: data.email,
       company: data.company,
-      purpose: data.purpose,     // array of purposes
-      role: data.role || "",     // optional role
+      purpose: data.purpose,
+      role: data.role || "",
       message: data.message || "",
       recaptcha_score: recaptchaJson.score,
     });
@@ -53,12 +85,13 @@ export async function POST(req: Request) {
       secure: false,
       auth: {
         user: "hello@zerobuild.io",
-        pass: process.env.M365_APP_PASSWORD!, // ✅ Set this in your Vercel project settings
+        pass: process.env.M365_APP_PASSWORD!,
       },
     });
 
     const mailOptions = {
-      from: "eastlogic.kashif@gmail.com",
+      from: "hello@zerobuild.io", // Use the authenticated email address
+      replyTo: data.email, // Allow replies to go to the submitter
       to: "eastlogic.kashif@gmail.com",
       subject: "New Contact Form Submission - Zero Build",
       html: `
@@ -77,16 +110,20 @@ export async function POST(req: Request) {
 
     await transporter.sendMail(mailOptions);
 
-    // 5. Final response with personality
+    // 5. Final response
     return NextResponse.json({
       success: true,
       submissionId: submission._id,
-      message: "Thanks for reaching out! We’ll be in touch soon. In the meantime, check out our latest tools.",
+      message: "Thanks for reaching out! We'll be in touch soon. In the meantime, check out our latest tools.",
       resourcesLink: "/resources",
     });
 
   } catch (error) {
     console.error("Error submitting contact form:", error);
-    return NextResponse.json({ success: false, error: "Internal server error" }, { status: 500 });
+    return NextResponse.json({ 
+      success: false, 
+      error: "Internal server error",
+      details: error instanceof Error ? error.message : 'Unknown error'
+    }, { status: 500 });
   }
 }
