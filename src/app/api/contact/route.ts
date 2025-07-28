@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { createClient } from "next-sanity";
 import nodemailer from "nodemailer";
 import clientConfig from "@/sanity/config/client-config";
-import { recaptchaSecretKey, m365apppassword } from "@/sanity/env";
+import { recaptchaSecretKey, emailAppPassword } from "@/sanity/env";
 
 const client = createClient(clientConfig);
 console.log('Sanity client configured with projectId:', clientConfig.projectId);
@@ -13,7 +13,7 @@ export async function POST(req: Request) {
     
     console.log('Received data keys:', Object.keys(data));
     console.log('Environment check - recaptchaSecretKey exists:', !!recaptchaSecretKey);
-    console.log('Environment check - m365apppassword exists:', !!m365apppassword);
+    console.log('Environment check - m365apppassword exists:', !!emailAppPassword);
 
     // 1. Honeypot check
     if (data.honeypot && data.honeypot.trim() !== "") {
@@ -91,12 +91,12 @@ export async function POST(req: Request) {
       secure: false,
       auth: {
         user: "hello@zerobuild.io",
-        pass: m365apppassword,
+        pass: emailAppPassword,
       },
     });
 
     const mailOptions = {
-      from: "eastlogic.kashif@gmail.com", // Use the authenticated email address
+      from: "kashif@idenbrid.com", // Use the authenticated email address
       replyTo: data.email, // Allow replies to go to the submitter
       to: "eastlogic.kashif@gmail.com",
       subject: "New Contact Form Submission - Zero Build",
