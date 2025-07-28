@@ -116,7 +116,7 @@ const ContactPage = () => {
           <h2 className="bg-gradient-to-b from-neutral-800 to-neutral-900 bg-clip-text text-left text-xl font-bold text-transparent md:text-3xl lg:text-5xl dark:from-neutral-200 dark:to-neutral-300">
             Contact us
           </h2>
-          <p className="mt-8 max-w-lg text-center text-base text-neutral-600 md:text-left dark:text-neutral-400">
+          <p className="mt-8 text-center text-base text-neutral-600 md:text-left dark:text-neutral-400">
             We are always looking for ways to improve our products and services.
             Contact us and let us know how we can help you.
           </p>
@@ -133,7 +133,7 @@ const ContactPage = () => {
               info@5czero.com
             </p>
           </div>
-          <Image src="/images/"
+          <Image src="/assets/images/UpdatedMap.png" alt="Map" width={500} height={300} className="mt-10 w-full" />
         </div>
 
         <div className="relative mx-auto flex w-full max-w-2xl flex-col items-start gap-4 overflow-hidden rounded-3xl bg-gradient-to-b from-gray-100 to-gray-200 pt-[30px] pb-[40px] px-[40px]  dark:from-neutral-900 dark:to-neutral-950">
