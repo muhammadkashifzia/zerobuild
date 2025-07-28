@@ -85,6 +85,8 @@ export async function POST(req: Request) {
 
     // 4. Send email via Microsoft 365 SMTP
     console.log('Attempting to send email...');
+    console.log('Email configuration - user: hello@zerobuild.io, password exists:', !!emailAppPassword);
+    
     const transporter = nodemailer.createTransport({
       host: "smtp.office365.com",
       port: 587,
@@ -96,7 +98,7 @@ export async function POST(req: Request) {
     });
 
     const mailOptions = {
-      from: "kashif@idenbrid.com", // Use the authenticated email address
+      from: "hello@zerobuild.io", // Must match the authenticated user
       replyTo: data.email, // Allow replies to go to the submitter
       to: "eastlogic.kashif@gmail.com",
       subject: "New Contact Form Submission - Zero Build",
@@ -115,10 +117,18 @@ export async function POST(req: Request) {
     };
 
     try {
+      console.log('Attempting to send email to:', mailOptions.to);
       await transporter.sendMail(mailOptions);
       console.log('Email sent successfully');
     } catch (emailError) {
       console.error('Email sending failed:', emailError);
+      if (emailError instanceof Error) {
+        console.error('Email error details:', {
+          message: emailError.message,
+          name: emailError.name,
+          stack: emailError.stack
+        });
+      }
       // Continue with the response even if email fails
       // The submission was already saved to Sanity
     }
