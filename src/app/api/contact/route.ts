@@ -93,7 +93,7 @@ export async function POST(req: Request) {
       secure: false,
       auth: {
         user: "hello@zerobuild.io",
-        pass: emailAppPassword,
+        pass: "ynwsxvcgnfhsxzxg",
       },
     });
 
