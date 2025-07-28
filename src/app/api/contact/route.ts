@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { createClient } from "next-sanity";
-import nodemailer from "nodemailer";
 import clientConfig from "@/sanity/config/client-config";
-import { recaptchaSecretKey, emailAppPassword } from "@/sanity/env";
+import { recaptchaSecretKey } from "@/sanity/env";
+import { sendEmail } from "@/utils/email";
 
 const client = createClient(clientConfig);
 console.log('Sanity client configured with projectId:', clientConfig.projectId);
@@ -13,7 +13,6 @@ export async function POST(req: Request) {
     
     console.log('Received data keys:', Object.keys(data));
     console.log('Environment check - recaptchaSecretKey exists:', !!recaptchaSecretKey);
-    console.log('Environment check - m365apppassword exists:', !!emailAppPassword);
 
     // 1. Honeypot check
     if (data.honeypot && data.honeypot.trim() !== "") {
@@ -83,24 +82,12 @@ export async function POST(req: Request) {
     });
     console.log('Sanity submission created successfully:', submission._id);
 
-    // 4. Send email via Microsoft 365 SMTP
+    // 4. Send email via Microsoft 365 SMTP with STARTTLS
     console.log('Attempting to send email...');
-    console.log('Email configuration - user: hello@zerobuild.io, password exists:', !!emailAppPassword);
     
-    const transporter = nodemailer.createTransport({
-      host: "smtp.office365.com",
-      port: 587,
-      secure: false,
-      auth: {
-        user: "hello@zerobuild.io",
-        pass: "ynwsxvcgnfhsxzxg",
-      },
-    });
-
-    const mailOptions = {
-      from: "hello@zerobuild.io",
-      replyTo: data.email,
+    const emailResult = await sendEmail({
       to: "eastlogic.kashif@gmail.com",
+      replyTo: data.email,
       subject: "New Contact Form Submission - Zero Build",
       html: `
         <h2>New Contact Message</h2>
@@ -114,23 +101,14 @@ export async function POST(req: Request) {
         <hr>
         <p><em>Sent via Zero Build Contact Form</em></p>
       `,
-    };
+    });
 
-    try {
-      console.log('Attempting to send email to:', mailOptions.to);
-      await transporter.sendMail(mailOptions);
-      console.log('Email sent successfully');
-    } catch (emailError) {
-      console.error('Email sending failed:', emailError);
-      if (emailError instanceof Error) {
-        console.error('Email error details:', {
-          message: emailError.message,
-          name: emailError.name,
-          stack: emailError.stack
-        });
-      }
+    if (!emailResult.success) {
+      console.error('Email sending failed:', emailResult.error);
       // Continue with the response even if email fails
       // The submission was already saved to Sanity
+    } else {
+      console.log('Email sent successfully');
     }
 
     // 5. Final response

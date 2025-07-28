@@ -40,7 +40,7 @@ const ContactPage = () => {
     }),
     onSubmit: async (values) => {
       setLoading(true);
-      setError(""); // Clear previous errors
+      setError("");
 
       try {
         window.grecaptcha.ready(async () => {

@@ -1,28 +1,21 @@
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
-import { emailAppPassword } from "@/sanity/env";
+import { verifyEmailConfig, sendEmail } from "@/utils/email";
 
 export async function POST() {
   try {
     console.log('Testing email configuration...');
-    console.log('Email password exists:', !!emailAppPassword);
     
-    const transporter = nodemailer.createTransport({
-      host: "smtp.office365.com",
-      port: 587,
-      secure: false,
-      auth: {
-        user: "hello@zerobuild.io",
-        pass: emailAppPassword,
-      },
-    });
-
     // Verify SMTP connection
-    await transporter.verify();
-    console.log('SMTP connection verified successfully');
+    const isVerified = await verifyEmailConfig();
+    if (!isVerified) {
+      return NextResponse.json({
+        success: false,
+        error: "SMTP connection verification failed",
+        timestamp: new Date().toISOString(),
+      }, { status: 500 });
+    }
 
-    const mailOptions = {
-      from: "hello@zerobuild.io",
+    const emailResult = await sendEmail({
       to: "eastlogic.kashif@gmail.com",
       subject: "Test Email - Zero Build Contact Form",
       html: `
@@ -32,9 +25,16 @@ export async function POST() {
         <hr>
         <p><em>Sent via Zero Build Contact Form Test</em></p>
       `,
-    };
+    });
 
-    await transporter.sendMail(mailOptions);
+    if (!emailResult.success) {
+      return NextResponse.json({
+        success: false,
+        error: emailResult.error,
+        timestamp: new Date().toISOString(),
+      }, { status: 500 });
+    }
+
     console.log('Test email sent successfully');
 
     return NextResponse.json({
