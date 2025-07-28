@@ -96,7 +96,7 @@ export async function POST(req: Request) {
     });
 
     const mailOptions = {
-      from: "hello@zerobuild.io", // Use the authenticated email address
+      from: "eastlogic.kashif@gmail.com", // Use the authenticated email address
       replyTo: data.email, // Allow replies to go to the submitter
       to: "eastlogic.kashif@gmail.com",
       subject: "New Contact Form Submission - Zero Build",

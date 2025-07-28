@@ -50,7 +50,7 @@ export default function Page() {
       </section>
 
       {/* Swiper Slider */}
-      <div className="relative w-full max-w-7xl mx-auto pt-14 overflow-x-hidden project-slider">
+      <div className="relative w-full pt-14 overflow-x-hidden project-slider">
         <div className="absolute top-4 right-4 z-10 flex gap-2">
           <button className="swiper-button-prev">
             <ArrowLeft className="w-5 h-5 text-gray-600" />
