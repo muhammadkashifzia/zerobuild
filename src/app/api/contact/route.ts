@@ -2,15 +2,18 @@ import { NextResponse } from "next/server";
 import { createClient } from "next-sanity";
 import nodemailer from "nodemailer";
 import clientConfig from "@/sanity/config/client-config";
-import { recaptchaSecretKey } from "@/sanity/env";
+import { recaptchaSecretKey, m365apppassword } from "@/sanity/env";
 
 const client = createClient(clientConfig);
+console.log('Sanity client configured with projectId:', clientConfig.projectId);
 
 export async function POST(req: Request) {
   try {
     const data = await req.json();
     
     console.log('Received data keys:', Object.keys(data));
+    console.log('Environment check - recaptchaSecretKey exists:', !!recaptchaSecretKey);
+    console.log('Environment check - m365apppassword exists:', !!m365apppassword);
 
     // 1. Honeypot check
     if (data.honeypot && data.honeypot.trim() !== "") {
@@ -66,6 +69,7 @@ export async function POST(req: Request) {
     }
 
     // 3. Store in Sanity
+    console.log('Attempting to create Sanity submission...');
     const submission = await client.create({
       _type: "contactSubmission",
       timestamp: new Date().toISOString(),
@@ -77,15 +81,17 @@ export async function POST(req: Request) {
       message: data.message || "",
       recaptcha_score: recaptchaJson.score,
     });
+    console.log('Sanity submission created successfully:', submission._id);
 
     // 4. Send email via Microsoft 365 SMTP
+    console.log('Attempting to send email...');
     const transporter = nodemailer.createTransport({
       host: "smtp.office365.com",
       port: 587,
       secure: false,
       auth: {
         user: "hello@zerobuild.io",
-        pass: process.env.M365_APP_PASSWORD!,
+        pass: m365apppassword,
       },
     });
 
@@ -108,7 +114,14 @@ export async function POST(req: Request) {
       `,
     };
 
-    await transporter.sendMail(mailOptions);
+    try {
+      await transporter.sendMail(mailOptions);
+      console.log('Email sent successfully');
+    } catch (emailError) {
+      console.error('Email sending failed:', emailError);
+      // Continue with the response even if email fails
+      // The submission was already saved to Sanity
+    }
 
     // 5. Final response
     return NextResponse.json({
@@ -120,10 +133,28 @@ export async function POST(req: Request) {
 
   } catch (error) {
     console.error("Error submitting contact form:", error);
+    
+    // Provide more specific error messages based on the error type
+    let errorMessage = "Internal server error";
+    let statusCode = 500;
+    
+    if (error instanceof Error) {
+      if (error.message.includes('Missing environment variable')) {
+        errorMessage = "Server configuration error";
+        statusCode = 500;
+      } else if (error.message.includes('Network') || error.message.includes('fetch')) {
+        errorMessage = "Network error - please try again";
+        statusCode = 503;
+      } else if (error.message.includes('Sanity')) {
+        errorMessage = "Database error - please try again";
+        statusCode = 500;
+      }
+    }
+    
     return NextResponse.json({ 
       success: false, 
-      error: "Internal server error",
+      error: errorMessage,
       details: error instanceof Error ? error.message : 'Unknown error'
-    }, { status: 500 });
+    }, { status: statusCode });
   }
 }

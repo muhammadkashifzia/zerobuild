@@ -1,5 +1,13 @@
 // config/env.ts
 
+function assertValue<T>(v: T | undefined, errorMessage: string): T {
+  if (!v) {
+    throw new Error(errorMessage);
+  }
+
+  return v;
+}
+
 export const apiVersion =
   process.env.NEXT_PUBLIC_SANITY_API_VERSION || '2025-07-24';
 
@@ -33,11 +41,3 @@ export const m365apppassword = assertValue(
   process.env.M365_APP_PASSWORD || 'ynwsxvcgnfhsxzxg',
   'Missing environment variable: M365_APP_PASSWORD'
 );
-
-function assertValue<T>(v: T | undefined, errorMessage: string): T {
-  if (!v) {
-    throw new Error(errorMessage);
-  }
-
-  return v;
-}
