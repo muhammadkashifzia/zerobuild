@@ -4,11 +4,11 @@ import { emailAppPassword } from "@/sanity/env";
 // Create a reusable email transporter with STARTTLS encryption
 export const createEmailTransporter = () => {
   return nodemailer.createTransport({
-    host: "smtp.muumuu-mail.com",
-    port: 993,
+    host: "mail.eastlogic.com",
+    port: 465,
     secure: true, // STARTTLS is used on port 587
     auth: {
-      user: "kashif@idenbrid.com",
+      user: "	info@eastlogic.com",
       pass: emailAppPassword,
     },
   });
