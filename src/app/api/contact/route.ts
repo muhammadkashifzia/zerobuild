@@ -86,7 +86,7 @@ export async function POST(req: Request) {
     console.log('Attempting to send email...');
     
     const emailResult = await sendEmail({
-      to: "eastlogic.kashif@gmail.com",
+      to: "kashif@idenbrid.com",
       replyTo: data.email,
       subject: "New Contact Form Submission - Zero Build",
       html: `

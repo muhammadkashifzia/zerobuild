@@ -5,9 +5,9 @@ import { emailAppPassword } from "@/sanity/env";
 export const createEmailTransporter = () => {
   return nodemailer.createTransport({
     host: "smtp.muumuu-mail.com",
-    port: 465,
-    secure: false, // STARTTLS is used on port 587
-    requireTLS: true, // Require TLS encryption
+    port: 993,
+    secure: true, // STARTTLS is used on port 587
+    requireTLS: false, // Require TLS encryption
     tls: {
       ciphers: 'SSLv3',
       rejectUnauthorized: process.env.NODE_ENV === 'production' // Only reject unauthorized in production
