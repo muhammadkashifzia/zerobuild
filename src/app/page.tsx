@@ -21,7 +21,7 @@ export default function Home() {
       <Image src="/assets/svg/pattern-svg.svg" alt="pattenRight" width={1000} height={1000} className="absolute top-[65px] right-[0px] w-[890px] h-auto object-cover"/>
       <HeroSection />
       <PerformanceSection />
-      <ObservabilityChart />
+        <ObservabilityChart />
       <ServiceSection />
       {/* <Resources /> */}
       <FeaturedByYoutubers />

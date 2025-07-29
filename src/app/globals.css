@@ -134,3 +134,15 @@ a{
         height: 100%;
         background-image: linear-gradient(270deg, #ffffff 15%, transparent 100%);
     }
+.js-plotly-plot .plotly .modebar-group{
+  display: flex!important;
+}
+#observability-chart .updatemenu-button:nth-child(1) .updatemenu-item-rect, #observability-chart .updatemenu-button:nth-child(2) .updatemenu-item-rect{
+  fill: #484ab7!important;
+
+  border-radius: 4px;
+  padding: 5px 10px;
+}
+#observability-chart .updatemenu-button:nth-child(1)  .updatemenu-item-text, #observability-chart .updatemenu-button:nth-child(2) .updatemenu-item-text{
+  fill: white!important;
+}
