@@ -9,7 +9,7 @@ import type { Data, Layout } from "plotly.js";
 // Skeleton Shimmer Component
 const SkeletonShimmer = () => {
   return (
-    <div className="w-full h-[600px] bg-gray-50 rounded-lg p-6 animate-pulse">
+    <div className="w-full h-[620px]  rounded-lg p-6 animate-pulse">
       {/* Title skeleton */}
       <div className="h-6 bg-gray-200 rounded w-48 mb-6"></div>
       
@@ -478,8 +478,8 @@ export default function Home() {
   return (
     <div id="observability-chart" className="container mx-auto px-[16px]">
     
-      <div className="w-full h-[600px]">
-          <h1 className="text-[16px] mb-6 text-black">Choose what matters most</h1>
+      <div className="w-full h-[620px] bg-white p-[20px] rounded-lg shadow-md">
+          <h1 className="text-[16px]  text-black">Choose what matters most</h1>
         {isLoading ? (
           <SkeletonShimmer />
         ) : plotData.length > 0 ? (
@@ -491,10 +491,10 @@ export default function Home() {
               displayModeBar: true,
               modeBarButtonsToRemove: ['pan2d', 'lasso2d', 'select2d'],
             }}
-            style={{ width: '100%', height: '100%' }}
+            style={{ width: '100%', height: '100%', paddingBottom: '20px' }}
           />
         ) : (
-          <div className="flex items-center justify-center h-full bg-gray-50 rounded-lg">
+          <div className="flex items-center justify-center h-full  rounded-lg">
             <div className="text-center text-gray-500">
               <div className="text-4xl mb-2">📊</div>
               <div className="text-lg font-medium">No data available</div>
