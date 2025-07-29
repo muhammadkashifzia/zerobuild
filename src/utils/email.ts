@@ -7,11 +7,6 @@ export const createEmailTransporter = () => {
     host: "smtp.muumuu-mail.com",
     port: 993,
     secure: true, // STARTTLS is used on port 587
-    requireTLS: false, // Require TLS encryption
-    tls: {
-      ciphers: 'SSLv3',
-      rejectUnauthorized: process.env.NODE_ENV === 'production' // Only reject unauthorized in production
-    },
     auth: {
       user: "kashif@idenbrid.com",
       pass: emailAppPassword,
