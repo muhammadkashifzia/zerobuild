@@ -13,17 +13,12 @@ const SkeletonShimmer = () => {
       {/* Title skeleton */}
       <div className="h-6 bg-gray-200 rounded w-48 mb-6"></div>
       
-      {/* Button controls skeleton */}
-      <div className="flex gap-2 mb-6">
-        {[...Array(5)].map((_, i) => (
-          <div key={i} className="h-10 bg-gray-200 rounded w-20"></div>
-        ))}
-      </div>
+   
       
       {/* Chart area skeleton */}
       <div className="relative w-full h-96 bg-gray-100 rounded border-2 border-dashed border-gray-300">
         {/* Y-axis skeleton */}
-        <div className="absolute left-2 top-4 space-y-8">
+        <div className="absolute left-[50%] -translate-x-[50%] top-4 space-y-8">
           {[...Array(6)].map((_, i) => (
             <div key={i} className="h-3 bg-gray-200 rounded w-8"></div>
           ))}
@@ -124,6 +119,10 @@ interface DataPoint {
   IconPath?: string;
 }
 
+interface ObservabilityChartProps {
+  selectedView?: string;
+}
+
 // Move static mappings outside component to prevent recreation
 const COMFORT_SYMBOL = {
   [-1]: "↓°C",
@@ -162,7 +161,7 @@ const COMFORT_LABEL_MAP = {
   2: "Overheating",
 } as const;
 
-export default function Home() {
+export default function ObservabilityChart({ selectedView = "comfort" }: ObservabilityChartProps) {
   const [rawData, setRawData] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -248,11 +247,48 @@ export default function Home() {
     };
   }, [rawData]);
 
-  // Memoized plot data
+  // Memoized plot data based on selected view
   const plotData = useMemo((): Data[] => {
     if (!processedData) return [];
 
     const { costs, carbons, comfortColors, comfortLabels, circularityValues, hoverText } = processedData;
+
+    // Determine visibility and title based on selected view
+    let trace1Visible = true;
+    let trace2Visible = false;
+    let imagesVisible = false;
+
+    switch (selectedView) {
+      case "cost":
+        trace1Visible = true;
+        trace2Visible = false;
+        imagesVisible = false;
+        break;
+      case "carbon":
+        trace1Visible = true;
+        trace2Visible = false;
+        imagesVisible = false;
+        break;
+      case "comfort":
+        trace1Visible = true;
+        trace2Visible = false;
+        imagesVisible = false;
+        break;
+      case "compliance":
+        trace1Visible = false;
+        trace2Visible = false;
+        imagesVisible = true;
+        break;
+      case "circularity":
+        trace1Visible = false;
+        trace2Visible = true;
+        imagesVisible = false;
+        break;
+      default:
+        trace1Visible = true;
+        trace2Visible = false;
+        imagesVisible = false;
+    }
 
     return [
       {
@@ -269,7 +305,7 @@ export default function Home() {
         text: comfortLabels.filter((label): label is string => label !== undefined),
         hoverinfo: "text",
         name: "Comfort",
-        visible: true,
+        visible: trace1Visible,
       } as Data,
       {
         x: costs,
@@ -285,10 +321,10 @@ export default function Home() {
         hovertext: hoverText,
         hoverinfo: "text",
         name: "Circularity",
-        visible: false,
+        visible: trace2Visible,
       } as Data,
     ];
-  }, [processedData]);
+  }, [processedData, selectedView]);
 
   // Memoized layout
   const layout = useMemo((): Partial<Layout> => {
@@ -296,8 +332,28 @@ export default function Home() {
 
     const { layoutImages, sweetSpot } = processedData;
 
+    // Determine title based on selected view
+    let title = "Cost vs Carbon";
+    switch (selectedView) {
+      case "cost":
+        title = "Cost vs Carbon";
+        break;
+      case "carbon":
+        title = "Cost vs Carbon";
+        break;
+      case "comfort":
+        title = "Cost vs Carbon – Comfort";
+        break;
+      case "compliance":
+        title = "Cost vs Carbon – Compliance";
+        break;
+      case "circularity":
+        title = "Cost vs Carbon – Circularity";
+        break;
+    }
+
     return {
-      title: { text: "Cost vs Carbon – Comfort" },
+      title: { text: title },
       xaxis: { title: { text: "Cost (£/m²)" } },
       yaxis: { title: { text: "Carbon (kgCO₂e/m²)" } },
       shapes: [
@@ -328,79 +384,12 @@ export default function Home() {
           yanchor: "bottom",
         },
       ],
-      images: layoutImages,
-      updatemenus: [
-        {
-          type: "buttons",
-          direction: "right",
-          showactive: true,
-          x: 0,
-          y: 1.15,
-          xanchor: "left",
-          yanchor: "top",
-          buttons: [
-            {
-              label: "Cost",
-              method: "update",
-              args: [
-                { visible: [true, false] },
-                {
-                  title: { text: "Cost vs Carbon" },
-                  images: layoutImages.map((img) => ({ ...img, visible: false })),
-                },
-              ],
-            },
-               {
-              label: "Carbon",
-              method: "update",
-              args: [
-                { visible: [true, false] },
-                {
-                  title: { text: "Cost vs Carbon " },
-                  images: layoutImages.map((img) => ({ ...img, visible: false })),
-                },
-              ],
-            },
-            {
-              label: "Comfort",
-              method: "update",
-              args: [
-                { visible: [true, false] },
-                {
-                  title: { text: "Cost vs Carbon – Comfort" },
-                  images: layoutImages.map((img) => ({ ...img, visible: false })),
-                },
-              ],
-            },
-            {
-              label: "Compliance",
-              method: "update",
-              args: [
-                { visible: [false, false] },
-                {
-                  title: { text: "Cost vs Carbon – Compliance" },
-                  images: layoutImages.map((img) => ({ ...img, visible: true })),
-                },
-              ],
-            },
-            {
-              label: "Circularity",
-              method: "update",
-              args: [
-                { visible: [false, true] },
-                {
-                  title: { text: "Cost vs Carbon – Circularity" },
-                  images: layoutImages.map((img) => ({ ...img, visible: false })),
-                },
-              ],
-            },
-        
-         
-          ],
-        },
-      ],
+      images: layoutImages.map((img) => ({
+        ...img,
+        visible: selectedView === "compliance",
+      })),
     };
-  }, [processedData]);
+  }, [processedData, selectedView]);
 
   // Optimized data fetching
   const fetchData = useCallback(async () => {
@@ -476,10 +465,10 @@ export default function Home() {
   }
 
   return (
-    <div id="observability-chart" className="container mx-auto px-[16px]">
+    <div id="observability-chart" className="w-full px-0 md:px-[16px]">
     
-      <div className="w-full h-[620px] bg-white p-[20px] rounded-lg shadow-md">
-          <h1 className="text-[16px]  text-black">Choose what matters most</h1>
+      <div className="w-full h-[620px] bg-white p-[10px] md:p-[20px] rounded-lg shadow-md">
+          <h1 className="text-[16px] text-black">Choose what matters most</h1>
         {isLoading ? (
           <SkeletonShimmer />
         ) : plotData.length > 0 ? (

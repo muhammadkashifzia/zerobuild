@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 const ServiceSection = () => {
   return (
-    <section className=" text-black py-16 service-section relative">
+    <section className=" text-black pb-16 service-section relative">
       <div className="container px-[16px] mx-auto space-y-6 md:space-y-10">
         {/* Header Row */}
         <div className="flex  gap-[20px] justify-between md:flex-row flex-col">

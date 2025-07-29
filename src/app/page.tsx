@@ -1,7 +1,6 @@
 // import FeaturedSection from "@/components/FeaturedSection";
 import HeroSection from "@/components/HeroSection";
 import FeaturedByYoutubers from "@/components/FeaturedYoutube";
-import ObservabilityChart from "@/components/ObservabilityChart";
 import CtaSection from '@/components/CtaSection'
 import { MapWorld } from "@/components/MapWorld";
 import ServiceSection from "@/components/ServiceSection" 
@@ -14,6 +13,7 @@ import "./globals.css";
 // import Instructor from "@/components/Instructor";
 import Image from "next/image";
 import PerformanceSection from "@/components/PerformanceSection";
+
 export default function Home() {
   return (
     <main className="min-h-screen  antialiased hide-scrollbar relative bg-[#fafafa]">
@@ -21,7 +21,6 @@ export default function Home() {
       <Image src="/assets/svg/pattern-svg.svg" alt="pattenRight" width={1000} height={1000} className="absolute top-[65px] right-[0px] w-[890px] h-auto object-cover"/>
       <HeroSection />
       <PerformanceSection />
-        <ObservabilityChart />
       <ServiceSection />
       {/* <Resources /> */}
       <FeaturedByYoutubers />
