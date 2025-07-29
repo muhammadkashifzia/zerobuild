@@ -146,3 +146,7 @@ a{
 #observability-chart .updatemenu-button:nth-child(1)  .updatemenu-item-text, #observability-chart .updatemenu-button:nth-child(2) .updatemenu-item-text{
   fill: white!important;
 }
+ .plotlyjsicon{
+  display: none!important;
+
+}

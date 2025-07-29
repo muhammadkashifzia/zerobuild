@@ -186,7 +186,7 @@ export default function Home() {
         ComfortColor: COMFORT_COLOUR[comfortMetric] || "#999999",
         ComfortSymbol: COMFORT_SYMBOL[comfortMetric] || "?",
         ComplianceLabel: COMPLIANCE_LABEL[complianceMetric] || "Unknown",
-        IconPath: complianceMetric ? "/assets/Compliance-logos/" + COMPLIANCE_ICON[complianceMetric] : "/ComplianceLogos/default.png",
+        IconPath: complianceMetric ? "/assets/Compliance-logos/" + COMPLIANCE_ICON[complianceMetric] : "/assets/Compliance-logos/default.png",
       };
     });
 
@@ -220,8 +220,8 @@ export default function Home() {
       y: d.Carbon,
       xref: "x" as const,
       yref: "y" as const,
-      sizex: 80,
-      sizey: 80,
+      sizex: 20,
+      sizey: 20,
       xanchor: "center" as const,
       yanchor: "middle" as const,
       layer: "above" as const,
@@ -476,9 +476,10 @@ export default function Home() {
   }
 
   return (
-    <div id="observability-chart" className="container mx-auto p-6">
-      <h1 className="text-[16px] mb-6 text-black">Choose what matters most</h1>
+    <div id="observability-chart" className="container mx-auto px-[16px]">
+    
       <div className="w-full h-[600px]">
+          <h1 className="text-[16px] mb-6 text-black">Choose what matters most</h1>
         {isLoading ? (
           <SkeletonShimmer />
         ) : plotData.length > 0 ? (
