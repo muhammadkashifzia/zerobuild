@@ -4,8 +4,8 @@ import { emailAppPassword } from "@/sanity/env";
 // Create a reusable email transporter with STARTTLS encryption
 export const createEmailTransporter = () => {
   return nodemailer.createTransport({
-    host: "smtp.office365.com",
-    port: 587,
+    host: "smtp.muumuu-mail.com",
+    port: 465,
     secure: false, // STARTTLS is used on port 587
     requireTLS: true, // Require TLS encryption
     tls: {
@@ -13,7 +13,7 @@ export const createEmailTransporter = () => {
       rejectUnauthorized: process.env.NODE_ENV === 'production' // Only reject unauthorized in production
     },
     auth: {
-      user: "hello@zerobuild.io",
+      user: "kashif@idenbrid.com",
       pass: emailAppPassword,
     },
   });
@@ -42,7 +42,7 @@ export const sendEmail = async (options: {
   const transporter = createEmailTransporter();
   
   const mailOptions = {
-    from: "hello@zerobuild.io",
+    from: "kashif@idenbrid.com",
     replyTo: options.replyTo,
     to: options.to,
     subject: options.subject,
