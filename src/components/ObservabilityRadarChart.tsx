@@ -2,7 +2,10 @@
 import React, { useEffect, useState, useMemo, useCallback, lazy, Suspense } from 'react';
 import dynamic from 'next/dynamic';
 import * as XLSX from 'xlsx';
-
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import Image from 'next/image';
+import { Autoplay, Navigation } from "swiper/modules";
 // Dynamically import Plotly with no SSR
 const Plot = dynamic(() => import('react-plotly.js'), {
   ssr: false,
@@ -181,8 +184,8 @@ const OptioneeringVisualization: React.FC = () => {
             onClick={() => setProjectType('new-build')}
             className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
               projectType === 'new-build'
-                ? 'bg-blue-600 text-white shadow-lg scale-105'
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300 hover:scale-105'
+                ? 'w-full bg-[#484AB7] text-white border-neutral-200 dark:border-[#484AB7] p-5 rounded-2xl max-w-[256px] h-[56px] flex items-center justify-center text-[16px] font-semibold hover:bg-[#3c3f9d] transition-colors duration-200'
+                : 'flex h-14 w-full items-center justify-center !rounded-2xl border border-transparent bg-white text-sm text-black shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] transition duration-200 hover:shadow-lg max-w-[256px] text-[16px] font-semibold'
             }`}
           >
             New Build
@@ -191,8 +194,8 @@ const OptioneeringVisualization: React.FC = () => {
             onClick={() => setProjectType('retrofit')}
             className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
               projectType === 'retrofit'
-                ? 'bg-blue-600 text-white shadow-lg scale-105'
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300 hover:scale-105'
+                ? 'w-full bg-[#484AB7] text-white border-neutral-200 dark:border-[#484AB7] p-5 rounded-2xl max-w-[256px] h-[56px] flex items-center justify-center text-[16px] font-semibold hover:bg-[#3c3f9d] transition-colors duration-200'
+                : 'flex h-14 w-full items-center justify-center !rounded-2xl border border-transparent bg-white text-sm text-black shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] transition duration-200 hover:shadow-lg max-w-[256px] text-[16px] font-semibold'
             }`}
           >
             Retrofit
@@ -227,6 +230,7 @@ const OptioneeringVisualization: React.FC = () => {
               <Suspense fallback={<ChartSkeleton />}>
                 <SummaryRadarPlot data={summaryData} />
               </Suspense>
+              <p className='text-black'>The result: A confident, futureproof path to Net Zero from day one.</p>
             </div>
           </div>
         </>
@@ -243,7 +247,129 @@ const OptioneeringVisualization: React.FC = () => {
             <p className="mb-6 text-black"> We use SLAM + LiDAR 3D scanners to build an accurate BIM of the building.</p>
              <p className="mb-6 text-black">  We combine this with thermal imaging, moisture readings, air permeability tests, internal climate sensors, and smart HTC monitoring to build a performance scorecard of the building&apos;s current state. </p>
             
-           
+           <Swiper
+              modules={[Autoplay, Navigation]}
+            slidesPerView={1.25}
+            centeredSlides
+            loop
+            spaceBetween={15}
+            autoplay={{ delay: 2500, disableOnInteraction: false }}
+            navigation={{
+              nextEl: ".swiper-button-next",
+              prevEl: ".swiper-button-prev",
+            }}
+  breakpoints={{
+    768: { slidesPerView: 2 },
+    1024: { slidesPerView: 3 },
+  }}
+>
+    <SwiperSlide >
+      <div className="relative rounded-xl overflow-hidden">
+
+          <Image
+            src="/assets/images/image1.jpg"
+            alt="asdsa"
+            width={900}
+            height={400}
+            className="w-full h-[400px] object-cover rounded-xl"
+          />
+      
+        <div className="flex justify-between py-5 h-[104px]">
+          <h3 className="text-xl md:text-2xl font-semibold text-gray-800 max-w-[70%]">
+        
+          </h3>
+          <p className="text-sm text-gray-600">
+          czxczxc
+          </p>
+        </div>
+      </div>
+    </SwiperSlide>
+        <SwiperSlide >
+      <div className="relative rounded-xl overflow-hidden">
+
+          <Image
+            src="/assets/images/image1.jpg"
+            alt="asdsa"
+            width={900}
+            height={400}
+            className="w-full h-[400px] object-cover rounded-xl"
+          />
+      
+        <div className="flex justify-between py-5 h-[104px]">
+          <h3 className="text-xl md:text-2xl font-semibold text-gray-800 max-w-[70%]">
+        
+          </h3>
+          <p className="text-sm text-gray-600">
+          czxczxc
+          </p>
+        </div>
+      </div>
+    </SwiperSlide>
+        <SwiperSlide >
+      <div className="relative rounded-xl overflow-hidden">
+
+          <Image
+            src="/assets/images/image1.jpg"
+            alt="asdsa"
+            width={900}
+            height={400}
+            className="w-full h-[400px] object-cover rounded-xl"
+          />
+      
+        <div className="flex justify-between py-5 h-[104px]">
+          <h3 className="text-xl md:text-2xl font-semibold text-gray-800 max-w-[70%]">
+        
+          </h3>
+          <p className="text-sm text-gray-600">
+          czxczxc
+          </p>
+        </div>
+      </div>
+    </SwiperSlide>
+        <SwiperSlide >
+      <div className="relative rounded-xl overflow-hidden">
+
+          <Image
+            src="/assets/images/image1.jpg"
+            alt="asdsa"
+            width={900}
+            height={400}
+            className="w-full h-[400px] object-cover rounded-xl"
+          />
+      
+        <div className="flex justify-between py-5 h-[104px]">
+          <h3 className="text-xl md:text-2xl font-semibold text-gray-800 max-w-[70%]">
+        
+          </h3>
+          <p className="text-sm text-gray-600">
+          czxczxc
+          </p>
+        </div>
+      </div>
+    </SwiperSlide>
+        <SwiperSlide >
+      <div className="relative rounded-xl overflow-hidden">
+
+          <Image
+            src="/assets/images/image1.jpg"
+            alt="asdsa"
+            width={900}
+            height={400}
+            className="w-full h-[400px] object-cover rounded-xl"
+          />
+      
+        <div className="flex justify-between py-5 h-[104px]">
+          <h3 className="text-xl md:text-2xl font-semibold text-gray-800 max-w-[70%]">
+        
+          </h3>
+          <p className="text-sm text-gray-600">
+          czxczxc
+          </p>
+        </div>
+      </div>
+    </SwiperSlide>
+
+</Swiper>
           </div>
 
           <div>
