@@ -6,9 +6,21 @@ import * as Yup from "yup";
 import { useRouter } from "next/navigation";
 import { recaptchaSiteKey } from "@/sanity/env";
 import Image from "next/image";
+import { getContacts } from "@/sanity/sanity-utils";
+import { Contact } from "@/types/Contact";
 const SITE_KEY = recaptchaSiteKey;
 
 const ContactPage = () => {
+ const [contacts, setContacts] = useState<Contact[]>([]);
+
+  useEffect(() => {
+     const fetchData = async () => {
+       const res = await getContacts();
+       setContacts(res);
+     };
+     fetchData();
+   }, []);
+
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -120,19 +132,23 @@ const ContactPage = () => {
             We are always looking for ways to improve our products and services.
             Contact us and let us know how we can help you.
           </p>
+            {contacts.map((contact) => (
           <div className="mt-10 hidden flex-col items-center gap-4 md:flex-row lg:flex">
+       
             <p className="text-sm text-neutral-500 dark:text-neutral-400">
-              Flat 4, Manchester, United Kingdom
+              {contact.address}  
             </p>
             <div className="h-1 w-1 rounded-full bg-neutral-500 dark:bg-neutral-400"></div>
             <p className="text-sm text-neutral-500 dark:text-neutral-400">
-              +44 7824 323718
+            {contact.phone}
             </p>
             <div className="h-1 w-1 rounded-full bg-neutral-500 dark:bg-neutral-400"></div>
             <p className="text-sm text-neutral-500 dark:text-neutral-400">
-              info@5czero.com
+              {contact.email}
             </p>
           </div>
+          
+                 ))}
           <Image src="/assets/images/UpdatedMap.png" alt="Map" width={500} height={300} className="mt-10 w-full" />
         </div>
 

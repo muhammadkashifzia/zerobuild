@@ -2,6 +2,7 @@ import { createClient, groq } from "next-sanity";
 import { Service } from "@/types/Service";
 import { Project } from "@/types/Project";
 import { Resource } from "@/types/Resource";
+import { Contact } from "@/types/Contact";
 import clientConfig from "./config/client-config";
 
 export async function getServices(): Promise<Service[]> {
@@ -107,5 +108,16 @@ export async function getResource(slug: string): Promise<Resource> {
     }
   `,
     { slug }
+  );
+}
+
+/* Contact */
+export async function getContacts(): Promise<Contact[]> {
+  return createClient(clientConfig).fetch(
+    groq`*[_type == "contact"]{
+            address,
+            phone,
+              email,
+            }`
   );
 }
