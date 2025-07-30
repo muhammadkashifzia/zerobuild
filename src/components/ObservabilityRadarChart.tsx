@@ -1,7 +1,24 @@
 "use client";
 import React, { useEffect, useState, useMemo, useCallback, lazy, Suspense } from 'react';
-import Plot from 'react-plotly.js';
+import dynamic from 'next/dynamic';
 import * as XLSX from 'xlsx';
+
+// Dynamically import Plotly with no SSR
+const Plot = dynamic(() => import('react-plotly.js'), {
+  ssr: false,
+  loading: () => <ChartSkeleton />
+});
+
+// Chart loading skeleton
+const ChartSkeleton: React.FC = () => (
+  <div className="animate-pulse">
+    <div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
+      <div className="flex items-center justify-center h-64">
+        <div className="w-16 h-16 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded-full animate-pulse bg-[length:200%_100%] animate-shimmer"></div>
+      </div>
+    </div>
+  </div>
+);
 
 interface OptionData {
   Fabric: string;
@@ -73,17 +90,6 @@ const LoadingSkeleton: React.FC = () => (
   </div>
 );
 
-// Chart loading skeleton
-const ChartSkeleton: React.FC = () => (
-  <div className="animate-pulse">
-    <div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
-      <div className="flex items-center justify-center h-64">
-        <div className="w-16 h-16 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded-full animate-pulse bg-[length:200%_100%] animate-shimmer"></div>
-      </div>
-    </div>
-  </div>
-);
-
 // Memoized constants
 const THETA_LABELS = ['Carbon', 'Cost', 'Comfort', 'Circularity', 'Compliance', 'Carbon'];
 const COMFORT_SCORE_MAP: Record<number, number> = { [-1]: 35, 0: 90, 1: 75, 2: 35 };
@@ -102,8 +108,15 @@ const OptioneeringVisualization: React.FC = () => {
   const [summaryData, setSummaryData] = useState<OptionData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isClient) return;
+
     const fetchData = async () => {
       try {
         // Check cache first
@@ -145,7 +158,12 @@ const OptioneeringVisualization: React.FC = () => {
     };
 
     fetchData();
-  }, []);
+  }, [isClient]);
+
+  // Don't render anything until client-side
+  if (!isClient) {
+    return <LoadingSkeleton />;
+  }
 
   if (isLoading) return <LoadingSkeleton />;
   if (error) return <div className="text-center py-8 text-red-500">Error: {error}</div>;
@@ -526,4 +544,8 @@ const createSummaryData = (data: OptionData[]): OptionData[] => {
   return result.slice(0, 3);
 };
 
-export default OptioneeringVisualization;
+// Export with dynamic loading to prevent SSR issues
+export default dynamic(() => Promise.resolve(OptioneeringVisualization), {
+  ssr: false,
+  loading: () => <LoadingSkeleton />
+});
