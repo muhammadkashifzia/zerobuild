@@ -4,8 +4,8 @@ import { useState } from "react";
 import ObservabilityChart from "./ObservabilityChart";
 import { Button } from "./ui/moving-border";
 export default function PerformanceSection() {
-  const [showChart, setShowChart] = useState(true);
-  const [selectedViews, setSelectedViews] = useState<string[]>(["cost", "carbon"]); // Array to support multiple selections
+  const [showChart, setShowChart] = useState(true); // Changed to true to show chart by default
+  const [selectedView, setSelectedView] = useState<string>("cost"); // Changed to "cost" as default
 
   const chartButtons = [
     { label: "Cost", value: "cost" },
@@ -16,41 +16,29 @@ export default function PerformanceSection() {
   ];
 
   const handleButtonClick = (value: string) => {
-    setSelectedViews(prev => {
-      if (prev.includes(value)) {
-        // If already selected, remove it (but keep at least one selected)
-        if (prev.length > 1) {
-          return prev.filter(v => v !== value);
-        }
-        return prev;
-      } else {
-        // If not selected, add it
-        return [...prev, value];
-      }
-    });
+    setSelectedView(value);
     setShowChart(true);
   };
-
-  // Get the primary view for the chart (first selected view)
-  const primaryView = selectedViews[0] || "cost";
 
   return (
     <section className="text-black py-[40px] ">
       <div className="max-w-[1150px] mx-auto px-[16px]">
         {/* Chart buttons - shown first */}
         <div className="text-center mb-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 justify-center gap-2">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 justify-center gap-2 graph-btn">
             {chartButtons.map((button) => (
               <Button
                 key={button.value}
                 onClick={() => handleButtonClick(button.value)}
-                className={`px-4 py-2 text-sm font-medium transition-colors ${
-                  selectedViews.includes(button.value)
+                className={`px-4 py-2 text-sm font-medium transition-colors  ${
+                  selectedView === button.value
                     ? "bg-[#484AB7] text-[#ffffff]"
-                    : "bg-white text-[#444444] hover:bg-[#484AB7] hover:text-white"
+                    : "bg-white text-[#444444]  hover:bg-[#484AB7] hover:text-white common-btn"
                 }`}
                 style={{
+                 
                   fontSize: '12px',
+        
                 }}
               >
                 {button.label}
@@ -77,7 +65,7 @@ export default function PerformanceSection() {
         {/* Chart section - shown when button is clicked */}
         {showChart && (
           <div className="mb-12">
-            <ObservabilityChart selectedView={primaryView} />
+            <ObservabilityChart selectedView={selectedView} />
           </div>
         )}
       </div>

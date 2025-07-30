@@ -8,8 +8,8 @@ const ServiceSection = () => {
       <div className="container px-[16px] mx-auto space-y-6 md:space-y-10">
         {/* Header Row */}
         <div className="flex  gap-[20px] justify-between md:flex-row flex-col">
-          <div className="md:max-w-[500px] lg:max-w-[700px]">
-            <h2 className="text-3xl lg:text-4xl font-medium mt-2 text-black">
+          <div className="md:max-w-[500px] lg:max-w-[650px]">
+            <h2 className="text-3xl lg:text-[32px] font-medium mt-2 text-black">
               We guide, plan and design the future of the built environment. We
               are a global consultancy with advisory and technical expertise
               across more than 150 disciplines.
@@ -23,12 +23,12 @@ const ServiceSection = () => {
           </Link> */}
 
           <ul className="col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-x-14 gap-y-4">
-            <li className="text-[28px] md:text-[20px] lg:text-[28px]">Acoustic consulting</li>
-            <li className="text-[28px] md:text-[20px] lg:text-[28px]">Architecture</li>
-            <li className="text-[28px] md:text-[20px] lg:text-[28px]">Asset management</li>
-            <li className="text-[28px] md:text-[20px] lg:text-[28px]">Bridge engineering</li>
-            <li className="text-[28px] md:text-[20px] lg:text-[28px]">Building lihysics</li>
-            <li className="text-[28px] md:text-[20px] lg:text-[28px]">Building retrofit</li>
+            <li className="text-[28px] md:text-[18px] lg:text-[24px]">Acoustic consulting</li>
+            <li className="text-[24px] md:text-[18px] lg:text-[24px]">Architecture</li>
+            <li className="text-[24px] md:text-[18px] lg:text-[24px]">Asset management</li>
+            <li className="text-[24px] md:text-[18px] lg:text-[24px]">Bridge engineering</li>
+            <li className="text-[24px] md:text-[18px] lg:text-[24px]">Building lihysics</li>
+            <li className="text-[24px] md:text-[18px] lg:text-[24px]">Building retrofit</li>
           </ul>
         </div>
       </div>
