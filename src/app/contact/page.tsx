@@ -11,15 +11,15 @@ import { Contact } from "@/types/Contact";
 const SITE_KEY = recaptchaSiteKey;
 
 const ContactPage = () => {
- const [contacts, setContacts] = useState<Contact[]>([]);
+  const [contacts, setContacts] = useState<Contact[]>([]);
 
   useEffect(() => {
-     const fetchData = async () => {
-       const res = await getContacts();
-       setContacts(res);
-     };
-     fetchData();
-   }, []);
+    const fetchData = async () => {
+      const res = await getContacts();
+      setContacts(res);
+    };
+    fetchData();
+  }, []);
 
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -132,24 +132,31 @@ const ContactPage = () => {
             We are always looking for ways to improve our products and services.
             Contact us and let us know how we can help you.
           </p>
-            {contacts.map((contact) => (
-          <div className="mt-10 hidden flex-col items-center gap-4 md:flex-row lg:flex">
-       
-            <p className="text-sm text-neutral-500 dark:text-neutral-400">
-              {contact.address}  
-            </p>
-            <div className="h-1 w-1 rounded-full bg-neutral-500 dark:bg-neutral-400"></div>
-            <p className="text-sm text-neutral-500 dark:text-neutral-400">
-            {contact.phone}
-            </p>
-            <div className="h-1 w-1 rounded-full bg-neutral-500 dark:bg-neutral-400"></div>
-            <p className="text-sm text-neutral-500 dark:text-neutral-400">
-              {contact.email}
-            </p>
-          </div>
-          
-                 ))}
-          <Image src="/assets/images/UpdatedMap.png" alt="Map" width={500} height={300} className="mt-10 w-full" />
+          {contacts.map((contact, index) => (
+            <div
+              key={contact.email || index}
+              className="mt-10 hidden flex-col items-center gap-4 md:flex-row lg:flex"
+            >
+              <p className="text-sm text-neutral-500 dark:text-neutral-400">
+                {contact.address}
+              </p>
+              <div className="h-1 w-1 rounded-full bg-neutral-500 dark:bg-neutral-400"></div>
+              <p className="text-sm text-neutral-500 dark:text-neutral-400">
+                {contact.phone}
+              </p>
+              <div className="h-1 w-1 rounded-full bg-neutral-500 dark:bg-neutral-400"></div>
+              <p className="text-sm text-neutral-500 dark:text-neutral-400">
+                {contact.email}
+              </p>
+            </div>
+          ))}
+          <Image
+            src="/assets/images/UpdatedMap.png"
+            alt="Map"
+            width={500}
+            height={300}
+            className="mt-10 w-full"
+          />
         </div>
 
         <div className="relative mx-auto flex w-full max-w-2xl flex-col items-start gap-4 overflow-hidden rounded-3xl bg-gradient-to-b from-gray-100 to-gray-200 pt-[30px] pb-[40px] px-[40px]  dark:from-neutral-900 dark:to-neutral-950">
