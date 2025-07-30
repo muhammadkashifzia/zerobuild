@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo, useCallback, lazy, Suspense } from 'react';
 import Plot from 'react-plotly.js';
 import * as XLSX from 'xlsx';
 
@@ -20,6 +20,82 @@ interface OptionData {
   color_tag: string;
 }
 
+// Cache for processed data
+let dataCache: {
+  rawData: OptionData[];
+  combinedData: OptionData[];
+  summaryData: OptionData[];
+} | null = null;
+
+// Shimmer loading component
+const LoadingSkeleton: React.FC = () => (
+  <div className="container mx-auto px-4 py-8">
+    {/* Title skeleton */}
+    <div className="h-10 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded-lg mb-8 w-1/3 animate-pulse bg-[length:200%_100%] animate-shimmer"></div>
+    
+    {/* All Options Skeleton */}
+    <div className="mb-12">
+      <div className="h-8 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded-lg mb-4 w-1/4 animate-pulse bg-[length:200%_100%] animate-shimmer"></div>
+      <div className="bg-white p-4 rounded-lg shadow-lg min-w-[2000px]">
+        <div className="grid grid-cols-10 gap-2">
+          {Array.from({ length: 50 }).map((_, i) => (
+            <div key={i} className="aspect-square bg-gray-50 rounded-lg flex items-center justify-center border border-gray-100">
+              <div className="w-16 h-16 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded-full animate-pulse bg-[length:200%_100%] animate-shimmer"></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    {/* Summary Options Skeleton */}
+    <div>
+      <div className="h-8 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded-lg mb-4 w-1/4 animate-pulse bg-[length:200%_100%] animate-shimmer"></div>
+      <div className="bg-white p-4 rounded-lg shadow-lg">
+        <div className="grid grid-cols-3 gap-4">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div key={i} className="aspect-square bg-gray-50 rounded-lg flex items-center justify-center border border-gray-100">
+              <div className="w-20 h-20 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded-full animate-pulse bg-[length:200%_100%] animate-shimmer"></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <style jsx>{`
+      @keyframes shimmer {
+        0% { background-position: -200% 0; }
+        100% { background-position: 200% 0; }
+      }
+      .animate-shimmer {
+        animation: shimmer 2s infinite;
+      }
+    `}</style>
+  </div>
+);
+
+// Chart loading skeleton
+const ChartSkeleton: React.FC = () => (
+  <div className="animate-pulse">
+    <div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
+      <div className="flex items-center justify-center h-64">
+        <div className="w-16 h-16 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded-full animate-pulse bg-[length:200%_100%] animate-shimmer"></div>
+      </div>
+    </div>
+  </div>
+);
+
+// Memoized constants
+const THETA_LABELS = ['Carbon', 'Cost', 'Comfort', 'Circularity', 'Compliance', 'Carbon'];
+const COMFORT_SCORE_MAP: Record<number, number> = { [-1]: 35, 0: 90, 1: 75, 2: 35 };
+const COMPLIANCE_SCORE_MAP: Record<number, number> = { 1: 50, 2: 60, 3: 70, 4: 80, 5: 90 };
+const COLOR_MAP: Record<string, string> = {
+  blue: 'rgba(173,216,230,0.4)',
+  red: 'rgba(255,0,0,0.4)',
+  green: 'rgba(0,128,0,0.4)',
+  purple: 'rgba(128,0,128,0.4)',
+  goldenrod: 'rgba(218,165,32,0.4)'
+};
+
 const OptioneeringVisualization: React.FC = () => {
   const [rawData, setRawData] = useState<OptionData[]>([]);
   const [combinedData, setCombinedData] = useState<OptionData[]>([]);
@@ -30,6 +106,15 @@ const OptioneeringVisualization: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // Check cache first
+        if (dataCache) {
+          setRawData(dataCache.rawData);
+          setCombinedData(dataCache.combinedData);
+          setSummaryData(dataCache.summaryData);
+          setIsLoading(false);
+          return;
+        }
+
         const response = await fetch('/assets/file/optioneering_min_final.xlsx');
         if (!response.ok) throw new Error('Failed to fetch Excel file');
 
@@ -39,14 +124,19 @@ const OptioneeringVisualization: React.FC = () => {
         const jsonData = XLSX.utils.sheet_to_json(worksheet);
 
         const processedData = processRawData(jsonData);
-        setRawData(processedData);
-
         const sampledData = sampleAndCombineData(processedData);
-        setCombinedData(sampledData);
-
         const summary = createSummaryData(sampledData);
-        setSummaryData(summary);
 
+        // Cache the results
+        dataCache = {
+          rawData: processedData,
+          combinedData: sampledData,
+          summaryData: summary
+        };
+
+        setRawData(processedData);
+        setCombinedData(sampledData);
+        setSummaryData(summary);
         setIsLoading(false);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Unknown error');
@@ -57,35 +147,40 @@ const OptioneeringVisualization: React.FC = () => {
     fetchData();
   }, []);
 
-  if (isLoading) return <div className="text-center py-8">Loading data...</div>;
+  if (isLoading) return <LoadingSkeleton />;
   if (error) return <div className="text-center py-8 text-red-500">Error: {error}</div>;
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Optioneering Visualization</h1>
+      <h1 className="text-3xl font-bold mb-8 text-black">Optioneering Visualization</h1>
 
       <div className="mb-12 overflow-x-auto">
-        <h2 className="text-2xl font-semibold mb-4">All Options</h2>
+        <h2 className="text-2xl font-semibold mb-4 text-black">All Options</h2>
         <div className="bg-white p-4 rounded-lg shadow-lg min-w-[2000px]">
-          <MainRadarPlot data={combinedData} />
+          <Suspense fallback={<ChartSkeleton />}>
+            <MainRadarPlot data={combinedData} />
+          </Suspense>
         </div>
       </div>
 
       <div>
-        <h2 className="text-2xl font-semibold mb-4">Summary Options</h2>
+        <h2 className="text-2xl font-semibold mb-4 text-black">Summary Options</h2>
         <div className="bg-white p-4 rounded-lg shadow-lg">
-          <SummaryRadarPlot data={summaryData} />
+          <Suspense fallback={<ChartSkeleton />}>
+            <SummaryRadarPlot data={summaryData} />
+          </Suspense>
         </div>
       </div>
     </div>
   );
 };
 
-const MainRadarPlot: React.FC<{ data: OptionData[] }> = ({ data }) => {
+// Memoized MainRadarPlot component
+const MainRadarPlot: React.FC<{ data: OptionData[] }> = React.memo(({ data }) => {
   const rows = 5;
   const cols = 10;
 
-  const makeSubplots = () => {
+  const makeSubplots = useCallback(() => {
     const subplots: any[] = [];
 
     for (let i = 0; i < rows; i++) {
@@ -107,15 +202,15 @@ const MainRadarPlot: React.FC<{ data: OptionData[] }> = ({ data }) => {
         const fillColor = rgbaFromColor(color);
 
         subplots.push({
-          type: 'scatterpolar',
+          type: 'scatterpolar' as const,
           r: values,
-          theta: ['Carbon', 'Cost', 'Comfort', 'Circularity', 'Compliance', 'Carbon'],
-          fill: 'toself',
-          mode: 'lines+markers',
+          theta: THETA_LABELS,
+          fill: 'toself' as const,
+          mode: 'lines+markers' as const,
           marker: { size: 6, color: 'black' },
           line: { color },
           fillcolor: fillColor,
-          hoverinfo: 'text',
+          hoverinfo: 'text' as const,
           hovertext: generateHoverText(option, index + 1),
           showlegend: false,
           subplot: `polar${index + 1}`
@@ -124,42 +219,59 @@ const MainRadarPlot: React.FC<{ data: OptionData[] }> = ({ data }) => {
     }
 
     return subplots;
-  };
+  }, [data]);
 
-  const layout = {
+  const layout = useMemo(() => ({
     height: 1000,
     width: 2000,
-    grid: { rows, columns: cols, pattern: 'independent' },
+    grid: { rows, columns: cols, pattern: 'independent' as const },
     showlegend: false,
     margin: { l: 0, r: 0, t: 10, b: 10 },
-    polar: Array.from({ length: rows * cols }, (_, i) => ({
-      domain: {
-        row: Math.floor(i / cols),
-        column: i % cols,
-        x: [(i % cols) / cols, ((i % cols) + 1) / cols],
-        y: [1 - (Math.floor(i / cols) + 1) / rows, 1 - Math.floor(i / cols) / rows]
-      },
-      radialaxis: {
-        visible: true,
-        showticklabels: false,
-        range: [0, 100],
-        gridcolor: '#ddd',
-        gridwidth: 0.5
-      },
-      angularaxis: {
-        visible: true,
-        showticklabels: false,
-        gridcolor: '#ccc',
-        gridwidth: 0.5
+    dragmode: 'zoom' as const,
+    hovermode: 'closest' as const,
+    ...Array.from({ length: rows * cols }, (_, i) => ({
+      [`polar${i + 1}`]: {
+        domain: {
+          row: Math.floor(i / cols),
+          column: i % cols,
+          x: [(i % cols) / cols, ((i % cols) + 1) / cols],
+          y: [1 - (Math.floor(i / cols) + 1) / rows, 1 - Math.floor(i / cols) / rows]
+        },
+        radialaxis: {
+          visible: true,
+          showticklabels: false,
+          range: [0, 100],
+          gridcolor: '#ddd',
+          gridwidth: 0.5
+        },
+        angularaxis: {
+          visible: true,
+          showticklabels: false,
+          gridcolor: '#ccc',
+          gridwidth: 0.5
+        }
       }
-    }))
-  };
+    })).reduce((acc, polar) => ({ ...acc, ...polar }), {})
+  }), [rows, cols]);
 
-  return <Plot data={makeSubplots()} layout={layout} config={{ displayModeBar: false }} />;
-};
+  return <Plot 
+    data={makeSubplots()} 
+    layout={layout} 
+    config={{ 
+      displayModeBar: true, 
+      modeBarButtonsToRemove: ['pan2d', 'select2d', 'lasso2d'],
+      displaylogo: false,
+      responsive: true
+    }} 
+    useResizeHandler={true}
+  />;
+});
 
-const SummaryRadarPlot: React.FC<{ data: OptionData[] }> = ({ data }) => {
-  const traces = data.map((option, index) => {
+MainRadarPlot.displayName = 'MainRadarPlot';
+
+// Memoized SummaryRadarPlot component
+const SummaryRadarPlot: React.FC<{ data: OptionData[] }> = React.memo(({ data }) => {
+  const traces = useMemo(() => data.map((option, index) => {
     const values = [
       option.carbon_5cz,
       option.cost_5cz,
@@ -173,100 +285,116 @@ const SummaryRadarPlot: React.FC<{ data: OptionData[] }> = ({ data }) => {
     const fillColor = rgbaFromColor(color);
 
     return {
-      type: 'scatterpolar',
+      type: 'scatterpolar' as const,
       r: values,
-      theta: ['Carbon', 'Cost', 'Comfort', 'Circularity', 'Compliance', 'Carbon'],
-      fill: 'toself',
-      mode: 'lines+markers',
+      theta: THETA_LABELS,
+      fill: 'toself' as const,
+      mode: 'lines+markers' as const,
       marker: { size: 6, color: 'black', line: { width: 1, color: 'white' } },
       line: { color },
       fillcolor: fillColor,
-      hoverinfo: 'text',
+      hoverinfo: 'text' as const,
       hovertext: generateHoverText(option, index + 1),
       showlegend: false,
       subplot: `polar${index + 1}`
     };
-  });
+  }), [data]);
 
-  const layout = {
+  const layout = useMemo(() => ({
     height: 400,
     width: 1200,
-    grid: { rows: 1, columns: 3, pattern: 'independent' },
+    grid: { rows: 1, columns: 3, pattern: 'independent' as const },
     showlegend: false,
     margin: { l: 50, r: 50, t: 50, b: 50 },
-    polar: Array.from({ length: 3 }, (_, i) => ({
-      domain: {
-        row: 0,
-        column: i,
-        x: [i / 3, (i + 1) / 3],
-        y: [0, 1]
-      },
-      radialaxis: {
-        visible: true,
-        range: [0, 100],
-        showticklabels: false,
-        ticks: '',
-        showline: false,
-        gridcolor: 'rgba(0,0,0,0.2)',
-        gridwidth: 2
-      },
-      angularaxis: {
-        visible: true,
-        tickfont: { size: 13, family: 'Arial Black', color: 'black' },
-        tickangle: 0,
-        rotation: 90,
-        direction: 'clockwise',
-        ticks: ''
+    dragmode: 'zoom' as const,
+    hovermode: 'closest' as const,
+    ...Array.from({ length: 3 }, (_, i) => ({
+      [`polar${i + 1}`]: {
+        domain: {
+          row: 0,
+          column: i,
+          x: [i / 3, (i + 1) / 3],
+          y: [0, 1]
+        },
+        radialaxis: {
+          visible: true,
+          range: [0, 100],
+          showticklabels: false,
+          ticks: '',
+          showline: false,
+          gridcolor: 'rgba(0,0,0,0.2)',
+          gridwidth: 2
+        },
+        angularaxis: {
+          visible: true,
+          tickfont: { size: 13, family: 'Arial Black', color: 'black' },
+          tickangle: 0,
+          rotation: 90,
+          direction: 'clockwise' as const,
+          ticks: ''
+        }
       }
-    })),
+    })).reduce((acc, polar) => ({ ...acc, ...polar }), {}),
     images: [
       {
         source: '/icons/carbon.png',
-        xref: 'paper', yref: 'paper',
+        xref: 'paper' as const, yref: 'paper' as const,
         x: 0.75, y: 0.5,
         sizex: 0.07, sizey: 0.07,
-        xanchor: 'center', yanchor: 'middle',
-        layer: 'above'
+        xanchor: 'center' as const, yanchor: 'middle' as const,
+        layer: 'above' as const
       },
       {
         source: '/icons/cost.png',
-        xref: 'paper', yref: 'paper',
+        xref: 'paper' as const, yref: 'paper' as const,
         x: 0.577, y: 0.738,
         sizex: 0.07, sizey: 0.07,
-        xanchor: 'center', yanchor: 'middle',
-        layer: 'above'
+        xanchor: 'center' as const, yanchor: 'middle' as const,
+        layer: 'above' as const
       },
       {
         source: '/icons/comfort.png',
-        xref: 'paper', yref: 'paper',
+        xref: 'paper' as const, yref: 'paper' as const,
         x: 0.298, y: 0.647,
         sizex: 0.07, sizey: 0.07,
-        xanchor: 'center', yanchor: 'middle',
-        layer: 'above'
+        xanchor: 'center' as const, yanchor: 'middle' as const,
+        layer: 'above' as const
       },
       {
         source: '/icons/circularity.png',
-        xref: 'paper', yref: 'paper',
+        xref: 'paper' as const, yref: 'paper' as const,
         x: 0.298, y: 0.353,
         sizex: 0.07, sizey: 0.07,
-        xanchor: 'center', yanchor: 'middle',
-        layer: 'above'
+        xanchor: 'center' as const, yanchor: 'middle' as const,
+        layer: 'above' as const
       },
       {
         source: '/icons/compliance.png',
-        xref: 'paper', yref: 'paper',
+        xref: 'paper' as const, yref: 'paper' as const,
         x: 0.577, y: 0.262,
         sizex: 0.07, sizey: 0.07,
-        xanchor: 'center', yanchor: 'middle',
-        layer: 'above'
+        xanchor: 'center' as const, yanchor: 'middle' as const,
+        layer: 'above' as const
       }
     ]
-  };
+  }), []);
 
-  return <Plot data={traces} layout={layout} config={{ displayModeBar: false }} />;
-};
+  return <Plot 
+    data={traces} 
+    layout={layout} 
+    config={{ 
+      displayModeBar: true, 
+      modeBarButtonsToRemove: ['pan2d', 'select2d', 'lasso2d'],
+      displaylogo: false,
+      responsive: true
+    }} 
+    useResizeHandler={true}
+  />;
+});
 
-// Helpers
+SummaryRadarPlot.displayName = 'SummaryRadarPlot';
+
+// Optimized helper functions
 const safeNormalize = (value: number, min: number, max: number): number =>
   max === min ? 50 : 50 + ((max - value) / (max - min)) * 40;
 
@@ -288,14 +416,7 @@ const getColor = (row: OptionData): string => {
 };
 
 const rgbaFromColor = (name: string): string => {
-  const colorMap: Record<string, string> = {
-    blue: 'rgba(173,216,230,0.4)',
-    red: 'rgba(255,0,0,0.4)',
-    green: 'rgba(0,128,0,0.4)',
-    purple: 'rgba(128,0,128,0.4)',
-    goldenrod: 'rgba(218,165,32,0.4)'
-  };
-  return colorMap[name] || 'rgba(100,100,100,0.4)';
+  return COLOR_MAP[name] || 'rgba(100,100,100,0.4)';
 };
 
 const generateHoverText = (row: OptionData, index: number): string => {
@@ -340,15 +461,12 @@ const processRawData = (jsonData: any[]): OptionData[] => {
       Compliance_metric: item['Compliance - metric'] ?? item['Compliance_metric']
     };
 
-    const comfortScoreMap: Record<number, number> = { [-1]: 35, 0: 90, 1: 75, 2: 35 };
-    const complianceScoreMap: Record<number, number> = { 1: 50, 2: 60, 3: 70, 4: 80, 5: 90 };
-
     return {
       ...row,
       carbon_5cz: safeNormalize(row.Carbon, carbonMin, carbonMax),
       cost_5cz: safeNormalize(row.Cost, costMin, costMax),
-      comfort_5cz: comfortScoreMap[row.Comfort_metric] || 50,
-      compliance_5cz: complianceScoreMap[row.Compliance_metric] || 50,
+      comfort_5cz: COMFORT_SCORE_MAP[row.Comfort_metric] || 50,
+      compliance_5cz: COMPLIANCE_SCORE_MAP[row.Compliance_metric] || 50,
       circularity_5cz: row.Circularity,
       color_tag: ''
     };
@@ -383,7 +501,29 @@ const createSummaryData = (data: OptionData[]): OptionData[] => {
   const green = data.find(r => r.color_tag === 'green' && r.Compliance_metric !== 4);
   const purple = data.find(r => r.color_tag === 'purple' && r.Compliance_metric === 5);
 
-  return [yellow, green, purple].filter(Boolean) as OptionData[];
+  // Ensure we always have 3 charts by providing fallbacks
+  const result: OptionData[] = [];
+  
+  if (yellow) result.push(yellow);
+  else if (data.find(r => r.color_tag === 'goldenrod')) result.push(data.find(r => r.color_tag === 'goldenrod')!);
+  
+  if (green) result.push(green);
+  else if (data.find(r => r.color_tag === 'green')) result.push(data.find(r => r.color_tag === 'green')!);
+  
+  if (purple) result.push(purple);
+  else if (data.find(r => r.color_tag === 'purple')) result.push(data.find(r => r.color_tag === 'purple')!);
+  
+  // If we still don't have 3, add any available data
+  while (result.length < 3 && data.length > 0) {
+    const remaining = data.filter(r => !result.includes(r));
+    if (remaining.length > 0) {
+      result.push(remaining[0]);
+    } else {
+      break;
+    }
+  }
+
+  return result.slice(0, 3);
 };
 
 export default OptioneeringVisualization;
