@@ -236,7 +236,7 @@ const OptioneeringVisualization: React.FC = () => {
       {projectType === 'retrofit' && (
         <>
           <div className="mb-12 overflow-x-auto">
-            <p className="text-2xl font-semibold mb-4 text-black">We treat retrofit projects with care — bec`ause they carry heritage, sentiment, and unique constraints.</p>
+            <p className="text-2xl font-semibold mb-4 text-black">We treat retrofit projects with care — because they carry heritage, sentiment, and unique constraints.</p>
             
             <p className="mb-4 text-black"> Our 5C Zero Retrofit Framework begins with deep diagnostics.</p>
             
