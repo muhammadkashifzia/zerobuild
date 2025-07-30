@@ -204,9 +204,9 @@ const OptioneeringVisualization: React.FC = () => {
       {projectType === 'new-build' && (
         <>
           <div className="mb-12 overflow-x-auto">
-            <p className="text-2xl font-semibold mb-4 text-black">Ever wondered what might've happened if you chose a different strategy, system, or construction method? One that could have performed better over the long term?</p>
+            <p className="text-2xl font-semibold mb-4 text-black">Ever wondered what might&apos;ve happened if you chose a different strategy, system, or construction method? One that could have performed better over the long term?</p>
             
-            <p className="mb-4 text-black">Now you don't have to wonder.</p>
+            <p className="mb-4 text-black">Now you don&apos;t have to wonder.</p>
             
             <p className="mb-6 text-black">Our 5C Zero New Build Framework allows teams to explore over 1,000 design options at any stage of the design. We combine our expertise in building physics, dynamic simulation modelling, life cycle assessment with in-house datasets covering all of the 5Cs to rapidly score and filter high-performing options.</p>
             
@@ -219,7 +219,7 @@ const OptioneeringVisualization: React.FC = () => {
           </div>
 
           <div>
-            <p className='text-black mb-4'>We eliminate poor-performing and non-compliant options and score the remaining against the client's priorities. This helps us get clear, evidence-based rationale for the design decisions. We recommend using these outputs to develop brief for architects and engineers</p>
+            <p className='text-black mb-4'>We eliminate poor-performing and non-compliant options and score the remaining against the client&apos;s priorities. This helps us get clear, evidence-based rationale for the design decisions. We recommend using these outputs to develop brief for architects and engineers</p>
             <div className="bg-white p-4 rounded-lg shadow-lg relative">
               <div className="absolute top-4 left-4 z-10 bg-blue-100 text-blue-800 px-3 py-1 rounded-md text-sm font-medium">
                 This is an interactive plot
@@ -241,7 +241,7 @@ const OptioneeringVisualization: React.FC = () => {
             <p className="mb-4 text-black"> Our 5C Zero Retrofit Framework begins with deep diagnostics.</p>
             
             <p className="mb-6 text-black"> We use SLAM + LiDAR 3D scanners to build an accurate BIM of the building.</p>
-             <p className="mb-6 text-black">  We combine this with thermal imaging, moisture readings, air permeability tests, internal climate sensors, and smart HTC monitoring to build a performance scorecard of the building’s current state. </p>
+             <p className="mb-6 text-black">  We combine this with thermal imaging, moisture readings, air permeability tests, internal climate sensors, and smart HTC monitoring to build a performance scorecard of the building&apos;s current state. </p>
             
            
           </div>
@@ -251,7 +251,7 @@ const OptioneeringVisualization: React.FC = () => {
             <ul className='text-black'><li> Fabric-first</li>
             <li> Systems-led</li>
             <li>Hybrid approaches</li></ul>
-            <p className='text-black'>Each is evaluated across the building’s future lifecycle, scored against the 5Cs, and mapped to your priorities.</p>
+            <p className='text-black'>Each is evaluated across the building&apos;s future lifecycle, scored against the 5Cs, and mapped to your priorities.</p>
             <div className="bg-white p-4 rounded-lg shadow-lg relative">
               
               <Suspense fallback={<ChartSkeleton />}>
