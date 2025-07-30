@@ -109,6 +109,7 @@ const OptioneeringVisualization: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isClient, setIsClient] = useState(false);
+  const [projectType, setProjectType] = useState<'new-build' | 'retrofit' | null>('new-build');
 
   useEffect(() => {
     setIsClient(true);
@@ -170,25 +171,106 @@ const OptioneeringVisualization: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8 text-black">Optioneering Visualization</h1>
-
-      <div className="mb-12 overflow-x-auto">
-        <h2 className="text-2xl font-semibold mb-4 text-black">All Options</h2>
-        <div className="bg-white p-4 rounded-lg shadow-lg min-w-[2000px]">
-          <Suspense fallback={<ChartSkeleton />}>
-            <MainRadarPlot data={combinedData} />
-          </Suspense>
+      <h1 className="text-3xl font-bold mb-8 text-black">Which type of project are you working on?</h1>
+      
+      {/* Project Type Selection */}
+      <div className="mb-8">
+    
+        <div className="flex gap-4">
+          <button
+            onClick={() => setProjectType('new-build')}
+            className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
+              projectType === 'new-build'
+                ? 'bg-blue-600 text-white shadow-lg scale-105'
+                : 'bg-gray-200 text-gray-700 hover:bg-gray-300 hover:scale-105'
+            }`}
+          >
+            New Build
+          </button>
+          <button
+            onClick={() => setProjectType('retrofit')}
+            className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
+              projectType === 'retrofit'
+                ? 'bg-blue-600 text-white shadow-lg scale-105'
+                : 'bg-gray-200 text-gray-700 hover:bg-gray-300 hover:scale-105'
+            }`}
+          >
+            Retrofit
+          </button>
         </div>
       </div>
 
-      <div>
-        <h2 className="text-2xl font-semibold mb-4 text-black">Summary Options</h2>
-        <div className="bg-white p-4 rounded-lg shadow-lg">
-          <Suspense fallback={<ChartSkeleton />}>
-            <SummaryRadarPlot data={summaryData} />
-          </Suspense>
+      {/* New Build Content */}
+      {projectType === 'new-build' && (
+        <>
+          <div className="mb-12 overflow-x-auto">
+            <p className="text-2xl font-semibold mb-4 text-black">Ever wondered what might've happened if you chose a different strategy, system, or construction method? One that could have performed better over the long term?</p>
+            
+            <p className="mb-4 text-black">Now you don't have to wonder.</p>
+            
+            <p className="mb-6 text-black">Our 5C Zero New Build Framework allows teams to explore over 1,000 design options at any stage of the design. We combine our expertise in building physics, dynamic simulation modelling, life cycle assessment with in-house datasets covering all of the 5Cs to rapidly score and filter high-performing options.</p>
+            
+            <div className="bg-white p-4 rounded-lg shadow-lg min-w-[2000px] relative">
+              
+              <Suspense fallback={<ChartSkeleton />}>
+                <MainRadarPlot data={combinedData} />
+              </Suspense>
+            </div>
+          </div>
+
+          <div>
+            <p className='text-black mb-4'>We eliminate poor-performing and non-compliant options and score the remaining against the client's priorities. This helps us get clear, evidence-based rationale for the design decisions. We recommend using these outputs to develop brief for architects and engineers</p>
+            <div className="bg-white p-4 rounded-lg shadow-lg relative">
+              <div className="absolute top-4 left-4 z-10 bg-blue-100 text-blue-800 px-3 py-1 rounded-md text-sm font-medium">
+                This is an interactive plot
+              </div>
+              <Suspense fallback={<ChartSkeleton />}>
+                <SummaryRadarPlot data={summaryData} />
+              </Suspense>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* Retrofit Content */}
+      {projectType === 'retrofit' && (
+        <>
+          <div className="mb-12 overflow-x-auto">
+            <p className="text-2xl font-semibold mb-4 text-black">We treat retrofit projects with care — bec`ause they carry heritage, sentiment, and unique constraints.</p>
+            
+            <p className="mb-4 text-black"> Our 5C Zero Retrofit Framework begins with deep diagnostics.</p>
+            
+            <p className="mb-6 text-black"> We use SLAM + LiDAR 3D scanners to build an accurate BIM of the building.</p>
+             <p className="mb-6 text-black">  We combine this with thermal imaging, moisture readings, air permeability tests, internal climate sensors, and smart HTC monitoring to build a performance scorecard of the building’s current state. </p>
+            
+           
+          </div>
+
+          <div>
+            <p className='text-black mb-4'>We then simulate and compare retrofit pathways:</p>
+            <ul className='text-black'><li> Fabric-first</li>
+            <li> Systems-led</li>
+            <li>Hybrid approaches</li></ul>
+            <p className='text-black'>Each is evaluated across the building’s future lifecycle, scored against the 5Cs, and mapped to your priorities.</p>
+            <div className="bg-white p-4 rounded-lg shadow-lg relative">
+              
+              <Suspense fallback={<ChartSkeleton />}>
+                <SummaryRadarPlot data={summaryData} />
+              </Suspense>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* Default State */}
+      {!projectType && (
+        <div className="text-center py-12">
+          <div className="max-w-2xl mx-auto">
+            <h3 className="text-xl font-semibold mb-4 text-gray-600">Select a project type to view the optioneering visualization</h3>
+            <p className="text-gray-500">Choose between New Build or Retrofit to explore different design options and performance scenarios.</p>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
@@ -252,8 +334,8 @@ const MainRadarPlot: React.FC<{ data: OptionData[] }> = React.memo(({ data }) =>
         domain: {
           row: Math.floor(i / cols),
           column: i % cols,
-          x: [(i % cols) / cols, ((i % cols) + 1) / cols],
-          y: [1 - (Math.floor(i / cols) + 1) / rows, 1 - Math.floor(i / cols) / rows]
+          x: [(i % cols) / cols + 0.01, ((i % cols) + 1) / cols - 0.01],
+          y: [1 - (Math.floor(i / cols) + 1) / rows + 0.01, 1 - Math.floor(i / cols) / rows - 0.01]
         },
         radialaxis: {
           visible: true,
@@ -331,8 +413,8 @@ const SummaryRadarPlot: React.FC<{ data: OptionData[] }> = React.memo(({ data })
         domain: {
           row: 0,
           column: i,
-          x: [i / 3, (i + 1) / 3],
-          y: [0, 1]
+          x: [i / 3 + 0.04, (i + 1) / 3 - 0.02],
+          y: [0.03, 0.98]
         },
         radialaxis: {
           visible: true,
