@@ -1,7 +1,7 @@
 
 import { defineField, defineType } from 'sanity'
 
-export const resourceType = defineType({
+export const contactType = defineType({
   name: 'contact',
   title: 'Contact',
   type: 'document',
