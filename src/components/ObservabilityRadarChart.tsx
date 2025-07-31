@@ -6,7 +6,9 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import Image from 'next/image';
 import { Autoplay, Navigation } from "swiper/modules";
-// Dynamically import Plotly with no SSR
+import { ArrowLeft, ArrowRight } from "lucide-react";
+
+
 const Plot = dynamic(() => import('react-plotly.js'), {
   ssr: false,
   loading: () => <ChartSkeleton />
@@ -112,6 +114,7 @@ const OptioneeringVisualization: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isClient, setIsClient] = useState(false);
+    const [activeIndex, setActiveIndex] = useState(0);
   const [projectType, setProjectType] = useState<'new-build' | 'retrofit' | null>('new-build');
 
   useEffect(() => {
@@ -206,14 +209,14 @@ const OptioneeringVisualization: React.FC = () => {
       {/* New Build Content */}
       {projectType === 'new-build' && (
         <>
-          <div className="mb-12 overflow-x-auto">
+          <div className="mb-12 overflow-x-auto  rounded-lg shadow-lg p-[20px] bg-white relative">
             <p className="text-2xl font-semibold mb-4 text-black">Ever wondered what might&apos;ve happened if you chose a different strategy, system, or construction method? One that could have performed better over the long term?</p>
             
             <p className="mb-4 text-black">Now you don&apos;t have to wonder.</p>
             
             <p className="mb-6 text-black">Our 5C Zero New Build Framework allows teams to explore over 1,000 design options at any stage of the design. We combine our expertise in building physics, dynamic simulation modelling, life cycle assessment with in-house datasets covering all of the 5Cs to rapidly score and filter high-performing options.</p>
             
-            <div className="bg-white p-4 rounded-lg shadow-lg min-w-[2000px] relative">
+            <div>
               
               <Suspense fallback={<ChartSkeleton />}>
                 <MainRadarPlot data={combinedData} />
@@ -224,9 +227,7 @@ const OptioneeringVisualization: React.FC = () => {
           <div>
             <p className='text-black mb-4'>We eliminate poor-performing and non-compliant options and score the remaining against the client&apos;s priorities. This helps us get clear, evidence-based rationale for the design decisions. We recommend using these outputs to develop brief for architects and engineers</p>
             <div className="bg-white p-4 rounded-lg shadow-lg relative">
-              <div className="absolute top-4 left-4 z-10 bg-blue-100 text-blue-800 px-3 py-1 rounded-md text-sm font-medium">
-                This is an interactive plot
-              </div>
+              
               <Suspense fallback={<ChartSkeleton />}>
                 <SummaryRadarPlot data={summaryData} />
               </Suspense>
@@ -247,6 +248,15 @@ const OptioneeringVisualization: React.FC = () => {
             <p className="mb-6 text-black"> We use SLAM + LiDAR 3D scanners to build an accurate BIM of the building.</p>
              <p className="mb-6 text-black">  We combine this with thermal imaging, moisture readings, air permeability tests, internal climate sensors, and smart HTC monitoring to build a performance scorecard of the building&apos;s current state. </p>
             
+             <div className="relative w-full pt-14 overflow-x-hidden project-slider">
+                    <div className="absolute top-4 right-4 z-10 flex gap-2">
+                      <button className="swiper-button-prev">
+                        <ArrowLeft className="w-5 h-5 text-gray-600" />
+                      </button>
+                      <button className="swiper-button-next">
+                        <ArrowRight className="w-5 h-5 text-gray-600" />
+                      </button>
+                    </div>
            <Swiper
               modules={[Autoplay, Navigation]}
             slidesPerView={1.25}
@@ -258,6 +268,8 @@ const OptioneeringVisualization: React.FC = () => {
               nextEl: ".swiper-button-next",
               prevEl: ".swiper-button-prev",
             }}
+              onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
+            onSwiper={(swiper) => setActiveIndex(swiper.realIndex)}
   breakpoints={{
     768: { slidesPerView: 2 },
     1024: { slidesPerView: 3 },
@@ -274,14 +286,6 @@ const OptioneeringVisualization: React.FC = () => {
             className="w-full h-[400px] object-cover rounded-xl"
           />
       
-        <div className="flex justify-between py-5 h-[104px]">
-          <h3 className="text-xl md:text-2xl font-semibold text-gray-800 max-w-[70%]">
-        
-          </h3>
-          <p className="text-sm text-gray-600">
-          czxczxc
-          </p>
-        </div>
       </div>
     </SwiperSlide>
         <SwiperSlide >
@@ -294,15 +298,6 @@ const OptioneeringVisualization: React.FC = () => {
             height={400}
             className="w-full h-[400px] object-cover rounded-xl"
           />
-      
-        <div className="flex justify-between py-5 h-[104px]">
-          <h3 className="text-xl md:text-2xl font-semibold text-gray-800 max-w-[70%]">
-        
-          </h3>
-          <p className="text-sm text-gray-600">
-          czxczxc
-          </p>
-        </div>
       </div>
     </SwiperSlide>
         <SwiperSlide >
@@ -315,15 +310,6 @@ const OptioneeringVisualization: React.FC = () => {
             height={400}
             className="w-full h-[400px] object-cover rounded-xl"
           />
-      
-        <div className="flex justify-between py-5 h-[104px]">
-          <h3 className="text-xl md:text-2xl font-semibold text-gray-800 max-w-[70%]">
-        
-          </h3>
-          <p className="text-sm text-gray-600">
-          czxczxc
-          </p>
-        </div>
       </div>
     </SwiperSlide>
         <SwiperSlide >
@@ -336,15 +322,6 @@ const OptioneeringVisualization: React.FC = () => {
             height={400}
             className="w-full h-[400px] object-cover rounded-xl"
           />
-      
-        <div className="flex justify-between py-5 h-[104px]">
-          <h3 className="text-xl md:text-2xl font-semibold text-gray-800 max-w-[70%]">
-        
-          </h3>
-          <p className="text-sm text-gray-600">
-          czxczxc
-          </p>
-        </div>
       </div>
     </SwiperSlide>
         <SwiperSlide >
@@ -357,21 +334,12 @@ const OptioneeringVisualization: React.FC = () => {
             height={400}
             className="w-full h-[400px] object-cover rounded-xl"
           />
-      
-        <div className="flex justify-between py-5 h-[104px]">
-          <h3 className="text-xl md:text-2xl font-semibold text-gray-800 max-w-[70%]">
-        
-          </h3>
-          <p className="text-sm text-gray-600">
-          czxczxc
-          </p>
-        </div>
       </div>
     </SwiperSlide>
 
 </Swiper>
+</div>
           </div>
-
           <div>
             <p className='text-black mb-4'>We then simulate and compare retrofit pathways:</p>
             <ul className='text-black'><li> Fabric-first</li>
@@ -383,6 +351,10 @@ const OptioneeringVisualization: React.FC = () => {
               <Suspense fallback={<ChartSkeleton />}>
                 <SummaryRadarPlot data={summaryData} />
               </Suspense>
+            <div className='flex flex-col justify-center items-center'>
+                <p className='text-black text-center'>The result: a clear pathway to improvement that&apos;s aligned with both project&apos;s values and Net Zero goals.</p>
+           <button className='mt-[10px] px-6 py-3 rounded-lg font-medium transition-all duration-200 w-full bg-[#484AB7] text-white border-neutral-200 dark:border-[#484AB7] p-5 max-w-[256px] h-[56px] flex items-center justify-center text-[16px]  hover:bg-[#3c3f9d]'>Explore retrofit projects</button>
+            </div>
             </div>
           </div>
         </>
@@ -449,11 +421,10 @@ const MainRadarPlot: React.FC<{ data: OptionData[] }> = React.memo(({ data }) =>
 
   const layout = useMemo(() => ({
     height: 1000,
-    width: 2000,
+    width: 1300,
     grid: { rows, columns: cols, pattern: 'independent' as const },
     showlegend: false,
     margin: { l: 0, r: 0, t: 10, b: 10 },
-    dragmode: 'zoom' as const,
     hovermode: 'closest' as const,
     ...Array.from({ length: rows * cols }, (_, i) => ({
       [`polar${i + 1}`]: {
@@ -532,7 +503,6 @@ const SummaryRadarPlot: React.FC<{ data: OptionData[] }> = React.memo(({ data })
     grid: { rows: 1, columns: 3, pattern: 'independent' as const },
     showlegend: false,
     margin: { l: 50, r: 50, t: 50, b: 50 },
-    dragmode: 'zoom' as const,
     hovermode: 'closest' as const,
     ...Array.from({ length: 3 }, (_, i) => ({
       [`polar${i + 1}`]: {
