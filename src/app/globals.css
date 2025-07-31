@@ -153,3 +153,7 @@ a{
 #observability-chart .main-svg{
   background-color: transparent!important;
 }
+.js-plotly-plot{
+  display: flex;
+  margin: 0px auto;
+}
