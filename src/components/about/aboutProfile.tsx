@@ -41,9 +41,9 @@ export default function AboutProfile() {
         </p>
 
         <a
-          href="https://www.linkedin.com" // replace with real LinkedIn
+          href="https://www.linkedin.com/company/5c-zero/about/" // replace with real LinkedIn
           target="_blank"
-          className="text-blue-600 hover:underline inline-flex items-center gap-1"
+          className="text-black hover:underline inline-flex items-center gap-1"
         >
           Connect on LinkedIn
           <svg

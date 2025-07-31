@@ -231,7 +231,11 @@ const OptioneeringVisualization: React.FC = () => {
               <Suspense fallback={<ChartSkeleton />}>
                 <SummaryRadarPlot data={summaryData} />
               </Suspense>
-              <p className='text-black'>The result: A confident, futureproof path to Net Zero from day one.</p>
+        
+               <div className='flex flex-col justify-center items-center'>
+                <p className='text-black text-center'>The result: A confident, futureproof path to Net Zero from day one.</p>
+           <button className='mt-[10px] px-6 py-3 rounded-lg font-medium transition-all duration-200 w-full bg-[#484AB7] text-white border-neutral-200 dark:border-[#484AB7] p-5 max-w-[256px] h-[56px] flex items-center justify-center text-[16px]  hover:bg-[#3c3f9d]'> Explore new build projects</button>
+            </div>
             </div>
           </div>
         </>
@@ -533,7 +537,7 @@ const SummaryRadarPlot: React.FC<{ data: OptionData[] }> = React.memo(({ data })
     })).reduce((acc, polar) => ({ ...acc, ...polar }), {}),
     images: [
       {
-        source: '/icons/carbon.png',
+        // source: '/icons/carbon.png',
         xref: 'paper' as const, yref: 'paper' as const,
         x: 0.75, y: 0.5,
         sizex: 0.07, sizey: 0.07,
@@ -541,7 +545,7 @@ const SummaryRadarPlot: React.FC<{ data: OptionData[] }> = React.memo(({ data })
         layer: 'above' as const
       },
       {
-        source: '/icons/cost.png',
+        // source: '/icons/cost.png',
         xref: 'paper' as const, yref: 'paper' as const,
         x: 0.577, y: 0.738,
         sizex: 0.07, sizey: 0.07,
@@ -549,7 +553,7 @@ const SummaryRadarPlot: React.FC<{ data: OptionData[] }> = React.memo(({ data })
         layer: 'above' as const
       },
       {
-        source: '/icons/comfort.png',
+        // source: '/icons/comfort.png',
         xref: 'paper' as const, yref: 'paper' as const,
         x: 0.298, y: 0.647,
         sizex: 0.07, sizey: 0.07,
@@ -557,7 +561,7 @@ const SummaryRadarPlot: React.FC<{ data: OptionData[] }> = React.memo(({ data })
         layer: 'above' as const
       },
       {
-        source: '/icons/circularity.png',
+        // source: '/icons/circularity.png',
         xref: 'paper' as const, yref: 'paper' as const,
         x: 0.298, y: 0.353,
         sizex: 0.07, sizey: 0.07,
@@ -565,7 +569,7 @@ const SummaryRadarPlot: React.FC<{ data: OptionData[] }> = React.memo(({ data })
         layer: 'above' as const
       },
       {
-        source: '/icons/compliance.png',
+        // source: '/icons/compliance.png',
         xref: 'paper' as const, yref: 'paper' as const,
         x: 0.577, y: 0.262,
         sizex: 0.07, sizey: 0.07,
