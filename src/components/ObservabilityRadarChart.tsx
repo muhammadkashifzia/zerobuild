@@ -268,7 +268,7 @@ const OptioneeringVisualization: React.FC = () => {
               rapidly score and filter high-performing options.
             </p>
 
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto text-center">
               <Suspense fallback={<ChartSkeleton />}>
                 <MainRadarPlot data={combinedData} />
               </Suspense>
