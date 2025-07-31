@@ -1,13 +1,28 @@
 // components/FionaProfile.tsx
-"use client"; // use this only if you're using the app directory
-
+"use client"; 
 import Image from "next/image";
-
 export default function AboutTop() {
   return (
-    <div>
-      <div className="container mx-auto px-[16px]">
-        <h1 className="text-[32px] md:text-[68px] font-bold mb-4 text-black">About Us</h1>
+          <div>
+       <section
+        className="pt-[4rem] pb-24 mb-10"
+        style={{
+          backgroundBlendMode: "overlay",
+          backgroundSize: "cover",
+          backgroundImage: `url("/assets/images/coding-background-texture.jpg"), linear-gradient(180deg, #474ab6 0%, #9271f6 100%)`,
+        }}
+      >
+        <div className="container mx-auto px-4">
+          <h1 className="text-3xl md:text-6xl font-normal text-white leading-tight max-w-4xl">
+            About Us
+          </h1>
+          <p className="text-base md:text-2xl text-white mt-4 max-w-3xl">
+            From metro systems to concert halls, our sustainability projects
+            shape a better world.
+          </p>
+        </div>
+      </section>
+         <div className="container mx-auto px-[16px]">
         <p className="text-[#525050] mb-8 text-[20px]">
           We believe buildings can be perfect, because they are built on data,
           Data that can shape perfectly comfortable homes for every age group,
@@ -30,5 +45,6 @@ export default function AboutTop() {
         />
       </div>
     </div>
+
   );
 }

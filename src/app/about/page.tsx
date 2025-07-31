@@ -5,7 +5,7 @@ import ObservabilityRadarChart from "@/components/ObservabilityRadarChart";
 import AboutTop from "@/components/about/aboutTop";
 function page() {
   return (
-    <div className="min-h-screen  py-12 pt-24 md:pt-36">
+    <div className="min-h-screen  py-12 pt-24 md:pt-[4rem]">
       <AboutTop />
       <ObservabilityRadarChart />
     <AboutProfile />
