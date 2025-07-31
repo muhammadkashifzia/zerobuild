@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { memo, useMemo, useCallback } from "react";
 import {
   motion,
   useAnimationFrame,
@@ -10,66 +10,8 @@ import {
 import { useRef } from "react";
 import { cn } from "@/utils/cn";
 
-export function Button({
-  borderRadius = "10px",
-  children,
-  as: Component = "button",
-  containerClassName,
-  borderClassName,
-  duration,
-  className,
-  ...otherProps
-}: {
-  borderRadius?: string;
-  children: React.ReactNode;
-  as?: any;
-  containerClassName?: string;
-  borderClassName?: string;
-  duration?: number;
-  className?: string;
-  [key: string]: any;
-}) {
-  return (
-    <Component
-      className={cn(
-        " relative text-xl p-[1px] overflow-hidden w-full  !rounded-[10px]",
-        containerClassName
-      )}
-      style={{
-        borderRadius: borderRadius,
-      }}
-      {...otherProps}
-    >
-      <div
-        className="absolute inset-0"
-        style={{ borderRadius: `calc(${borderRadius} * 0.23)` }}
-      >
-        <MovingBorder duration={duration} rx="30%" ry="30%">
-          <div
-            className={cn(
-              "h-20 w-20 opacity-[0.8] bg-[radial-gradient(var(--sky-500)_40%,transparent_60%)]",
-              borderClassName
-            )}
-          />
-        </MovingBorder>
-      </div>
-
-      <div
-        className={cn(
-          "relative  border border-slate-800 backdrop-blur-xl text-white flex items-center justify-center w-full h-full text-sm antialiased",
-          className
-        )}
-        style={{
-          borderRadius: `calc(${borderRadius} * 0.96)`,
-        }}
-      >
-        {children}
-      </div>
-    </Component>
-  );
-}
-
-export const MovingBorder = ({
+// Memoized MovingBorder component to prevent unnecessary re-renders
+const MovingBorder = memo(({
   children,
   duration = 2000,
   rx,
@@ -85,14 +27,18 @@ export const MovingBorder = ({
   const pathRef = useRef<any>();
   const progress = useMotionValue<number>(0);
 
-  useAnimationFrame((time) => {
+  // Memoize the animation frame callback
+  const animationCallback = useCallback((time: number) => {
     const length = pathRef.current?.getTotalLength();
     if (length) {
       const pxPerMillisecond = length / duration;
       progress.set((time * pxPerMillisecond) % length);
     }
-  });
+  }, [duration, progress]);
 
+  useAnimationFrame(animationCallback);
+
+  // Memoize transforms to prevent recreation
   const x = useTransform(
     progress,
     (val) => pathRef.current?.getPointAtLength(val).x
@@ -103,6 +49,15 @@ export const MovingBorder = ({
   );
 
   const transform = useMotionTemplate`translateX(${x}px) translateY(${y}px) translateX(-50%) translateY(-50%)`;
+
+  // Memoize motion div style
+  const motionDivStyle = useMemo(() => ({
+    position: "absolute" as const,
+    top: 0,
+    left: 0,
+    display: "inline-block" as const,
+    transform,
+  }), [transform]);
 
   return (
     <>
@@ -123,17 +78,88 @@ export const MovingBorder = ({
           ref={pathRef}
         />
       </svg>
-      <motion.div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          display: "inline-block",
-          transform,
-        }}
-      >
+      <motion.div style={motionDivStyle}>
         {children}
       </motion.div>
     </>
   );
-};
+});
+
+MovingBorder.displayName = "MovingBorder";
+
+export const Button = memo(({
+  borderRadius = "10px",
+  children,
+  as: Component = "button",
+  containerClassName,
+  borderClassName,
+  duration,
+  className,
+  ...otherProps
+}: {
+  borderRadius?: string;
+  children: React.ReactNode;
+  as?: any;
+  containerClassName?: string;
+  borderClassName?: string;
+  duration?: number;
+  className?: string;
+  [key: string]: any;
+}) => {
+  // Memoize calculated border radius values
+  const innerBorderRadius = useMemo(() => 
+    `calc(${borderRadius} * 0.23)`, [borderRadius]
+  );
+  
+  const contentBorderRadius = useMemo(() => 
+    `calc(${borderRadius} * 0.96)`, [borderRadius]
+  );
+
+  // Memoize container classes
+  const containerClasses = useMemo(() => cn(
+    "relative text-xl p-[1px] overflow-hidden w-full !rounded-[10px]",
+    containerClassName
+  ), [containerClassName]);
+
+  // Memoize border classes
+  const borderClasses = useMemo(() => cn(
+    "h-20 w-20 opacity-[0.8] bg-[radial-gradient(var(--sky-500)_40%,transparent_60%)]",
+    borderClassName
+  ), [borderClassName]);
+
+  // Memoize content classes
+  const contentClasses = useMemo(() => cn(
+    "relative border border-slate-800 backdrop-blur-xl text-white flex items-center justify-center w-full h-full text-sm antialiased",
+    className
+  ), [className]);
+
+  return (
+    <Component
+      className={containerClasses}
+      style={{
+        borderRadius: borderRadius,
+      }}
+      {...otherProps}
+    >
+      <div
+        className="absolute inset-0"
+        style={{ borderRadius: innerBorderRadius }}
+      >
+        <MovingBorder duration={duration} rx="30%" ry="30%">
+          <div className={borderClasses} />
+        </MovingBorder>
+      </div>
+
+      <div
+        className={contentClasses}
+        style={{
+          borderRadius: contentBorderRadius,
+        }}
+      >
+        {children}
+      </div>
+    </Component>
+  );
+});
+
+Button.displayName = "Button";

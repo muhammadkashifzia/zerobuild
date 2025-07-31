@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useId } from "react";
-
+import React, { useState, useEffect, useId, memo, useMemo, useCallback, useRef } from "react";
 import { motion } from "motion/react";
 import { cn } from "@/utils/cn";
 
@@ -18,85 +17,121 @@ export interface ContainerTextFlipProps {
   animationDuration?: number;
 }
 
-export function ContainerTextFlip({
+// Memoized letter component to prevent unnecessary re-renders
+const Letter = memo(({ letter, index }: { letter: string; index: number }) => (
+  <motion.span
+    initial={{
+      opacity: 0,
+      filter: "blur(10px)",
+    }}
+    animate={{
+      opacity: 1,
+      filter: "blur(0px)",
+    }}
+    transition={{
+      delay: index * 0.02,
+    }}
+  >
+    {letter}
+  </motion.span>
+));
+
+Letter.displayName = "Letter";
+
+export const ContainerTextFlip = memo(({
   words = ["better", "modern", "beautiful", "awesome"],
   interval = 3000,
   className,
   textClassName,
   animationDuration = 700,
-}: ContainerTextFlipProps) {
+}: ContainerTextFlipProps) => {
   const id = useId();
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [width, setWidth] = useState(100);
-  const textRef = React.useRef(null);
+  const textRef = useRef<HTMLDivElement>(null);
 
-  const updateWidthForWord = () => {
+  // Memoize current word to prevent unnecessary recalculations
+  const currentWord = useMemo(() => words[currentWordIndex], [words, currentWordIndex]);
+
+  // Memoize the width calculation function
+  const updateWidthForWord = useCallback(() => {
     if (textRef.current) {
-      // Add some padding to the text width (30px on each side)
-      // @ts-ignore
       const textWidth = textRef.current.scrollWidth + 30;
       setWidth(textWidth);
     }
-  };
+  }, []);
+
+  // Memoize layout ID to prevent recreation
+  const layoutId = useMemo(() => `words-here-${id}`, [id]);
+  const wordLayoutId = useMemo(() => `word-div-${currentWord}-${id}`, [currentWord, id]);
+
+  // Memoize animation duration calculations
+  const widthTransitionDuration = useMemo(() => animationDuration / 2000, [animationDuration]);
+  const textTransitionDuration = useMemo(() => animationDuration / 1000, [animationDuration]);
+
+  // Memoize container classes
+  const containerClasses = useMemo(() => cn(
+    "relative inline-block rounded-lg pt-2 pb-3 text-center text-4xl font-bold text-black md:text-7xl",
+    "[background:linear-gradient(to_bottom,#f3f4f6,#e5e7eb)]",
+    "shadow-[inset_0_-1px_#d1d5db,inset_0_0_0_1px_#d1d5db,_0_4px_8px_#d1d5db]",
+    className,
+  ), [className]);
+
+  const textClasses = useMemo(() => cn("inline-block", textClassName), [textClassName]);
+
+  // Memoize text transition object
+  const textTransition = useMemo(() => ({
+    duration: textTransitionDuration,
+    ease: "easeInOut",
+  }), [textTransitionDuration]);
+
+  // Memoize width transition object
+  const widthTransition = useMemo(() => ({
+    duration: widthTransitionDuration
+  }), [widthTransitionDuration]);
 
   useEffect(() => {
     // Update width whenever the word changes
     updateWidthForWord();
-  }, [currentWordIndex]);
+  }, [currentWordIndex, updateWidthForWord]);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
       setCurrentWordIndex((prevIndex) => (prevIndex + 1) % words.length);
-      // Width will be updated in the effect that depends on currentWordIndex
     }, interval);
 
     return () => clearInterval(intervalId);
-  }, [words, interval]);
+  }, [words.length, interval]);
+
+  // Memoize letter components
+  const letterComponents = useMemo(() => 
+    currentWord.split("").map((letter, index) => (
+      <Letter key={`${letter}-${index}`} letter={letter} index={index} />
+    )),
+    [currentWord]
+  );
 
   return (
     <motion.div
-    layout
-    layoutId={`words-here-${id}`}
-    animate={{ width }}
-    transition={{ duration: animationDuration / 2000 }}
-    className={cn(
-      "relative inline-block rounded-lg pt-2 pb-3 text-center text-4xl font-bold text-black md:text-7xl ",
-      "[background:linear-gradient(to_bottom,#f3f4f6,#e5e7eb)]",
-      "shadow-[inset_0_-1px_#d1d5db,inset_0_0_0_1px_#d1d5db,_0_4px_8px_#d1d5db]",
-      className,
-    )}
-    key={words[currentWordIndex]}
-  >
-    <motion.div
-      transition={{
-        duration: animationDuration / 1000,
-        ease: "easeInOut",
-      }}
-      className={cn("inline-block", textClassName)}
-      ref={textRef}
-      layoutId={`word-div-${words[currentWordIndex]}-${id}`}
+      layout
+      layoutId={layoutId}
+      animate={{ width }}
+      transition={widthTransition}
+      className={containerClasses}
+      key={currentWord}
     >
-      <motion.div className="inline-block">
-        {words[currentWordIndex].split("").map((letter, index) => (
-          <motion.span
-            key={index}
-            initial={{
-              opacity: 0,
-              filter: "blur(10px)",
-            }}
-            animate={{
-              opacity: 1,
-              filter: "blur(0px)",
-            }}
-            transition={{
-              delay: index * 0.02,
-            }}
-          >
-            {letter}
-          </motion.span>
-        ))}
+      <motion.div
+        transition={textTransition}
+        className={textClasses}
+        ref={textRef}
+        layoutId={wordLayoutId}
+      >
+        <motion.div className="inline-block">
+          {letterComponents}
+        </motion.div>
       </motion.div>
     </motion.div>
-  </motion.div>
   );
-}
+});
+
+ContainerTextFlip.displayName = "ContainerTextFlip";

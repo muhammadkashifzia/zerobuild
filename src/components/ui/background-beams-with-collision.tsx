@@ -228,8 +228,8 @@ const Explosion = ({ ...props }: React.HTMLProps<HTMLDivElement>) => {
     id: index,
     initialX: 0,
     initialY: 0,
-    directionX: Math.floor(Math.random() * 80 - 40),
-    directionY: Math.floor(Math.random() * -50 - 10),
+    directionX: Math.floor(((index * 7) % 80) - 40),
+    directionY: Math.floor(((index * 11) % 50) - 50 - 10),
   }));
 
   return (
@@ -250,7 +250,7 @@ const Explosion = ({ ...props }: React.HTMLProps<HTMLDivElement>) => {
             y: span.directionY,
             opacity: 0,
           }}
-          transition={{ duration: Math.random() * 1.5 + 0.5, ease: "easeOut" }}
+          transition={{ duration: 0.5 + (span.id % 15) / 10, ease: "easeOut" }}
           className="absolute h-1 w-1 rounded-full bg-gradient-to-b from-indigo-500 to-purple-500"
         />
       ))}

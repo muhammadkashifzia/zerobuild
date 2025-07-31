@@ -100,11 +100,13 @@ export const WavyBackground = ({
   }, []);
 
   const [isSafari, setIsSafari] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+  
   useEffect(() => {
+    setIsClient(true);
     // I'm sorry but i have got to support it on safari.
     setIsSafari(
-      typeof window !== "undefined" &&
-        navigator.userAgent.includes("Safari") &&
+      navigator.userAgent.includes("Safari") &&
         !navigator.userAgent.includes("Chrome")
     );
   }, []);
@@ -121,7 +123,7 @@ export const WavyBackground = ({
         ref={canvasRef}
         id="canvas"
         style={{
-          ...(isSafari ? { filter: `blur(${blur}px)` } : {}),
+          ...(isClient && isSafari ? { filter: `blur(${blur}px)` } : {}),
         }}
       ></canvas>
       <div className={cn("relative z-10", className)} {...props}>

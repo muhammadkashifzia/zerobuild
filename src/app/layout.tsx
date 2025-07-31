@@ -2,9 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-
-
-
+import { Providers } from "@/components/providers";
 
 export const metadata: Metadata = {
   title: "Zero Build",
@@ -19,11 +17,13 @@ export default function RootLayout({
   return (
     <html lang="en" className="darks" suppressHydrationWarning>
       <body suppressHydrationWarning>
-        <div className="relative w-full flex items-center justify-center">
-          <Navbar />
-        </div>
-        {children}
-        <Footer />
+        <Providers>
+          <div className="relative w-full flex items-center justify-center">
+            <Navbar />
+          </div>
+          {children}
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

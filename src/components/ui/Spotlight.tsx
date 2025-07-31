@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo, useMemo } from "react";
 import { cn } from "@/utils/cn";
 
 type SpotlightProps = {
@@ -6,13 +6,19 @@ type SpotlightProps = {
   fill?: string;
 };
 
-export const Spotlight = ({ className, fill }: SpotlightProps) => {
+export const Spotlight = memo(({ className, fill }: SpotlightProps) => {
+  // Memoize the fill color to prevent unnecessary re-renders
+  const fillColor = useMemo(() => fill || "white", [fill]);
+  
+  // Memoize the component classes
+  const componentClasses = useMemo(() => cn(
+    "animate-spotlight pointer-events-none absolute z-[1] h-[169%] w-[138%] lg:w-[84%] opacity-0",
+    className
+  ), [className]);
+
   return (
     <svg
-      className={cn(
-        "animate-spotlight pointer-events-none absolute z-[1]  h-[169%] w-[138%] lg:w-[84%] opacity-0",
-        className
-      )}
+      className={componentClasses}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 3787 2842"
       fill="none"
@@ -24,7 +30,7 @@ export const Spotlight = ({ className, fill }: SpotlightProps) => {
           rx="1924.71"
           ry="273.501"
           transform="matrix(-0.822377 -0.568943 -0.568943 0.822377 3631.88 2291.09)"
-          fill={fill || "white"}
+          fill={fillColor}
           fillOpacity="0.21"
         ></ellipse>
       </g>
@@ -53,4 +59,6 @@ export const Spotlight = ({ className, fill }: SpotlightProps) => {
       </defs>
     </svg>
   );
-};
+});
+
+Spotlight.displayName = "Spotlight";
