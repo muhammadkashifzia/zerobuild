@@ -82,7 +82,7 @@ export const ContainerTextFlip = memo(({
   // Memoize text transition object
   const textTransition = useMemo(() => ({
     duration: textTransitionDuration,
-    ease: "easeInOut",
+    ease: "easeInOut" as const,
   }), [textTransitionDuration]);
 
   // Memoize width transition object
