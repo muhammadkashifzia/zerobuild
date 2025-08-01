@@ -790,6 +790,7 @@ const processRawData = (jsonData: any[]): OptionData[] => {
         Comfort_metric: item["Comfort - metric"] ?? item["Comfort_metric"],
         Compliance_metric:
           item["Compliance - metric"] ?? item["Compliance_metric"],
+        User_behaviour: item["User behaviour"] ?? item["User_behaviour"] ?? item["User_behavior"] ?? "Standard",
       };
 
       return {
@@ -808,7 +809,8 @@ const processRawData = (jsonData: any[]): OptionData[] => {
         row.Cost !== undefined &&
         row.Comfort_metric !== undefined &&
         row.Circularity !== undefined &&
-        row.Compliance_metric !== undefined
+        row.Compliance_metric !== undefined &&
+        row.User_behaviour !== undefined
     );
 };
 

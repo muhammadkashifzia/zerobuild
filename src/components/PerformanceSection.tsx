@@ -16,6 +16,10 @@ export default function PerformanceSection() {
   ];
 
   const handleButtonClick = (value: string) => {
+    // Prevent changing from cost or carbon view - always keep them selected
+    if (value === "cost" || value === "carbon") {
+      return;
+    }
     setSelectedView(value);
     setShowChart(true);
   };
@@ -26,29 +30,46 @@ export default function PerformanceSection() {
         {/* Chart buttons - shown first */}
         <div className="text-center mb-8">
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 justify-center gap-2 graph-btn">
-            {chartButtons.map((button) => (
-              <Button
-                key={button.value}
-                onClick={() => handleButtonClick(button.value)}
-                className={`px-4 py-2 text-sm font-medium transition-colors  ${
-                  selectedView === button.value
-                    ? "bg-[#484AB7] text-[#ffffff]"
-                    : "bg-white text-[#444444]  hover:bg-[#484AB7] hover:text-white common-btn"
-                }`}
-                style={{
-                 
-                  fontSize: '12px',
-        
-                }}
-              >
-                {button.label}
-              </Button>
-            ))}
+            {chartButtons.map((button) => {
+              // Use regular button for Cost and Carbon (no moving-border)
+              if (button.value === "cost" || button.value === "carbon") {
+                return (
+                  <button
+                    key={button.value}
+                    className="px-4 py-2 text-sm font-bold bg-[#484AB7] text-white cursor-not-allowed opacity-90 rounded-xl transition-colors"
+                    style={{
+                      fontSize: '12px',
+                    }}
+               
+                  >
+                    {button.label}
+                  </button>
+                );
+              }
+              
+              // Use moving-border Button for other buttons
+              return (
+                <Button
+                  key={button.value}
+                  onClick={() => handleButtonClick(button.value)}
+                  className={`px-4 py-2 text-sm font-medium transition-colors ${
+                    selectedView === button.value
+                      ? "bg-[#484AB7] text-white border border-[#484AB7] font-medium active"
+                      : "bg-white text-black border border-gray-300 hover:bg-[#484AB7] hover:text-white active:bg-[#484AB7] active:text-white font-medium"
+                  }`}
+                  style={{
+                    fontSize: '12px',
+                  }}
+                >
+                  {button.label}
+                </Button>
+              );
+            })}
           </div>
         </div>
 
         {/* New section below buttons */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-8">
           <div className="text-[28px] leading-[1.3] mb-[15px] font-bold">
             <p>Explore how our client used our Five C Zero Framework to evaluate 1000+ design options in under 24 hours, unlocking smarter decisions from day one..</p>
           </div>

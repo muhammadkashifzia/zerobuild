@@ -78,7 +78,7 @@ const HeroSection = memo(() => {
 
   return (
     <div>
-      <div className="h-auto md:h-[40rem] w-full rounded-md flex flex-col items-center justify-center relative overflow-hidden mx-auto py-10 md:py-0 border-b">
+      <div className="h-auto md:h-[32rem] w-full rounded-md flex flex-col items-center justify-center relative overflow-hidden mx-auto py-10 md:py-0 border-b">
         <Suspense fallback={<div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-100" />}>
           <Spotlight {...spotlightProps} />
         </Suspense>
@@ -86,7 +86,7 @@ const HeroSection = memo(() => {
         <div className="p-4 relative z-10 w-full text-center mt-[40px] md:mt-0">
           <motion.h1
             className={cn(
-              "relative mb-6 max-w-[65rem] text-center text-4xl leading-normal font-bold tracking-tight text-zinc-700 md:text-6xl mx-auto"
+              "relative mb-6 max-w-[65rem] text-center text-4xl leading-normal font-bold tracking-tight text-zinc-700 md:text-6xl mx-auto mt-10"
             )}
             {...titleVariants}
           >
