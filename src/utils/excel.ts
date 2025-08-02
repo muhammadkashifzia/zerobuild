@@ -80,6 +80,8 @@ export const generateContactExcel = (data: ContactFormData): string => {
     }
   ];
 
+  console.log('Excel data structure:', JSON.stringify(excelData, null, 2));
+
   // Create workbook and worksheet
   const workbook = XLSX.utils.book_new();
   const worksheet = XLSX.utils.json_to_sheet(excelData);
@@ -122,6 +124,7 @@ export const generateContactExcel = (data: ContactFormData): string => {
     console.log('File path:', filePath);
     console.log('File size:', buffer.length, 'bytes');
     console.log('Public URL:', `/data/${filename}`);
+    console.log('Download URL:', `/api/download-excel/${filename}`);
     console.log('=== EXCEL GENERATION END ===');
 
     // Return the public URL for the file
