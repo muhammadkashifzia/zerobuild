@@ -112,14 +112,14 @@ export default function TestExcelPage() {
                 Check Console:
               </h3>
               <p className="text-yellow-800">
-                Open your browser's developer console to see detailed Excel generation logs.
+                Open your browser&apos;s developer console to see detailed Excel generation logs.
                 You should see messages like:
               </p>
               <ul className="text-yellow-800 mt-2 space-y-1 text-sm">
-                <li>• "=== EXCEL GENERATION START ==="</li>
-                <li>• "✅ Excel file created successfully!"</li>
-                <li>• "=== APPENDING TO MASTER EXCEL ==="</li>
-                <li>• "✅ Data appended to master Excel file!"</li>
+                <li>• &quot;=== EXCEL GENERATION START ===&quot;</li>
+                <li>• &quot;✅ Excel file created successfully!&quot;</li>
+                <li>• &quot;=== APPENDING TO MASTER EXCEL ===&quot;</li>
+                <li>• &quot;✅ Data appended to master Excel file!&quot;</li>
               </ul>
             </div>
 
@@ -131,9 +131,9 @@ export default function TestExcelPage() {
                 After testing, check the <code className="bg-green-100 px-1 rounded">public/data/</code> directory for generated Excel files:
               </p>
               <ul className="text-green-800 mt-2 space-y-1 text-sm">
-                <li>• Individual files: <code>contact-submission-[ID]-[timestamp].xlsx</code></li>
-                <li>• Master file: <code>master-contact-submissions.xlsx</code></li>
-                <li>• All submissions: <code>all-contact-submissions-[date].xlsx</code></li>
+                <li>Individual files: <code>contact-submission-[ID]-[timestamp].xlsx</code></li>
+                <li>Master file: <code>master-contact-submissions.xlsx</code></li>
+                <li>All submissions: <code>all-contact-submissions-[date].xlsx</code></li>
               </ul>
             </div>
           </div>
