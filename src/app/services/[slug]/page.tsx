@@ -3,6 +3,65 @@ import Image from "next/image";
 import Link from "next/link";
 import { getService } from "@/sanity/sanity-utils";
 import { Service } from "@/types/Service";
+import type { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const service: Service = await getService(slug);
+
+  if (!service) {
+    return {
+      title: "Service Not Found | ZeroBuild",
+      description: "The requested service could not be found.",
+    };
+  }
+
+  const title = `${service.title} - ZeroBuild Net Zero Decarbonisation Services`;
+  const description = service.description || `Explore ${service.title} services from ZeroBuild. Our expert Net Zero decarbonisation solutions help architects, engineers, developers, and local authorities achieve their sustainability goals.`;
+  const keywords = `${service.title}, ZeroBuild services, Net Zero decarbonisation, ${service.categories?.join(', ') || 'sustainability services'}, built environment, carbon assessment, energy modelling, retrofit, new build, architects, engineers, developers, local authorities, housing associations`;
+
+  return {
+    title,
+    description,
+    keywords,
+    alternates: {
+      canonical: `/services/${slug}`,
+    },
+    openGraph: {
+      title,
+      description,
+      url: `https://zerobuild.io/services/${slug}`,
+      siteName: 'ZeroBuild',
+      images: service.image?.asset?.url ? [
+        {
+          url: service.image.asset.url,
+          width: 1200,
+          height: 630,
+          alt: `${service.title} - ZeroBuild Services`,
+        },
+      ] : [
+        {
+          url: '/assets/images/coding-background-texture.jpg',
+          width: 1200,
+          height: 630,
+          alt: `${service.title} - ZeroBuild Services`,
+        },
+      ],
+      locale: 'en_GB',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: service.image?.asset?.url ? [service.image.asset.url] : ['/assets/images/coding-background-texture.jpg'],
+    },
+  };
+}
 
 export default async function Page({
   params,

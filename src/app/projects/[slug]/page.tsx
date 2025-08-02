@@ -3,6 +3,65 @@ import Image from "next/image";
 import Link from "next/link";
 import { getProject } from "@/sanity/sanity-utils";
 import { Project } from "@/types/Project";
+import type { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const project: Project = await getProject(slug);
+
+  if (!project) {
+    return {
+      title: "Project Not Found | ZeroBuild",
+      description: "The requested project could not be found.",
+    };
+  }
+
+  const title = `${project.title} - ZeroBuild Net Zero Decarbonisation Project`;
+  const description = project.description || `Explore ${project.title} project by ZeroBuild. Our Net Zero decarbonisation case study demonstrates how we help architects, engineers, developers, and local authorities achieve their sustainability goals.`;
+  const keywords = `${project.title}, ZeroBuild project, Net Zero decarbonisation case study, ${project.categories?.join(', ') || 'sustainability project'}, built environment project, carbon reduction, energy efficiency, retrofit project, new build project, architects, engineers, developers, local authorities, housing associations, UK sustainability, Greater Manchester, SHDF, PSDS, ESG compliance`;
+
+  return {
+    title,
+    description,
+    keywords,
+    alternates: {
+      canonical: `/projects/${slug}`,
+    },
+    openGraph: {
+      title,
+      description,
+      url: `https://zerobuild.io/projects/${slug}`,
+      siteName: 'ZeroBuild',
+      images: project.image?.asset?.url ? [
+        {
+          url: project.image.asset.url,
+          width: 1200,
+          height: 630,
+          alt: `${project.title} - ZeroBuild Project`,
+        },
+      ] : [
+        {
+          url: '/assets/images/coding-background-texture.jpg',
+          width: 1200,
+          height: 630,
+          alt: `${project.title} - ZeroBuild Project`,
+        },
+      ],
+      locale: 'en_GB',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: project.image?.asset?.url ? [project.image.asset.url] : ['/assets/images/coding-background-texture.jpg'],
+    },
+  };
+}
 
 export default async function Page({
   params,

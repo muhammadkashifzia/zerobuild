@@ -3,6 +3,65 @@ import Image from "next/image";
 import Link from "next/link";
 import { getResource} from "@/sanity/sanity-utils";
 import { Resource } from "@/types/Resource";
+import type { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const resource: Resource = await getResource(slug);
+
+  if (!resource) {
+    return {
+      title: "Resource Not Found | ZeroBuild",
+      description: "The requested resource could not be found.",
+    };
+  }
+
+  const title = `${resource.title} - ZeroBuild Net Zero Decarbonisation Resource`;
+  const description = resource.description || `Access ${resource.title} resource from ZeroBuild. Our comprehensive Net Zero decarbonisation knowledge hub provides insights, tools, and guidance for architects, engineers, developers, and local authorities.`;
+  const keywords = `${resource.title}, ZeroBuild resource, Net Zero decarbonisation resource, ${resource.categories?.join(', ') || 'sustainability resource'}, built environment resource, carbon assessment guide, energy modelling tool, retrofit resource, new build resource, sustainability best practices, architect sustainability resource, engineer decarbonisation resource, developer Net Zero resource, local authority sustainability resource, housing association decarbonisation resource, Whole Life Carbon resource, building performance resource, procurement guide, funding application resource, SHDF resource, PSDS resource, ESG compliance resource`;
+
+  return {
+    title,
+    description,
+    keywords,
+    alternates: {
+      canonical: `/resources/${slug}`,
+    },
+    openGraph: {
+      title,
+      description,
+      url: `https://zerobuild.io/resources/${slug}`,
+      siteName: 'ZeroBuild',
+      images: resource.image?.asset?.url ? [
+        {
+          url: resource.image.asset.url,
+          width: 1200,
+          height: 630,
+          alt: `${resource.title} - ZeroBuild Resource`,
+        },
+      ] : [
+        {
+          url: '/assets/images/coding-background-texture.jpg',
+          width: 1200,
+          height: 630,
+          alt: `${resource.title} - ZeroBuild Resource`,
+        },
+      ],
+      locale: 'en_GB',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: resource.image?.asset?.url ? [resource.image.asset.url] : ['/assets/images/coding-background-texture.jpg'],
+    },
+  };
+}
 
 export default async function Page({
   params,
