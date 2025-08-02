@@ -21,7 +21,7 @@ export async function GET() {
         verified: smtpVerified,
         host: "smtp.office365.com",
         port: 587,
-        user: "info@eastlogic.com"
+        user: "hello@zerobuild.io"
       },
       environmentVariables: envCheck,
       allConfigured: Object.values(envCheck).every(Boolean) && smtpVerified
