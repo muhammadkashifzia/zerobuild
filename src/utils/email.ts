@@ -8,7 +8,7 @@ export const createEmailTransporter = () => {
     secure: true,
     auth: {
       user: "info@eastlogic.com",
-      pass: emailAppPassword,
+      pass: "]H;l$VomAa)TAH&A",
     },
     tls: {
       rejectUnauthorized: process.env.NODE_ENV === 'production'
