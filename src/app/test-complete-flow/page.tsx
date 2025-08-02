@@ -197,7 +197,7 @@ export default function TestCompleteFlowPage() {
                   <li>Company: Test Company Ltd</li>
                   <li>Purpose: General Inquiry, Partnership Opportunity</li>
                   <li>Role: Senior Manager</li>
-                  <li>Message: [User's message content]</li>
+                  <li>Message: [User&apos;s message content]</li>
                 </ul>
               </div>
             </div>
