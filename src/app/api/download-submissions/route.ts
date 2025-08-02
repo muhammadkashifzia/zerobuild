@@ -45,7 +45,7 @@ export async function GET() {
     // Generate Excel file
     const excelFileUrl = generateAllSubmissionsExcel(contactData);
     const baseUrl = process.env.NODE_ENV === 'production' 
-      ? 'https://zerobuild.com' 
+      ? 'https://zerobuild.vercel.app' 
       : 'http://localhost:3000';
     const fullExcelUrl = `${baseUrl}/api/download-excel/${excelFileUrl.split('/').pop()}`;
 

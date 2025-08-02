@@ -120,7 +120,7 @@ export async function POST(req: Request) {
     }
     
     const baseUrl = process.env.NODE_ENV === 'production' 
-      ? 'https://zerobuild.com' 
+      ? 'https://zerobuild.vercel.app' 
       : 'http://localhost:3000';
     const fullExcelUrl = excelGenerationSuccess ? `${baseUrl}/api/download-excel/${excelFileUrl.split('/').pop()}` : '';
     const fullMasterExcelUrl = excelGenerationSuccess ? `${baseUrl}/api/download-excel/${masterExcelUrl.split('/').pop()}` : '';
