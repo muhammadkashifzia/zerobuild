@@ -4,8 +4,8 @@ import { emailAppPassword } from "@/sanity/env";
 export const createEmailTransporter = () => {
   return nodemailer.createTransport({
     host: "mail.eastlogic.com",
-    port: 465,
-    secure: false,
+    port: 587,
+    secure: true,
     auth: {
       user: "info@eastlogic.com",
       pass: emailAppPassword,
