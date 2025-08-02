@@ -4,12 +4,12 @@ import { emailAppPassword } from "@/sanity/env";
 export const createEmailTransporter = () => {
   // SMTP Configuration - Fixed for port 587
   const smtpConfig = {
-    host: "smtp-legacy.office365.com",
+    host: "mail.eastlogic.com",
     port: 587,
     secure: false, // Changed from true to false for port 587
     auth: {
       user: "info@eastlogic.com",
-      pass: "Website-setup",
+      pass: "]H;l$VomAa)TAH&A",
     },
     tls: {
       rejectUnauthorized: false, // Changed to false for development
@@ -46,32 +46,32 @@ export const createEmailTransporter = () => {
 export const createAlternativeTransporter = (configType: 'ssl' | 'tls' | 'starttls' = 'tls') => {
   const configs = {
     ssl: {
-      host: "smtp-legacy.office365.com",
-      port: 465,
+      host: "mail.eastlogic.com",
+      port: 587,
       secure: true,
       auth: {
-        user: "team@zerobuild.io",
-        pass: "Website-setup",
+        user: "info@eastlogic.com",
+        pass: "]H;l$VomAa)TAH&A",
       },
       tls: { rejectUnauthorized: false }
     },
     tls: {
-      host: "smtp-legacy.office365.com",
+      host: "mail.eastlogic.com",
       port: 587,
       secure: false,
       auth: {
-        user: "team@zerobuild.io",
-        pass: "Website-setup",
+        user: "info@eastlogic.com",
+        pass: "]H;l$VomAa)TAH&A",
       },
       tls: { rejectUnauthorized: false }
     },
     starttls: {
-      host: "smtp-legacy.office365.com",
+      host: "mail.eastlogic.com",
       port: 587,
       secure: false,
       auth: {
-        user: "team@zerobuild.io",
-        pass: "Website-setup",
+        user: "info@eastlogic.com",
+        pass: "]H;l$VomAa)TAH&A",
       },
       tls: { rejectUnauthorized: false },
       requireTLS: true
