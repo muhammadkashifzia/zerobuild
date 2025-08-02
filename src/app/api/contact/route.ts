@@ -87,8 +87,8 @@ export async function POST(req: Request) {
       return createSuccessResponse(submission._id, "Email delivery may be delayed due to technical issues");
     }
 
-    // Send email
-    const emailResult = await sendEmail({
+    // Send email to admin
+    const adminEmailResult = await sendEmail({
       to: "info@eastlogic.com",
       replyTo: data.email,
       subject: "New Contact Form Submission - Zero Build",
@@ -107,8 +107,64 @@ export async function POST(req: Request) {
       `,
     });
 
-    if (!emailResult.success) {
-      return createSuccessResponse(submission._id, "Email delivery may be delayed due to technical issues");
+    // Send confirmation email to user
+    const userEmailResult = await sendEmail({
+      to: data.email,
+      subject: "Thank you for contacting Zero Build - We've received your message",
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
+            <h1 style="margin: 0; font-size: 28px;">Thank You!</h1>
+            <p style="margin: 10px 0 0 0; font-size: 16px;">We've received your message and will get back to you soon.</p>
+          </div>
+          
+          <div style="background: #f8f9fa; padding: 30px; border-radius: 0 0 10px 10px;">
+            <h2 style="color: #333; margin-top: 0;">Message Received</h2>
+            
+            <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #667eea;">
+              <p><strong>Name:</strong> ${data.name}</p>
+              <p><strong>Email:</strong> ${data.email}</p>
+              <p><strong>Company:</strong> ${data.company}</p>
+              ${data.message ? `<p><strong>Your Message:</strong><br>${data.message}</p>` : ''}
+              <p><strong>Purpose:</strong> ${data.purpose?.join(", ")}</p>
+              ${data.role ? `<p><strong>Role:</strong> ${data.role}</p>` : ''}
+            </div>
+            
+            <div style="background: #e8f4fd; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #2196f3;">
+              <h3 style="color: #1976d2; margin-top: 0;">What happens next?</h3>
+              <ul style="color: #333; line-height: 1.6;">
+                <li>Our team will review your message within 24 hours</li>
+                <li>We'll respond to your inquiry with relevant information</li>
+                <li>If you have urgent questions, feel free to follow up</li>
+              </ul>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+              <a href="https://zerobuild.com" style="background: #667eea; color: white; padding: 12px 30px; text-decoration: none; border-radius: 25px; display: inline-block; font-weight: bold;">Visit Our Website</a>
+            </div>
+            
+            <hr style="margin: 30px 0; border: none; border-top: 1px solid #ddd;">
+            
+            <p style="color: #666; font-size: 14px; text-align: center; margin: 0;">
+              This is an automated confirmation email. Please do not reply to this message.<br>
+              <strong>Submission ID:</strong> ${submission._id}<br>
+              <strong>Timestamp:</strong> ${new Date().toLocaleString()}
+            </p>
+          </div>
+        </div>
+      `,
+    });
+
+    // Check if either email failed
+    if (!adminEmailResult.success || !userEmailResult.success) {
+      const warnings = [];
+      if (!adminEmailResult.success) warnings.push("Admin notification failed");
+      if (!userEmailResult.success) warnings.push("User confirmation failed");
+      
+      return createSuccessResponse(
+        submission._id, 
+        `Form submitted successfully, but ${warnings.join(" and ")}. We'll still process your request.`
+      );
     }
 
     return createSuccessResponse(submission._id);
