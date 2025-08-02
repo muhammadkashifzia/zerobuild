@@ -159,6 +159,24 @@ export default function TestCompleteFlowPage() {
               </button>
             </div>
 
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <button
+                onClick={debugExcel}
+                disabled={isLoading}
+                className="bg-orange-600 hover:bg-orange-700 disabled:bg-orange-400 text-white font-bold py-3 px-6 rounded-lg transition-colors"
+              >
+                Debug Excel Files
+              </button>
+
+              <button
+                onClick={() => testDownload('contact-submission-test.xlsx')}
+                disabled={isLoading}
+                className="bg-red-600 hover:bg-red-700 disabled:bg-red-400 text-white font-bold py-3 px-6 rounded-lg transition-colors"
+              >
+                Test Individual Download
+              </button>
+            </div>
+
             {result && (
               <div className="bg-gray-50 p-4 rounded-lg">
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
