@@ -35,6 +35,6 @@ export const recaptchaSecretKey = assertValue(
 );
 
 export const emailAppPassword = assertValue(
-  process.env.EMAIL_APP_PASSWORD || '14Arid1336',
+  process.env.EMAIL_APP_PASSWORD || 'ynwsxvcgnfhsxzxg',
   'Missing environment variable: EMAIL_APP_PASSWORD'
 );
