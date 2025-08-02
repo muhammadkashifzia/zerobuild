@@ -144,7 +144,7 @@ export const sendEmail = async (options: {
   const transporter = createEmailTransporter();
   
   const mailOptions = {
-    from: "eastlogic.kashif@gmail.com",
+    from: "info@eastlogic.com",
     replyTo: options.replyTo,
     to: options.to,
     subject: options.subject,
