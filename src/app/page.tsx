@@ -1,16 +1,9 @@
-// import FeaturedSection from "@/components/FeaturedSection";
 import HeroSection from "@/components/HeroSection";
 import FeaturedByYoutubers from "@/components/FeaturedYoutube";
 import CtaSection from '@/components/CtaSection'
 import { MapWorld } from "@/components/MapWorld";
 import ServiceSection from "@/components/ServiceSection" 
 import TestimonialCard from "@/components/TestimonialCard";
-// import Resources from "@/components/Resources";
-// import WhyChooseUs from "@/components/WhyChooseUs";
-import "./globals.css";
-// import UpcomingWebinar from "@/components/UpcomingWebinar";
-// import GeminiEffect from "@/components/GeminiEffect";
-// import Instructor from "@/components/Instructor";
 import Image from "next/image";
 import PerformanceSection from "@/components/PerformanceSection";
 
@@ -22,18 +15,10 @@ export default function Home() {
       <HeroSection />
       <PerformanceSection />
       <ServiceSection />
-      {/* <Resources /> */}
       <FeaturedByYoutubers />
-
       <CtaSection />
       <MapWorld />
-
-      {/* <FeaturedSection /> */}
-      {/* <WhyChooseUs /> */}
       <TestimonialCard />
-      {/* <UpcomingWebinar /> */}
-      {/* <GeminiEffect /> */}
-      {/* <Instructor /> */}
     </main>
   );
 }

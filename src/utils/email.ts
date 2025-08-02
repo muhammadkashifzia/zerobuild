@@ -7,7 +7,7 @@ export const createEmailTransporter = () => {
     port: 587,
     secure: false,
     auth: {
-      user: "info@eastlogic.com",
+      user: "hello@zerobuild.io",
       pass: emailAppPassword,
     },
     tls: {
