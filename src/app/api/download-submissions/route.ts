@@ -47,7 +47,7 @@ export async function GET() {
     const baseUrl = process.env.NODE_ENV === 'production' 
       ? 'https://zerobuild.com' 
       : 'http://localhost:3000';
-    const fullExcelUrl = `${baseUrl}${excelFileUrl}`;
+    const fullExcelUrl = `${baseUrl}/api/download-excel/${excelFileUrl.split('/').pop()}`;
 
     return NextResponse.json({
       success: true,

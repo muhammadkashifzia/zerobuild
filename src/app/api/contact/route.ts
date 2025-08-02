@@ -122,8 +122,8 @@ export async function POST(req: Request) {
     const baseUrl = process.env.NODE_ENV === 'production' 
       ? 'https://zerobuild.com' 
       : 'http://localhost:3000';
-    const fullExcelUrl = excelGenerationSuccess ? `${baseUrl}${excelFileUrl}` : '';
-    const fullMasterExcelUrl = excelGenerationSuccess ? `${baseUrl}${masterExcelUrl}` : '';
+    const fullExcelUrl = excelGenerationSuccess ? `${baseUrl}/api/download-excel/${excelFileUrl.split('/').pop()}` : '';
+    const fullMasterExcelUrl = excelGenerationSuccess ? `${baseUrl}/api/download-excel/${masterExcelUrl.split('/').pop()}` : '';
 
     // Verify email configuration
     const emailConfigVerified = await verifyEmailConfig();
