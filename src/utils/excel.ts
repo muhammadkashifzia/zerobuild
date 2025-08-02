@@ -14,6 +14,45 @@ export interface ContactFormData {
   recaptchaScore: number;
 }
 
+// Helper function to safely create directory
+const ensureDirectoryExists = (dirPath: string): boolean => {
+  try {
+    if (!existsSync(dirPath)) {
+      console.log('Creating directory:', dirPath);
+      mkdirSync(dirPath, { recursive: true });
+      console.log('✅ Directory created successfully');
+    }
+    return true;
+  } catch (error) {
+    console.error('❌ Failed to create directory:', dirPath, error);
+    return false;
+  }
+};
+
+// Helper function to get safe data directory path
+const getDataDirectory = (): string => {
+  try {
+    // Try to use the current working directory
+    const cwd = process.cwd();
+    console.log('Current working directory:', cwd);
+    
+    // Check if we're in a serverless environment
+    if (cwd.includes('/var/task') || cwd.includes('/tmp')) {
+      console.log('Detected serverless environment, using /tmp');
+      return '/tmp/data';
+    }
+    
+    // Use the standard public/data directory
+    const dataDir = join(cwd, 'public', 'data');
+    console.log('Using standard data directory:', dataDir);
+    return dataDir;
+  } catch (error) {
+    console.error('Error determining data directory:', error);
+    // Fallback to /tmp
+    return '/tmp/data';
+  }
+};
+
 export const generateContactExcel = (data: ContactFormData): string => {
   console.log('=== EXCEL GENERATION START ===');
   console.log('Generating Excel file for submission:', data.submissionId);
@@ -66,26 +105,31 @@ export const generateContactExcel = (data: ContactFormData): string => {
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
   const filename = `contact-submission-${data.submissionId}-${timestamp}.xlsx`;
 
-  // Ensure public/data directory exists
-  const dataDir = join(process.cwd(), 'public', 'data');
-  if (!existsSync(dataDir)) {
-    console.log('Creating data directory:', dataDir);
-    mkdirSync(dataDir, { recursive: true });
+  // Get data directory and ensure it exists
+  const dataDir = getDataDirectory();
+  if (!ensureDirectoryExists(dataDir)) {
+    console.error('❌ Failed to create data directory, cannot save Excel file');
+    throw new Error('Failed to create data directory');
   }
 
-  // Save file to public/data directory
+  // Save file to data directory
   const filePath = join(dataDir, filename);
-  const buffer = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
-  writeFileSync(filePath, buffer);
+  try {
+    const buffer = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
+    writeFileSync(filePath, buffer);
 
-  console.log('✅ Excel file created successfully!');
-  console.log('File path:', filePath);
-  console.log('File size:', buffer.length, 'bytes');
-  console.log('Public URL:', `/data/${filename}`);
-  console.log('=== EXCEL GENERATION END ===');
+    console.log('✅ Excel file created successfully!');
+    console.log('File path:', filePath);
+    console.log('File size:', buffer.length, 'bytes');
+    console.log('Public URL:', `/data/${filename}`);
+    console.log('=== EXCEL GENERATION END ===');
 
-  // Return the public URL for the file
-  return `/data/${filename}`;
+    // Return the public URL for the file
+    return `/data/${filename}`;
+  } catch (error) {
+    console.error('❌ Failed to write Excel file:', error);
+    throw new Error(`Failed to write Excel file: ${error}`);
+  }
 };
 
 // Function to append data to master Excel file
@@ -93,12 +137,13 @@ export const appendToMasterExcel = (data: ContactFormData): string => {
   console.log('=== APPENDING TO MASTER EXCEL ===');
   
   const masterFilename = 'master-contact-submissions.xlsx';
-  const dataDir = join(process.cwd(), 'public', 'data');
+  const dataDir = getDataDirectory();
   const masterFilePath = join(dataDir, masterFilename);
   
   // Ensure data directory exists
-  if (!existsSync(dataDir)) {
-    mkdirSync(dataDir, { recursive: true });
+  if (!ensureDirectoryExists(dataDir)) {
+    console.error('❌ Failed to create data directory for master file');
+    throw new Error('Failed to create data directory');
   }
 
   let workbook: XLSX.WorkBook;
@@ -106,12 +151,18 @@ export const appendToMasterExcel = (data: ContactFormData): string => {
 
   // Check if master file exists
   if (existsSync(masterFilePath)) {
-    console.log('Master file exists, reading existing data...');
-    const fileBuffer = readFileSync(masterFilePath);
-    workbook = XLSX.read(fileBuffer, { type: 'buffer' });
-    const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-    existingData = XLSX.utils.sheet_to_json(worksheet);
-    console.log('Existing records:', existingData.length);
+    try {
+      console.log('Master file exists, reading existing data...');
+      const fileBuffer = readFileSync(masterFilePath);
+      workbook = XLSX.read(fileBuffer, { type: 'buffer' });
+      const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+      existingData = XLSX.utils.sheet_to_json(worksheet);
+      console.log('Existing records:', existingData.length);
+    } catch (error) {
+      console.error('❌ Failed to read existing master file:', error);
+      workbook = XLSX.utils.book_new();
+      existingData = [];
+    }
   } else {
     console.log('Creating new master file...');
     workbook = XLSX.utils.book_new();
@@ -157,15 +208,20 @@ export const appendToMasterExcel = (data: ContactFormData): string => {
   }
 
   // Save updated file
-  const buffer = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
-  writeFileSync(masterFilePath, buffer);
+  try {
+    const buffer = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
+    writeFileSync(masterFilePath, buffer);
 
-  console.log('✅ Data appended to master Excel file!');
-  console.log('Total records in master file:', existingData.length);
-  console.log('Master file path:', masterFilePath);
-  console.log('=== MASTER EXCEL UPDATE END ===');
+    console.log('✅ Data appended to master Excel file!');
+    console.log('Total records in master file:', existingData.length);
+    console.log('Master file path:', masterFilePath);
+    console.log('=== MASTER EXCEL UPDATE END ===');
 
-  return `/data/${masterFilename}`;
+    return `/data/${masterFilename}`;
+  } catch (error) {
+    console.error('❌ Failed to write master Excel file:', error);
+    throw new Error(`Failed to write master Excel file: ${error}`);
+  }
 };
 
 export const generateAllSubmissionsExcel = (submissions: ContactFormData[]): string => {
@@ -210,22 +266,28 @@ export const generateAllSubmissionsExcel = (submissions: ContactFormData[]): str
   const timestamp = new Date().toISOString().split('T')[0];
   const filename = `all-contact-submissions-${timestamp}.xlsx`;
 
-  // Ensure public/data directory exists
-  const dataDir = join(process.cwd(), 'public', 'data');
-  if (!existsSync(dataDir)) {
-    mkdirSync(dataDir, { recursive: true });
+  // Get data directory and ensure it exists
+  const dataDir = getDataDirectory();
+  if (!ensureDirectoryExists(dataDir)) {
+    console.error('❌ Failed to create data directory for all submissions file');
+    throw new Error('Failed to create data directory');
   }
 
-  // Save file to public/data directory
+  // Save file to data directory
   const filePath = join(dataDir, filename);
-  const buffer = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
-  writeFileSync(filePath, buffer);
+  try {
+    const buffer = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
+    writeFileSync(filePath, buffer);
 
-  console.log('✅ All submissions Excel file created!');
-  console.log('File path:', filePath);
-  console.log('File size:', buffer.length, 'bytes');
-  console.log('=== ALL SUBMISSIONS EXCEL END ===');
+    console.log('✅ All submissions Excel file created!');
+    console.log('File path:', filePath);
+    console.log('File size:', buffer.length, 'bytes');
+    console.log('=== ALL SUBMISSIONS EXCEL END ===');
 
-  // Return the public URL for the file
-  return `/data/${filename}`;
+    // Return the public URL for the file
+    return `/data/${filename}`;
+  } catch (error) {
+    console.error('❌ Failed to write all submissions Excel file:', error);
+    throw new Error(`Failed to write all submissions Excel file: ${error}`);
+  }
 }; 
