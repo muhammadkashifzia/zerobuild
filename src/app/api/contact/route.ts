@@ -3,6 +3,7 @@ import { createClient } from "next-sanity";
 import clientConfig from "@/sanity/config/client-config";
 import { recaptchaSecretKey } from "@/sanity/env";
 import { sendEmail, verifyEmailConfig } from "@/utils/email";
+import { generateContactExcel, ContactFormData } from "@/utils/excel";
 
 const client = createClient(clientConfig);
 
@@ -81,13 +82,32 @@ export async function POST(req: Request) {
       recaptcha_score: recaptchaJson.score,
     });
 
+    // Generate Excel file with user data
+    const contactData: ContactFormData = {
+      name: data.name,
+      email: data.email,
+      company: data.company,
+      purpose: data.purpose,
+      role: data.role,
+      message: data.message,
+      timestamp: new Date().toISOString(),
+      submissionId: submission._id,
+      recaptchaScore: recaptchaJson.score,
+    };
+
+    const excelFileUrl = generateContactExcel(contactData);
+    const baseUrl = process.env.NODE_ENV === 'production' 
+      ? 'https://zerobuild.com' 
+      : 'http://localhost:3000';
+    const fullExcelUrl = `${baseUrl}${excelFileUrl}`;
+
     // Verify email configuration
     const emailConfigVerified = await verifyEmailConfig();
     if (!emailConfigVerified) {
       return createSuccessResponse(submission._id, "Email delivery may be delayed due to technical issues");
     }
 
-    // Send email to admin
+    // Send email to admin with Excel download link
     const adminEmailResult = await sendEmail({
       to: "info@eastlogic.com",
       replyTo: data.email,
@@ -102,12 +122,24 @@ export async function POST(req: Request) {
         <p><strong>Role:</strong> ${data.role || "N/A"}</p>
         <p><strong>reCAPTCHA Score:</strong> ${recaptchaJson.score}</p>
         <p><strong>Submission ID:</strong> ${submission._id}</p>
+        
+        <div style="background: #f0f8ff; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #007bff;">
+          <h3 style="margin-top: 0; color: #007bff;">📊 Download Contact Data</h3>
+          <p>Click the link below to download the contact form data as an Excel file:</p>
+          <a href="${fullExcelUrl}" style="background: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; font-weight: bold;">
+            📥 Download Excel File
+          </a>
+          <p style="margin-top: 10px; font-size: 12px; color: #666;">
+            File contains: Name, Email, Company, Purpose, Role, Message, Timestamp, and Submission ID
+          </p>
+        </div>
+        
         <hr>
         <p><em>Sent via Zero Build Contact Form</em></p>
       `,
     });
 
-    // Send confirmation email to user
+    // Send confirmation email to user with Excel download link
     const userEmailResult = await sendEmail({
       to: data.email,
       subject: "Thank you for contacting Zero Build - We've received your message",
@@ -128,6 +160,17 @@ export async function POST(req: Request) {
               ${data.message ? `<p><strong>Your Message:</strong><br>${data.message}</p>` : ''}
               <p><strong>Purpose:</strong> ${data.purpose?.join(", ")}</p>
               ${data.role ? `<p><strong>Role:</strong> ${data.role}</p>` : ''}
+            </div>
+            
+            <div style="background: #e8f4fd; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #2196f3;">
+              <h3 style="color: #1976d2; margin-top: 0;">📊 Your Submission Data</h3>
+              <p>You can download a copy of your submission data as an Excel file:</p>
+              <a href="${fullExcelUrl}" style="background: #2196f3; color: white; padding: 12px 25px; text-decoration: none; border-radius: 25px; display: inline-block; font-weight: bold; margin: 10px 0;">
+                📥 Download My Data (Excel)
+              </a>
+              <p style="font-size: 12px; color: #666; margin-top: 10px;">
+                This file contains all the information you submitted for your records.
+              </p>
             </div>
             
             <div style="background: #e8f4fd; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #2196f3;">
