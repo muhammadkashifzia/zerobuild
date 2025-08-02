@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { verifyEmailConfig, sendEmail } from "@/utils/email";
+import { verifyEmailConfig, sendEmail, createAlternativeTransporter } from "@/utils/email";
 
 export async function POST() {
   console.log('=== TEST EMAIL API CALLED ===');
@@ -11,11 +11,12 @@ export async function POST() {
     const connectionVerified = await verifyEmailConfig();
     
     if (!connectionVerified) {
-      console.log('❌ SMTP connection test failed');
+      console.log('❌ All SMTP configurations failed');
       return NextResponse.json({ 
         success: false, 
-        error: "SMTP connection failed",
-        timestamp: new Date().toISOString()
+        error: "All SMTP connection attempts failed",
+        timestamp: new Date().toISOString(),
+        details: "Check console logs for specific error details"
       }, { status: 500 });
     }
 
@@ -60,4 +61,34 @@ export async function POST() {
       timestamp: new Date().toISOString()
     }, { status: 500 });
   }
+}
+
+// Add a GET method for quick SMTP testing
+export async function GET() {
+  console.log('=== QUICK SMTP TEST ===');
+  
+  const results = {
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV,
+    configurations: {} as any
+  };
+
+  // Test different SMTP configurations
+  const configs = ['ssl', 'tls', 'starttls'] as const;
+  
+  for (const config of configs) {
+    try {
+      console.log(`Testing ${config.toUpperCase()} configuration...`);
+      const transporter = createAlternativeTransporter(config);
+      await transporter.verify();
+      results.configurations[config] = { status: 'success', message: 'Connection verified' };
+      console.log(`✅ ${config.toUpperCase()} works!`);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      results.configurations[config] = { status: 'failed', message: errorMessage };
+      console.log(`❌ ${config.toUpperCase()} failed:`, errorMessage);
+    }
+  }
+
+  return NextResponse.json(results);
 } 
