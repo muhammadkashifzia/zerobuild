@@ -36,11 +36,7 @@ export default function PerformanceSection() {
                 return (
                   <button
                     key={button.value}
-                    className="px-4 py-2 text-sm font-bold bg-[#484AB7] text-white cursor-not-allowed opacity-90 rounded-xl transition-colors"
-                    style={{
-                      fontSize: '12px',
-                    }}
-               
+                    className="px-4 py-2 text-[16px] font-bold bg-[#484AB7] text-white cursor-not-allowed opacity-90 rounded-xl transition-colors"
                   >
                     {button.label}
                   </button>
@@ -52,9 +48,9 @@ export default function PerformanceSection() {
                 <Button
                   key={button.value}
                   onClick={() => handleButtonClick(button.value)}
-                  className={`px-4 py-2 text-sm font-medium transition-colors ${
+                  className={`px-4 py-2 text-[16px] font-boldtransition-colors ${
                     selectedView === button.value
-                      ? "bg-[#484AB7] text-white border border-[#484AB7] font-medium active"
+                      ? "bg-[#484AB7] text-white border border-[#484AB7] font-bold active"
                       : "bg-white text-black border border-gray-300 hover:bg-[#484AB7] hover:text-white active:bg-[#484AB7] active:text-white font-medium"
                   }`}
                   style={{

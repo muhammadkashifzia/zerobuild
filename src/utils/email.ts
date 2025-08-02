@@ -1,29 +1,28 @@
 import nodemailer from "nodemailer";
 import { emailAppPassword } from "@/sanity/env";
 
-// Create a reusable email transporter with STARTTLS encryption
 export const createEmailTransporter = () => {
   return nodemailer.createTransport({
     host: "smtp.office365.com",
     port: 587,
-    secure: false, // STARTTLS is used on port 587
+    secure: false,
     auth: {
       user: "info@eastlogic.com",
       pass: emailAppPassword,
     },
     tls: {
-      ciphers: 'SSLv3',
       rejectUnauthorized: process.env.NODE_ENV === 'production'
-    }
+    },
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 10000
   });
 };
 
-// Verify email configuration
 export const verifyEmailConfig = async () => {
   const transporter = createEmailTransporter();
   try {
     await transporter.verify();
-    console.log('SMTP connection verified successfully');
     return true;
   } catch (error) {
     console.error('SMTP verification failed:', error);
@@ -31,7 +30,6 @@ export const verifyEmailConfig = async () => {
   }
 };
 
-// Send email with standardized options
 export const sendEmail = async (options: {
   to: string;
   subject: string;
@@ -46,12 +44,16 @@ export const sendEmail = async (options: {
     to: options.to,
     subject: options.subject,
     html: options.html,
+    headers: {
+      'X-Priority': '1',
+      'X-MSMail-Priority': 'High',
+      'Importance': 'high'
+    }
   };
 
   try {
-    await transporter.sendMail(mailOptions);
-    console.log('Email sent successfully to:', options.to);
-    return { success: true };
+    const result = await transporter.sendMail(mailOptions);
+    return { success: true, messageId: result.messageId };
   } catch (error) {
     console.error('Email sending failed:', error);
     return { 

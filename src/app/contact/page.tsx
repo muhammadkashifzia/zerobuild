@@ -8,10 +8,15 @@ import { recaptchaSiteKey } from "@/sanity/env";
 import Image from "next/image";
 import { getContacts } from "@/sanity/sanity-utils";
 import { Contact } from "@/types/Contact";
+
 const SITE_KEY = recaptchaSiteKey;
 
 const ContactPage = () => {
   const [contacts, setContacts] = useState<Contact[]>([]);
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,11 +25,6 @@ const ContactPage = () => {
     };
     fetchData();
   }, []);
-
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState("");
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -47,7 +47,7 @@ const ContactPage = () => {
       name: Yup.string().required("Required"),
       email: Yup.string().email("Invalid email").required("Required"),
       company: Yup.string().required("Required"),
-      message: Yup.string().required("Required"),
+      message: Yup.string(),
       purpose: Yup.array().min(1, "Select at least one purpose"),
     }),
     onSubmit: async (values) => {
@@ -55,25 +55,40 @@ const ContactPage = () => {
       setError("");
 
       try {
+        if (typeof window.grecaptcha === 'undefined') {
+          setError("reCAPTCHA not loaded. Please refresh the page and try again.");
+          setLoading(false);
+          return;
+        }
+
         window.grecaptcha.ready(async () => {
-          const token = await window.grecaptcha.execute(SITE_KEY, {
-            action: "submit",
-          });
+          try {
+            const token = await window.grecaptcha.execute(SITE_KEY, {
+              action: "submit",
+            });
 
-          const res = await fetch("/api/contact", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ ...values, recaptchaToken: token }),
-          });
+            const res = await fetch("/api/contact", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ ...values, recaptchaToken: token }),
+            });
 
-          const result = await res.json();
+            const result = await res.json();
 
-          if (res.ok && result.success) {
-            setSuccess(true);
-            formik.resetForm();
-            setTimeout(() => router.push("/resources"), 6000);
-          } else {
-            setError(result.error || "Something went wrong. Please try again.");
+            if (res.ok && result.success) {
+              setSuccess(true);
+              formik.resetForm();
+              if (result.warning) {
+                console.warn('Email delivery warning:', result.warning);
+              }
+              setTimeout(() => router.push("/resources"), 6000);
+            } else {
+              setError(result.error || "Something went wrong. Please try again.");
+              setLoading(false);
+            }
+          } catch (err) {
+            console.error('reCAPTCHA or fetch error:', err);
+            setError("Network error. Please check your connection and try again.");
             setLoading(false);
           }
         });
@@ -159,9 +174,9 @@ const ContactPage = () => {
           />
         </div>
 
-        <div className="relative mx-auto flex w-full max-w-2xl flex-col items-start gap-4 overflow-hidden rounded-3xl bg-gradient-to-b from-gray-100 to-gray-200 pt-[30px] pb-[40px] px-[40px]  dark:from-neutral-900 dark:to-neutral-950">
+        <div className="relative mx-auto flex w-full max-w-2xl flex-col items-start gap-4 overflow-hidden rounded-3xl bg-gradient-to-b from-gray-100 to-gray-200 pt-[30px] pb-[40px] px-[40px] dark:from-neutral-900 dark:to-neutral-950">
           {success ? (
-            <div className="bg-green-100  p-4 rounded text-black">
+            <div className="bg-green-100 p-4 rounded text-black">
               Thank you! Your submission has been received.
             </div>
           ) : (
@@ -223,7 +238,6 @@ const ContactPage = () => {
                 <label className="block font-semibold text-black mb-[8px]">
                   I&apos;m contacting you as a...
                 </label>
-
                 <select
                   name="role"
                   onChange={formik.handleChange}
@@ -284,7 +298,7 @@ const ContactPage = () => {
 
               <div>
                 <label className="block font-semibold text-black mb-[8px]">
-                  Message
+                  Message (Optional)
                 </label>
                 <textarea
                   name="message"
@@ -292,7 +306,7 @@ const ContactPage = () => {
                   value={formik.values.message}
                   rows={4}
                   className="w-full border rounded p-2 text-black"
-                  placeholder="Enter your message"
+                  placeholder="Enter your message (optional)"
                 />
                 {formik.touched.message && formik.errors.message && (
                   <p className="text-red-500 text-sm">
@@ -314,7 +328,7 @@ const ContactPage = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-[#484AB7] text-white border-neutral-200 px-2 rounded-xl max-w-[185px] h-[45px] flex items-center justify-center text-[16px] font-semibold hover:bg-[#3c3f9d] transition-colors duration-200"
+                className="w-full bg-[#484AB7] text-white border-neutral-200 px-2 rounded-xl max-w-[185px] h-[45px] flex items-center justify-center text-[16px] font-semibold hover:bg-[#3c3f9d] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? "Submitting..." : "Submit"}
               </button>

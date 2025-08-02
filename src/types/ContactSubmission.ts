@@ -1,11 +1,12 @@
 export interface ContactSubmission {
+  _id?: string;
   _type: "contactSubmission";
+  timestamp: string;
   name: string;
   email: string;
   company: string;
-  purpose: string[];  // multi-option selector
+  purpose: string[];
   role?: string;
   message?: string;
-  honeypot?: string;
-  recaptchaToken: string;
+  recaptcha_score?: number;
 }

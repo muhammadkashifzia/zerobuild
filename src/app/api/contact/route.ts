@@ -2,37 +2,42 @@ import { NextResponse } from "next/server";
 import { createClient } from "next-sanity";
 import clientConfig from "@/sanity/config/client-config";
 import { recaptchaSecretKey } from "@/sanity/env";
-import { sendEmail } from "@/utils/email";
+import { sendEmail, verifyEmailConfig } from "@/utils/email";
 
 const client = createClient(clientConfig);
-console.log('Sanity client configured with projectId:', clientConfig.projectId);
+
+const createSuccessResponse = (submissionId: string, warning?: string) => {
+  const response: any = {
+    success: true,
+    submissionId,
+    message: "Thanks for reaching out! We'll be in touch soon. In the meantime, check out our latest tools.",
+    resourcesLink: "/resources",
+  };
+  
+  if (warning) {
+    response.warning = warning;
+  }
+  
+  return NextResponse.json(response);
+};
 
 export async function POST(req: Request) {
   try {
     const data = await req.json();
-    
-    console.log('Received data keys:', Object.keys(data));
-    console.log('Environment check - recaptchaSecretKey exists:', !!recaptchaSecretKey);
 
-    // 1. Honeypot check
+    // Honeypot check
     if (data.honeypot && data.honeypot.trim() !== "") {
-      console.log("Bot submission detected");
       return NextResponse.json({ success: true });
     }
 
-    // 2. reCAPTCHA verification with improved validation
+    // reCAPTCHA verification
     if (!data.recaptchaToken || typeof data.recaptchaToken !== 'string' || data.recaptchaToken.trim() === '') {
-      console.log('Invalid reCAPTCHA token:', typeof data.recaptchaToken, data.recaptchaToken?.length);
       return NextResponse.json({ success: false, error: "Invalid reCAPTCHA token" }, { status: 400 });
     }
 
     const cleanToken = data.recaptchaToken.trim();
-    console.log('reCAPTCHA token length:', cleanToken.length);
-    console.log('reCAPTCHA token preview:', cleanToken.substring(0, 50) + '...');
-
 
     if (!recaptchaSecretKey) {
-      console.error('reCAPTCHA secret key not found');
       return NextResponse.json({ success: false, error: "Server configuration error" }, { status: 500 });
     }
 
@@ -46,15 +51,12 @@ export async function POST(req: Request) {
     });
 
     if (!recaptchaResponse.ok) {
-      console.error('reCAPTCHA API request failed:', recaptchaResponse.status, recaptchaResponse.statusText);
       return NextResponse.json({ success: false, error: "reCAPTCHA verification failed" }, { status: 500 });
     }
 
     const recaptchaJson = await recaptchaResponse.json();
-    console.log('reCAPTCHA response:', recaptchaJson);
 
     if (!recaptchaJson.success) {
-      console.error('reCAPTCHA verification failed:', recaptchaJson['error-codes']);
       return NextResponse.json({ 
         success: false, 
         error: "Failed reCAPTCHA check",
@@ -63,12 +65,10 @@ export async function POST(req: Request) {
     }
 
     if (recaptchaJson.score < 0.5) {
-      console.log('reCAPTCHA score too low:', recaptchaJson.score);
       return NextResponse.json({ success: false, error: "Security check failed" }, { status: 403 });
     }
 
-    // 3. Store in Sanity
-    console.log('Attempting to create Sanity submission...');
+    // Store in Sanity
     const submission = await client.create({
       _type: "contactSubmission",
       timestamp: new Date().toISOString(),
@@ -80,11 +80,14 @@ export async function POST(req: Request) {
       message: data.message || "",
       recaptcha_score: recaptchaJson.score,
     });
-    console.log('Sanity submission created successfully:', submission._id);
 
-    // 4. Send email via Microsoft 365 SMTP with STARTTLS
-    console.log('Attempting to send email...');
-    
+    // Verify email configuration
+    const emailConfigVerified = await verifyEmailConfig();
+    if (!emailConfigVerified) {
+      return createSuccessResponse(submission._id, "Email delivery may be delayed due to technical issues");
+    }
+
+    // Send email
     const emailResult = await sendEmail({
       to: "info@eastlogic.com",
       replyTo: data.email,
@@ -94,35 +97,25 @@ export async function POST(req: Request) {
         <p><strong>Name:</strong> ${data.name}</p>
         <p><strong>Email:</strong> ${data.email}</p>
         <p><strong>Company:</strong> ${data.company}</p>
-        <p><strong>Message:</strong><br>${data.message}</p>
+        <p><strong>Message:</strong><br>${data.message || "No message provided"}</p>
         <p><strong>Purpose:</strong> ${data.purpose?.join(", ")}</p>
         <p><strong>Role:</strong> ${data.role || "N/A"}</p>
         <p><strong>reCAPTCHA Score:</strong> ${recaptchaJson.score}</p>
+        <p><strong>Submission ID:</strong> ${submission._id}</p>
         <hr>
         <p><em>Sent via Zero Build Contact Form</em></p>
       `,
     });
 
     if (!emailResult.success) {
-      console.error('Email sending failed:', emailResult.error);
-      // Continue with the response even if email fails
-      // The submission was already saved to Sanity
-    } else {
-      console.log('Email sent successfully');
+      return createSuccessResponse(submission._id, "Email delivery may be delayed due to technical issues");
     }
 
-    // 5. Final response
-    return NextResponse.json({
-      success: true,
-      submissionId: submission._id,
-      message: "Thanks for reaching out! We'll be in touch soon. In the meantime, check out our latest tools.",
-      resourcesLink: "/resources",
-    });
+    return createSuccessResponse(submission._id);
 
   } catch (error) {
     console.error("Error submitting contact form:", error);
     
-    // Provide more specific error messages based on the error type
     let errorMessage = "Internal server error";
     let statusCode = 500;
     
