@@ -3,7 +3,7 @@ import { createClient } from "next-sanity";
 import clientConfig from "@/sanity/config/client-config";
 import { recaptchaSecretKey } from "@/sanity/env";
 import { sendEmail, verifyEmailConfig } from "@/utils/email";
-import { generateContactExcel, ContactFormData } from "@/utils/excel";
+import { generateContactExcel, appendToMasterExcel, ContactFormData } from "@/utils/excel";
 
 const client = createClient(clientConfig);
 
@@ -95,11 +95,26 @@ export async function POST(req: Request) {
       recaptchaScore: recaptchaJson.score,
     };
 
+    console.log('=== CONTACT FORM PROCESSING ===');
+    console.log('Submission ID:', submission._id);
+    console.log('User:', data.name, '(', data.email, ')');
+    console.log('Company:', data.company);
+
+    // Generate individual Excel file
     const excelFileUrl = generateContactExcel(contactData);
+    
+    // Append to master Excel file
+    const masterExcelUrl = appendToMasterExcel(contactData);
+    
     const baseUrl = process.env.NODE_ENV === 'production' 
       ? 'https://zerobuild.com' 
       : 'http://localhost:3000';
     const fullExcelUrl = `${baseUrl}${excelFileUrl}`;
+    const fullMasterExcelUrl = `${baseUrl}${masterExcelUrl}`;
+
+    console.log('Excel files generated:');
+    console.log('- Individual file:', fullExcelUrl);
+    console.log('- Master file:', fullMasterExcelUrl);
 
     // Verify email configuration
     const emailConfigVerified = await verifyEmailConfig();
@@ -107,7 +122,7 @@ export async function POST(req: Request) {
       return createSuccessResponse(submission._id, "Email delivery may be delayed due to technical issues");
     }
 
-    // Send email to admin with Excel download link
+    // Send email to admin with Excel download links
     const adminEmailResult = await sendEmail({
       to: "info@eastlogic.com",
       replyTo: data.email,
@@ -125,12 +140,17 @@ export async function POST(req: Request) {
         
         <div style="background: #f0f8ff; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #007bff;">
           <h3 style="margin-top: 0; color: #007bff;">📊 Download Contact Data</h3>
-          <p>Click the link below to download the contact form data as an Excel file:</p>
-          <a href="${fullExcelUrl}" style="background: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; font-weight: bold;">
-            📥 Download Excel File
-          </a>
+          <p>Click the links below to download the contact form data:</p>
+          <div style="margin: 15px 0;">
+            <a href="${fullExcelUrl}" style="background: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; font-weight: bold; margin-right: 10px;">
+              📥 Individual Excel File
+            </a>
+            <a href="${fullMasterExcelUrl}" style="background: #28a745; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; font-weight: bold;">
+              📊 Master Excel File (All Submissions)
+            </a>
+          </div>
           <p style="margin-top: 10px; font-size: 12px; color: #666;">
-            File contains: Name, Email, Company, Purpose, Role, Message, Timestamp, and Submission ID
+            Individual file contains this submission only. Master file contains all submissions.
           </p>
         </div>
         
@@ -210,6 +230,7 @@ export async function POST(req: Request) {
       );
     }
 
+    console.log('✅ Contact form processing completed successfully!');
     return createSuccessResponse(submission._id);
 
   } catch (error) {
