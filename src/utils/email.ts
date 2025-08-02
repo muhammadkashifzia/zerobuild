@@ -4,12 +4,12 @@ import { emailAppPassword } from "@/sanity/env";
 export const createEmailTransporter = () => {
   // SMTP Configuration - Fixed for port 587
   const smtpConfig = {
-    host: "mail.eastlogic.com",
+    host: "smtp.office365.com",
     port: 587,
     secure: false, // Changed from true to false for port 587
     auth: {
-      user: "info@eastlogic.com",
-      pass: "]H;l$VomAa)TAH&A",
+      user: "hello@zerobuild.io",
+      pass: "ynwsxvcgnfhsxzxg",
     },
     tls: {
       rejectUnauthorized: false, // Changed to false for development
