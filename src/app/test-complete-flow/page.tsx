@@ -101,6 +101,16 @@ export default function TestCompleteFlowPage() {
     }
   };
 
+  const debugExcel = async () => {
+    try {
+      const response = await fetch('/api/debug-excel');
+      const data = await response.json();
+      setResult(data);
+    } catch (error) {
+      setResult({ error: 'Failed to debug Excel' });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
