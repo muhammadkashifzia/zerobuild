@@ -2,10 +2,16 @@ import { NextResponse } from "next/server";
 import { verifyEmailConfig, sendEmail } from "@/utils/email";
 
 export async function POST() {
+  console.log('=== TEST EMAIL API CALLED ===');
+  console.log('Timestamp:', new Date().toISOString());
+  console.log('Environment:', process.env.NODE_ENV);
+  
   try {
+    console.log('Testing SMTP connection...');
     const connectionVerified = await verifyEmailConfig();
     
     if (!connectionVerified) {
+      console.log('❌ SMTP connection test failed');
       return NextResponse.json({ 
         success: false, 
         error: "SMTP connection failed",
@@ -13,6 +19,7 @@ export async function POST() {
       }, { status: 500 });
     }
 
+    console.log('✅ SMTP connection test passed, sending test email...');
     const emailResult = await sendEmail({
       to: "info@eastlogic.com",
       subject: "Test Email - Zero Build Contact Form",
@@ -21,7 +28,7 @@ export async function POST() {
         <p>This is a test email to verify the email configuration for the contact form.</p>
         <p><strong>Timestamp:</strong> ${new Date().toISOString()}</p>
         <p><strong>Environment:</strong> ${process.env.NODE_ENV}</p>
-        <p><strong>SMTP Host:</strong> smtp.office365.com</p>
+        <p><strong>SMTP Host:</strong> mail.eastlogic.com</p>
         <p><strong>SMTP Port:</strong> 587</p>
         <hr>
         <p><em>Sent via Zero Build Test Email Endpoint</em></p>
@@ -29,6 +36,7 @@ export async function POST() {
     });
 
     if (emailResult.success) {
+      console.log('✅ Test email sent successfully');
       return NextResponse.json({
         success: true,
         message: "Test email sent successfully",
@@ -36,6 +44,7 @@ export async function POST() {
         timestamp: new Date().toISOString()
       });
     } else {
+      console.log('❌ Test email failed:', emailResult.error);
       return NextResponse.json({
         success: false,
         error: emailResult.error,
@@ -44,7 +53,7 @@ export async function POST() {
     }
 
   } catch (error) {
-    console.error("Test email error:", error);
+    console.error("❌ Test email error:", error);
     return NextResponse.json({ 
       success: false, 
       error: error instanceof Error ? error.message : 'Unknown error',
