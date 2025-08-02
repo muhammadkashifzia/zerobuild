@@ -101,20 +101,29 @@ export async function POST(req: Request) {
     console.log('Company:', data.company);
 
     // Generate individual Excel file
-    const excelFileUrl = generateContactExcel(contactData);
-    
-    // Append to master Excel file
-    const masterExcelUrl = appendToMasterExcel(contactData);
+    let excelFileUrl = '';
+    let masterExcelUrl = '';
+    let excelGenerationSuccess = false;
+
+    try {
+      excelFileUrl = generateContactExcel(contactData);
+      masterExcelUrl = appendToMasterExcel(contactData);
+      excelGenerationSuccess = true;
+      
+      console.log('Excel files generated:');
+      console.log('- Individual file:', excelFileUrl);
+      console.log('- Master file:', masterExcelUrl);
+    } catch (error) {
+      console.error('❌ Excel generation failed:', error);
+      excelGenerationSuccess = false;
+      // Continue with form submission even if Excel generation fails
+    }
     
     const baseUrl = process.env.NODE_ENV === 'production' 
       ? 'https://zerobuild.com' 
       : 'http://localhost:3000';
-    const fullExcelUrl = `${baseUrl}${excelFileUrl}`;
-    const fullMasterExcelUrl = `${baseUrl}${masterExcelUrl}`;
-
-    console.log('Excel files generated:');
-    console.log('- Individual file:', fullExcelUrl);
-    console.log('- Master file:', fullMasterExcelUrl);
+    const fullExcelUrl = excelGenerationSuccess ? `${baseUrl}${excelFileUrl}` : '';
+    const fullMasterExcelUrl = excelGenerationSuccess ? `${baseUrl}${masterExcelUrl}` : '';
 
     // Verify email configuration
     const emailConfigVerified = await verifyEmailConfig();
@@ -122,7 +131,7 @@ export async function POST(req: Request) {
       return createSuccessResponse(submission._id, "Email delivery may be delayed due to technical issues");
     }
 
-    // Send email to admin with Excel download links
+    // Send email to admin with Excel download links (if available)
     const adminEmailResult = await sendEmail({
       to: "info@eastlogic.com",
       replyTo: data.email,
@@ -138,6 +147,7 @@ export async function POST(req: Request) {
         <p><strong>reCAPTCHA Score:</strong> ${recaptchaJson.score}</p>
         <p><strong>Submission ID:</strong> ${submission._id}</p>
         
+        ${excelGenerationSuccess ? `
         <div style="background: #f0f8ff; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #007bff;">
           <h3 style="margin-top: 0; color: #007bff;">📊 Download Contact Data</h3>
           <p>Click the links below to download the contact form data:</p>
@@ -153,13 +163,22 @@ export async function POST(req: Request) {
             Individual file contains this submission only. Master file contains all submissions.
           </p>
         </div>
+        ` : `
+        <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #ffc107;">
+          <h3 style="margin-top: 0; color: #856404;">⚠️ Excel Generation Notice</h3>
+          <p>Excel file generation was not available for this submission, but the form data has been stored in the database.</p>
+          <p style="margin-top: 10px; font-size: 12px; color: #666;">
+            Submission ID: ${submission._id} - Data is available in Sanity CMS.
+          </p>
+        </div>
+        `}
         
         <hr>
         <p><em>Sent via Zero Build Contact Form</em></p>
       `,
     });
 
-    // Send confirmation email to user with Excel download link
+    // Send confirmation email to user with Excel download link (if available)
     const userEmailResult = await sendEmail({
       to: data.email,
       subject: "Thank you for contacting Zero Build - We've received your message",
@@ -182,6 +201,7 @@ export async function POST(req: Request) {
               ${data.role ? `<p><strong>Role:</strong> ${data.role}</p>` : ''}
             </div>
             
+            ${excelGenerationSuccess ? `
             <div style="background: #e8f4fd; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #2196f3;">
               <h3 style="color: #1976d2; margin-top: 0;">📊 Your Submission Data</h3>
               <p>You can download a copy of your submission data as an Excel file:</p>
@@ -192,6 +212,7 @@ export async function POST(req: Request) {
                 This file contains all the information you submitted for your records.
               </p>
             </div>
+            ` : ''}
             
             <div style="background: #e8f4fd; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #2196f3;">
               <h3 style="color: #1976d2; margin-top: 0;">What happens next?</h3>
