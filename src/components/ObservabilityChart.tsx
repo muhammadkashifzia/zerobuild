@@ -6,6 +6,80 @@ import dynamic from "next/dynamic";
 import * as XLSX from "xlsx";
 import type { Data, Layout } from "plotly.js";
 
+interface DataPoint {
+  Cost: number;
+  Carbon: number;
+  ComfortMetric: number;
+  ComplianceMetric: number;
+  Circularity: number;
+  Fabric: string;
+  Orientation: string;
+  Behaviour: string;
+  ComfortLabel?: string;
+  ComfortColor?: string;
+  ComfortSymbol?: string;
+  ComplianceLabel?: string;
+  IconPath?: string;
+}
+
+// Detailed Data Box Component
+const DetailedDataBox = ({ dataPoint, isVisible, position }: { 
+  dataPoint: DataPoint | null; 
+  isVisible: boolean; 
+  position: { x: number; y: number } | null;
+}) => {
+  if (!isVisible || !dataPoint || !position) return null;
+
+  return (
+    <div 
+      className="fixed z-50 border  border-gray-300 rounded-lg shadow-lg p-2 max-w-sm"
+      style={{
+        left: position.x + 50,
+        top: position.y - 60,
+        transform: 'translateY(-100%)',
+        backgroundColor: dataPoint.ComfortColor
+      }}
+   
+    >
+      <div className="space-y-1" >
+      
+        <div className="grid grid-cols-1 text-[12px]">
+          <div  className="flex gap-2">
+            <span className=" font-medium text-white">Fabric:</span>
+            <div className="text-white">{dataPoint.Fabric}</div>
+          </div>
+          <div  className="flex gap-2">
+            <span className=" font-medium text-white">Orientation:</span>
+            <div className="text-white">{dataPoint.Orientation}</div>
+          </div>
+          <div  className="flex gap-2">
+            <span className="font-medium text-white">Behaviour:</span>
+            <div className="text-white">{dataPoint.Behaviour}</div>
+          </div>
+          <div  className="flex gap-2">
+            <span className="font-medium text-white">Comfort:</span>
+            <div className="text-white">{dataPoint.ComfortLabel}</div>
+          </div>
+          <div className="flex gap-2">
+            <span className=" font-medium text-white">Cost</span>
+            <div className="text-white">£{dataPoint.Cost.toFixed(0)}</div>
+          </div>
+          <div  className="flex gap-2"> 
+            <span className="font-medium text-white">Cost</span>
+            <div className="text-white">{dataPoint.Carbon.toFixed(1)}</div>
+            <div className="text-[12px] text-white">kgCO₂e/m²</div>
+          </div>
+          <div  className="flex gap-2">
+              <div className=" font-medium text-white">Circularity</div>
+              <div  className="text-white">{dataPoint.Circularity}</div>
+              <div className="text-[12px] text-white">score</div>
+            </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Skeleton Shimmer Component
 const SkeletonShimmer = () => {
   return (
@@ -103,22 +177,6 @@ const Plot = dynamic(() => import("react-plotly.js"), {
   loading: () => <PlotLoadingSkeleton />
 });
 
-interface DataPoint {
-  Cost: number;
-  Carbon: number;
-  ComfortMetric: number;
-  ComplianceMetric: number;
-  Circularity: number;
-  Fabric: string;
-  Orientation: string;
-  Behaviour: string;
-  ComfortLabel?: string;
-  ComfortColor?: string;
-  ComfortSymbol?: string;
-  ComplianceLabel?: string;
-  IconPath?: string;
-}
-
 interface ObservabilityChartProps {
   selectedView?: string;
 }
@@ -165,6 +223,8 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
   const [rawData, setRawData] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [hoveredDataPoint, setHoveredDataPoint] = useState<DataPoint | null>(null);
+  const [hoverPosition, setHoverPosition] = useState<{ x: number; y: number } | null>(null);
 
   // Memoized data processing
   const processedData = useMemo(() => {
@@ -251,7 +311,7 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
   const plotData = useMemo((): Data[] => {
     if (!processedData) return [];
 
-    const { costs, carbons, comfortColors, comfortLabels, circularityValues, hoverText } = processedData;
+    const { df, costs, carbons, comfortColors, comfortLabels, circularityValues, hoverText } = processedData;
 
     // Determine visibility and title based on selected view
     let trace1Visible = true;
@@ -306,6 +366,7 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
         hoverinfo: "text",
         name: "Comfort",
         visible: trace1Visible,
+        customdata: df as any, // Add the full data for hover events
       } as Data,
       {
         x: costs,
@@ -445,6 +506,23 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
     fetchData();
   }, [fetchData]);
 
+  // Handle hover events for detailed data box
+  const handleHover = useCallback((event: any) => {
+    if (selectedView === "comfort" && event.points && event.points.length > 0) {
+      const point = event.points[0];
+      const dataPoint = point.customdata as DataPoint;
+      if (dataPoint) {
+        setHoveredDataPoint(dataPoint);
+        setHoverPosition({ x: event.event.clientX, y: event.event.clientY });
+      }
+    }
+  }, [selectedView]);
+
+  const handleUnhover = useCallback(() => {
+    setHoveredDataPoint(null);
+    setHoverPosition(null);
+  }, []);
+
   if (error) {
     return (
       <div className="container mx-auto p-6">
@@ -481,6 +559,8 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
               modeBarButtonsToRemove: ['pan2d', 'lasso2d', 'select2d'],
             }}
             style={{ width: '100%', height: '100%', paddingBottom: '20px' }}
+            onHover={handleHover}
+            onUnhover={handleUnhover}
           />
         ) : (
           <div className="flex items-center justify-center h-full  rounded-lg">
@@ -492,6 +572,13 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
           </div>
         )}
       </div>
+      
+      {/* Detailed Data Box */}
+      <DetailedDataBox 
+        dataPoint={hoveredDataPoint}
+        isVisible={selectedView === "comfort" && !!hoveredDataPoint}
+        position={hoverPosition}
+      />
     </div>
   );
 }

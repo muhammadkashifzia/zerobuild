@@ -35,7 +35,7 @@ const Navbar = ({ className }: { className?: string }) => {
       <div className="container flex justify-between h-[64px] mx-auto px-[16px]">
         {/* Logo */}
         <div className="flex items-center space-x-4">
-          <div className="mr-4 flex">
+          <div className="flex">
             <Link
               className="flex items-center justify-center space-x-2 text-2xl font-bold text-center text-neutral-600"
               href="/"
