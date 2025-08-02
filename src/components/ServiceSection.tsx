@@ -9,7 +9,7 @@ const ServiceSection = () => {
         {/* Header Row */}
         <div className="flex  gap-[20px] justify-between md:flex-row flex-col">
           <div className="md:max-w-[500px] lg:max-w-[650px]">
-            <h2 className="text-3xl lg:text-[32px] font-medium mt-2 text-black">
+            <h2 className="text-[24px] lg:text-[32px] font-medium mt-2 text-black">
               We guide, plan and design the future of the built environment. We
               are a global consultancy with advisory and technical expertise
               across more than 150 disciplines.

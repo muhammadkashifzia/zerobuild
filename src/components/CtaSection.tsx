@@ -11,9 +11,9 @@ export default function CTAButtons() {
     
   ];
   return (
-    <div className=" flex items-center gap-2 md:gap-10 p-8 max-w-[1080px] mx-auto w-full bg-white rounded-lg shadow-md justify-between md:flex-row flex-col">
+    <div className=" flex items-center gap-2 md:gap-10 p-4 md:p-8 max-w-[1080px] mx-auto w-full bg-white rounded-lg shadow-md justify-between md:flex-row flex-col">
       {/* Main CTA Button */}
-      <button className="relative flex items-center justify-center md:justify-between px-8 py-2 md:py-4 rounded-full border border-black   group overflow-hidden min-w-full md:min-w-[500px]">
+      <button className="relative flex items-center justify-center md:justify-between px-3 md:px-8 py-2 md:py-4 rounded-full border border-black   group overflow-hidden min-w-full md:min-w-[500px]">
        
     
        <span className="text-[20px] md:text-[48px] font-bold text-black mr-[7px]">Start</span> <TypewriterEffect words={words} />

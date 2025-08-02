@@ -86,14 +86,14 @@ const HeroSection = memo(() => {
         <div className="p-4 relative z-10 w-full text-center mt-[40px] md:mt-0">
           <motion.h1
             className={cn(
-              "relative mb-6 max-w-[65rem] text-center text-4xl leading-normal font-bold tracking-tight text-zinc-700 md:text-6xl mx-auto mt-10"
+              "relative mb-6 max-w-[65rem] text-center text-[28px] md:text-4xl leading-normal font-bold tracking-tight text-zinc-700 md:text-6xl mx-auto mt-10"
             )}
             {...titleVariants}
           >
             <div className="inline-block">
               Building decarbonisation is complex<br/>
-              We make it 10×{" "}
-              <Suspense fallback={<span className="ml-3 text-[#484AB7]">better</span>}>
+              We make it 10×
+              <Suspense fallback={<span className="ml-3 text-[#484AB7] text-[28px] md:text-4xl">better</span>}>
                 <ContainerTextFlip {...containerTextFlipProps} />
               </Suspense>.
             </div>
@@ -109,7 +109,7 @@ const HeroSection = memo(() => {
           </motion.p>
           
           <motion.div 
-            className="mt-6 flex w-full gap-[10px] justify-center"
+            className="mt-6 flex w-full gap-[10px] justify-center flex-col md:flex-row items-center"
             {...buttonsVariants}
           >
             <MemoizedLink href="/" className={demoButtonStyle}>

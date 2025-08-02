@@ -75,7 +75,7 @@ const YouTuberShowcase: React.FC = () => {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <h2
           id="reviews-title"
-          className="text-[28px] md:text-[48px] font-bold text-white sm:text-center"
+          className="text-[24px] md:text-[48px] font-bold text-white sm:text-center"
         >
           Featured by popular YouTubers
         </h2>

@@ -66,7 +66,7 @@ export default function PerformanceSection() {
 
         {/* New section below buttons */}
         <div className="text-center mb-8">
-          <div className="text-[28px] leading-[1.3] mb-[15px] font-bold">
+          <div className="text-[24px] md:text-[28px] leading-[1.3] mb-[15px] font-bold">
             <p>Explore how our client used our Five C Zero Framework to evaluate 1000+ design options in under 24 hours, unlocking smarter decisions from day one..</p>
           </div>
 

@@ -5,6 +5,7 @@ import { useEffect, useState, useMemo, useCallback } from "react";
 import dynamic from "next/dynamic";
 import * as XLSX from "xlsx";
 import type { Data, Layout } from "plotly.js";
+import Link from "next/link";
 
 interface DataPoint {
   Cost: number;
@@ -23,15 +24,15 @@ interface DataPoint {
 }
 
 // Detailed Data Box Component
-const DetailedDataBox = ({ dataPoint, isVisible, position }: { 
-  dataPoint: DataPoint | null; 
-  isVisible: boolean; 
+const DetailedDataBox = ({ dataPoint, isVisible, position }: {
+  dataPoint: DataPoint | null;
+  isVisible: boolean;
   position: { x: number; y: number } | null;
 }) => {
   if (!isVisible || !dataPoint || !position) return null;
 
   return (
-    <div 
+    <div
       className="fixed z-50 border  border-gray-300 rounded-lg shadow-lg p-2 max-w-sm"
       style={{
         left: position.x + 50,
@@ -39,24 +40,24 @@ const DetailedDataBox = ({ dataPoint, isVisible, position }: {
         transform: 'translateY(-100%)',
         backgroundColor: dataPoint.ComfortColor
       }}
-   
+
     >
       <div className="space-y-1" >
-      
+
         <div className="grid grid-cols-1 text-[12px]">
-          <div  className="flex gap-2">
+          <div className="flex gap-2">
             <span className=" font-medium text-white">Fabric:</span>
             <div className="text-white">{dataPoint.Fabric}</div>
           </div>
-          <div  className="flex gap-2">
+          <div className="flex gap-2">
             <span className=" font-medium text-white">Orientation:</span>
             <div className="text-white">{dataPoint.Orientation}</div>
           </div>
-          <div  className="flex gap-2">
+          <div className="flex gap-2">
             <span className="font-medium text-white">Behaviour:</span>
             <div className="text-white">{dataPoint.Behaviour}</div>
           </div>
-          <div  className="flex gap-2">
+          <div className="flex gap-2">
             <span className="font-medium text-white">Comfort:</span>
             <div className="text-white">{dataPoint.ComfortLabel}</div>
           </div>
@@ -64,16 +65,16 @@ const DetailedDataBox = ({ dataPoint, isVisible, position }: {
             <span className=" font-medium text-white">Cost</span>
             <div className="text-white">£{dataPoint.Cost.toFixed(0)}</div>
           </div>
-          <div  className="flex gap-2"> 
+          <div className="flex gap-2">
             <span className="font-medium text-white">Cost</span>
             <div className="text-white">{dataPoint.Carbon.toFixed(1)}</div>
             <div className="text-[12px] text-white">kgCO₂e/m²</div>
           </div>
-          <div  className="flex gap-2">
-              <div className=" font-medium text-white">Circularity</div>
-              <div  className="text-white">{dataPoint.Circularity}</div>
-              <div className="text-[12px] text-white">score</div>
-            </div>
+          <div className="flex gap-2">
+            <div className=" font-medium text-white">Circularity</div>
+            <div className="text-white">{dataPoint.Circularity}</div>
+            <div className="text-[12px] text-white">score</div>
+          </div>
         </div>
       </div>
     </div>
@@ -86,9 +87,9 @@ const SkeletonShimmer = () => {
     <div className="w-full h-[620px]  rounded-lg p-6 animate-pulse">
       {/* Title skeleton */}
       <div className="h-6 bg-gray-200 rounded w-48 mb-6"></div>
-      
-   
-      
+
+
+
       {/* Chart area skeleton */}
       <div className="relative w-full h-96 bg-gray-100 rounded border-2 border-dashed border-gray-300">
         {/* Y-axis skeleton */}
@@ -97,14 +98,14 @@ const SkeletonShimmer = () => {
             <div key={i} className="h-3 bg-gray-200 rounded w-8"></div>
           ))}
         </div>
-        
+
         {/* X-axis skeleton */}
         <div className="absolute bottom-2 left-12 right-4 flex justify-between">
           {[...Array(6)].map((_, i) => (
             <div key={i} className="h-3 bg-gray-200 rounded w-8"></div>
           ))}
         </div>
-        
+
         {/* Data points skeleton */}
         <div className="absolute inset-16">
           {[...Array(12)].map((_, i) => (
@@ -119,18 +120,18 @@ const SkeletonShimmer = () => {
             ></div>
           ))}
         </div>
-        
+
         {/* Loading text */}
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-gray-400 text-lg font-medium">
             Loading chart data...
           </div>
         </div>
-        
+
         {/* Shimmer overlay */}
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent shimmer"></div>
       </div>
-      
+
       {/* Legend skeleton */}
       <div className="flex gap-4 mt-4">
         <div className="flex items-center gap-2">
@@ -142,7 +143,7 @@ const SkeletonShimmer = () => {
           <div className="h-4 bg-gray-200 rounded w-20"></div>
         </div>
       </div>
-      
+
       <style jsx>{`
         .shimmer {
           animation: shimmer 2s infinite linear;
@@ -172,7 +173,7 @@ const PlotLoadingSkeleton = () => (
 );
 
 // Dynamic import with skeleton loading
-const Plot = dynamic(() => import("react-plotly.js"), { 
+const Plot = dynamic(() => import("react-plotly.js"), {
   ssr: false,
   loading: () => <PlotLoadingSkeleton />
 });
@@ -236,7 +237,7 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
       const carbon = (row.Carbon || 0) / 100;
       const comfortMetric = row.ComfortMetric as keyof typeof COMFORT_SYMBOL;
       const complianceMetric = row.ComplianceMetric as keyof typeof COMPLIANCE_LABEL;
-      
+
       return {
         ...row,
         Cost: cost,
@@ -255,9 +256,9 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
     const comfortColors = df.map(d => d.ComfortColor).filter((color): color is string => color !== undefined);
     const comfortLabels = df.map(d => d.ComfortLabel).filter((label): label is string => label !== undefined);
     const circularityValues = df.map(d => d.Circularity);
-    
+
     // Pre-calculate hover text
-    const hoverText = df.map((d) => 
+    const hoverText = df.map((d) =>
       `Fabric: ${d.Fabric}<br>Orientation: ${d.Orientation}<br>Behaviour: ${d.Behaviour}<br>Compliance: ${d.ComplianceLabel}<br>Comfort: ${d.ComfortLabel}<br>Cost: £${d.Cost.toFixed(0)}/m²<br>Carbon: ${d.Carbon.toFixed(1)} kgCO₂e/m²<br>Circularity: ${d.Circularity}`
     );
 
@@ -457,12 +458,12 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
     try {
       setIsLoading(true);
       setError(null);
-      
+
       const file = await fetch("/assets/file/optioneering_min_final.xlsx");
       if (!file.ok) {
         throw new Error(`Failed to fetch file: ${file.status}`);
       }
-      
+
       const arrayBuffer = await file.arrayBuffer();
       const workbook = XLSX.read(arrayBuffer);
       const worksheet = workbook.Sheets["Sample dataset"];
@@ -474,7 +475,7 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
         for (const [key, value] of Object.entries(row)) {
           const cleanKey = key.trim();
           let finalKey = cleanKey;
-          
+
           // Use switch for better performance
           switch (cleanKey) {
             case "User behaviour":
@@ -487,7 +488,7 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
               finalKey = "ComfortMetric";
               break;
           }
-          
+
           cleanedRow[finalKey] = value;
         }
         return cleanedRow;
@@ -530,7 +531,7 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
           <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700">
             <div className="font-medium mb-2">Error loading chart</div>
             <div className="text-sm">{error}</div>
-            <button 
+            <button
               onClick={fetchData}
               className="mt-3 px-4 py-2 bg-red-100 hover:bg-red-200 rounded text-sm font-medium transition-colors"
             >
@@ -544,24 +545,28 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
 
   return (
     <div id="observability-chart" className="w-full px-0 md:px-[16px]">
-    
-      <div className="w-full h-[620px] bg-white p-[10px] md:p-[20px] rounded-lg shadow-md">
-          <h1 className="text-[16px] text-black">Choose what matters most</h1>
+
+      <div className="w-full bg-white p-[10px] md:p-[20px] rounded-lg shadow-md">
+        <h1 className="text-[16px] text-black">Choose what matters most</h1>
         {isLoading ? (
           <SkeletonShimmer />
         ) : plotData.length > 0 ? (
-          <Plot 
-            data={plotData} 
-            layout={layout} 
-            config={{ 
-              responsive: true,
+          <div className=" h-[620px] ">
+          <Plot
+            data={plotData}
+            layout={layout}
+            config={{
+              responsive: false,
               displayModeBar: true,
+         
               modeBarButtonsToRemove: ['pan2d', 'lasso2d', 'select2d'],
             }}
             style={{ width: '100%', height: '100%', paddingBottom: '20px' }}
             onHover={handleHover}
             onUnhover={handleUnhover}
+          
           />
+          </div>
         ) : (
           <div className="flex items-center justify-center h-full  rounded-lg">
             <div className="text-center text-gray-500">
@@ -571,10 +576,11 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
             </div>
           </div>
         )}
+        <div className="flex flex-col items-center justify-center gap-2"><p className="text-[12px] text-gray-500">See how the Five C Framework helps you priortise the right decisions</p><Link href="/fivec" className="w-full bg-[#484AB7] text-white border-neutral-200 px-2 rounded-xl max-w-[185px] h-[45px] flex items-center justify-center text-[16px] font-semibold hover:bg-[#3c3f9d] transition-colors duration-200">Try the full toolset</Link></div>
       </div>
-      
+
       {/* Detailed Data Box */}
-      <DetailedDataBox 
+      <DetailedDataBox
         dataPoint={hoveredDataPoint}
         isVisible={selectedView === "comfort" && !!hoveredDataPoint}
         position={hoverPosition}

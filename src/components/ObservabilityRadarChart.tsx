@@ -62,7 +62,7 @@ const LoadingSkeleton: React.FC = () => (
     <div className="h-10 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded-lg mb-8 w-1/3 animate-pulse bg-[length:200%_100%] animate-shimmer"></div>
 
     {/* All Options Skeleton */}
-    <div className="mb-12">
+    <div>
       <div className="h-8 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded-lg mb-4 w-1/4 animate-pulse bg-[length:200%_100%] animate-shimmer"></div>
       <div className="bg-white p-4 rounded-lg shadow-lg min-w-[2000px]">
         <div className="grid grid-cols-10 gap-2">
