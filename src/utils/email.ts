@@ -4,12 +4,12 @@ import { emailAppPassword } from "@/sanity/env";
 export const createEmailTransporter = () => {
   // SMTP Configuration - Fixed for port 587
   const smtpConfig = {
-    host: "mail.eastlogic.com",
+    host: "smtp.office365.com",
     port: 587,
     secure: false, // Changed from true to false for port 587
     auth: {
-      user: "info@eastlogic.com",
-      pass: "]H;l$VomAa)TAH&A",
+      user: "team@zerobuild.io",
+      pass: "Website-setup",
     },
     tls: {
       rejectUnauthorized: false, // Changed to false for development
@@ -46,32 +46,32 @@ export const createEmailTransporter = () => {
 export const createAlternativeTransporter = (configType: 'ssl' | 'tls' | 'starttls' = 'tls') => {
   const configs = {
     ssl: {
-      host: "mail.eastlogic.com",
+      host: "smtp.office365.com",
       port: 465,
       secure: true,
       auth: {
-        user: "info@eastlogic.com",
-        pass: "]H;l$VomAa)TAH&A",
+        user: "team@zerobuild.io",
+        pass: "Website-setup",
       },
       tls: { rejectUnauthorized: false }
     },
     tls: {
-      host: "mail.eastlogic.com",
+      host: "smtp.office365.com",
       port: 587,
       secure: false,
       auth: {
-        user: "info@eastlogic.com",
-        pass: "]H;l$VomAa)TAH&A",
+        user: "team@zerobuild.io",
+        pass: "Website-setup",
       },
       tls: { rejectUnauthorized: false }
     },
     starttls: {
-      host: "mail.eastlogic.com",
+      host: "smtp.office365.com",
       port: 587,
       secure: false,
       auth: {
-        user: "info@eastlogic.com",
-        pass: "]H;l$VomAa)TAH&A",
+        user: "team@zerobuild.io",
+        pass: "Website-setup",
       },
       tls: { rejectUnauthorized: false },
       requireTLS: true
@@ -144,7 +144,7 @@ export const sendEmail = async (options: {
   const transporter = createEmailTransporter();
   
   const mailOptions = {
-    from: "info@eastlogic.com",
+    from: "team@zerobuild.io",
     replyTo: options.replyTo,
     to: options.to,
     subject: options.subject,
