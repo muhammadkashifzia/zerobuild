@@ -1,25 +1,22 @@
 import Link from "next/link";
-
+import Image from "next/image";
 function Footer() {
   return (
     <footer className="bg-[#fafafa] text-[#332f2f] pt-12 border-t border-gray-200">
-      <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 px-[16px]">
-        {/* About Us / Logo Column */}
+      <div className="mx-auto flex container px-[16px] flex-col items-start justify-between text-sm text-neutral-500 md:flex-row">
         <div>
-          <h2 className="text-black text-lg font-semibold mb-4">About Us</h2>
-          <p className="mb-4">
+          <h2 className="text-black text-lg font-semibold mb-4 flex gap-2 items-center"><Image src="/assets/images/5CZLogo.png" width={22} height={22} alt="logo" className="w-[22px] h-[22px] object-contain"/>ZeroBuild </h2>
+          <p className="max-w-full md:max-w-[350px]">
             ZeroBuild accelerates the decarbonisation of the built environment
             by empowering architects, engineers, developers, local authorities,
             and housing associations to achieve Net Zero faster.
           </p>
         </div>
-
-        
-
-        {/* Quick Links */}
-        <div>
+       <div className="max-w-full md:max-w-[520px]">
+         <div className="mt-10 grid grid-cols-1 md:grid-cols-3 items-start gap-5 md:mt-0">
+         <div>
           <h2 className="text-black text-lg font-semibold mb-4">Quick Links</h2>
-          <ul>
+          <ul className="text-sm mt-4 flex flex-col justify-center space-y-4">
             <li>
               <Link href="/" className="hover:text-black transition-colors duration-300">
                 Home
@@ -47,49 +44,51 @@ function Footer() {
             </li>
           </ul>
         </div>
-{/* Our Services */}
         <div>
           <h2 className="text-black text-lg font-semibold mb-4">Our Services</h2>
-          <ul>
+          <ul className="text-sm mt-4 flex flex-col justify-center space-y-4">
             <li>
               <Link href="/" className="hover:text-black transition-colors duration-300">
-                Advisory services
+                Acoustic consulting
               </Link>
             </li>
             <li>
               <Link href="/" className="hover:text-black transition-colors duration-300">
-                Climate and sustainability consulting
+               Advisory services
               </Link>
             </li>
             <li>
               <Link href="/" className="hover:text-black transition-colors duration-300">
-                Engineering and technical services
+                Architecture
               </Link>
             </li>
             <li>
               <Link href="/" className="hover:text-black transition-colors duration-300">
-                Audio-visual systems
+          Circular Economy
               </Link>
             </li>
             <li>
               <Link href="/" className="hover:text-black transition-colors duration-300">
-                Business investment advisory
+         Experience design
               </Link>
             </li>
           </ul>
         </div>
-        {/* Contact Us */}
+       
         <div>
           <h2 className="text-black text-lg font-semibold mb-4">Contact Us</h2>
-          <p>Flat 4, Manchester,</p>
-          <p>United Kingdom</p>
+         <div className="text-sm mt-4 flex flex-col justify-center space-y-4">
+           <p>Flat 4, Manchester, United Kingdom</p>
           <p>Email: info@5czero.com</p>
           <p>Phone: +44 7824 323718</p>
+         </div>
         </div>
+        </div>
+       </div>
       </div>
 
       {/* Footer Bottom */}
-      <p className="text-center text-xs py-8">
+      <p className="text-center text-xs pb-10 pt-16">
         © 2025 ZeroBuild Ltd. All rights reserved
       </p>
     </footer>

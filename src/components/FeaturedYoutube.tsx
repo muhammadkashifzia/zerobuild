@@ -72,7 +72,8 @@ const YouTuberShowcase: React.FC = () => {
         backgroundImage: `url("/assets/images/coding-background-texture.jpg"), linear-gradient(180deg, #484AB7 0%, #9271f6 100%)`,
       }}
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto px-[16px]">
+       <div>
         <h2
           id="reviews-title"
           className="text-[24px] md:text-[48px] font-bold text-white sm:text-center"
@@ -83,10 +84,11 @@ const YouTuberShowcase: React.FC = () => {
           See what the best YouTubers are saying about Aceternity UI.
         </p>
       </div>
-      <div className="mx-auto max-w-7xl px-2 md:px-8">
+      <div>
         {videos.map((video, index) => (
           <VideoFeature key={index} {...video} />
         ))}
+      </div>
       </div>
     </div>
   );

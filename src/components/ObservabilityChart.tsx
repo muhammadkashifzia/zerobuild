@@ -418,34 +418,8 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
       title: { text: title },
       xaxis: { title: { text: "Cost (£/m²)" } },
       yaxis: { title: { text: "Carbon (kgCO₂e/m²)" } },
-      shapes: [
-        {
-          type: "rect",
-          xref: "x",
-          yref: "y",
-          x0: sweetSpot.x0,
-          x1: sweetSpot.x1,
-          y0: sweetSpot.y0,
-          y1: sweetSpot.y1,
-          fillcolor: "rgba(144,238,144,0.3)",
-          line: { color: "rgba(0,100,0,0.5)", width: 1 },
-          layer: "below",
-        },
-      ],
-      annotations: [
-        {
-          x: sweetSpot.annotationX,
-          y: sweetSpot.annotationY,
-          text: "🏆 Sweet Spot<br><sup>Low Cost, Low Carbon</sup>",
-          showarrow: false,
-          font: { size: 14, color: "darkgreen" },
-          bgcolor: "rgba(255,255,255,0.9)",
-          bordercolor: "darkgreen",
-          borderwidth: 1,
-          xanchor: "left",
-          yanchor: "bottom",
-        },
-      ],
+      shapes: [],
+      annotations: [],
       images: layoutImages.map((img) => ({
         ...img,
         visible: selectedView === "compliance",
@@ -544,10 +518,9 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
   }
 
   return (
-    <div id="observability-chart" className="w-full px-0 md:px-[16px]">
+    <div id="observability-chart" className="w-fullbpx-[16px]">
 
       <div className="w-full bg-white p-[10px] md:p-[20px] rounded-lg shadow-md">
-        <h1 className="text-[16px] text-black">Choose what matters most</h1>
         {isLoading ? (
           <SkeletonShimmer />
         ) : plotData.length > 0 ? (
@@ -576,7 +549,7 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
             </div>
           </div>
         )}
-        <div className="flex flex-col items-center justify-center gap-2"><p className="text-[12px] text-gray-500">See how the Five C Framework helps you priortise the right decisions</p><Link href="/fivec" className="w-full bg-[#484AB7] text-white border-neutral-200 px-2 rounded-xl max-w-[185px] h-[45px] flex items-center justify-center text-[16px] font-semibold hover:bg-[#3c3f9d] transition-colors duration-200">Try the full toolset</Link></div>
+        <div className="flex flex-col items-center justify-center gap-2"><p className="text-[12px] text-gray-500">See how the Five C Framework helps you priortise the right decisions</p><Link href="/resources" className="w-full bg-[#484AB7] text-white border-neutral-200 px-2 rounded-xl max-w-[185px] h-[45px] flex items-center justify-center text-[16px] font-semibold hover:bg-[#3c3f9d] transition-colors duration-200">Try the full toolset</Link></div>
       </div>
 
       {/* Detailed Data Box */}

@@ -83,10 +83,10 @@ const HeroSection = memo(() => {
           <Spotlight {...spotlightProps} />
         </Suspense>
         
-        <div className="p-4 relative z-10 w-full text-center mt-[40px] md:mt-0">
+        <div className="container px-[16px] relative z-10 w-full text-center mt-[40px] md:mt-0">
           <motion.h1
             className={cn(
-              "relative mb-6 max-w-[65rem] text-center text-[28px] md:text-4xl leading-normal font-bold tracking-tight text-zinc-700 md:text-6xl mx-auto mt-10"
+              "relative mb-6  text-center text-[28px] leading-normal font-bold tracking-tight text-zinc-700 md:text-6xl mx-auto mt-10"
             )}
             {...titleVariants}
           >

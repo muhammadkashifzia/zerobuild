@@ -26,7 +26,7 @@ export default function PerformanceSection() {
 
   return (
     <section className="text-black py-[40px] ">
-      <div className="max-w-[1150px] mx-auto px-[16px]">
+      <div className="container mx-auto px-[16px]">
         {/* Chart buttons - shown first */}
         <div className="text-center mb-8">
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 justify-center gap-2 graph-btn">
@@ -67,14 +67,14 @@ export default function PerformanceSection() {
         {/* New section below buttons */}
         <div className="text-center mb-8">
           <div className="text-[24px] md:text-[28px] leading-[1.3] mb-[15px] font-bold">
-            <p>Explore how our client used our Five C Zero Framework to evaluate 1000+ design options in under 24 hours, unlocking smarter decisions from day one..</p>
+            <p> Designing a whole life Net Zero option has never been easier. Explore how our client used our Five C Zero Framework to evaluate 1000+ design options in under 24 hours, unlocking smarter decisions from day one..</p>
           </div>
 
           <div className="space-y-6"> 
             <p className="text-black text-center">
               Choose what matters most and let us the rest. Whether new build or retrofit, we help you prioritise what drives your project: 
               Compliance, Comfort, Cost. Carbon. Circularity. 
-              Designing a whole life Net Zero option has never been easier.
+             
             </p>
           </div>
         </div>
