@@ -29,18 +29,81 @@ const DetailedDataBox = ({ dataPoint, isVisible, position }: {
   isVisible: boolean;
   position: { x: number; y: number } | null;
 }) => {
-  if (!isVisible || !dataPoint || !position) return null;
+  const [boxPosition, setBoxPosition] = useState<{ left: number; top: number } | null>(null);
+
+  useEffect(() => {
+    if (!isVisible || !dataPoint || !position) {
+      setBoxPosition(null);
+      return;
+    }
+
+    const updatePosition = () => {
+      // Get chart container bounds
+      const chartContainer = document.getElementById('observability-chart');
+      if (!chartContainer) return;
+
+      const containerRect = chartContainer.getBoundingClientRect();
+      const boxWidth = 280; // Approximate box width
+      const boxHeight = 200; // Approximate box height
+      const offset = 20; // Distance from cursor
+
+      // Calculate initial position
+      let left = position.x + offset;
+      let top = position.y - boxHeight - offset;
+
+      // Check right boundary
+      if (left + boxWidth > containerRect.right) {
+        left = position.x - boxWidth - offset;
+      }
+
+      // Check left boundary
+      if (left < containerRect.left) {
+        left = containerRect.left + 10;
+      }
+
+      // Check top boundary
+      if (top < containerRect.top) {
+        top = position.y + offset;
+      }
+
+      // Check bottom boundary
+      if (top + boxHeight > containerRect.bottom) {
+        top = containerRect.bottom - boxHeight - 10;
+      }
+
+      setBoxPosition({ left, top });
+    };
+
+    updatePosition();
+
+    // Add scroll and resize listeners to update position with debouncing
+    let scrollTimeout: NodeJS.Timeout;
+    const debouncedUpdatePosition = () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(updatePosition, 10);
+    };
+
+    window.addEventListener('scroll', debouncedUpdatePosition, { passive: true });
+    window.addEventListener('resize', updatePosition, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', debouncedUpdatePosition);
+      window.removeEventListener('resize', updatePosition);
+      clearTimeout(scrollTimeout);
+    };
+  }, [isVisible, dataPoint, position]);
+
+  if (!isVisible || !dataPoint || !boxPosition) return null;
 
   return (
     <div
-      className="fixed z-50 border  border-gray-300 rounded-lg shadow-lg p-2 max-w-sm"
+      className="fixed z-50 border border-gray-300 rounded-lg shadow-xl p-3 max-w-sm backdrop-blur-sm"
       style={{
-        left: position.x + 50,
-        top: position.y - 60,
-        transform: 'translateY(-100%)',
-        backgroundColor: dataPoint.ComfortColor
+        left: boxPosition.left,
+        top: boxPosition.top,
+        backgroundColor: dataPoint.ComfortColor,
+        boxShadow: '0 10px 25px rgba(0, 0, 0, 0.15)'
       }}
-
     >
       <div className="space-y-1" >
 
@@ -392,7 +455,7 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
   const layout = useMemo((): Partial<Layout> => {
     if (!processedData) return {};
 
-    const { layoutImages, sweetSpot } = processedData;
+    const { layoutImages, sweetSpot, costs, carbons } = processedData;
 
     // Determine title based on selected view
     let title = "Cost vs Carbon";
@@ -414,11 +477,52 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
         break;
     }
 
+    // Calculate axis ranges based on selected view
+    let xaxisRange: [number, number] | undefined;
+    let yaxisRange: [number, number] | undefined;
+
+    if (selectedView === "compliance") {
+      // For compliance view, show a broader range to see all compliance logos
+      const allMinCost = Math.min(...costs);
+      const allMaxCost = Math.max(...costs);
+      const allMinCarbon = Math.min(...carbons);
+      const allMaxCarbon = Math.max(...carbons);
+      
+      const costPadding = (allMaxCost - allMinCost) * 0.1;
+      const carbonPadding = (allMaxCarbon - allMinCarbon) * 0.1;
+      
+      xaxisRange = [allMinCost - costPadding, allMaxCost + costPadding];
+      yaxisRange = [allMinCarbon - carbonPadding, allMaxCarbon + carbonPadding];
+    } else {
+      // For other views, use the sweet spot range
+      xaxisRange = [sweetSpot.x0, sweetSpot.x1];
+      yaxisRange = [sweetSpot.y0, sweetSpot.y1];
+    }
+
     return {
-      title: { text: title },
-      xaxis: { title: { text: "Cost (£/m²)" } },
-      yaxis: { title: { text: "Carbon (kgCO₂e/m²)" } },
-      shapes: [],
+      // title: { text: title },
+      xaxis: { 
+        title: { text: "Cost (£/m²)" },
+        range: xaxisRange
+      },
+      yaxis: { 
+        title: { text: "Carbon (kgCO₂e/m²)" },
+        range: yaxisRange
+      },
+      shapes: [
+        {
+          type: "rect",
+          xref: "x",
+          yref: "y",
+          x0: sweetSpot.x0,
+          x1: sweetSpot.x1,
+          y0: sweetSpot.y0,
+          y1: sweetSpot.y1,
+          fillcolor: "transparent",
+          line: { color: "transparent", width: 1 },
+          layer: "below",
+        },
+      ],
       annotations: [],
       images: layoutImages.map((img) => ({
         ...img,

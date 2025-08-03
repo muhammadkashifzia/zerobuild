@@ -13,7 +13,7 @@ export default function CTAButtons() {
   return (
     <div className=" flex items-center gap-2 md:gap-10 p-4 md:p-8 container mx-auto w-full bg-white rounded-lg shadow-md justify-between md:flex-row flex-col">
       {/* Main CTA Button */}
-      <button className="relative flex items-center justify-center md:justify-between px-3 md:px-8 py-2 md:py-4 rounded-full border border-black   group overflow-hidden min-w-full md:min-w-[500px]">
+      <Link href="/resources" className="relative flex items-center justify-center md:justify-between px-3 md:px-8 py-2 md:py-4 rounded-full border border-black   group overflow-hidden min-w-full md:min-w-[500px]">
        
     
        <span className="text-[20px] md:text-[48px] font-bold text-black mr-[7px]">Start</span> <TypewriterEffect words={words} />
@@ -21,7 +21,7 @@ export default function CTAButtons() {
         <span className="ml-4 relative z-10 w-5 h-5 md:w-14 md:h-14 flex items-center justify-center rounded-full  text-white bg-[#484AB7]">
           <ArrowRight className="w-3 h-3 md:w-8 md:h-8" />
         </span>
-      </button>
+      </Link>
 
       {/* Side Buttons */}
       <div className="flex flex-col gap-2 md:gap-4 w-full md:w-auto">
@@ -32,7 +32,7 @@ export default function CTAButtons() {
           </span>
         </a>
 
-        <Link href="/resources" className="flex items-center justify-between px-6 py-3 rounded-full border border-black text-black text-sm font-medium w-full md:w-56">
+        <Link href="/services" className="flex items-center justify-between px-6 py-3 rounded-full border border-black text-black text-sm font-medium w-full md:w-56">
           Get an Enterprise Trial
           <span className="ml-2 border border-black w-5 h-5 flex items-center justify-center rounded-full bg-white text-black">
             <ArrowRight className="w-3 h-3" />
