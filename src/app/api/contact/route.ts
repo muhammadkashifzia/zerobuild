@@ -220,7 +220,7 @@ export async function POST(req: Request) {
                 <li>Our team will review your message within 24 hours</li>
                 <li>We'll respond to your inquiry with relevant information</li>
                 <li>If you have urgent questions, feel free to follow up</li>
-              </ul>
+              </ul> 
             </div>
             
             <div style="text-align: center; margin-top: 30px;">
