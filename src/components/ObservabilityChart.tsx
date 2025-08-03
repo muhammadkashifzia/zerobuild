@@ -1,7 +1,7 @@
 // app/page.tsx
 "use client";
 
-import { useEffect, useState, useMemo, useCallback } from "react";
+import { useEffect, useState, useMemo, useCallback, useRef } from "react";
 import dynamic from "next/dynamic";
 import * as XLSX from "xlsx";
 import type { Data, Layout } from "plotly.js";
@@ -289,6 +289,14 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
   const [error, setError] = useState<string | null>(null);
   const [hoveredDataPoint, setHoveredDataPoint] = useState<DataPoint | null>(null);
   const [hoverPosition, setHoverPosition] = useState<{ x: number; y: number } | null>(null);
+  const [chartZoom, setChartZoom] = useState<{
+    x0: number;
+    x1: number;
+    y0: number;
+    y1: number;
+  } | null>(null);
+  const [plotRef, setPlotRef] = useState<any>(null);
+  const plotContainerRef = useRef<HTMLDivElement>(null);
 
   // Memoized data processing
   const processedData = useMemo(() => {
@@ -455,7 +463,7 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
   const layout = useMemo((): Partial<Layout> => {
     if (!processedData) return {};
 
-    const { layoutImages, sweetSpot, costs, carbons } = processedData;
+    const { layoutImages, sweetSpot } = processedData;
 
     // Determine title based on selected view
     let title = "Cost vs Carbon";
@@ -477,37 +485,69 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
         break;
     }
 
-    // Calculate axis ranges based on selected view
-    let xaxisRange: [number, number] | undefined;
-    let yaxisRange: [number, number] | undefined;
-
+    // Calculate zoom ranges based on selected view
+    let zoomRange = null;
     if (selectedView === "compliance") {
-      // For compliance view, show a broader range to see all compliance logos
-      const allMinCost = Math.min(...costs);
-      const allMaxCost = Math.max(...costs);
-      const allMinCarbon = Math.min(...carbons);
-      const allMaxCarbon = Math.max(...carbons);
-      
-      const costPadding = (allMaxCost - allMinCost) * 0.1;
-      const carbonPadding = (allMaxCarbon - allMinCarbon) * 0.1;
-      
-      xaxisRange = [allMinCost - costPadding, allMaxCost + costPadding];
-      yaxisRange = [allMinCarbon - carbonPadding, allMaxCarbon + carbonPadding];
-    } else {
-      // For other views, use the sweet spot range
-      xaxisRange = [sweetSpot.x0, sweetSpot.x1];
-      yaxisRange = [sweetSpot.y0, sweetSpot.y1];
+      // Zoom to show compliance icons clearly
+      const complianceData = processedData.df.filter(d => d.ComplianceMetric);
+      if (complianceData.length > 0) {
+        const costs = complianceData.map(d => d.Cost);
+        const carbons = complianceData.map(d => d.Carbon);
+        const costRange = Math.max(...costs) - Math.min(...costs);
+        const carbonRange = Math.max(...carbons) - Math.min(...carbons);
+        
+        zoomRange = {
+          x0: Math.min(...costs) - costRange * 0.12,
+          x1: Math.max(...costs) + costRange * 0.12,
+          y0: Math.min(...carbons) - carbonRange * 0.12,
+          y1: Math.max(...carbons) + carbonRange * 0.12,
+        };
+      }
+    } else if (selectedView === "comfort") {
+      // Zoom to show comfort data points clearly
+      const comfortData = processedData.df.filter(d => d.ComfortMetric !== undefined);
+      if (comfortData.length > 0) {
+        const costs = comfortData.map(d => d.Cost);
+        const carbons = comfortData.map(d => d.Carbon);
+        const costRange = Math.max(...costs) - Math.min(...costs);
+        const carbonRange = Math.max(...carbons) - Math.min(...carbons);
+        
+        zoomRange = {
+          x0: Math.min(...costs) - costRange * 0.05,
+          x1: Math.max(...costs) + costRange * 0.05,
+          y0: Math.min(...carbons) - carbonRange * 0.05,
+          y1: Math.max(...carbons) + carbonRange * 0.05,
+        };
+      }
+    } else if (selectedView === "circularity") {
+      // Zoom to show circularity data points clearly
+      const circularityData = processedData.df.filter(d => d.Circularity !== undefined);
+      if (circularityData.length > 0) {
+        const costs = circularityData.map(d => d.Cost);
+        const carbons = circularityData.map(d => d.Carbon);
+        const costRange = Math.max(...costs) - Math.min(...costs);
+        const carbonRange = Math.max(...carbons) - Math.min(...carbons);
+        
+        zoomRange = {
+          x0: Math.min(...costs) - costRange * 0.05,
+          x1: Math.max(...costs) + costRange * 0.05,
+          y0: Math.min(...carbons) - carbonRange * 0.05,
+          y1: Math.max(...carbons) + carbonRange * 0.05,
+        };
+      }
     }
 
     return {
       // title: { text: title },
       xaxis: { 
         title: { text: "Cost (£/m²)" },
-        range: xaxisRange
+        ...(zoomRange && { range: [zoomRange.x0, zoomRange.x1] }),
+        autorange: !zoomRange,
       },
       yaxis: { 
         title: { text: "Carbon (kgCO₂e/m²)" },
-        range: yaxisRange
+        ...(zoomRange && { range: [zoomRange.y0, zoomRange.y1] }),
+        autorange: !zoomRange,
       },
       shapes: [
         {
@@ -527,7 +567,17 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
       images: layoutImages.map((img) => ({
         ...img,
         visible: selectedView === "compliance",
+        sizex: selectedView === "compliance" ? 25 : 20, // Larger icons for compliance view
+        sizey: selectedView === "compliance" ? 25 : 20,
       })),
+      // Add zoom and pan controls
+      dragmode: 'zoom',
+      modebar: {
+        orientation: 'v',
+        bgcolor: 'rgba(255,255,255,0.8)',
+        color: '#484AB7',
+        activecolor: '#3c3f9d',
+      },
     };
   }, [processedData, selectedView]);
 
@@ -602,6 +652,26 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
     setHoverPosition(null);
   }, []);
 
+  // Reset zoom function
+  const resetZoom = useCallback(() => {
+    // Force chart to reset by triggering a re-render
+    setChartZoom(null);
+    
+    // Use a timeout to ensure the state update has taken effect
+    setTimeout(() => {
+      if (plotRef && plotRef.layout) {
+        try {
+          plotRef.relayout({
+            'xaxis.autorange': true,
+            'yaxis.autorange': true
+          });
+        } catch (error) {
+          console.log('Reset zoom error:', error);
+        }
+      }
+    }, 50);
+  }, [plotRef]);
+
   if (error) {
     return (
       <div className="container mx-auto p-6">
@@ -628,21 +698,54 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
         {isLoading ? (
           <SkeletonShimmer />
         ) : plotData.length > 0 ? (
-          <div className=" h-[620px] ">
-          <Plot
-            data={plotData}
-            layout={layout}
-            config={{
-              responsive: false,
-              displayModeBar: true,
-         
-              modeBarButtonsToRemove: ['pan2d', 'lasso2d', 'select2d'],
-            }}
-            style={{ width: '100%', height: '100%', paddingBottom: '20px' }}
-            onHover={handleHover}
-            onUnhover={handleUnhover}
-          
-          />
+          <div className="relative h-[620px]">
+            {/* Reset Zoom Button */}
+            {/* {chartZoom && (
+              <button
+                onClick={resetZoom}
+                className="absolute top-2 right-2 z-10 bg-white border border-gray-300 rounded-md px-3 py-1 text-sm font-medium text-gray-700 hover:bg-gray-50 shadow-sm transition-colors"
+                title="Reset zoom"
+              >
+                Reset Zoom
+              </button>
+            )} */}
+            <Plot
+              data={plotData}
+              layout={layout}
+              config={{
+                responsive: false,
+                displayModeBar: true,
+                modeBarButtonsToAdd: [
+                  'zoom2d',
+                  'pan2d',
+                  'resetScale2d',
+                  'autoScale2d'
+                ],
+                modeBarButtonsToRemove: ['lasso2d', 'select2d'],
+              }}
+              style={{ width: '100%', height: '100%', paddingBottom: '20px' }}
+              onHover={handleHover}
+              onUnhover={handleUnhover}
+              onRelayout={(eventData) => {
+                // Store zoom state when user manually zooms
+                const x0 = eventData['xaxis.range[0]'];
+                const x1 = eventData['xaxis.range[1]'];
+                const y0 = eventData['yaxis.range[0]'];
+                const y1 = eventData['yaxis.range[1]'];
+                
+                if (typeof x0 === 'number' && typeof x1 === 'number' && typeof y0 === 'number' && typeof y1 === 'number') {
+                  setChartZoom({
+                    x0,
+                    x1,
+                    y0,
+                    y1,
+                  });
+                }
+              }}
+              onInitialized={(figure) => {
+                setPlotRef(figure);
+              }}
+            />
           </div>
         ) : (
           <div className="flex items-center justify-center h-full  rounded-lg">

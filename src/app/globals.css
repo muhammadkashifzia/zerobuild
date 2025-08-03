@@ -157,3 +157,6 @@ a{
   display: flex;
   margin: 0px auto;
 }
+.js-plotly-plot .plotly .modebar.vertical{
+  flex-flow:nowrap!important;
+}
