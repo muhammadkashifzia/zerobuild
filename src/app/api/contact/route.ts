@@ -133,7 +133,7 @@ export async function POST(req: Request) {
 
     // Send email to admin with Excel download links (if available)
     const adminEmailResult = await sendEmail({
-      to: "info@eastlogic.com",
+      to: "kashif@eastlogic.com",
       replyTo: data.email,
       subject: "New Contact Form Submission - Zero Build",
       html: `
