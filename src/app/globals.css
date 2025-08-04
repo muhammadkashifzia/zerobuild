@@ -166,6 +166,7 @@ a{
 }
 .service-body-content p strong{
   margin-bottom: 15px;
+  display: block;
 }
  
 /* Accordion styles */
