@@ -3,7 +3,7 @@ import { client } from "@/sanity/lib/client";
 import { youtubeVideosQuery } from "@/sanity/lib/queries";
 import { getYouTubeEmbedUrl } from "@/utils/youtube";
 import { YouTubeVideo, VideoFeatureProps } from "@/types/youtube";
-import { urlForImage } from "@/sanity/lib/image";
+import { urlFor } from "@/sanity/lib/image";
 
 const VideoFeature: React.FC<VideoFeatureProps> = ({
   title,
@@ -59,7 +59,7 @@ const YouTuberShowcase: React.FC = async () => {
   const transformedVideos: VideoFeatureProps[] = videos.map((video) => {
     const embedUrl = getYouTubeEmbedUrl(video.youtubeUrl);
     const thumbnailUrl = video.thumbnail 
-      ? urlForImage(video.thumbnail.asset).url() 
+      ? urlFor(video.thumbnail.asset).url() 
       : undefined;
 
     return {
