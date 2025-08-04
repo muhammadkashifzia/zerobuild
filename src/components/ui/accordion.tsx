@@ -57,7 +57,7 @@ export default function Accordion({ items, title, className = '' }: AccordionPro
                   {item.title}
                 </span>
                 <ChevronDown
-                  className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${
+                  className={`w-5 h-5 text-gray-500 transition-transform duration-200 focus:ring-0 ${
                     isOpen ? 'rotate-180' : ''
                   }`}
                 />
