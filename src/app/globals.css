@@ -167,3 +167,17 @@ a{
 .service-body-content p strong{
   margin-bottom: 15px;
 }
+
+/* Accordion styles */
+.accordion-item {
+  transition: all 0.3s ease-in-out;
+}
+
+.accordion-content {
+  transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.accordion-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(72, 74, 183, 0.2);
+}

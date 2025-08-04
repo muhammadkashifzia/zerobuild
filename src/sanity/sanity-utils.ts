@@ -17,7 +17,13 @@ export async function getServices(): Promise<Service[]> {
   description,
   categories,
   "gallery": gallery[].asset->url,
-  body
+  body,
+  accordion[]{
+    _key,
+    title,
+    content,
+    isOpen
+  }
     }`
   );
 }
@@ -33,7 +39,13 @@ export async function getService(slug: string): Promise<Service> {
       description,
       categories,
       gallery[]{ asset->{url} },
-      body
+      body,
+      accordion[]{
+        _key,
+        title,
+        content,
+        isOpen
+      }
     }
   `,
     { slug }

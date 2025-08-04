@@ -4,6 +4,7 @@ import Link from "next/link";
 import { getService } from "@/sanity/sanity-utils";
 import { Service } from "@/types/Service";
 import type { Metadata } from "next";
+import Accordion from "@/components/ui/accordion";
 
 export async function generateMetadata({
   params,
@@ -138,6 +139,17 @@ export default async function Page({
                     normal: ({ children }) => <p>{children}</p>,
                   },
                 }}
+              />
+            </div>
+          )}
+
+          {/* FAQ Accordion */}
+          {service.accordion && service.accordion.length > 0 && (
+            <div className="mt-12">
+              <Accordion 
+                items={service.accordion} 
+                title="Frequently Asked Questions"
+                className="max-w-none"
               />
             </div>
           )}
