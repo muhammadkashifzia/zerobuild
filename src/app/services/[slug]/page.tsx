@@ -148,7 +148,6 @@ export default async function Page({
             <div className="mt-12">
               <Accordion 
                 items={service.accordion} 
-                title="Frequently Asked Questions"
                 className="max-w-none"
               />
             </div>
