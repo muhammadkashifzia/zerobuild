@@ -129,7 +129,7 @@ export default async function Page({
 
           {/* Rich Body Content */}
           {service.body && (
-            <div className="prose prose-blue max-w-none mt-8 text-black service-body-content">
+            <div className="prose prose-blue max-w-none mt-8 text-black mb-[48px] service-body-content">
               <PortableText
                 value={service.body}
                 components={{
@@ -145,7 +145,7 @@ export default async function Page({
 
           {/* FAQ Accordion */}
           {service.accordion && service.accordion.length > 0 && (
-            <div className="mt-[48px]">
+            <div>
               <Accordion 
                 items={service.accordion} 
                 className="max-w-none"

@@ -1,12 +1,9 @@
 import React from "react";
-
-interface VideoFeatureProps {
-  title: string;
-  gradient: string;
-  videoSrc: string;
-  channelName: string;
-  description: string;
-}
+import { client } from "@/sanity/lib/client";
+import { youtubeVideosQuery } from "@/sanity/lib/queries";
+import { getYouTubeEmbedUrl } from "@/utils/youtube";
+import { YouTubeVideo, VideoFeatureProps } from "@/types/youtube";
+import { urlForImage } from "@/sanity/lib/image";
 
 const VideoFeature: React.FC<VideoFeatureProps> = ({
   title,
@@ -14,12 +11,23 @@ const VideoFeature: React.FC<VideoFeatureProps> = ({
   videoSrc,
   channelName,
   description,
+  thumbnail,
 }) => {
   return (
     <div
       className={`rounded-3xl my-10 grid grid-cols-1 gap-10 bg-gradient-to-b px-2 pt-2 pb-10 sm:p-10 md:gap-20 lg:grid-cols-2 ${gradient}`}
     >
       <div className="relative aspect-video h-full w-full overflow-hidden rounded-2xl">
+        {thumbnail && (
+          <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/50 opacity-0 hover:opacity-100 transition-opacity duration-300">
+            <div className="text-white text-center">
+              <svg className="w-16 h-16 mx-auto mb-2" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+              <p className="text-sm">Click to play</p>
+            </div>
+          </div>
+        )}
         <iframe
           className="rounded-2xl"
           width="100%"
@@ -43,25 +51,54 @@ const VideoFeature: React.FC<VideoFeatureProps> = ({
   );
 };
 
-const YouTuberShowcase: React.FC = () => {
-  const videos = [
-    {
-      title: "This UI component library is mind-blowing",
-      gradient: "from-indigo-500 to-indigo-300",
-      videoSrc: "https://www.youtube.com/embed/RPa3_AD1_Vs",
-      channelName: "Fireship",
-      description:
-        "Jeff from talks about how Aceternity UI can help you build awesome landing pages with speed",
-    },
-    {
-      title: "SAAS Automation Builder",
-      gradient: "from-pink-500 to-pink-300",
-      videoSrc: "https://www.youtube.com/embed/XkOXNlHJP6M",
-      channelName: "Web Prodigies",
-      description:
-        "Watch build an entire SaaS application from scratch with Aceternity UI",
-    },
-  ];
+const YouTuberShowcase: React.FC = async () => {
+  // Fetch videos from Sanity CMS
+  const videos: YouTubeVideo[] = await client.fetch(youtubeVideosQuery);
+
+  // Transform videos for the component
+  const transformedVideos: VideoFeatureProps[] = videos.map((video) => {
+    const embedUrl = getYouTubeEmbedUrl(video.youtubeUrl);
+    const thumbnailUrl = video.thumbnail 
+      ? urlForImage(video.thumbnail.asset).url() 
+      : undefined;
+
+    return {
+      title: video.title,
+      gradient: video.gradient,
+      videoSrc: embedUrl || video.youtubeUrl, // Fallback to original URL if embed fails
+      channelName: video.channelName,
+      description: video.description,
+      thumbnail: thumbnailUrl,
+    };
+  });
+
+  // If no videos, show a placeholder or return null
+  if (transformedVideos.length === 0) {
+    return (
+      <div
+        className="mb-[40px] md:mb-[80px] pb-[10px] pt-[30px] md:py-[60px]"
+        style={{
+          backgroundBlendMode: "overlay",
+          backgroundSize: "cover",
+          backgroundImage: `url("/assets/images/coding-background-texture.jpg"), linear-gradient(180deg, #484AB7 0%, #9271f6 100%)`,
+        }}
+      >
+        <div className="container mx-auto px-[16px]">
+          <div>
+            <h2
+              id="reviews-title"
+              className="text-[24px] md:text-[48px] font-bold text-white sm:text-center"
+            >
+              Featured by popular YouTubers
+            </h2>
+            <p className="mt-2 text-lg text-white sm:text-center">
+              No videos available yet. Check back soon!
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -81,12 +118,12 @@ const YouTuberShowcase: React.FC = () => {
           Featured by popular YouTubers
         </h2>
         <p className="mt-2 text-lg text-white sm:text-center">
-          See what the best YouTubers are saying about Aceternity UI.
+          See what the best YouTubers are saying about ZeroBuild.
         </p>
       </div>
       <div>
-        {videos.map((video, index) => (
-          <VideoFeature key={index} {...video} />
+        {transformedVideos.map((video, index) => (
+          <VideoFeature key={video.title + index} {...video} />
         ))}
       </div>
       </div>

@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Home() {
+export default async function Home() {
   return (
     <main className="min-h-screen  antialiased hide-scrollbar relative bg-[#fafafa]">
        <Image src="/assets/svg/pattern-svg-revert.svg" alt="pattenLeft" width={1000} height={1000} className="absolute top-[65px] left-[0px] w-[890px] h-auto object-cover"/>
