@@ -145,7 +145,7 @@ export default async function Page({
 
           {/* FAQ Accordion */}
           {service.accordion && service.accordion.length > 0 && (
-            <div className="mt-12">
+            <div className="mt-[48px]">
               <Accordion 
                 items={service.accordion} 
                 className="max-w-none"
