@@ -46,14 +46,14 @@ export default function Accordion({ items, title, className = '' }: AccordionPro
           return (
             <div
               key={item._key}
-              className="border border-gray-200 rounded-lg overflow-hidden bg-white"
+              className="border border-gray-200 rounded-lg overflow-hidden bg-[#f2f2f2]"
             >
               <button
                 onClick={() => toggleItem(item._key)}
                 className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset"
                 aria-expanded={isOpen}
               >
-                <span className="font-medium text-gray-900 pr-4">
+                <span className="font-normal text-black text-[28px] pr-4">
                   {item.title}
                 </span>
                 <ChevronDown
@@ -69,7 +69,7 @@ export default function Accordion({ items, title, className = '' }: AccordionPro
                 }`}
               >
                 <div className="px-6 pb-4">
-                  <div className="prose prose-sm max-w-none text-gray-700">
+                  <div className="prose prose-sm max-w-none text-black text-[16px]">
                     <PortableText
                       value={item.content}
                       components={{
