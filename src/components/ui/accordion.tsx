@@ -39,7 +39,7 @@ export default function Accordion({ items, title, className = '' }: AccordionPro
       {title && (
         <h2 className="text-2xl font-semibold mb-6 text-gray-900">{title}</h2>
       )}
-      <div className="space-y-2">
+      <div className="space-y-[24px]">
         {items.map((item) => {
           const isOpen = openItems.has(item._key)
           
