@@ -160,3 +160,10 @@ a{
 .js-plotly-plot .plotly .modebar.vertical{
   flex-flow:nowrap!important;
 }
+.service-body-content ul{
+  list-style: disc;
+  padding-left: 18px;
+}
+.service-body-content p strong{
+  margin-bottom: 15px;
+}
