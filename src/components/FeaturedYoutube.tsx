@@ -4,28 +4,7 @@ import { youtubeVideosQuery } from "@/sanity/lib/queries";
 import { getYouTubeEmbedUrl } from "@/utils/youtube";
 import { YouTubeVideo, VideoFeatureProps } from "@/types/youtube";
 import { urlFor } from "@/sanity/lib/image";
-
-// Sample data for testing
-const sampleVideos: YouTubeVideo[] = [
-  {
-    _id: "1",
-    title: "ZeroBuild: Revolutionizing Net Zero Decarbonisation",
-    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    channelName: "Sustainability Insights",
-    description: "Discover how ZeroBuild is transforming the built environment with cutting-edge analytics and data-driven tools for achieving Net Zero faster.",
-    gradient: "from-indigo-500 to-indigo-300",
-    order: 1,
-  },
-  {
-    _id: "2",
-    title: "Whole Life Carbon Assessment Made Simple",
-    youtubeUrl: "https://www.youtube.com/watch?v=9bZkp7q19f0",
-    channelName: "Green Building Pro",
-    description: "Learn how ZeroBuild simplifies Whole Life Carbon assessments and enables quicker, clearer decisions for architects and engineers.",
-    gradient: "from-green-500 to-green-300",
-    order: 2,
-  }
-];
+import YouTubeSkeleton from "./shimmer/YouTubeSkeleton";
 
 const VideoFeature: React.FC<VideoFeatureProps> = ({
   title,
@@ -35,8 +14,6 @@ const VideoFeature: React.FC<VideoFeatureProps> = ({
   description,
   thumbnail,
 }) => {
-  console.log("VideoFeature props:", { title, videoSrc, channelName });
-  
   return (
     <div
       className={`rounded-3xl my-10 grid grid-cols-1 gap-10 bg-gradient-to-b px-2 pt-2 pb-10 sm:p-10 md:gap-20 lg:grid-cols-2 ${gradient}`}
@@ -78,21 +55,11 @@ const VideoFeature: React.FC<VideoFeatureProps> = ({
 const YouTuberShowcase: React.FC = async () => {
   try {
     // Fetch videos from Sanity CMS
-    console.log("Fetching YouTube videos from Sanity...");
-    let videos: YouTubeVideo[] = [];
-    
-    try {
-      videos = await client.fetch(youtubeVideosQuery);
-      console.log("Fetched videos from Sanity:", videos);
-    } catch (sanityError) {
-      console.error("Sanity fetch failed, using sample data:", sanityError);
-      videos = sampleVideos;
-    }
+    const videos: YouTubeVideo[] = await client.fetch(youtubeVideosQuery);
 
     // Transform videos for the component
     const transformedVideos: VideoFeatureProps[] = videos.map((video) => {
       const embedUrl = getYouTubeEmbedUrl(video.youtubeUrl);
-      console.log("Original URL:", video.youtubeUrl, "Embed URL:", embedUrl);
       
       const thumbnailUrl = video.thumbnail 
         ? urlFor(video.thumbnail.asset).url() 
@@ -108,11 +75,8 @@ const YouTuberShowcase: React.FC = async () => {
       };
     });
 
-    console.log("Transformed videos:", transformedVideos);
-
-    // If no videos, show a placeholder or return null
+    // If no videos, show a placeholder
     if (transformedVideos.length === 0) {
-      console.log("No videos found, showing placeholder");
       return (
         <div
           className="mb-[40px] md:mb-[80px] pb-[10px] pt-[30px] md:py-[60px]"
@@ -169,7 +133,7 @@ const YouTuberShowcase: React.FC = async () => {
       </div>
     );
   } catch (error) {
-    console.error("Error in YouTuberShowcase:", error);
+    console.error("Error fetching YouTube videos:", error);
     return (
       <div
         className="mb-[40px] md:mb-[80px] pb-[10px] pt-[30px] md:py-[60px]"

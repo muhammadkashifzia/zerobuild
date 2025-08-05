@@ -1,5 +1,5 @@
 import HeroSection from "@/components/HeroSection";
-import FeaturedByYoutubers from "@/components/FeaturedYoutube";
+import FeaturedByYoutubers from "@/components/FeaturedYoutubeClient";
 import CtaSection from '@/components/CtaSection'
 import { MapWorld } from "@/components/MapWorld";
 import ServiceSection from "@/components/ServiceSection" 
