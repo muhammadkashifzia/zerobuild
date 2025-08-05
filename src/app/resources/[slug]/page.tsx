@@ -93,7 +93,7 @@ export default async function Page({
                 alt={`Gallery image ${idx + 1}`}
                 width={400}
                 height={300}
-                className="rounded-md object-cover w-full h-auto md:h-[300px] lg:h-[515px] object-top"
+                className="rounded-md object-cover w-full h-auto md:h-[300px] lg:h-[515px] object-top shadow-md"
               />
             ))}
           </div>
