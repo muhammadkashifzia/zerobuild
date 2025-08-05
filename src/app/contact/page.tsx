@@ -8,6 +8,7 @@ import { recaptchaSiteKey } from "@/sanity/env";
 import Image from "next/image";
 import { getContacts } from "@/sanity/sanity-utils";
 import { Contact } from "@/types/Contact";
+import { Button } from "@/components/ui/stateful-button";
 
 const SITE_KEY = recaptchaSiteKey;
 
@@ -17,6 +18,12 @@ const ContactPage = () => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
+
+  const handleClick = () => {
+    return new Promise((resolve) => {
+      setTimeout(resolve, 4000);
+    });
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -325,13 +332,15 @@ const ContactPage = () => {
                 </div>
               )}
 
-              <button
+              <Button
                 type="submit"
                 disabled={loading}
+                loading={loading}
+                success={success}
                 className="w-full bg-[#484AB7] text-white border-neutral-200 px-2 rounded-xl max-w-[185px] h-[45px] flex items-center justify-center text-[16px] font-semibold hover:bg-[#3c3f9d] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {loading ? "Submitting..." : "Submit"}
-              </button>
+                {loading ? "Submitting..." : success ? "Submitted!" : "Submit"}
+              </Button>
             </form>
           )}
         </div>
