@@ -6,6 +6,16 @@ import { YouTubeVideo, VideoFeatureProps } from "@/types/youtube";
 import { urlFor } from "@/sanity/lib/image";
 import YouTubeSkeleton from "./shimmer/YouTubeSkeleton";
 
+const GRADIENTS = [
+  "from-indigo-500 to-indigo-300",
+  "from-pink-500 to-pink-300",
+  "from-violet-500 to-violet-300",
+  "from-blue-500 to-blue-300",
+  "from-green-500 to-green-300",
+  "from-blue-500 to-blue-300",
+  "from-red-500 to-red-300",
+];
+
 const VideoFeature: React.FC<VideoFeatureProps> = ({
   title,
   gradient,
@@ -43,7 +53,7 @@ const VideoFeature: React.FC<VideoFeatureProps> = ({
       <div>
         <p className="text-xl font-normal tracking-tight text-white md:text-4xl">
           {description}
-          <span className="relative inline-block bg-white/20 px-2 py-2">
+          <span className="relative inline-block bg-white/20 px-2 py-2 m-[8px]">
             <span className="font-medium text-white text-balance">{channelName}</span>
           </span>
         </p>
@@ -203,7 +213,11 @@ const YouTuberShowcaseClient: React.FC = () => {
       </div>
       <div>
         {videos.map((video, index) => (
-          <VideoFeature key={video.title + index} {...video} />
+          <VideoFeature
+            key={video.title + index}
+            {...video}
+            gradient={GRADIENTS[index % GRADIENTS.length]}
+          />
         ))}
       </div>
       </div>
