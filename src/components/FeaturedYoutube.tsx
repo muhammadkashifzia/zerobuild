@@ -5,6 +5,28 @@ import { getYouTubeEmbedUrl } from "@/utils/youtube";
 import { YouTubeVideo, VideoFeatureProps } from "@/types/youtube";
 import { urlFor } from "@/sanity/lib/image";
 
+// Sample data for testing
+const sampleVideos: YouTubeVideo[] = [
+  {
+    _id: "1",
+    title: "ZeroBuild: Revolutionizing Net Zero Decarbonisation",
+    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    channelName: "Sustainability Insights",
+    description: "Discover how ZeroBuild is transforming the built environment with cutting-edge analytics and data-driven tools for achieving Net Zero faster.",
+    gradient: "from-indigo-500 to-indigo-300",
+    order: 1,
+  },
+  {
+    _id: "2",
+    title: "Whole Life Carbon Assessment Made Simple",
+    youtubeUrl: "https://www.youtube.com/watch?v=9bZkp7q19f0",
+    channelName: "Green Building Pro",
+    description: "Learn how ZeroBuild simplifies Whole Life Carbon assessments and enables quicker, clearer decisions for architects and engineers.",
+    gradient: "from-green-500 to-green-300",
+    order: 2,
+  }
+];
+
 const VideoFeature: React.FC<VideoFeatureProps> = ({
   title,
   gradient,
@@ -57,8 +79,15 @@ const YouTuberShowcase: React.FC = async () => {
   try {
     // Fetch videos from Sanity CMS
     console.log("Fetching YouTube videos from Sanity...");
-    const videos: YouTubeVideo[] = await client.fetch(youtubeVideosQuery);
-    console.log("Fetched videos:", videos);
+    let videos: YouTubeVideo[] = [];
+    
+    try {
+      videos = await client.fetch(youtubeVideosQuery);
+      console.log("Fetched videos from Sanity:", videos);
+    } catch (sanityError) {
+      console.error("Sanity fetch failed, using sample data:", sanityError);
+      videos = sampleVideos;
+    }
 
     // Transform videos for the component
     const transformedVideos: VideoFeatureProps[] = videos.map((video) => {
@@ -140,7 +169,7 @@ const YouTuberShowcase: React.FC = async () => {
       </div>
     );
   } catch (error) {
-    console.error("Error fetching YouTube videos:", error);
+    console.error("Error in YouTuberShowcase:", error);
     return (
       <div
         className="mb-[40px] md:mb-[80px] pb-[10px] pt-[30px] md:py-[60px]"
