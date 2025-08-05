@@ -1,6 +1,62 @@
+"use client";
 import Link from "next/link";
 import Image from "next/image";
+import { FloatingDock } from "@/components/ui/floating-dock";
+import {
+  IconBrandGithub,
+  IconBrandX,
+  IconBrandFacebook,
+  IconBrandBluesky,
+  IconBrandInstagram,
+  IconBrandLinkedin,
+} from "@tabler/icons-react";
 function Footer() {
+    const links = [
+   
+  {
+      title: "Facebook",
+      icon: (
+        <IconBrandFacebook className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+      ),
+      href: "#",
+    },
+    {
+      title: "Linkedin",
+      icon: (
+        <IconBrandLinkedin className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+      ),
+      href: "#",
+    },
+    {
+      title: "Instagram",
+      icon: (
+        <IconBrandInstagram className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+      ),
+      href: "#",
+    },
+      {
+      title: "Twitter",
+      icon: (
+        <IconBrandX className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+      ),
+      href: "#",
+    },
+    {
+      title: "Bluesky",
+      icon: (
+        <IconBrandBluesky className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+      ),
+      href: "#",
+    },
+    {
+      title: "GitHub",
+      icon: (
+        <IconBrandGithub className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+      ),
+      href: "#",
+    },
+    
+  ];
   return (
     <footer className="bg-[#fafafa] text-[#332f2f] pt-12 border-t border-gray-200">
       <div className="mx-auto flex container px-[16px] flex-col items-start justify-between text-sm text-neutral-500 md:flex-row">
@@ -86,9 +142,12 @@ function Footer() {
         </div>
        </div>
       </div>
-
+ <div className="pt-14 pb-4"> <FloatingDock
+        mobileClassName="translate-y-20" // only for demo, remove for production
+        items={links}
+      /></div>
       {/* Footer Bottom */}
-      <p className="text-center text-xs pb-10 pt-16">
+      <p className="text-center text-xs pb-10">
         © 2025 ZeroBuild Ltd. All rights reserved
       </p>
     </footer>

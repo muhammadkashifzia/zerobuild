@@ -13,8 +13,10 @@
     "@sanity/client": "^7.8.1",
     "@sanity/image-url": "^1.1.0",
     "@sanity/vision": "^3.99.0",
+    "@tabler/icons-react": "^3.34.1",
     "clsx": "^2.1.1",
     "dotted-map": "^2.2.3",
+    "formik": "^2.4.6",
     "framer-motion": "^11.18.2",
     "lucide-react": "^0.525.0",
     "mini-svg-data-uri": "^1.4.4",
@@ -32,8 +34,7 @@
     "swiper": "^11.2.10",
     "tailwind-merge": "^2.6.0",
     "xlsx": "^0.18.5",
-    "yup": "^1.6.1",
-    "formik": "^2.4.6"
+    "yup": "^1.6.1"
   },
   "devDependencies": {
     "@types/node": "^20",
