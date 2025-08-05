@@ -4,16 +4,6 @@ import YouTubeSkeleton from "@/components/shimmer/YouTubeSkeleton";
 export default function Loading() {
   return (
     <div className="min-h-screen antialiased bg-[#fafafa]">
-      {/* Hero Section Skeleton */}
-      <div className="h-screen bg-gradient-to-br from-blue-50 to-indigo-100 animate-pulse">
-        <div className="container mx-auto px-4 py-20">
-          <div className="h-16 bg-gray-300 rounded w-3/4 mb-8"></div>
-          <div className="h-8 bg-gray-300 rounded w-1/2 mb-4"></div>
-          <div className="h-6 bg-gray-300 rounded w-2/3 mb-8"></div>
-          <div className="h-12 bg-gray-300 rounded w-48"></div>
-        </div>
-      </div>
-
       {/* Performance Section Skeleton */}
       <div className="py-20 bg-white">
         <div className="container mx-auto px-4">
