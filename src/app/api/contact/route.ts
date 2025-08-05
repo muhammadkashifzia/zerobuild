@@ -178,7 +178,7 @@ export async function POST(req: Request) {
       `,
     });
 
-    // Send confirmation email to user with Excel download link (if available)
+    // Send confirmation email to user WITHOUT Excel download link
     const userEmailResult = await sendEmail({
       to: data.email,
       subject: "Thank you for contacting Zero Build - We've received your message",
@@ -188,10 +188,8 @@ export async function POST(req: Request) {
             <h1 style="margin: 0; font-size: 28px;">Thank You!</h1>
             <p style="margin: 10px 0 0 0; font-size: 16px;">We've received your message and will get back to you soon.</p>
           </div>
-          
           <div style="background: #f8f9fa; padding: 30px; border-radius: 0 0 10px 10px;">
             <h2 style="color: #333; margin-top: 0;">Message Received</h2>
-            
             <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #667eea;">
               <p><strong>Name:</strong> ${data.name}</p>
               <p><strong>Email:</strong> ${data.email}</p>
@@ -200,20 +198,6 @@ export async function POST(req: Request) {
               <p><strong>Purpose:</strong> ${data.purpose?.join(", ")}</p>
               ${data.role ? `<p><strong>Role:</strong> ${data.role}</p>` : ''}
             </div>
-            
-            ${excelGenerationSuccess ? `
-            <div style="background: #e8f4fd; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #2196f3;">
-              <h3 style="color: #1976d2; margin-top: 0;">📊 Your Submission Data</h3>
-              <p>You can download a copy of your submission data as an Excel file:</p>
-              <a href="${fullExcelUrl}" style="background: #2196f3; color: white; padding: 12px 25px; text-decoration: none; border-radius: 25px; display: inline-block; font-weight: bold; margin: 10px 0;">
-                📥 Download My Data (Excel)
-              </a>
-              <p style="font-size: 12px; color: #666; margin-top: 10px;">
-                This file contains all the information you submitted for your records.
-              </p>
-            </div>
-            ` : ''}
-            
             <div style="background: #e8f4fd; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #2196f3;">
               <h3 style="color: #1976d2; margin-top: 0;">What happens next?</h3>
               <ul style="color: #333; line-height: 1.6;">
@@ -222,18 +206,9 @@ export async function POST(req: Request) {
                 <li>If you have urgent questions, feel free to follow up</li>
               </ul> 
             </div>
-            
             <div style="text-align: center; margin-top: 30px;">
-              <a href="https://zerobuild.com" style="background: #667eea; color: white; padding: 12px 30px; text-decoration: none; border-radius: 25px; display: inline-block; font-weight: bold;">Visit Our Website</a>
+              <p style="color: #888; font-size: 13px;">This is an automated confirmation. No need to reply.</p>
             </div>
-            
-            <hr style="margin: 30px 0; border: none; border-top: 1px solid #ddd;">
-            
-            <p style="color: #666; font-size: 14px; text-align: center; margin: 0;">
-              This is an automated confirmation email. Please do not reply to this message.<br>
-              <strong>Submission ID:</strong> ${submission._id}<br>
-              <strong>Timestamp:</strong> ${new Date().toLocaleString()}
-            </p>
           </div>
         </div>
       `,
