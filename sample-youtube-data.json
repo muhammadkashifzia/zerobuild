@@ -1,0 +1,42 @@
+[
+  {
+    "_type": "youtubeVideo",
+    "title": "ZeroBuild: Revolutionizing Net Zero Decarbonisation",
+    "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "channelName": "Sustainability Insights",
+    "description": "Discover how ZeroBuild is transforming the built environment with cutting-edge analytics and data-driven tools for achieving Net Zero faster.",
+    "gradient": "from-indigo-500 to-indigo-300",
+    "order": 1,
+    "isActive": true
+  },
+  {
+    "_type": "youtubeVideo",
+    "title": "Whole Life Carbon Assessment Made Simple",
+    "youtubeUrl": "https://www.youtube.com/watch?v=9bZkp7q19f0",
+    "channelName": "Green Building Pro",
+    "description": "Learn how ZeroBuild simplifies Whole Life Carbon assessments and enables quicker, clearer decisions for architects and engineers.",
+    "gradient": "from-green-500 to-green-300",
+    "order": 2,
+    "isActive": true
+  },
+  {
+    "_type": "youtubeVideo",
+    "title": "Dynamic Energy Modelling for Net Zero Buildings",
+    "youtubeUrl": "https://www.youtube.com/watch?v=kJQP7kiw5Fk",
+    "channelName": "Energy Efficiency Today",
+    "description": "Explore ZeroBuild's dynamic energy modelling capabilities that optimize sustainability, affordability, and compliance across diverse building portfolios.",
+    "gradient": "from-blue-500 to-blue-300",
+    "order": 3,
+    "isActive": true
+  },
+  {
+    "_type": "youtubeVideo",
+    "title": "Retrofit Solutions for Local Authorities",
+    "youtubeUrl": "https://www.youtube.com/watch?v=ZZ5LpwO-An4",
+    "channelName": "Public Sector Innovation",
+    "description": "See how ZeroBuild empowers local authorities and housing associations to achieve Net Zero targets with innovative retrofit solutions.",
+    "gradient": "from-purple-500 to-purple-300",
+    "order": 4,
+    "isActive": true
+  }
+] 
