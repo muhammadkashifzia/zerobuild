@@ -11,7 +11,7 @@ export default function CTAButtons() {
     
   ];
   return (
-    <div className=" flex items-center gap-2 md:gap-10 p-4 md:p-8 container mx-auto w-full bg-white rounded-lg shadow-md justify-between md:flex-row flex-col">
+    <div className="my-[40px] flex items-center gap-2 md:gap-10 p-4 md:p-8 container mx-auto w-full bg-white rounded-lg shadow-md justify-between md:flex-row flex-col">
       {/* Main CTA Button */}
       <Link href="/resources" className="relative flex items-center justify-between px-6 md:px-8 py-2 md:py-4 rounded-full border border-black   group overflow-hidden min-w-full md:min-w-[500px]">
        

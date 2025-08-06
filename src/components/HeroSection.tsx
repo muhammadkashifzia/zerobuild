@@ -108,7 +108,7 @@ const HeroSection = memo(({ heroData }: HeroSectionProps) => {
             )}
             {...titleVariants}
           >
-            <div className="inline-block">
+            <div className="inline-block max-w-[1024px] leading-[38px] md:leading-[75px]">
               {heroData.title}
               <Suspense fallback={<span className="ml-3 text-[#484AB7] text-[28px] md:text-4xl">better</span>}>
                 <ContainerTextFlip {...containerTextFlipProps} />

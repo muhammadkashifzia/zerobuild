@@ -8,7 +8,7 @@ import { recaptchaSiteKey } from "@/sanity/env";
 import Image from "next/image";
 import { getContacts } from "@/sanity/sanity-utils";
 import { Contact } from "@/types/Contact";
-
+import { WorldMapDemo } from "@/components/contact-map";
 const SITE_KEY = recaptchaSiteKey;
 
 const ContactPage = () => {
@@ -150,7 +150,7 @@ const ContactPage = () => {
           {contacts.map((contact, index) => (
             <div
               key={contact.email || index}
-              className="mt-10 hidden flex-col items-center gap-4 md:flex-row lg:flex"
+              className="my-10 hidden flex-col items-center gap-4 md:flex-row lg:flex"
             >
               <p className="text-sm text-neutral-500 dark:text-neutral-400">
                 {contact.address}
@@ -165,13 +165,14 @@ const ContactPage = () => {
               </p>
             </div>
           ))}
-          <Image
+          {/* <Image
             src="/assets/images/UpdatedMap.png"
             alt="Map"
             width={500}
             height={300}
             className="mt-10 w-full"
-          />
+          /> */}
+          <WorldMapDemo />
         </div>
 
         <div className="relative mx-auto flex w-full max-w-2xl flex-col items-start gap-4 overflow-hidden rounded-3xl bg-gradient-to-b from-gray-100 to-gray-200 pt-[30px] pb-[40px] px-[40px] dark:from-neutral-900 dark:to-neutral-950">
