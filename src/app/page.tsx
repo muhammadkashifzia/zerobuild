@@ -7,6 +7,8 @@ import TestimonialCard from "@/components/TestimonialCard";
 import Image from "next/image";
 import PerformanceSection from "@/components/PerformanceSection";
 import type { Metadata } from "next";
+import { getHeroData } from "@/utils/hero";
+import { getPerformanceData } from "@/utils/performance";
 
 export const metadata: Metadata = {
   title: "ZeroBuild - Accelerating Net Zero Decarbonisation | Home",
@@ -40,17 +42,31 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
+  // Fetch data from Sanity with error handling
+  let heroData = null;
+  let performanceData = null;
+
+  try {
+    [heroData, performanceData] = await Promise.all([
+      getHeroData(),
+      getPerformanceData()
+    ]);
+  } catch (error) {
+    console.error('Error fetching data from Sanity:', error);
+    // Continue with null data - components will show skeletons
+  }
+
   return (
     <main className="min-h-screen  antialiased hide-scrollbar relative bg-[#fafafa]">
        <Image src="/assets/svg/pattern-svg-revert.svg" alt="pattenLeft" width={1000} height={1000} className="absolute top-[65px] left-[0px] w-[890px] h-auto object-cover"/>
       <Image src="/assets/svg/pattern-svg.svg" alt="pattenRight" width={1000} height={1000} className="absolute top-[65px] right-[0px] w-[890px] h-auto object-cover"/>
-      <HeroSection />
-      <PerformanceSection />
+      <HeroSection heroData={heroData} />
+      <PerformanceSection performanceData={performanceData} />
       <ServiceSection />
       <FeaturedByYoutubers />
-      <CtaSection />
       <MapWorld />
       <TestimonialCard />
+      <CtaSection />
     </main>
   );
 }

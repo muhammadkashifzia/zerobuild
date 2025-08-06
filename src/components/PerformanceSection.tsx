@@ -1,12 +1,31 @@
 "use client";
 
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import ObservabilityChart from "./ObservabilityChart";
 import { Button } from "./ui/moving-border";
-export default function PerformanceSection() {
+import type { Performance } from "@/types/performance";
+
+// Lazy load skeleton component
+const PerformanceSkeleton = lazy(() => import("./shimmer/PerformanceSkeleton").then(mod => ({ default: mod.default })));
+
+interface PerformanceSectionProps {
+  performanceData?: Performance | null;
+}
+
+export default function PerformanceSection({ performanceData }: PerformanceSectionProps) {
+  // Show skeleton while loading
+  if (!performanceData) {
+    return (
+      <Suspense fallback={<div className="h-64 w-full bg-gray-100 animate-pulse" />}>
+        <PerformanceSkeleton />
+      </Suspense>
+    );
+  }
+
   const [showChart, setShowChart] = useState(true); // Changed to true to show chart by default
   const [selectedView, setSelectedView] = useState<string>("cost"); // Changed to "cost" as default
 
+  // Static chart buttons (reverted from dynamic)
   const chartButtons = [
     { label: "Cost", value: "cost" },
     { label: "Carbon", value: "carbon" },
@@ -25,20 +44,18 @@ export default function PerformanceSection() {
   };
 
   return (
-    <section className="text-black py-[40px] ">
+    <section className="text-black py-[40px] z-[999]">
       <div className="container mx-auto px-[16px]">
         {/* Chart buttons - shown first */}
             {/* New section below buttons */}
             <div className="text-center mb-8">
           <div className="text-[24px] md:text-[28px] leading-[1.3] mb-[15px] font-bold">
-            <p> Designing a whole life Net Zero option has never been easier. Explore how our client used our Five C Zero Framework to evaluate 1000+ design options in under 24 hours, unlocking smarter decisions from day one..</p>
+            <p>{performanceData.mainTitle}</p>
           </div>
 
           <div className="space-y-6"> 
-            <p className="text-black text-center">
-              Choose what matters most and let us the rest. Whether new build or retrofit, we help you prioritise what drives your project: 
-              Compliance, Comfort, Cost. Carbon. Circularity. 
-             
+            <p className="text-black text-center max-w-[950px]">
+              {performanceData.description}
             </p>
           </div>
         </div>

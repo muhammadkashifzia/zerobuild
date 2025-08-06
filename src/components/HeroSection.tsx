@@ -3,14 +3,13 @@ import Link from "next/link";
 import React, { memo, useMemo, useCallback, lazy, Suspense } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/utils/cn";
+import type { Hero } from "@/types/hero";
 
 // Lazy load heavy components
 const Spotlight = lazy(() => import("./ui/Spotlight").then(mod => ({ default: mod.Spotlight })));
 const Button = lazy(() => import("./ui/moving-border").then(mod => ({ default: mod.Button })));
 const ContainerTextFlip = lazy(() => import("./ui/container-text-flip").then(mod => ({ default: mod.ContainerTextFlip })));
-
-// Memoized words array to prevent recreation
-const WORDS = ["faster", "smarter", "simpler", "better"];
+const HeroSkeleton = lazy(() => import("./shimmer/HeroSkeleton").then(mod => ({ default: mod.default })));
 
 // Memoized button component to prevent re-renders
 const MemoizedButton = memo(({ href, children, className }: { href: string; children: React.ReactNode; className?: string }) => (
@@ -32,19 +31,35 @@ const MemoizedLink = memo(({ href, children, className }: { href: string; childr
 
 MemoizedLink.displayName = "MemoizedLink";
 
-const HeroSection = memo(() => {
+interface HeroSectionProps {
+  heroData?: Hero | null;
+}
+
+const HeroSection = memo(({ heroData }: HeroSectionProps) => {
+  // Show skeleton while loading
+  if (!heroData) {
+    return (
+      <Suspense fallback={<div className="h-auto md:h-[32rem] w-full bg-gray-100 animate-pulse" />}>
+        <HeroSkeleton />
+      </Suspense>
+    );
+  }
+
   // Memoize expensive calculations
   const spotlightProps = useMemo(() => ({
     className: "-top-40 left-0 md:left-60 md:-top-20",
     fill: "white"
   }), []);
 
+  // Use dynamic words from Sanity or fallback to default
+  const words = heroData.titleHighlight || ["faster", "smarter", "simpler", "better"];
+  
   const containerTextFlipProps = useMemo(() => ({
-    words: WORDS,
+    words: words,
     className: "ml-3",
     interval: 3000,
     animationDuration: 700
-  }), []);
+  }), [words]);
 
   // Memoize button styles to prevent recreation
   const demoButtonStyle = useMemo(() => 
@@ -91,8 +106,7 @@ const HeroSection = memo(() => {
             {...titleVariants}
           >
             <div className="inline-block">
-              Building decarbonisation is complex<br/>
-              We make it 10×
+              {heroData.title}
               <Suspense fallback={<span className="ml-3 text-[#484AB7] text-[28px] md:text-4xl">better</span>}>
                 <ContainerTextFlip {...containerTextFlipProps} />
               </Suspense>.
@@ -103,21 +117,19 @@ const HeroSection = memo(() => {
             className="mt-4 font-normal text-base md:text-lg text-black max-w-2xl mx-auto"
             {...descriptionVariants}
           >
-            Take the guesswork out of Net Zero. We give you the clarity and
-            tools to design high-performing, low-carbon buildings with
-            confidence.
+            {heroData.description}
           </motion.p>
           
           <motion.div 
             className="mt-6 flex w-full gap-[10px] justify-center flex-col md:flex-row items-center"
             {...buttonsVariants}
           >
-            <MemoizedLink href="/" className={demoButtonStyle}>
-              Get a Demo
+            <MemoizedLink href={heroData.primaryButton.link} className={demoButtonStyle}>
+              {heroData.primaryButton.text}
             </MemoizedLink>
             
-            <MemoizedButton href="/" className={accelerateButtonStyle}>
-              Accelerate Your Project
+            <MemoizedButton href={heroData.secondaryButton.link} className={accelerateButtonStyle}>
+              {heroData.secondaryButton.text}
             </MemoizedButton>
           </motion.div>
         </div>

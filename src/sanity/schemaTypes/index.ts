@@ -6,8 +6,10 @@ import { resourceType } from './resource-schema'
 import { contactType } from './contact-schema'
 import contactSubmission from './contactSubmission-schema';
 import { youtubeVideoType } from './youtube-video-schema';
+import { heroType } from './hero-schema';
+import { performanceType } from './performance-schema';
 
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [serviceType, projectType, resourceType, contactType, contactSubmission, youtubeVideoType],
+  types: [serviceType, projectType, resourceType, contactType, contactSubmission, youtubeVideoType, heroType, performanceType],
 } 

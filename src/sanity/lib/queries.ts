@@ -46,4 +46,29 @@ export const youtubeVideoByIdQuery = groq`
       }
     }
   }
+`
+
+export const heroQuery = groq`
+  *[_type == "hero" && isActive == true][0] {
+    _id,
+    title,
+    titleHighlight,
+    description,
+    primaryButton {
+      text,
+      link
+    },
+    secondaryButton {
+      text,
+      link
+    }
+  }
+`
+
+export const performanceQuery = groq`
+  *[_type == "performance" && isActive == true][0] {
+    _id,
+    mainTitle,
+    description
+  }
 ` 
