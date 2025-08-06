@@ -1,11 +1,11 @@
 "use client";
 import React from "react";
 import { motion } from "motion/react";
-import dynamic from "next/dynamic";
 
-const World = dynamic(() => import("@/components/ui/globe").then((m) => m.World), {
-  ssr: false,
-});
+// Temporarily disable 3D globe due to React version compatibility issues
+// const World = dynamic(() => import("@/components/ui/globe").then((m) => m.World), {
+//   ssr: false,
+// });
 
 export function GlobeDemo() {
   const globeConfig = {
@@ -420,8 +420,15 @@ export function GlobeDemo() {
       </div>
       <div className="max-w-7xl mx-auto w-full relative overflow-hidden h-full md:h-[40rem] px-4">
         <div className="absolute w-full bottom-0 inset-x-0 h-40 bg-gradient-to-b pointer-events-none select-none from-transparent dark:to-black to-white z-40" />
-        <div className="absolute w-full bottom-0 h-72 md:h-full z-10">
-          <World data={sampleArcs} globeConfig={globeConfig} />
+        <div className="absolute w-full bottom-0 h-72 md:h-full z-10 flex items-center justify-center">
+          {/* Temporary static world map replacement */}
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 rounded-lg">
+            <div className="text-center">
+              <div className="text-6xl mb-4">🌍</div>
+              <h3 className="text-xl font-semibold text-gray-700 mb-2">Global Reach</h3>
+              <p className="text-gray-600">Trusted by teams worldwide</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
