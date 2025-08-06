@@ -88,15 +88,15 @@ a{
   opacity: 1;
   width: 100%;
 }
-.service-body-content h2{
+ h2{
   font-size: 28px;
   margin-top: 15px;
   margin-bottom: 15px;
 }
-.service-body-content h1{
+ h1{
   font-size: 32px;
 }
-.service-body-content p{
+ p{
   font-size: 20px;
   margin-top: 15px;
   margin-bottom: 15px;
