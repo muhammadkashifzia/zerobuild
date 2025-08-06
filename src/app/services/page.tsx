@@ -8,9 +8,11 @@ import { Service } from "@/types/Service";
 
 const ServicesPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedMarket, setSelectedMarket] = useState("All");
+  const [selectedDiscipline, setSelectedDiscipline] = useState("All");
+  const [selectedProjectStage, setSelectedProjectStage] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
+  const [modalView, setModalView] = useState<"disciplines" | "projectStages">("disciplines");
   const [services, setServices] = useState<Service[]>([]);
 
   const itemsPerPage = 15;
@@ -19,6 +21,11 @@ const ServicesPage = () => {
     const fetchData = async () => {
       const res = await getServices();
       setServices(res);
+      
+      // Debug logging
+      console.log('Services loaded:', res.length);
+      console.log('All project stages:', Array.from(new Set(res.flatMap((s) => s.projectStage || []))));
+      console.log('All disciplines:', Array.from(new Set(res.flatMap((s) => s.disciplines || []))));
     };
     fetchData();
   }, []);
@@ -27,6 +34,24 @@ const ServicesPage = () => {
     new Set(services.flatMap((s) => s.disciplines || []))
   ).sort();
 
+  const allProjectStages = Array.from(
+    new Set(services.flatMap((s) => s.projectStage || []))
+  ).sort();
+
+  // Fallback sample project stages if none exist in data
+  const fallbackProjectStages = [
+    "Concept Design",
+    "Detailed Design", 
+    "Construction",
+    "Post-Occupancy",
+    "Retrofit",
+    "New Build",
+    "Feasibility Study",
+    "Planning Application"
+  ];
+
+  const displayProjectStages = allProjectStages.length > 0 ? allProjectStages : fallbackProjectStages;
+
   const disciplineCount: Record<string, number> = {};
   services.forEach((s) => {
     (s.disciplines || []).forEach((discipline) => {
@@ -34,7 +59,26 @@ const ServicesPage = () => {
     });
   });
 
-  const mainFilters = Object.entries(disciplineCount)
+  const projectStageCount: Record<string, number> = {};
+  services.forEach((s) => {
+    (s.projectStage || []).forEach((stage) => {
+      projectStageCount[stage] = (projectStageCount[stage] || 0) + 1;
+    });
+  });
+
+  // Add counts for fallback stages if no real data exists
+  if (allProjectStages.length === 0) {
+    fallbackProjectStages.forEach((stage) => {
+      projectStageCount[stage] = 0;
+    });
+  }
+
+  const mainDisciplineFilters = Object.entries(disciplineCount)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 6)
+    .map(([name]) => name);
+
+  const mainProjectStageFilters = Object.entries(projectStageCount)
     .sort((a, b) => b[1] - a[1])
     .slice(0, 6)
     .map(([name]) => name);
@@ -44,10 +88,13 @@ const ServicesPage = () => {
       searchTerm === "" ||
       service.title.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchesMarket =
-      selectedMarket === "All" || service.disciplines?.includes(selectedMarket);
+    const matchesDiscipline =
+      selectedDiscipline === "All" || service.disciplines?.includes(selectedDiscipline);
 
-    return matchesSearch && matchesMarket;
+    const matchesProjectStage =
+      selectedProjectStage === "All" || service.projectStage?.includes(selectedProjectStage);
+
+    return matchesSearch && matchesDiscipline && matchesProjectStage;
   });
 
   const totalPages = Math.ceil(filteredServices.length / itemsPerPage);
@@ -60,6 +107,18 @@ const ServicesPage = () => {
   const handleSearch = () => {
     setCurrentPage(1);
     setModalOpen(false);
+  };
+
+  const clearFilters = () => {
+    setSelectedDiscipline("All");
+    setSelectedProjectStage("All");
+    setSearchTerm("");
+    setCurrentPage(1);
+  };
+
+  const openModal = (view: "disciplines" | "projectStages") => {
+    setModalView(view);
+    setModalOpen(true);
   };
 
   return (
@@ -79,7 +138,7 @@ const ServicesPage = () => {
           <p className="text-base md:text-2xl text-white max-w-[1000px] mt-4 md:mt-7">
             We offer a wide range of services that address every priority in the
             built and natural environments. Search below or use the filters to
-            explore services by market.
+            explore services by discipline and project stage.
           </p>
         </div>
       </section>
@@ -108,29 +167,33 @@ const ServicesPage = () => {
             </div>
           </div>
         </section>
-        <section className="container mx-auto">
-          <div className="flex flex-wrap items-center gap-3">
-            {mainFilters.map((filter) => (
+
+        {/* Discipline Filters */}
+        <section className="container mx-auto mb-4">
+          <div className="flex items-start gap-3 mb-3">
+            <h3 className="text-sm font-medium text-gray-700 mt-[8px]">Disciplines:</h3>
+                
+          <div className="flex flex-wrap items-center gap-[16px]">
+            {mainDisciplineFilters.map((filter) => (
               <div key={filter} className="relative">
                 <button
                   className={`px-4 py-2 rounded-full text-sm border pr-8 transition ${
-                    selectedMarket === filter
+                    selectedDiscipline === filter
                       ? "bg-[#484AB7] text-white border-[#484AB7]"
                       : "text-black border-gray-300 hover:bg-gray-100"
                   }`}
                   onClick={() => {
-                    setSelectedMarket(filter);
+                    setSelectedDiscipline(filter);
                     setCurrentPage(1);
                   }}
                 >
                   {filter}
                 </button>
 
-                {selectedMarket === filter && (
+                {selectedDiscipline === filter && (
                   <button
                     onClick={() => {
-                      setSelectedMarket("All");
-                      setSearchTerm("");
+                      setSelectedDiscipline("All");
                       setCurrentPage(1);
                     }}
                     className="absolute right-2 top-1/2 -translate-y-1/2 text-white text-xs"
@@ -143,12 +206,87 @@ const ServicesPage = () => {
             ))}
 
             <button
-              onClick={() => setModalOpen(true)}
+              onClick={() => openModal("disciplines")}
               className="px-4 py-2 rounded-full border border-gray-300 text-gray-600 flex items-center gap-1 hover:bg-gray-100"
             >
               View all <Plus className="w-4 h-4" />
             </button>
           </div>
+         
+          </div>
+          {(selectedDiscipline !== "All") && (
+              <button
+                onClick={clearFilters}
+                className="text-xs text-blue-600 hover:text-blue-800 underline"
+              >
+                Clear all filters
+              </button>
+            )}
+        </section>
+
+        {/* Project Stage Filters */}
+        <section className="container mx-auto mb-6">
+          <div className="flex items-start gap-3 mt-[24px]">
+            <h3 className="text-sm font-medium text-gray-700 mt-[8px]">Project Stage:</h3>
+            {/* Debug info */}
+            {/* <span className="text-xs text-gray-500">
+              ({displayProjectStages.length} total stages)
+            </span> */}
+         
+          <div className="flex flex-wrap items-center gap-3">
+            {mainProjectStageFilters.length > 0 ? (
+              mainProjectStageFilters.map((filter) => (
+                <div key={filter} className="relative">
+                  <button
+                    className={`px-4 py-2 rounded-full text-sm border pr-8 transition ${
+                      selectedProjectStage === filter
+                        ? "bg-[#484AB7] text-white border-[#484AB7]"
+                        : "text-black border-gray-300 hover:bg-gray-100"
+                    }`}
+                    onClick={() => {
+                      setSelectedProjectStage(filter);
+                      setCurrentPage(1);
+                    }}
+                  >
+                    {filter}
+                  </button>
+
+                  {selectedProjectStage === filter && (
+                    <button
+                      onClick={() => {
+                        setSelectedProjectStage("All");
+                        setCurrentPage(1);
+                      }}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-white text-xs"
+                      aria-label="Clear filter"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+              ))
+            ) : (
+              <div className="text-sm text-gray-500 italic">
+                No project stages found in current services
+              </div>
+            )}
+{/* 
+            <button
+              onClick={() => openModal("projectStages")}
+              className="px-4 py-2 rounded-full border border-gray-300 text-gray-600 flex items-center gap-1 hover:bg-gray-100"
+            >
+              View all stages ({displayProjectStages.length}) <Plus className="w-4 h-4" />
+            </button> */}
+          </div>
+          </div>
+          {(selectedProjectStage !== "All") && (
+              <button
+                onClick={clearFilters}
+                className="text-xs text-blue-600 hover:text-blue-800 underline"
+              >
+                Clear all filters
+              </button>
+            )}
         </section>
 
         <section className="py-8 bg-white container mx-auto">
@@ -166,13 +304,32 @@ const ServicesPage = () => {
               >
                 <Link href={`/services/${service.slug}`} className="w-full">
                   <div className="hover:px-5 hover:translate-x-2 transition py-4 md:py-6 flex justify-between items-center">
-                    <div>
+                    <div className="max-w-[90%]">
                       <h3 className="text-lg md:text-2xl font-bold md:font-normal text-black">
                         {service.title}
                       </h3>
                       <p className="text-sm md:text-base text-gray-600 mt-2 md:mt-4">
                         {service.description}
                       </p>
+                      {/* Display disciplines and project stages */}
+                      {/* <div className="flex flex-wrap gap-2 mt-2">
+                        {service.disciplines?.slice(0, 2).map((discipline, index) => (
+                          <span
+                            key={index}
+                            className="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full"
+                          >
+                            {discipline}
+                          </span>
+                        ))}
+                        {service.projectStage?.slice(0, 2).map((stage, index) => (
+                          <span
+                            key={index}
+                            className="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full"
+                          >
+                            {stage}
+                          </span>
+                        ))}
+                      </div> */}
                     </div>
                     <ArrowRight className="text-gray-400 hover:text-black" />
                   </div>
@@ -198,7 +355,7 @@ const ServicesPage = () => {
                   <div className="relative">
                     <input
                       type="text"
-                      placeholder="Search services..."
+                      placeholder={`Search ${modalView === "disciplines" ? "disciplines" : "project stages"}...`}
                       className="w-full pr-10 pl-4 py-2 border border-gray-300 focus:ring-2 focus:ring-black rounded-md text-black"
                       value={searchTerm}
                       onChange={(e) => {
@@ -216,47 +373,95 @@ const ServicesPage = () => {
                   </div>
                 </section>
 
-                <h2 className="text-xl font-semibold mb-4 text-black">
-                  Services
-                </h2>
-                <div className="space-y-2">
-                  <button
-                    className={`w-full text-left py-2 px-3 rounded hover:bg-gray-100 text-black ${
-                      selectedMarket === "All"
-                        ? "bg-gray-200 font-semibold"
-                        : ""
-                    }`}
-                    onClick={() => {
-                      setSelectedMarket("All");
-                      setCurrentPage(1);
-                      setModalOpen(false);
-                    }}
-                  >
-                    All
-                  </button>
-
-                  {allDisciplines
-                    .filter((f) =>
-                      f.toLowerCase().includes(searchTerm.toLowerCase())
-                    )
-                    .map((filter) => (
+                {modalView === "disciplines" ? (
+                  <>
+                    <h2 className="text-xl font-semibold mb-4 text-black">
+                      Disciplines ({allDisciplines.length})
+                    </h2>
+                    <div className="space-y-2 mb-6">
                       <button
-                        key={filter}
                         className={`w-full text-left py-2 px-3 rounded hover:bg-gray-100 text-black ${
-                          selectedMarket === filter
+                          selectedDiscipline === "All"
                             ? "bg-gray-200 font-semibold"
                             : ""
                         }`}
                         onClick={() => {
-                          setSelectedMarket(filter);
+                          setSelectedDiscipline("All");
                           setCurrentPage(1);
                           setModalOpen(false);
                         }}
                       >
-                        {filter}
+                        All Disciplines
                       </button>
-                    ))}
-                </div>
+
+                      {allDisciplines
+                        .filter((f) =>
+                          f.toLowerCase().includes(searchTerm.toLowerCase())
+                        )
+                        .map((filter) => (
+                          <button
+                            key={filter}
+                            className={`w-full text-left py-2 px-3 rounded hover:bg-gray-100 text-black ${
+                              selectedDiscipline === filter
+                                ? "bg-gray-200 font-semibold"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              setSelectedDiscipline(filter);
+                              setCurrentPage(1);
+                              setModalOpen(false);
+                            }}
+                          >
+                            {filter} ({disciplineCount[filter] || 0})
+                          </button>
+                        ))}
+                    </div>
+                  </>
+                ) : (
+                  <>
+                                    <h2 className="text-xl font-semibold mb-4 text-black">
+                  Project Stages ({displayProjectStages.length})
+                </h2>
+                    <div className="space-y-2">
+                      <button
+                        className={`w-full text-left py-2 px-3 rounded hover:bg-gray-100 text-black ${
+                          selectedProjectStage === "All"
+                            ? "bg-gray-200 font-semibold"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          setSelectedProjectStage("All");
+                          setCurrentPage(1);
+                          setModalOpen(false);
+                        }}
+                      >
+                        All Project Stages
+                      </button>
+
+                      {displayProjectStages
+                        .filter((f) =>
+                          f.toLowerCase().includes(searchTerm.toLowerCase())
+                        )
+                        .map((filter) => (
+                          <button
+                            key={filter}
+                            className={`w-full text-left py-2 px-3 rounded hover:bg-gray-100 text-black ${
+                              selectedProjectStage === filter
+                                ? "bg-gray-200 font-semibold"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              setSelectedProjectStage(filter);
+                              setCurrentPage(1);
+                              setModalOpen(false);
+                            }}
+                          >
+                            {filter} ({projectStageCount[filter] || 0})
+                          </button>
+                        ))}
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>

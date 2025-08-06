@@ -130,7 +130,7 @@ export default async function Page({
           {/* Project Stage */}
           {(service.projectStage?.length ?? 0) > 0 && (
             <div className="flex flex-wrap gap-2 mt-4">
-              <span className="text-sm font-medium text-gray-700">Project Stage:</span>
+            
               {(service.projectStage ?? []).map((stage: string, index: number) => (
                 <span
                   key={index}

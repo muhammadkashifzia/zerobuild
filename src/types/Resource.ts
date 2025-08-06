@@ -5,10 +5,10 @@ export interface Resource {
   publishedAt: string;
   image?: { asset: { url: string } };
   description?: string;
-  categories?: string[];
+  purpose?: string[];
+  focusArea?: string[];
   gallery?: { asset: { url: string } }[];
   body?: any;
-
 }
  
 

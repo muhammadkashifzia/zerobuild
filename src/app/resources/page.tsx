@@ -9,40 +9,75 @@ import { Resource } from "@/types/Resource";
 const ResourcePage = () => {
   const [resources, setResources] = useState<Resource[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedPurpose, setSelectedPurpose] = useState("All");
+  const [selectedFocusArea, setSelectedFocusArea] = useState("All");
   const [modalOpen, setModalOpen] = useState(false);
-  const [categorySearch, setCategorySearch] = useState("");
+  const [modalView, setModalView] = useState<"purpose" | "focusArea">("purpose");
+  const [filterSearch, setFilterSearch] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       const res = await getResources();
       setResources(res);
+      // Debug
+      console.log('All purposes:', Array.from(new Set(res.flatMap((r) => r.purpose || []))));
+      console.log('All focus areas:', Array.from(new Set(res.flatMap((r) => r.focusArea || []))));
     };
     fetchData();
   }, []);
 
-  // Get all categories and their counts
-  const categoryCount: Record<string, number> = {};
+  // Purpose
+  const allPurposes = Array.from(new Set(resources.flatMap((r) => r.purpose || []))).sort();
+  const fallbackPurposes = [
+    "Guidance", "Case Study", "Tool", "Checklist", "Template", "Best Practice", "Research", "Policy"
+  ];
+  const displayPurposes = allPurposes.length > 0 ? allPurposes : fallbackPurposes;
+  const purposeCount: Record<string, number> = {};
   resources.forEach((r) => {
-    (r.categories || []).forEach((cat) => {
-      categoryCount[cat] = (categoryCount[cat] || 0) + 1;
+    (r.purpose || []).forEach((p) => {
+      purposeCount[p] = (purposeCount[p] || 0) + 1;
     });
   });
+  if (allPurposes.length === 0) fallbackPurposes.forEach((p) => (purposeCount[p] = 0));
+  const mainPurposeFilters = Object.entries(purposeCount).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([name]) => name);
 
-  const allCategories = Object.keys(categoryCount).sort();
-  const mainFilters = Object.entries(categoryCount)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 6)
-    .map(([name]) => name);
+  // Focus Area
+  const allFocusAreas = Array.from(new Set(resources.flatMap((r) => r.focusArea || []))).sort();
+  const fallbackFocusAreas = [
+    "Net Zero", "Retrofit", "New Build", "Energy", "Carbon", "Health & Wellbeing", "Circular Economy", "Biodiversity"
+  ];
+  const displayFocusAreas = allFocusAreas.length > 0 ? allFocusAreas : fallbackFocusAreas;
+  const focusAreaCount: Record<string, number> = {};
+  resources.forEach((r) => {
+    (r.focusArea || []).forEach((f) => {
+      focusAreaCount[f] = (focusAreaCount[f] || 0) + 1;
+    });
+  });
+  if (allFocusAreas.length === 0) fallbackFocusAreas.forEach((f) => (focusAreaCount[f] = 0));
+  // const mainFocusAreaFilters = Object.entries(focusAreaCount).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([name]) => name);
 
-  // Filter resources
+  // Filtering
   const filteredResources = resources.filter((resource) => {
     const matchesSearch =
       searchTerm === "" || resource.title.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory =
-      selectedCategory === "All" || resource.categories?.includes(selectedCategory);
-    return matchesSearch && matchesCategory;
+    const matchesPurpose =
+      selectedPurpose === "All" || resource.purpose?.includes(selectedPurpose);
+    const matchesFocusArea =
+      selectedFocusArea === "All" || resource.focusArea?.includes(selectedFocusArea);
+    return matchesSearch && matchesPurpose && matchesFocusArea;
   });
+
+  // Modal open helpers
+  const openModal = (view: "purpose" | "focusArea") => {
+    setModalView(view);
+    setModalOpen(true);
+    setFilterSearch("");
+  };
+  const clearFilters = () => {
+    setSelectedPurpose("All");
+    setSelectedFocusArea("All");
+    setSearchTerm("");
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -61,7 +96,7 @@ const ResourcePage = () => {
           <p className="text-base md:text-2xl text-white max-w-[1000px] mt-4 md:mt-7">
             We offer a wide range of resources that address every priority in the
             built and natural environments. Search below or use the filters to
-            explore resources by category.
+            explore resources by purpose and focus area.
           </p>
         </div>
       </section>
@@ -87,23 +122,27 @@ const ResourcePage = () => {
             </div>
           </div>
         </section>
-        <section className="container mx-auto">
+
+        {/* Purpose Filters */}
+        <section className="container mx-auto mb-4">
+          <div className="flex items-center gap-3 mb-3">
+            <h3 className="text-sm font-medium text-gray-700">Purpose:</h3>
           <div className="flex flex-wrap items-center gap-3">
-            {mainFilters.map((filter) => (
+            {mainPurposeFilters.map((filter) => (
               <div key={filter} className="relative">
                 <button
                   className={`px-4 py-2 rounded-full text-sm border pr-8 transition ${
-                    selectedCategory === filter
+                    selectedPurpose === filter
                       ? "bg-[#484AB7] text-white border-[#484AB7]"
                       : "text-black border-gray-300 hover:bg-gray-100"
                   }`}
-                  onClick={() => setSelectedCategory(filter)}
+                  onClick={() => setSelectedPurpose(filter)}
                 >
                   {filter}
                 </button>
-                {selectedCategory === filter && (
+                {selectedPurpose === filter && (
                   <button
-                    onClick={() => setSelectedCategory("All")}
+                    onClick={() => setSelectedPurpose("All")}
                     className="absolute right-2 top-1/2 -translate-y-1/2 text-white text-xs"
                     aria-label="Clear filter"
                   >
@@ -113,11 +152,54 @@ const ResourcePage = () => {
               </div>
             ))}
             <button
-              onClick={() => setModalOpen(true)}
+              onClick={() => openModal("purpose")}
               className="px-4 py-2 rounded-full border border-gray-300 text-gray-600 flex items-center gap-1 hover:bg-gray-100"
             >
               View all <Plus className="w-4 h-4" />
             </button>
+          </div>
+          </div>
+          {(selectedPurpose !== "All") && (
+              <button
+                onClick={clearFilters}
+                className="text-xs text-blue-600 hover:text-blue-800 underline"
+              >
+                Clear all filters
+              </button>
+            )}
+        </section>
+
+        {/* Focus Area Filters */}
+        <section className="container mx-auto mb-6">
+          <div className="flex items-center gap-3 mb-3">
+            <h3 className="text-sm font-medium text-gray-700">Focus Area:</h3>
+        
+          <div className="flex flex-wrap items-center gap-3">
+            {/* Show all focus areas as a list, not just top 6, and remove modal button */}
+            {displayFocusAreas.map((filter) => (
+              <div key={filter} className="relative">
+                <button
+                  className={`px-4 py-2 rounded-full text-sm border pr-8 transition ${
+                    selectedFocusArea === filter
+                      ? "bg-[#484AB7] text-white border-[#484AB7]"
+                      : "text-black border-gray-300 hover:bg-gray-100"
+                  }`}
+                  onClick={() => setSelectedFocusArea(filter)}
+                >
+                  {filter}
+                </button>
+                {selectedFocusArea === filter && (
+                  <button
+                    onClick={() => setSelectedFocusArea("All")}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-white text-xs"
+                    aria-label="Clear filter"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
           </div>
         </section>
 
@@ -130,7 +212,7 @@ const ResourcePage = () => {
               >
                 <Link href={`/resources/${resource.slug.current}`} className="w-full">
                   <div className="hover:px-[20px] hover:translate-x-2 transition py-[1rem] md:py-[1.5rem] flex justify-between items-center">
-                    <div>
+                    <div className="max-w-[90%]">
                       <h3 className="text-[16px] md:text-[28px] font-bold md:font-normal text-black text-left">
                         {resource.title}
                       </h3>
@@ -146,8 +228,8 @@ const ResourcePage = () => {
           </div>
         </section>
 
-        {/* Modal for all categories */}
-        {modalOpen && (
+        {/* Modal for all filters */}
+        {modalOpen && modalView === "purpose" && (
           <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
             <div className="relative w-full max-w-[630px] mx-auto">
               <div className="bg-white rounded-lg w-full p-6 max-h-[80vh] overflow-y-auto">
@@ -162,10 +244,10 @@ const ResourcePage = () => {
                   <div className="relative">
                     <input
                       type="text"
-                      placeholder="Search categories..."
+                      placeholder={`Search purposes...`}
                       className="w-full pr-10 pl-4 py-2 border border-gray-300 focus:ring-2 focus:ring-black rounded-md text-black"
-                      value={categorySearch}
-                      onChange={(e) => setCategorySearch(e.target.value)}
+                      value={filterSearch}
+                      onChange={(e) => setFilterSearch(e.target.value)}
                     />
                     <button
                       onClick={() => setModalOpen(false)}
@@ -175,44 +257,46 @@ const ResourcePage = () => {
                     </button>
                   </div>
                 </section>
-                <h2 className="text-xl font-semibold mb-4 text-black">
-                  Categories
-                </h2>
-                <div className="space-y-2">
-                  <button
-                    className={`w-full text-left py-2 px-3 rounded hover:bg-gray-100 text-black ${
-                      selectedCategory === "All"
-                        ? "bg-gray-200 font-semibold"
-                        : ""
-                    }`}
-                    onClick={() => {
-                      setSelectedCategory("All");
-                      setModalOpen(false);
-                    }}
-                  >
-                    All
-                  </button>
-                  {allCategories
-                    .filter((cat) =>
-                      cat.toLowerCase().includes(categorySearch.toLowerCase())
-                    )
-                    .map((cat) => (
-                      <button
-                        key={cat}
-                        className={`w-full text-left py-2 px-3 rounded hover:bg-gray-100 text-black ${
-                          selectedCategory === cat
-                            ? "bg-gray-200 font-semibold"
-                            : ""
-                        }`}
-                        onClick={() => {
-                          setSelectedCategory(cat);
-                          setModalOpen(false);
-                        }}
-                      >
-                        {cat}
-                      </button>
-                    ))}
-                </div>
+                <>
+                  <h2 className="text-xl font-semibold mb-4 text-black">
+                    Purposes ({displayPurposes.length})
+                  </h2>
+                  <div className="space-y-2 mb-6">
+                    <button
+                      className={`w-full text-left py-2 px-3 rounded hover:bg-gray-100 text-black ${
+                        selectedPurpose === "All"
+                          ? "bg-gray-200 font-semibold"
+                          : ""
+                      }`}
+                      onClick={() => {
+                        setSelectedPurpose("All");
+                        setModalOpen(false);
+                      }}
+                    >
+                      All Purposes
+                    </button>
+                    {displayPurposes
+                      .filter((f) =>
+                        f.toLowerCase().includes(filterSearch.toLowerCase())
+                      )
+                      .map((filter) => (
+                        <button
+                          key={filter}
+                          className={`w-full text-left py-2 px-3 rounded hover:bg-gray-100 text-black ${
+                            selectedPurpose === filter
+                              ? "bg-gray-200 font-semibold"
+                              : ""
+                          }`}
+                          onClick={() => {
+                            setSelectedPurpose(filter);
+                            setModalOpen(false);
+                          }}
+                        >
+                          {filter} ({purposeCount[filter] || 0})
+                        </button>
+                      ))}
+                  </div>
+                </>
               </div>
             </div>
           </div>

@@ -41,8 +41,14 @@ export const resourceType = defineType({
       validation: (rule) => rule.max(300),
     }),
     defineField({
-      name: 'categories',
-      title: 'Categories',
+      name: 'purpose',
+      title: 'Purpose',
+      type: 'array',
+      of: [{ type: 'string' }],
+    }),
+    defineField({
+      name: 'focusArea',
+      title: 'Focus Area',
       type: 'array',
       of: [{ type: 'string' }],
     }),

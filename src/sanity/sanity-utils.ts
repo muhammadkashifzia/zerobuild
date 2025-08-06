@@ -95,14 +95,15 @@ export async function getResources(): Promise<Resource[]> {
     groq`*[_type == "resource"]{
   _id,
   _createdAt,
- title,
-      slug,
-      publishedAt,
-      image { asset->{url} },
-      description,
-      categories,
-      gallery[]{ asset->{url} },
-      body
+  title,
+  slug,
+  publishedAt,
+  image { asset->{url} },
+  description,
+  purpose,
+  focusArea,
+  gallery[]{ asset->{url} },
+  body
     }`
   );
 }
@@ -116,7 +117,8 @@ export async function getResource(slug: string): Promise<Resource> {
       publishedAt,
       image { asset->{url} },
       description,
-      categories,
+      purpose,
+      focusArea,
       gallery[]{ asset->{url} },
       body
     }

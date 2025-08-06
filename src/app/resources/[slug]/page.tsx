@@ -22,7 +22,7 @@ export async function generateMetadata({
 
   const title = `${resource.title} - ZeroBuild Net Zero Decarbonisation Resource`;
   const description = resource.description || `Access ${resource.title} resource from ZeroBuild. Our comprehensive Net Zero decarbonisation knowledge hub provides insights, tools, and guidance for architects, engineers, developers, and local authorities.`;
-  const keywords = `${resource.title}, ZeroBuild resource, Net Zero decarbonisation resource, ${resource.categories?.join(', ') || 'sustainability resource'}, built environment resource, carbon assessment guide, energy modelling tool, retrofit resource, new build resource, sustainability best practices, architect sustainability resource, engineer decarbonisation resource, developer Net Zero resource, local authority sustainability resource, housing association decarbonisation resource, Whole Life Carbon resource, building performance resource, procurement guide, funding application resource, SHDF resource, PSDS resource, ESG compliance resource`;
+  const keywords = `${resource.title}, ZeroBuild resource, Net Zero decarbonisation resource, ${resource.purpose?.join(', ') || 'sustainability resource'}, built environment resource, carbon assessment guide, energy modelling tool, retrofit resource, new build resource, sustainability best practices, architect sustainability resource, engineer decarbonisation resource, developer Net Zero resource, local authority sustainability resource, housing association decarbonisation resource, Whole Life Carbon resource, building performance resource, procurement guide, funding application resource, SHDF resource, PSDS resource, ESG compliance resource`;
 
   return {
     title,
@@ -112,15 +112,29 @@ export default async function Page({
               className="rounded-xl object-cover"
             />
           )}
-          {/* Categories */}
-          {(resource.categories?.length ?? 0) > 0 && (
+          {/* Purpose */}
+          {(resource.purpose?.length ?? 0) > 0 && (
             <div className="flex flex-wrap gap-2 mt-4">
-              {(resource.categories ?? []).map((cat, index) => (
+              {(resource.purpose ?? []).map((purpose: string, index: number) => (
                 <span
                   key={index}
                   className="bg-blue-100 text-blue-700 text-sm px-3 py-1 rounded-full"
                 >
-                  {cat}
+                  {purpose}
+                </span>
+              ))}
+            </div>
+          )}
+          {/* Focus Area */}
+          {(resource.focusArea?.length ?? 0) > 0 && (
+            <div className="flex flex-wrap gap-2 mt-2">
+              <span className="text-sm font-medium text-gray-700">Focus Area:</span>
+              {(resource.focusArea ?? []).map((focus: string, index: number) => (
+                <span
+                  key={index}
+                  className="bg-green-100 text-green-700 text-sm px-3 py-1 rounded-full"
+                >
+                  {focus}
                 </span>
               ))}
             </div>
