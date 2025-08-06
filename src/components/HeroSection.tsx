@@ -36,23 +36,17 @@ interface HeroSectionProps {
 }
 
 const HeroSection = memo(({ heroData }: HeroSectionProps) => {
-  // Show skeleton while loading
-  if (!heroData) {
-    return (
-      <Suspense fallback={<div className="h-auto md:h-[32rem] w-full bg-gray-100 animate-pulse" />}>
-        <HeroSkeleton />
-      </Suspense>
-    );
-  }
-
-  // Memoize expensive calculations
+  // Memoize expensive calculations - moved before early return
   const spotlightProps = useMemo(() => ({
     className: "-top-40 left-0 md:left-60 md:-top-20",
     fill: "white"
   }), []);
 
   // Use dynamic words from Sanity or fallback to default
-  const words = heroData.titleHighlight || ["faster", "smarter", "simpler", "better"];
+  const words = useMemo(() => 
+    heroData?.titleHighlight || ["faster", "smarter", "simpler", "better"],
+    [heroData?.titleHighlight]
+  );
   
   const containerTextFlipProps = useMemo(() => ({
     words: words,
@@ -90,6 +84,15 @@ const HeroSection = memo(({ heroData }: HeroSectionProps) => {
     animate: { opacity: 1, y: 0 },
     transition: { duration: 0.6, delay: 0.4, ease: "easeOut" }
   }), []);
+
+  // Show skeleton while loading
+  if (!heroData) {
+    return (
+      <Suspense fallback={<div className="h-auto md:h-[32rem] w-full bg-gray-100 animate-pulse" />}>
+        <HeroSkeleton />
+      </Suspense>
+    );
+  }
 
   return (
     <div>
