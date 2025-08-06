@@ -9,6 +9,7 @@ import {
   IconBrandBluesky,
   IconBrandInstagram,
   IconBrandLinkedin,
+  IconBrandYoutube,
 } from "@tabler/icons-react";
 function Footer() {
     const links = [
@@ -38,6 +39,13 @@ function Footer() {
       title: "Twitter",
       icon: (
         <IconBrandX className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+      ),
+      href: "#",
+    },
+      {
+      title: "Youtube",
+      icon: (
+        <IconBrandYoutube className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ),
       href: "#",
     },
