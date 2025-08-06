@@ -3,6 +3,7 @@
 import { useState, lazy, Suspense } from "react";
 import ObservabilityChart from "./ObservabilityChart";
 import { Button } from "./ui/moving-border";
+import { AnimatedButton } from "./ui/animated-button";
 import type { Performance } from "@/types/performance";
 
 // Lazy load skeleton component
@@ -75,7 +76,32 @@ export default function PerformanceSection({ performanceData }: PerformanceSecti
                 );
               }
               
-              // Use moving-border Button for other buttons
+              // Use AnimatedButton for Comfort, Compliance, and Circularity
+              if (button.value === "comfort" || button.value === "compliance" || button.value === "circularity") {
+                const buttonConfig = {
+                  comfort: { defaultText: "Comfort", hoverText: "Click to Assess" },
+                  compliance: { defaultText: "Compliance", hoverText: "Click to Assess" },
+                  circularity: { defaultText: "Circularity", hoverText: "Click to Assess" }
+                };
+                
+                const config = buttonConfig[button.value as keyof typeof buttonConfig];
+                
+                return (
+                  <AnimatedButton
+                    key={button.value}
+                    defaultText={config.defaultText}
+                    hoverText={config.hoverText}
+                    onClick={() => handleButtonClick(button.value)}
+                    className={`${
+                      selectedView === button.value
+                        ? "bg-[#484AB7] text-white border border-[#484AB7] font-bold active"
+                        : "bg-white text-black border border-gray-300 hover:bg-[#484AB7] hover:text-white active:bg-[#484AB7] active:text-white font-medium"
+                    }`}
+                  />
+                );
+              }
+              
+              // Use moving-border Button for other buttons (fallback)
               return (
                 <Button
                   key={button.value}
