@@ -59,7 +59,7 @@ const Navbar = ({ className }: { className?: string }) => {
                 >
                   <div
                     className={cn(
-                      "relative px-2 py-3 transition-[1s] text-black menuItem",
+                      "relative  transition-[1s] text-black menuItem",
                       isActive(item) && "font-bold activeMenuItem"
                     )}
                   >

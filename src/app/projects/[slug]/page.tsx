@@ -111,7 +111,7 @@ export default async function Page({
 
           {/* Rich Body Content */}
           {project.body && (
-            <div className="prose prose-blue max-w-none mt-8 text-black project-body-content">
+            <div className="prose prose-blue max-w-none mt-8 text-black service-body-content">
               <PortableText
                 value={project.body}
                 components={{
