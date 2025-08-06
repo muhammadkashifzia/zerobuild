@@ -23,7 +23,7 @@ export async function generateMetadata({
 
   const title = `${service.title} - ZeroBuild Net Zero Decarbonisation Services`;
   const description = service.description || `Explore ${service.title} services from ZeroBuild. Our expert Net Zero decarbonisation solutions help architects, engineers, developers, and local authorities achieve their sustainability goals.`;
-  const keywords = `${service.title}, ZeroBuild services, Net Zero decarbonisation, ${service.categories?.join(', ') || 'sustainability services'}, built environment, carbon assessment, energy modelling, retrofit, new build, architects, engineers, developers, local authorities, housing associations`;
+  const keywords = `${service.title}, ZeroBuild services, Net Zero decarbonisation, ${service.disciplines?.join(', ') || 'sustainability services'}, built environment, carbon assessment, energy modelling, retrofit, new build, architects, engineers, developers, local authorities, housing associations`;
 
   return {
     title,
@@ -113,15 +113,30 @@ export default async function Page({
               className="rounded-xl object-cover"
             />
           )}
-          {/* Categories */}
-          {(service.categories?.length ?? 0) > 0 && (
+          {/* Disciplines */}
+          {(service.disciplines?.length ?? 0) > 0 && (
             <div className="flex flex-wrap gap-2 mt-4">
-              {(service.categories ?? []).map((cat, index) => (
+              {(service.disciplines ?? []).map((discipline: string, index: number) => (
                 <span
                   key={index}
                   className="bg-blue-100 text-blue-700 text-sm px-3 py-1 rounded-full"
                 >
-                  {cat}
+                  {discipline}
+                </span>
+              ))}
+            </div>
+          )}
+
+          {/* Project Stage */}
+          {(service.projectStage?.length ?? 0) > 0 && (
+            <div className="flex flex-wrap gap-2 mt-4">
+              <span className="text-sm font-medium text-gray-700">Project Stage:</span>
+              {(service.projectStage ?? []).map((stage: string, index: number) => (
+                <span
+                  key={index}
+                  className="bg-green-100 text-green-700 text-sm px-3 py-1 rounded-full"
+                >
+                  {stage}
                 </span>
               ))}
             </div>

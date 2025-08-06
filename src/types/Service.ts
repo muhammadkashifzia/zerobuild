@@ -5,7 +5,8 @@ export interface Service {
   publishedAt: string;
   image?: { asset: { url: string } };
   description?: string;
-  categories?: string[];
+  disciplines?: string[];
+  projectStage?: string[];
   gallery?: { asset: { url: string } }[];
   body?: any;
   accordion?: AccordionItem[];

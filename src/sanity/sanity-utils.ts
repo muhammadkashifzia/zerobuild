@@ -15,7 +15,8 @@ export async function getServices(): Promise<Service[]> {
   publishedAt,
   "image": image.asset->url,
   description,
-  categories,
+  disciplines,
+  projectStage,
   "gallery": gallery[].asset->url,
   body,
   accordion[]{
@@ -37,7 +38,8 @@ export async function getService(slug: string): Promise<Service> {
       publishedAt,
       image { asset->{url} },
       description,
-      categories,
+      disciplines,
+      projectStage,
       gallery[]{ asset->{url} },
       body,
       accordion[]{

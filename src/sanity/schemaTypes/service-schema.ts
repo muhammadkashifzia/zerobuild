@@ -41,8 +41,14 @@ export const serviceType = defineType({
       validation: (rule) => rule.max(300),
     }),
     defineField({
-      name: 'categories',
-      title: 'Categories',
+      name: 'disciplines',
+      title: 'Disciplines',
+      type: 'array',
+      of: [{ type: 'string' }],
+    }),
+    defineField({
+      name: 'projectStage',
+      title: 'Project Stage',
       type: 'array',
       of: [{ type: 'string' }],
     }),

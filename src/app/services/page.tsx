@@ -23,18 +23,18 @@ const ServicesPage = () => {
     fetchData();
   }, []);
 
-  const allCategories = Array.from(
-    new Set(services.flatMap((s) => s.categories || []))
+  const allDisciplines = Array.from(
+    new Set(services.flatMap((s) => s.disciplines || []))
   ).sort();
 
-  const categoryCount: Record<string, number> = {};
+  const disciplineCount: Record<string, number> = {};
   services.forEach((s) => {
-    (s.categories || []).forEach((cat) => {
-      categoryCount[cat] = (categoryCount[cat] || 0) + 1;
+    (s.disciplines || []).forEach((discipline) => {
+      disciplineCount[discipline] = (disciplineCount[discipline] || 0) + 1;
     });
   });
 
-  const mainFilters = Object.entries(categoryCount)
+  const mainFilters = Object.entries(disciplineCount)
     .sort((a, b) => b[1] - a[1])
     .slice(0, 6)
     .map(([name]) => name);
@@ -45,7 +45,7 @@ const ServicesPage = () => {
       service.title.toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesMarket =
-      selectedMarket === "All" || service.categories?.includes(selectedMarket);
+      selectedMarket === "All" || service.disciplines?.includes(selectedMarket);
 
     return matchesSearch && matchesMarket;
   });
@@ -235,7 +235,7 @@ const ServicesPage = () => {
                     All
                   </button>
 
-                  {allCategories
+                  {allDisciplines
                     .filter((f) =>
                       f.toLowerCase().includes(searchTerm.toLowerCase())
                     )
