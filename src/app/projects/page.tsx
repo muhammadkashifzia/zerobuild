@@ -51,6 +51,12 @@ export default function Page() {
 
       {/* Swiper Slider */}
       <div className="relative w-full pt-14 overflow-x-hidden project-slider">
+        {/* Slide Number Indicator */}
+        {!loading && projects.length > 0 && (
+          <div className="absolute left-[15px] top-0 z-20 text-lg font-semibold text-black ">
+            {activeIndex + 1} — {projects.length}
+          </div>
+        )}
         <div className="absolute top-4 right-4 z-10 flex gap-2">
           <button className="swiper-button-prev">
             <ArrowLeft className="w-5 h-5 text-gray-600" />
@@ -75,7 +81,7 @@ export default function Page() {
             slidesPerView={1.25}
             centeredSlides
             loop
-            spaceBetween={15}
+            spaceBetween={24}
             autoplay={{ delay: 2500, disableOnInteraction: false }}
             navigation={{
               nextEl: ".swiper-button-next",
