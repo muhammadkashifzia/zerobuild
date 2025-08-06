@@ -14,6 +14,10 @@ interface PerformanceSectionProps {
 }
 
 export default function PerformanceSection({ performanceData }: PerformanceSectionProps) {
+  // Move all hooks before early return
+  const [showChart, setShowChart] = useState(true); // Changed to true to show chart by default
+  const [selectedView, setSelectedView] = useState<string>("cost"); // Changed to "cost" as default
+
   // Show skeleton while loading
   if (!performanceData) {
     return (
@@ -22,9 +26,6 @@ export default function PerformanceSection({ performanceData }: PerformanceSecti
       </Suspense>
     );
   }
-
-  const [showChart, setShowChart] = useState(true); // Changed to true to show chart by default
-  const [selectedView, setSelectedView] = useState<string>("cost"); // Changed to "cost" as default
 
   // Static chart buttons (reverted from dynamic)
   const chartButtons = [
