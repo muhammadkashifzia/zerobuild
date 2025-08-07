@@ -1,7 +1,7 @@
 // app/page.tsx
 "use client";
 
-import { useEffect, useState, useMemo, useCallback, useRef } from "react";
+import React, { useEffect, useState, useMemo, useCallback, useRef } from "react";
 import dynamic from "next/dynamic";
 import * as XLSX from "xlsx";
 import type { Data, Layout } from "plotly.js";
@@ -171,14 +171,27 @@ const SkeletonShimmer = () => {
 
         {/* Data points skeleton */}
         <div className="absolute inset-16">
-          {[...Array(12)].map((_, i) => (
+          {[
+            { left: 10, top: 20, delay: 0 },
+            { left: 25, top: 35, delay: 0.1 },
+            { left: 40, top: 15, delay: 0.2 },
+            { left: 55, top: 45, delay: 0.3 },
+            { left: 70, top: 25, delay: 0.4 },
+            { left: 15, top: 60, delay: 0.5 },
+            { left: 30, top: 70, delay: 0.6 },
+            { left: 45, top: 55, delay: 0.7 },
+            { left: 60, top: 75, delay: 0.8 },
+            { left: 75, top: 65, delay: 0.9 },
+            { left: 20, top: 80, delay: 1.0 },
+            { left: 35, top: 85, delay: 1.1 },
+          ].map((pos, i) => (
             <div
               key={i}
-              className="absolute w-4 h-4 bg-gray-300 rounded-full"
+              className="absolute w-4 h-4 bg-gray-300 rounded-full animate-pulse"
               style={{
-                left: `${Math.random() * 80}%`,
-                top: `${Math.random() * 80}%`,
-                animationDelay: `${i * 0.1}s`,
+                left: `${pos.left}%`,
+                top: `${pos.top}%`,
+                animationDelay: `${pos.delay}s`,
               }}
             ></div>
           ))}
@@ -238,7 +251,8 @@ const PlotLoadingSkeleton = () => (
 // Dynamic import with skeleton loading
 const Plot = dynamic(() => import("react-plotly.js"), {
   ssr: false,
-  loading: () => <PlotLoadingSkeleton />
+  loading: () => <PlotLoadingSkeleton />,
+  suspense: false
 });
 
 interface ObservabilityChartProps {
@@ -284,6 +298,8 @@ const COMFORT_LABEL_MAP = {
 } as const;
 
 export default function ObservabilityChart({ selectedView = "comfort" }: ObservabilityChartProps) {
+  const [mounted, setMounted] = useState(false);
+  const [plotlyReady, setPlotlyReady] = useState(false);
   const [rawData, setRawData] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -297,6 +313,16 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
   } | null>(null);
   const [plotRef, setPlotRef] = useState<any>(null);
   const plotContainerRef = useRef<HTMLDivElement>(null);
+
+  // Ensure component is mounted before rendering
+  useEffect(() => {
+    setMounted(true);
+    // Set a small delay to ensure Plotly is ready
+    const timer = setTimeout(() => {
+      setPlotlyReady(true);
+    }, 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Memoized data processing
   const processedData = useMemo(() => {
@@ -672,6 +698,17 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
     }, 50);
   }, [plotRef]);
 
+  // Don't render until component is mounted to prevent hydration mismatch
+  if (!mounted) {
+    return (
+      <div id="observability-chart" className="w-fullbpx-[16px]">
+        <div className="w-full bg-white p-[10px] md:p-[20px] rounded-lg shadow-md">
+          <SkeletonShimmer />
+        </div>
+      </div>
+    );
+  }
+
   if (error) {
     return (
       <div className="container mx-auto p-6">
@@ -709,43 +746,67 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
                 Reset Zoom
               </button>
             )} */}
-            <Plot
-              data={plotData}
-              layout={layout}
-              config={{
-                responsive: false,
-                displayModeBar: true,
-                modeBarButtonsToAdd: [
-                  'zoom2d',
-                  'pan2d',
-                  'resetScale2d',
-                  'autoScale2d'
-                ],
-                modeBarButtonsToRemove: ['lasso2d', 'select2d'],
-              }}
-              style={{ width: '100%', height: '100%', paddingBottom: '20px' }}
-              onHover={handleHover}
-              onUnhover={handleUnhover}
-              onRelayout={(eventData) => {
-                // Store zoom state when user manually zooms
-                const x0 = eventData['xaxis.range[0]'];
-                const x1 = eventData['xaxis.range[1]'];
-                const y0 = eventData['yaxis.range[0]'];
-                const y1 = eventData['yaxis.range[1]'];
-                
-                if (typeof x0 === 'number' && typeof x1 === 'number' && typeof y0 === 'number' && typeof y1 === 'number') {
-                  setChartZoom({
-                    x0,
-                    x1,
-                    y0,
-                    y1,
-                  });
+            {(() => {
+              try {
+                if (!plotlyReady) {
+                  return <PlotLoadingSkeleton />;
                 }
-              }}
-              onInitialized={(figure) => {
-                setPlotRef(figure);
-              }}
-            />
+                return (
+                  <Plot
+                    data={plotData}
+                    layout={layout}
+                    config={{
+                      responsive: false,
+                      displayModeBar: true,
+                      modeBarButtonsToAdd: [
+                        'zoom2d',
+                        'pan2d',
+                        'resetScale2d',
+                        'autoScale2d'
+                      ],
+                      modeBarButtonsToRemove: ['lasso2d', 'select2d'],
+                    }}
+                    style={{ width: '100%', height: '100%', paddingBottom: '20px' }}
+                    onHover={handleHover}
+                    onUnhover={handleUnhover}
+                    onRelayout={(eventData) => {
+                      // Store zoom state when user manually zooms
+                      const x0 = eventData['xaxis.range[0]'];
+                      const x1 = eventData['xaxis.range[1]'];
+                      const y0 = eventData['yaxis.range[0]'];
+                      const y1 = eventData['yaxis.range[1]'];
+                      
+                      if (typeof x0 === 'number' && typeof x1 === 'number' && typeof y0 === 'number' && typeof y1 === 'number') {
+                        setChartZoom({
+                          x0,
+                          x1,
+                          y0,
+                          y1,
+                        });
+                      }
+                    }}
+                    onInitialized={(figure) => {
+                      setPlotRef(figure);
+                    }}
+                    onError={(error) => {
+                      console.error('Plotly error:', error);
+                      setError('Failed to load chart');
+                    }}
+                  />
+                );
+              } catch (error) {
+                console.error('Plot component error:', error);
+                return (
+                  <div className="flex items-center justify-center h-full">
+                    <div className="text-center text-gray-500">
+                      <div className="text-4xl mb-2">⚠️</div>
+                      <div className="text-lg font-medium">Chart loading error</div>
+                      <div className="text-sm">Please refresh the page</div>
+                    </div>
+                  </div>
+                );
+              }
+            })()}
           </div>
         ) : (
           <div className="flex items-center justify-center h-full  rounded-lg">

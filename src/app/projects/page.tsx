@@ -12,6 +12,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/moving-border";
 import Link from "next/link";
+import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-with-collision";
 
 export default function Page() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -30,27 +31,24 @@ export default function Page() {
   return (
     <div>
       {/* Header */}
-      <section
-        className="pt-24 pb-10 mb-10"
-        style={{
-          backgroundBlendMode: "overlay",
-          backgroundSize: "cover",
-          backgroundImage: `url("/assets/images/coding-background-texture.jpg"), linear-gradient(180deg, #474ab6 0%, #9271f6 100%)`,
-        }}
-      >
-        <div className="container mx-auto px-4">
-          <h1 className="text-3xl md:text-6xl font-normal text-white leading-tight max-w-4xl">
-            Projects
-          </h1>
-          <p className="text-base md:text-2xl text-white mt-4 max-w-3xl">
-            From metro systems to concert halls, our sustainability projects
-            shape a better world.
-          </p>
+  
+      <BackgroundBeamsWithCollision>
+      <h2 className="container mx-auto px-[16px] text-2xl relative z-20 md:text-4xl lg:text-7xl font-bold text-left text-black dark:text-white font-sans tracking-tight">
+        What&apos;s cooler than Beams?
+        <div className="relative mx-auto inline-block w-max [filter:drop-shadow(0px_1px_3px_rgba(27,_37,_80,_0.14))]">
+          <div className="absolute left-0 top-[1px] bg-clip-text bg-no-repeat text-transparent bg-gradient-to-r py-4 from-purple-500 via-violet-500 to-pink-500 [text-shadow:0_0_rgba(0,0,0,0.1)]">
+            <span className="">Exploding beams.</span>
+          </div>
+          <div className="relative bg-clip-text text-transparent bg-no-repeat bg-gradient-to-r from-purple-500 via-violet-500 to-pink-500 py-4">
+            <span className="">Exploding beams.</span>
+          </div>
+        
         </div>
-      </section>
-
+        <p className="text-base md:text-2xl text-black mt-4 max-w-4xl font-normal">From metro systems to concert halls, our sustainability projects shape a better world.</p>
+      </h2>
+    </BackgroundBeamsWithCollision>
       {/* Swiper Slider */}
-      <div className="relative w-full pt-14 overflow-x-hidden project-slider">
+      <div className="mt-[60px] relative w-full pt-14 overflow-x-hidden project-slider">
         {/* Slide Number Indicator */}
         {!loading && projects.length > 0 && (
           <div className="absolute left-[15px] top-0 z-20 text-lg font-semibold text-black ">

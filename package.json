@@ -10,8 +10,6 @@
   },
   "dependencies": {
     "@portabletext/react": "^3.2.1",
-    "@react-three/drei": "^9.122.0",
-    "@react-three/fiber": "^8.18.0",
     "@sanity/client": "^7.8.1",
     "@sanity/image-url": "^1.1.0",
     "@sanity/vision": "^3.99.0",
@@ -35,8 +33,6 @@
     "sanity": "^3.99.0",
     "swiper": "^11.2.10",
     "tailwind-merge": "^2.6.0",
-    "three": "^0.179.1",
-    "three-globe": "^2.44.0",
     "xlsx": "^0.18.5",
     "yup": "^1.6.1"
   },
