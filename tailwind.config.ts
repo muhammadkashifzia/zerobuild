@@ -48,6 +48,20 @@ const config: Config = {
   darkMode: "class",
   theme: {
     extend: {
+       animation2: {
+        aurora: "aurora 60s linear infinite",
+      },
+      keyframes2: {
+        aurora: {
+          from: {
+            backgroundPosition: "50% 50%, 50% 50%",
+          },
+          to: {
+            backgroundPosition: "350% 50%, 350% 50%",
+          },
+        },
+      },
+    
       animation: {
         spotlight: "spotlight 2s ease .75s 1 forwards",
         scroll:
