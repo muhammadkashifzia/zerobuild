@@ -4,7 +4,7 @@ import Link from "next/link";
 import { getResource} from "@/sanity/sanity-utils";
 import { Resource } from "@/types/Resource";
 import type { Metadata } from "next";
-
+import { ArrowLeft } from "lucide-react";
 export async function generateMetadata({
   params,
 }: {
@@ -80,11 +80,12 @@ export default async function Page({
   }
 
   return (
-    <div className="px-[16px] md:p-8 mx-auto space-y-5 mt-12">
-     <Link href="/" className="text-black">Back to Resources</Link>
+    <div className="px-[16px] md:p-8 mx-auto space-y-5 mt-[60px]">
+  <Link href="/resources" className="text-black text-[20px] font-semibold flex gap-[10px] mb-[30px] link items-center"> <ArrowLeft /> 
+      <span className="hover:link-underline">Back to Resources</span>
+      </Link>
       {(resource.gallery?.length ?? 0) > 0 && (
         <div>
-          <h2 className="text-2xl font-semibold mb-4">Gallery</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {(resource.gallery ?? []).map((img, idx) => (
               <Image

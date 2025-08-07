@@ -83,7 +83,9 @@ export default async function Page({
 
   return (
     <div className="px-[16px] md:p-8 mx-auto space-y-5 mt-16">
-          <Link href="/" className="text-black font-semibold flex gap-[10px] mb-[30px] link"> <ArrowLeft /> <span className="hover:link-underline">Back to Services</span></Link>
+          <Link href="/services" className="text-black text-[20px] font-semibold flex gap-[10px] mb-[30px] link items-center"> <ArrowLeft /> 
+      <span className="hover:link-underline">Back to Services</span>
+      </Link>
       {(service.gallery?.length ?? 0) > 0 && (
         <div>
         

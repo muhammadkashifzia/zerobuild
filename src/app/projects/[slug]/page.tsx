@@ -4,7 +4,7 @@ import Link from "next/link";
 import { getProject, getRelatedProjects } from "@/sanity/sanity-utils";
 import { Project } from "@/types/Project";
 import type { Metadata } from "next";
-
+import { ArrowLeft } from "lucide-react";
 export async function generateMetadata({
   params,
 }: {
@@ -84,20 +84,22 @@ export default async function Page({
 
   return (
     <div className="px-[16px] md:py-28 mx-auto space-y-5">
-       {project.image?.asset?.url && (
-            <Image
-              src={project.image.asset.url}
-              alt={project.title}
-              width={900}
-              height={500}
-              className="rounded-xl object-cover w-full h-[663px]"
-            />
-          )}
+      <Link href="/projects" className="text-black font-semibold flex gap-[10px] mb-[30px] link items-center"> <ArrowLeft /> 
+      <span className="hover:link-underline">Back to Projects</span>
+      </Link>
+      {project.image?.asset?.url && (
+        <Image
+          src={project.image.asset.url}
+          alt={project.title}
+          width={900}
+          height={500}
+          className="rounded-xl object-cover w-full h-[663px]"
+        />
+      )}
       <div className="container grid grid-cols-1 lg:grid-cols-3 px-0 md:px-[16px] gap-[20px] mx-auto pt-0 md:pt-[40px]">
         {/* Left: Content */}
         <div className="lg:col-span-2 space-y-2">
-          {/* Cover Image */}
-         
+
           {/* Categories */}
           {(project.categories?.length ?? 0) > 0 && (
             <div className="flex flex-wrap gap-2 mt-4">
