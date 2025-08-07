@@ -1,7 +1,7 @@
 import { PortableText } from "@portabletext/react";
 import Image from "next/image";
 import Link from "next/link";
-import { getProject } from "@/sanity/sanity-utils";
+import { getProject, getRelatedProjects } from "@/sanity/sanity-utils";
 import { Project } from "@/types/Project";
 import type { Metadata } from "next";
 
@@ -79,6 +79,9 @@ export default async function Page({
     );
   }
 
+  // Get related projects
+  const relatedProjects = await getRelatedProjects(slug, project.categories);
+
   return (
     <div className="px-[16px] md:py-28 mx-auto space-y-5">
        {project.image?.asset?.url && (
@@ -142,6 +145,60 @@ export default async function Page({
           </div>
         </div>
       </div>
+
+      {/* Related Projects Section */}
+      {relatedProjects.length > 0 && (
+        <div className="container mx-auto px-0 md:px-[16px] pt-[60px]">
+          <div className="lg:col-span-3">
+            <p className="text-[20px] text-[#757575] mb-[20px]">Projects</p>
+            <h2 className="text-[38px] font-normal text-black mb-8">Explore more climate & sustainability projects</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {relatedProjects.map((relatedProject) => (
+                <Link
+                  key={relatedProject._id}
+                  href={`/projects/${relatedProject.slug}`}
+                  className="group block"
+                >
+                  <div className="overflow-hidden transition-shadow duration-300">
+                    {relatedProject.image?.asset?.url && (
+                      <div className="relative h-[280px] overflow-hidden">
+                        <Image
+                          src={relatedProject.image.asset.url}
+                          alt={relatedProject.title}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-300 rounded-[12px]"
+                        />
+                      </div>
+                    )}
+                    <div className="mt-[24px]">
+                      <h3 className="text-lg font-semibold text-black mb-2 group-hover:text-blue-600 transition-colors duration-200">
+                        {relatedProject.title}
+                      </h3>
+                      {relatedProject.description && (
+                        <p className="text-gray-600 text-sm line-clamp-2">
+                          {relatedProject.description}
+                        </p>
+                      )}
+                      {/* {relatedProject.categories && relatedProject.categories.length > 0 && (
+                        <div className="flex flex-wrap gap-1 mt-3">
+                          {relatedProject.categories.slice(0, 2).map((category, index) => (
+                            <span
+                              key={index}
+                              className="bg-blue-50 text-blue-600 text-xs px-2 py-1 rounded-full"
+                            >
+                              {category}
+                            </span>
+                          ))}
+                        </div>
+                      )} */}
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

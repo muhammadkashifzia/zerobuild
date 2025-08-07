@@ -89,6 +89,27 @@ export async function getProject(slug: string): Promise<Project> {
   );
 }
 
+export async function getRelatedProjects(currentSlug: string, categories?: string[]): Promise<Project[]> {
+  if (!categories || categories.length === 0) {
+    return [];
+  }
+
+  return createClient(clientConfig).fetch(
+    groq`
+    *[_type == "project" && slug.current != $currentSlug && count(categories[@ in $categories]) > 0] | order(publishedAt desc)[0...4] {
+      _id,
+      title,
+      "slug": slug.current,
+      publishedAt,
+      image { asset->{url} },
+      description,
+      categories
+    }
+  `,
+    { currentSlug, categories }
+  );
+}
+
 /* Resources */
 export async function getResources(): Promise<Resource[]> {
   return createClient(clientConfig).fetch(

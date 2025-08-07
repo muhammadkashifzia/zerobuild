@@ -80,10 +80,10 @@ export default async function Page({
   }
 
   return (
-    <div className="px-[16px] md:p-8 mx-auto space-y-5">
-      {/* Gallery */}
+    <div className="px-[16px] md:p-8 mx-auto space-y-5 mt-12">
+     <Link href="/" className="text-black">Back to Resources</Link>
       {(resource.gallery?.length ?? 0) > 0 && (
-        <div className="mt-8">
+        <div>
           <h2 className="text-2xl font-semibold mb-4">Gallery</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {(resource.gallery ?? []).map((img, idx) => (
