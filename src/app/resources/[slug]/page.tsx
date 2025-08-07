@@ -1,7 +1,7 @@
 import { PortableText } from "@portabletext/react";
 import Image from "next/image";
 import Link from "next/link";
-import { getResource} from "@/sanity/sanity-utils";
+import { getResource, getRelatedResources } from "@/sanity/sanity-utils";
 import { Resource } from "@/types/Resource";
 import type { Metadata } from "next";
 import { ArrowLeft } from "lucide-react";
@@ -66,10 +66,10 @@ export async function generateMetadata({
 export default async function Page({
   params,
 }: {
-  params: Promise<{ slug: string }>; // Changed to Promise
+  params: Promise<{ slug: string }>;
 }) {
-  const { slug } = await params; // Await the params
-  const resource: Resource = await getResource(slug); // Use the awaited slug
+  const { slug } = await params;
+  const resource: Resource = await getResource(slug);
 
   if (!resource) {
     return (
@@ -78,6 +78,9 @@ export default async function Page({
       </div>
     );
   }
+
+  // Get related resources
+  const relatedResources = await getRelatedResources(slug, resource.purpose, resource.focusArea);
 
   return (
     <div className="px-[16px] md:p-8 mx-auto space-y-5 mt-[60px]">
@@ -174,6 +177,47 @@ export default async function Page({
           </div>
         </div>
       </div>
+      {/* Related Resources Section */}
+      {relatedResources.length > 0 && (
+        <div className="container mx-auto px-0 md:px-[16px] pt-[60px]">
+          <div className="lg:col-span-3">
+            <p className="text-[20px] text-[#757575] mb-[20px]">Resources</p>
+            <h2 className="text-[38px] font-normal text-black mb-8">Explore more resources</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {relatedResources.map((relatedResource) => (
+                <Link
+                  key={relatedResource._id}
+                  href={`/resources/${relatedResource.slug}`}
+                  className="group block"
+                >
+                  <div className="overflow-hidden transition-shadow duration-300">
+                    {relatedResource.image?.asset?.url && (
+                      <div className="relative h-[250px] overflow-hidden">
+                        <Image
+                          src={relatedResource.image.asset.url}
+                          alt={relatedResource.title}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-300 rounded-[12px]"
+                        />
+                      </div>
+                    )}
+                    <div className="mt-[24px]">
+                      <h3 className="text-lg font-semibold text-black mb-2 group-hover:text-blue-600 transition-colors duration-200">
+                        {relatedResource.title}
+                      </h3>
+                      {relatedResource.description && (
+                        <p className="text-gray-600 text-sm line-clamp-2">
+                          {relatedResource.description}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

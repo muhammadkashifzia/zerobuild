@@ -148,6 +148,30 @@ export async function getResource(slug: string): Promise<Resource> {
   );
 }
 
+export async function getRelatedResources(currentSlug: string, purpose?: string[], focusArea?: string[]): Promise<Resource[]> {
+  if ((!purpose || purpose.length === 0) && (!focusArea || focusArea.length === 0)) {
+    return [];
+  }
+
+  return createClient(clientConfig).fetch(
+    groq`
+      *[_type == "resource" && slug.current != $currentSlug && (
+        count(purpose[@ in $purpose]) > 0 || count(focusArea[@ in $focusArea]) > 0
+      )] | order(publishedAt desc)[0...4] {
+        _id,
+        title,
+        "slug": slug.current,
+        publishedAt,
+        image { asset->{url} },
+        description,
+        purpose,
+        focusArea
+      }
+    `,
+    { currentSlug, purpose, focusArea }
+  );
+}
+
 /* Contact */
 export async function getContacts(): Promise<Contact[]> {
   return createClient(clientConfig).fetch(
