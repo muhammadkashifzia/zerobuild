@@ -251,8 +251,7 @@ const PlotLoadingSkeleton = () => (
 // Dynamic import with skeleton loading
 const Plot = dynamic(() => import("react-plotly.js"), {
   ssr: false,
-  loading: () => <PlotLoadingSkeleton />,
-  suspense: false
+  loading: () => <PlotLoadingSkeleton />
 });
 
 interface ObservabilityChartProps {

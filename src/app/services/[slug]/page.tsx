@@ -5,7 +5,7 @@ import { getService } from "@/sanity/sanity-utils";
 import { Service } from "@/types/Service";
 import type { Metadata } from "next";
 import Accordion from "@/components/ui/accordion";
-
+import { ArrowRight } from "lucide-react";
 export async function generateMetadata({
   params,
 }: {
@@ -63,7 +63,14 @@ export async function generateMetadata({
     },
   };
 }
-
+  const servicesbanner = [
+  { title: "Architecture" },
+  { title: "Decarbonisation" },
+  { title: "Building Information Modeling" },
+  { title: "Facades and building envelopes" },
+  { title: "Building services engineering" },
+  { title: "Structural engineering" },
+];
 export default async function Page({
   params,
 }: {
@@ -167,6 +174,8 @@ export default async function Page({
               />
             </div>
           )}
+
+          
         </div>
 
         {/* Right: CTA */}
@@ -185,6 +194,37 @@ export default async function Page({
           </div>
         </div>
       </div>
+         <section className="bg-gray-50 py-12 px-4 md:px-12">
+      <div className="max-w-7xl mx-auto">
+        {/* Heading */}
+        <p className="text-sm text-gray-600 mb-2">Explore</p>
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+          <h2 className="text-2xl md:text-3xl font-serif font-medium mb-4 md:mb-0 text-black">
+            Discover more of our expertise:
+          </h2>
+          <Link href="/services" className="text-black flex items-center gap-2 border border-gray-300 rounded-full px-5 py-2 hover:bg-gray-100 transition">
+            View all services <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+
+        {/* Services Grid */}
+        <div className="border-t border-gray-200 pt-8">
+          <h3 className="text-lg font-medium mb-6 text-black">Services</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-6 md:gap-x-8 text-gray-800">
+            {servicesbanner.map((servicelist, index) => (
+              <div
+                key={index}
+                className={`pr-4 border-gray-200 ${
+                  (index + 1) % 2 === 0 && "sm:border-r md:border-none"
+                } ${index < 4 && "sm:pb-4"}`}
+              >
+                {servicelist.title}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
     </div>
   );
 }
