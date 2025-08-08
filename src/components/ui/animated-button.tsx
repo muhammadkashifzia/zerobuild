@@ -39,8 +39,8 @@ export const AnimatedButton: React.FC<AnimatedButtonProps> = ({
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: 100, opacity: 0 }}
               transition={{ 
-                duration: 0.5,
-                ease: [0.25, 0.46, 0.45, 0.94]
+                duration: 0.1,
+                ease: [0.65, 0.46, 0.45, 0.94]
               }}
               className="absolute inset-0 flex items-center justify-center whitespace-nowrap"
             >

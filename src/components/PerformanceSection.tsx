@@ -56,7 +56,7 @@ export default function PerformanceSection({ performanceData }: PerformanceSecti
           </div>
 
           <div className="space-y-6"> 
-            <p className="text-black text-center max-w-[950px]">
+            <p className="text-black text-center max-w-[950px] mx-auto">
               {performanceData.description}
             </p>
           </div>
