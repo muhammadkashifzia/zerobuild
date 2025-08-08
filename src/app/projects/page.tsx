@@ -31,9 +31,9 @@ export default function Page() {
   return (
     <div>
       {/* Header */}
-  
+  <div className="container mx-auto mt-[64px]">
       <BackgroundBeamsWithCollision>
-      <h2 className="container mx-auto px-[16px] text-2xl relative z-20 md:text-4xl lg:text-7xl font-bold text-left text-black dark:text-white font-sans tracking-tight">
+      <h2 className="max-w-full md:max-w-[950px] px-[16px] text-2xl relative z-20 md:text-4xl lg:text-7xl font-bold text-left text-black dark:text-white font-sans tracking-tight">
         What&apos;s cooler than Beams?
         <div className="relative mx-auto inline-block w-max [filter:drop-shadow(0px_1px_3px_rgba(27,_37,_80,_0.14))]">
           <div className="absolute left-0 top-[1px] bg-clip-text bg-no-repeat text-transparent bg-gradient-to-r py-4 from-purple-500 via-violet-500 to-pink-500 [text-shadow:0_0_rgba(0,0,0,0.1)]">
@@ -47,11 +47,12 @@ export default function Page() {
         <p className="text-base md:text-2xl text-black mt-4 max-w-4xl font-normal">From metro systems to concert halls, our sustainability projects shape a better world.</p>
       </h2>
     </BackgroundBeamsWithCollision>
+    </div>
       {/* Swiper Slider */}
       <div className="mt-[60px] relative w-full pt-14 overflow-x-hidden project-slider">
         {/* Slide Number Indicator */}
         {!loading && projects.length > 0 && (
-          <div className="absolute left-[15px] top-0 z-20 text-lg font-semibold text-black ">
+          <div className="absolute left-[20px] top-0 z-20 text-lg font-semibold text-black ">
             {activeIndex + 1} — {projects.length}
           </div>
         )}
@@ -98,7 +99,7 @@ export default function Page() {
                       alt={project.title}
                       width={900}
                       height={400}
-                      className="w-full h-[400px] object-cover rounded-xl"
+                      className="w-full h-[250px] md:h-[400px] object-cover rounded-xl"
                     />
                   </Link>
                   {activeIndex === idx && (
@@ -106,12 +107,12 @@ export default function Page() {
                       initial={{ opacity: 0, y: 30 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.6 }}
-                      className="flex justify-between py-5 h-[104px]"
+                      className="flex flex-wrap justify-between py-5 h-auto md:h-[104px]"
                     >
-                      <h3 className="text-xl md:text-2xl font-semibold text-gray-800 max-w-[70%]">
+                      <h3 className="text-[18px] md:text-2xl font-semibold text-gray-800 max-w-full md:max-w-[70%]">
                         {project.title}
                       </h3>
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm text-gray-600 line-clamp-2">
                         {project.description ?? "Sustainable infrastructure"}
                       </p>
                     </motion.div>
@@ -126,14 +127,14 @@ export default function Page() {
       {/* View All Projects Button */}
       <div className="px-8 flex justify-end mb-6">
         <Link href="/projects/all-projects" className="w-full max-w-[160px]">
-          <Button className="flex h-12 w-full items-center justify-center !rounded-xl bg-white text-sm text-black shadow transition duration-200 hover:shadow-lg">
-            View all Projects
+          <Button className="flex gap-2 h-12 w-full items-center justify-center !rounded-xl bg-white text-sm text-black shadow transition duration-200 hover:shadow-lg">
+            View all Projects <ArrowRight />
           </Button>
         </Link>
       </div>
 
       {/* Projects Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-8 mb-32">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-[16px] md:px-8 mb-32">
         {loading
           ? [...Array(8)].map((_, i) => (
               <div key={i} className="group animate-pulse">

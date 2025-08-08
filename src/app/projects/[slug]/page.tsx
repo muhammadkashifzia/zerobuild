@@ -5,6 +5,7 @@ import { getProject, getRelatedProjects } from "@/sanity/sanity-utils";
 import { Project } from "@/types/Project";
 import type { Metadata } from "next";
 import { ArrowLeft } from "lucide-react";
+import CtaSection from '@/components/CtaSection'
 export async function generateMetadata({
   params,
 }: {
@@ -163,7 +164,7 @@ export default async function Page({
                 >
                   <div className="overflow-hidden transition-shadow duration-300">
                     {relatedProject.image?.asset?.url && (
-                      <div className="relative h-[250px] overflow-hidden">
+                      <div className="relative h-[220px] overflow-hidden rounded-[12px]">
                         <Image
                           src={relatedProject.image.asset.url}
                           alt={relatedProject.title}
@@ -201,6 +202,7 @@ export default async function Page({
           </div>
         </div>
       )}
+           <CtaSection />
     </div>
   );
 }

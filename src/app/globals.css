@@ -166,6 +166,10 @@ a{
 .service-body-content ul{
   list-style: disc;
   padding-left: 18px;
+  font-size: 20px;
+}
+.detail-accordian ul{
+    font-size: 20px;
 }
 .service-body-content p strong{
   margin-bottom: 15px;
@@ -184,4 +188,13 @@ a{
 .accordion-button:focus {
   outline: none;
   box-shadow: 0 0 0 2px rgba(72, 74, 183, 0.2);
+}
+
+@media only screen and (max-width: 600px) {
+ .project-slider::before{
+left:-35px;
+}
+.project-slider::after{
+  right:-35px;
+}
 }

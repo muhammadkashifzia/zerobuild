@@ -35,7 +35,7 @@ export default function Accordion({ items, title, className = '' }: AccordionPro
   if (!items || items.length === 0) return null
 
   return (
-    <div className={`w-full ${className}`}>
+    <div className={`w-full detail-accordian ${className}`}>
       {title && (
         <h2 className="text-2xl font-semibold mb-6 text-gray-900">{title}</h2>
       )}
@@ -76,14 +76,14 @@ export default function Accordion({ items, title, className = '' }: AccordionPro
                         block: {
                           h1: ({ children }) => <h1 className="text-lg font-semibold mb-2">{children}</h1>,
                           h2: ({ children }) => <h2 className="text-base font-semibold mb-2">{children}</h2>,
-                          h3: ({ children }) => <h3 className="text-sm font-semibold mb-1">{children}</h3>,
+                          h3: ({ children }) => <h3 className="font-semibold mb-1">{children}</h3>,
                           normal: ({ children }) => <p className="mb-2">{children}</p>,
                         },
                         list: {
                           bullet: ({ children }) => <ul className="list-disc list-inside mb-2 space-y-1">{children}</ul>,
                           number: ({ children }) => <ol className="list-decimal list-inside mb-2 space-y-1">{children}</ol>,
                         },
-                        listItem: ({ children }) => <li className="text-sm">{children}</li>,
+                        listItem: ({ children }) => <li>{children}</li>,
                       }}
                     />
                   </div>
