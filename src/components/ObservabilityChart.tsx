@@ -105,41 +105,45 @@ const DetailedDataBox = ({ dataPoint, isVisible, position }: {
         boxShadow: '0 10px 25px rgba(0, 0, 0, 0.15)'
       }}
     >
-      <div className="space-y-1" >
+     <div className="space-y-1" >
 
-        <div className="grid grid-cols-1 text-[12px]">
-          <div className="flex gap-2">
-            <span className=" font-medium text-white">Fabric:</span>
-            <div className="text-white">{dataPoint.Fabric}</div>
-          </div>
-          <div className="flex gap-2">
-            <span className=" font-medium text-white">Orientation:</span>
-            <div className="text-white">{dataPoint.Orientation}</div>
-          </div>
-          <div className="flex gap-2">
-            <span className="font-medium text-white">Behaviour:</span>
-            <div className="text-white">{dataPoint.Behaviour}</div>
-          </div>
-          <div className="flex gap-2">
-            <span className="font-medium text-white">Comfort:</span>
-            <div className="text-white">{dataPoint.ComfortLabel}</div>
-          </div>
-          <div className="flex gap-2">
-            <span className=" font-medium text-white">Cost</span>
-            <div className="text-white">£{dataPoint.Cost.toFixed(0)}</div>
-          </div>
-          <div className="flex gap-2">
-            <span className="font-medium text-white">Cost</span>
-            <div className="text-white">{dataPoint.Carbon.toFixed(1)}</div>
-            <div className="text-[12px] text-white">kgCO₂e/m²</div>
-          </div>
-          <div className="flex gap-2">
-            <div className=" font-medium text-white">Circularity</div>
-            <div className="text-white">{dataPoint.Circularity}</div>
-            <div className="text-[12px] text-white">score</div>
-          </div>
-        </div>
-      </div>
+<div className="grid grid-cols-1 text-[12px]">
+  <div className="flex gap-2">
+    <span className=" font-medium text-white">Fabric:</span>
+    <div className="text-white">{dataPoint.Fabric}</div>
+  </div>
+  <div className="flex gap-2">
+    <span className=" font-medium text-white">Orientation:</span>
+    <div className="text-white">{dataPoint.Orientation}</div>
+  </div>
+  <div className="flex gap-2">
+    <span className="font-medium text-white">Behaviour:</span>
+    <div className="text-white">{dataPoint.Behaviour}</div>
+  </div>
+  <div className="flex gap-2">
+    <span className="font-medium text-white">Compliance:</span>
+    <div className="text-white">{dataPoint.ComplianceLabel}</div>
+  </div>
+  <div className="flex gap-2">
+    <span className="font-medium text-white">Comfort:</span>
+    <div className="text-white">{dataPoint.ComfortLabel}</div>
+  </div>
+  <div className="flex gap-2">
+    <span className=" font-medium text-white">Cost</span>
+    <div className="text-white">£{dataPoint.Cost.toFixed(0)}</div>
+  </div>
+  <div className="flex gap-2">
+    <span className="font-medium text-white">Carbon</span>
+    <div className="text-white">{dataPoint.Carbon.toFixed(1)}</div>
+    <div className="text-[12px] text-white">kgCO₂e/m²</div>
+  </div>
+  <div className="flex gap-2">
+    <div className=" font-medium text-white">Circularity</div>
+    <div className="text-white">{dataPoint.Circularity}</div>
+    <div className="text-[12px] text-white">score</div>
+  </div>
+</div>
+</div>
     </div>
   );
 };
@@ -592,8 +596,8 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
       images: layoutImages.map((img) => ({
         ...img,
         visible: selectedView === "compliance",
-        sizex: selectedView === "compliance" ? 25 : 20, // Larger icons for compliance view
-        sizey: selectedView === "compliance" ? 25 : 20,
+        sizex: selectedView === "compliance" ? 50 : 50, // Larger icons for compliance view
+        sizey: selectedView === "compliance" ? 200  : -60,
       })),
       // Add zoom and pan controls
       dragmode: 'zoom',
