@@ -23,7 +23,7 @@ export default function AboutTop() {
         </div>
       </section>
          <div className="container mx-auto px-[16px]">
-        <p className="text-[#525050] mb-8 text-[16px]">
+        <p className="text-black mb-8 text-[16px] text-center">
           We believe buildings can be perfect, because they are built on data,
           Data that can shape perfectly comfortable homes for every age group,
           weather and location Data that can help us choose materials with the

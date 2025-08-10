@@ -19,7 +19,7 @@ export default function AboutProfile() {
 
       {/* Right Text Section */}
       <div className="flex flex-col justify-start  md:w-2/3">
-        <h1 className="text-[32px] md:text-[40px] lg:text-[90px] font-serif font-medium text-gray-900 mb-[0px]">
+        <h1 className="text-[32px] md:text-[40px] lg:text-[48px] font-serif font-medium text-gray-900 mb-[0px]">
           Deepak Sadhwani
         </h1>
 
@@ -29,13 +29,13 @@ export default function AboutProfile() {
           Contact our experts →
         </button> */}
 
-        <p className="text-black text-[20px]">
+        <p className="text-black text-[20px] mb-[8px]">
           Zero Build was founded by Deepak Sadhwani, an architect turned
           building performance specialist, with a deep belief that good design
           must be backed by good data.
         </p>
 
-        <p className="text-gray-700 text-[20px]">
+        <p className="text-gray-700 text-[16px] mb-[15px]">
           After completing his MSc in Sustainable Mega-Buildings with
           distinction at Welsh School of Architecture, Cardiff University,
           Deepak’s research was awarded the prestigious CIBSE President’s Prize,
