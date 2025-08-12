@@ -43,7 +43,7 @@ export default function PerformanceSection({ performanceData }: PerformanceSecti
     }
     setSelectedView(value);
     setShowChart(true);
-  };
+  }; 
 
   return (
     <section className="text-black py-[40px] z-[999]">
