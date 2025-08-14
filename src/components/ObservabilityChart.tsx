@@ -478,6 +478,7 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
           size: 10,
           color: circularityValues,
           colorscale: "Greens",
+          reversescale: true,
           colorbar: { title: "Circularity" },
         },
         hovertext: hoverText,
@@ -738,7 +739,25 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
         {isLoading ? (
           <SkeletonShimmer />
         ) : plotData.length > 0 ? (
+        
           <div className="relative h-[620px]">
+                       {/* Comfort Legend */}
+         {selectedView === "comfort" && (
+           <div className="flex justify-center items-center gap-4 mt-4 mb-4">
+             <div className="flex items-center gap-2">
+               <div className="w-4 h-4 bg-[#10B981] rounded"></div>
+               <span className="text-sm font-medium">Comfortable</span>
+             </div>
+             <div className="flex items-center gap-2">
+               <div className="w-4 h-4 bg-[#EF4444] rounded"></div>
+               <span className="text-sm font-medium">Overheating</span>
+             </div>
+             <div className="flex items-center gap-2">
+               <div className="w-4 h-4 bg-[#3B82F6] rounded"></div>
+               <span className="text-sm font-medium">Underheating</span>
+             </div>
+           </div>
+         )}
             {/* Reset Zoom Button */}
             {/* {chartZoom && (
               <button
@@ -760,14 +779,7 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
                     layout={layout}
                     config={{
                       responsive: false,
-                      displayModeBar: true,
-                      modeBarButtonsToAdd: [
-                        'zoom2d',
-                        'pan2d',
-                        'resetScale2d',
-                        'autoScale2d'
-                      ],
-                      modeBarButtonsToRemove: ['lasso2d', 'select2d'],
+                      displayModeBar: false,
                     }}
                     style={{ width: '100%', height: '100%', paddingBottom: '20px' }}
                     onHover={handleHover}
@@ -820,7 +832,8 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
             </div>
           </div>
         )}
-        <div className="flex flex-col items-center justify-center gap-2"><p className="text-[12px] text-gray-500">See how the Five C Framework helps you priortise the right decisions</p><Link href="/resources" className="w-full bg-[#484AB7] text-white border-neutral-200 px-2 rounded-xl max-w-[185px] h-[45px] flex items-center justify-center text-[16px] font-semibold hover:bg-[#3c3f9d] transition-colors duration-200">Try the full toolset</Link></div>
+      
+         <div className="flex flex-col items-center justify-center gap-2"><p className="text-[12px] text-gray-500">See how the Five C Framework helps you priortise the right decisions</p><Link href="/resources" className="w-full bg-[#484AB7] text-white border-neutral-200 px-2 rounded-xl max-w-[185px] h-[45px] flex items-center justify-center text-[16px] font-semibold hover:bg-[#3c3f9d] transition-colors duration-200">Try the full toolset</Link></div>
       </div>
 
       {/* Detailed Data Box */}
