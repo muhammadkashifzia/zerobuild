@@ -8,7 +8,7 @@ const ServiceSection = () => {
       <div className="container px-[16px] mx-auto space-y-6 md:space-y-10">
         {/* Header Row */}
         <div className="flex  gap-[20px] justify-between md:flex-row flex-col items-center">
-          <div className="max-w-[720px]">
+          <div className="max-w-[980px]">
             <h2 className="text-[18px] lg:text-[24px] font-medium text-black">
               We guide, plan and design the future of the built environment. We
               are a global consultancy with advisory and technical expertise
