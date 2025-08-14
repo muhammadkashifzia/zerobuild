@@ -155,6 +155,7 @@ a{
 }
 #observability-chart .main-svg{
   background-color: transparent!important;
+  width: 100%;
 }
 .js-plotly-plot{
   display: flex;
