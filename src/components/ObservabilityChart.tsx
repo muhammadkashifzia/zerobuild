@@ -1,7 +1,13 @@
 // app/page.tsx
 "use client";
 
-import React, { useEffect, useState, useMemo, useCallback, useRef } from "react";
+import React, {
+  useEffect,
+  useState,
+  useMemo,
+  useCallback,
+  useRef,
+} from "react";
 import dynamic from "next/dynamic";
 import * as XLSX from "xlsx";
 import type { Data, Layout } from "plotly.js";
@@ -24,12 +30,19 @@ interface DataPoint {
 }
 
 // Detailed Data Box Component
-const DetailedDataBox = ({ dataPoint, isVisible, position }: {
+const DetailedDataBox = ({
+  dataPoint,
+  isVisible,
+  position,
+}: {
   dataPoint: DataPoint | null;
   isVisible: boolean;
   position: { x: number; y: number } | null;
 }) => {
-  const [boxPosition, setBoxPosition] = useState<{ left: number; top: number } | null>(null);
+  const [boxPosition, setBoxPosition] = useState<{
+    left: number;
+    top: number;
+  } | null>(null);
 
   useEffect(() => {
     if (!isVisible || !dataPoint || !position) {
@@ -39,7 +52,7 @@ const DetailedDataBox = ({ dataPoint, isVisible, position }: {
 
     const updatePosition = () => {
       // Get chart container bounds
-      const chartContainer = document.getElementById('observability-chart');
+      const chartContainer = document.getElementById("observability-chart");
       if (!chartContainer) return;
 
       const containerRect = chartContainer.getBoundingClientRect();
@@ -83,12 +96,14 @@ const DetailedDataBox = ({ dataPoint, isVisible, position }: {
       scrollTimeout = setTimeout(updatePosition, 10);
     };
 
-    window.addEventListener('scroll', debouncedUpdatePosition, { passive: true });
-    window.addEventListener('resize', updatePosition, { passive: true });
+    window.addEventListener("scroll", debouncedUpdatePosition, {
+      passive: true,
+    });
+    window.addEventListener("resize", updatePosition, { passive: true });
 
     return () => {
-      window.removeEventListener('scroll', debouncedUpdatePosition);
-      window.removeEventListener('resize', updatePosition);
+      window.removeEventListener("scroll", debouncedUpdatePosition);
+      window.removeEventListener("resize", updatePosition);
       clearTimeout(scrollTimeout);
     };
   }, [isVisible, dataPoint, position]);
@@ -102,59 +117,65 @@ const DetailedDataBox = ({ dataPoint, isVisible, position }: {
         left: boxPosition.left,
         top: boxPosition.top,
         backgroundColor: dataPoint.ComfortColor,
-        boxShadow: '0 10px 25px rgba(0, 0, 0, 0.15)'
+        boxShadow: "0 10px 25px rgba(0, 0, 0, 0.15)",
       }}
     >
-     <div className="space-y-1" >
-
-<div className="grid grid-cols-1 text-[12px]">
-  <div className="flex gap-2">
-    <span className=" font-medium text-white">Fabric:</span>
-    <div className="text-white">{dataPoint.Fabric}</div>
-  </div>
-  <div className="flex gap-2">
-    <span className=" font-medium text-white">Orientation:</span>
-    <div className="text-white">{dataPoint.Orientation}</div>
-  </div>
-  <div className="flex gap-2">
-    <span className="font-medium text-white">Behaviour:</span>
-    <div className="text-white">{dataPoint.Behaviour}</div>
-  </div>
-  <div className="flex gap-2">
-    <span className="font-medium text-white">Compliance:</span>
-    <div className="text-white">{dataPoint.ComplianceLabel}</div>
-  </div>
-  <div className="flex gap-2">
-    <span className="font-medium text-white">Comfort:</span>
-    <div className="text-white">{dataPoint.ComfortLabel}</div>
-  </div>
-  <div className="flex gap-2">
-    <span className=" font-medium text-white">Cost</span>
-    <div className="text-white">£{dataPoint.Cost.toFixed(0)}</div>
-  </div>
-  <div className="flex gap-2">
-    <span className="font-medium text-white">Carbon</span>
-    <div className="text-white">{dataPoint.Carbon.toFixed(1)}</div>
-    <div className="text-[12px] text-white">kgCO₂e/m²</div>
-  </div>
-  <div className="flex gap-2">
-    <div className=" font-medium text-white">Circularity</div>
-    <div className="text-white">{dataPoint.Circularity}</div>
-    <div className="text-[12px] text-white">score</div>
-  </div>
-</div>
-</div>
+      <div className="space-y-1">
+        <div className="grid grid-cols-1 text-[12px]">
+          <div className="flex gap-2">
+            <span className=" font-medium text-white">Fabric:</span>
+            <div className="text-white">{dataPoint.Fabric}</div>
+          </div>
+          <div className="flex gap-2">
+            <span className=" font-medium text-white">Orientation:</span>
+            <div className="text-white">{dataPoint.Orientation}</div>
+          </div>
+          <div className="flex gap-2">
+            <span className="font-medium text-white">Behaviour:</span>
+            <div className="text-white">{dataPoint.Behaviour}</div>
+          </div>
+          <div className="flex gap-2">
+            <span className="font-medium text-white">Compliance:</span>
+            <div className="text-white">{dataPoint.ComplianceLabel}</div>
+          </div>
+          <div className="flex gap-2">
+            <span className="font-medium text-white">Comfort:</span>
+            <div className="text-white">{dataPoint.ComfortLabel}</div>
+          </div>
+          <div className="flex gap-2">
+            <span className=" font-medium text-white">Cost</span>
+            <div className="text-white">£{dataPoint.Cost.toFixed(0)}</div>
+          </div>
+          <div className="flex gap-2">
+            <span className="font-medium text-white">Carbon</span>
+            <div className="text-white">{dataPoint.Carbon.toFixed(1)}</div>
+            <div className="text-[12px] text-white">kgCO₂e/m²</div>
+          </div>
+          <div className="flex gap-2">
+            <div className=" font-medium text-white">Circularity</div>
+            <div className="text-white">{dataPoint.Circularity}</div>
+            <div className="text-[12px] text-white">score</div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
 
 // Compliance Hover Card Component
-const ComplianceHoverCard = ({ dataPoint, isVisible, position }: {
+const ComplianceHoverCard = ({
+  dataPoint,
+  isVisible,
+  position,
+}: {
   dataPoint: DataPoint | null;
   isVisible: boolean;
   position: { x: number; y: number } | null;
 }) => {
-  const [cardPosition, setCardPosition] = useState<{ left: number; top: number } | null>(null);
+  const [cardPosition, setCardPosition] = useState<{
+    left: number;
+    top: number;
+  } | null>(null);
 
   useEffect(() => {
     if (!isVisible || !dataPoint || !position) {
@@ -164,7 +185,7 @@ const ComplianceHoverCard = ({ dataPoint, isVisible, position }: {
 
     const updatePosition = () => {
       // Get chart container bounds
-      const chartContainer = document.getElementById('observability-chart');
+      const chartContainer = document.getElementById("observability-chart");
       if (!chartContainer) return;
 
       const containerRect = chartContainer.getBoundingClientRect();
@@ -208,12 +229,14 @@ const ComplianceHoverCard = ({ dataPoint, isVisible, position }: {
       scrollTimeout = setTimeout(updatePosition, 10);
     };
 
-    window.addEventListener('scroll', debouncedUpdatePosition, { passive: true });
-    window.addEventListener('resize', updatePosition, { passive: true });
+    window.addEventListener("scroll", debouncedUpdatePosition, {
+      passive: true,
+    });
+    window.addEventListener("resize", updatePosition, { passive: true });
 
     return () => {
-      window.removeEventListener('scroll', debouncedUpdatePosition);
-      window.removeEventListener('resize', updatePosition);
+      window.removeEventListener("scroll", debouncedUpdatePosition);
+      window.removeEventListener("resize", updatePosition);
       clearTimeout(scrollTimeout);
     };
   }, [isVisible, dataPoint, position]);
@@ -221,7 +244,8 @@ const ComplianceHoverCard = ({ dataPoint, isVisible, position }: {
   if (!isVisible || !dataPoint || !cardPosition) return null;
 
   // Get compliance icon
-  const complianceIcon = dataPoint.IconPath || "/assets/Compliance-logos/default.png";
+  const complianceIcon =
+    dataPoint.IconPath || "/assets/Compliance-logos/default.png";
   const complianceLevel = dataPoint.ComplianceMetric || 0;
 
   return (
@@ -230,15 +254,15 @@ const ComplianceHoverCard = ({ dataPoint, isVisible, position }: {
       style={{
         left: cardPosition.left,
         top: cardPosition.top,
-        boxShadow: '0 20px 40px rgba(0, 0, 0, 0.15)'
+        boxShadow: "0 20px 40px rgba(0, 0, 0, 0.15)",
       }}
     >
       {/* Header with compliance icon and level */}
       <div className="flex items-center gap-3 mb-1 border-b border-gray-100">
         <div className="w-8 h-8 bg-gray-50 rounded-lg flex items-center justify-center">
-          <img 
-            src={complianceIcon} 
-            alt={dataPoint.ComplianceLabel || "Compliance"} 
+          <img
+            src={complianceIcon}
+            alt={dataPoint.ComplianceLabel || "Compliance"}
             className="w-8 h-8 object-contain"
           />
         </div>
@@ -252,45 +276,44 @@ const ComplianceHoverCard = ({ dataPoint, isVisible, position }: {
         </div>
       </div>
 
-     <div className="space-y-1" >
-
-<div className="grid grid-cols-1 text-[12px] text-black">
-  {/* <div className="flex gap-2">
+      <div className="space-y-1">
+        <div className="grid grid-cols-1 text-[12px] text-black">
+          {/* <div className="flex gap-2">
     <span className=" font-medium text-black">Fabric:</span>
     <div className="text-black">{dataPoint.Fabric}</div>
   </div> */}
-  <div className="flex gap-2">
-    <span className=" font-medium text-black">Orientation:</span>
-    <div className="text-black">{dataPoint.Orientation}</div>
-  </div>
-  <div className="flex gap-2">
-    <span className="font-medium text-black">Behaviour:</span>
-    <div className="text-black">{dataPoint.Behaviour}</div>
-  </div>
-  <div className="flex gap-2">
-    <span className="font-medium text-black">Compliance:</span>
-    <div className="text-black">{dataPoint.ComplianceLabel}</div>
-  </div>
-  <div className="flex gap-2">
-    <span className="font-medium text-black">Comfort:</span>
-    <div className="text-black">{dataPoint.ComfortLabel}</div>
-  </div>
-  <div className="flex gap-2">
-    <span className=" font-medium text-black">Cost</span>
-    <div className="text-black">£{dataPoint.Cost.toFixed(0)}</div>
-  </div>
-  <div className="flex gap-2">
-    <span className="font-medium text-black">Carbon</span>
-    <div className="text-black">{dataPoint.Carbon.toFixed(1)}</div>
-    <div className="text-[12px] text-black">kgCO₂e/m²</div>
-  </div>
-  <div className="flex gap-2">
-    <div className=" font-medium text-black">Circularity</div>
-    <div className="text-black">{dataPoint.Circularity}</div>
-    <div className="text-[12px] text-black">score</div>
-  </div>
-</div>
-</div>
+          <div className="flex gap-2">
+            <span className=" font-medium text-black">Orientation:</span>
+            <div className="text-black">{dataPoint.Orientation}</div>
+          </div>
+          <div className="flex gap-2">
+            <span className="font-medium text-black">Behaviour:</span>
+            <div className="text-black">{dataPoint.Behaviour}</div>
+          </div>
+          <div className="flex gap-2">
+            <span className="font-medium text-black">Compliance:</span>
+            <div className="text-black">{dataPoint.ComplianceLabel}</div>
+          </div>
+          <div className="flex gap-2">
+            <span className="font-medium text-black">Comfort:</span>
+            <div className="text-black">{dataPoint.ComfortLabel}</div>
+          </div>
+          <div className="flex gap-2">
+            <span className=" font-medium text-black">Cost</span>
+            <div className="text-black">£{dataPoint.Cost.toFixed(0)}</div>
+          </div>
+          <div className="flex gap-2">
+            <span className="font-medium text-black">Carbon</span>
+            <div className="text-black">{dataPoint.Carbon.toFixed(1)}</div>
+            <div className="text-[12px] text-black">kgCO₂e/m²</div>
+          </div>
+          <div className="flex gap-2">
+            <div className=" font-medium text-black">Circularity</div>
+            <div className="text-black">{dataPoint.Circularity}</div>
+            <div className="text-[12px] text-black">score</div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
@@ -301,8 +324,6 @@ const SkeletonShimmer = () => {
     <div className="w-full h-[620px]  rounded-lg p-6 animate-pulse">
       {/* Title skeleton */}
       <div className="h-6 bg-gray-200 rounded w-48 mb-6"></div>
-
-
 
       {/* Chart area skeleton */}
       <div className="relative w-full h-96 bg-gray-100 rounded border-2 border-dashed border-gray-300">
@@ -375,7 +396,7 @@ const SkeletonShimmer = () => {
         .shimmer {
           animation: shimmer 2s infinite linear;
         }
-        
+
         @keyframes shimmer {
           0% {
             transform: translateX(-100%);
@@ -402,7 +423,7 @@ const PlotLoadingSkeleton = () => (
 // Dynamic import with skeleton loading
 const Plot = dynamic(() => import("react-plotly.js"), {
   ssr: false,
-  loading: () => <PlotLoadingSkeleton />
+  loading: () => <PlotLoadingSkeleton />,
 });
 
 interface ObservabilityChartProps {
@@ -419,9 +440,9 @@ const COMFORT_SYMBOL = {
 
 const COMFORT_COLOUR = {
   [-1]: "#3B82F6", // blue
-  0: "#10B981",   // green
-  1: "#10B981",   // green
-  2: "#EF4444",   // red
+  0: "#10B981", // green
+  1: "#10B981", // green
+  2: "#EF4444", // red
 } as const;
 
 const COMPLIANCE_ICON = {
@@ -447,16 +468,27 @@ const COMFORT_LABEL_MAP = {
   2: "Overheating",
 } as const;
 
-export default function ObservabilityChart({ selectedView = "comfort" }: ObservabilityChartProps) {
+export default function ObservabilityChart({
+  selectedView = "comfort",
+}: ObservabilityChartProps) {
   const [mounted, setMounted] = useState(false);
   const [plotlyReady, setPlotlyReady] = useState(false);
   const [rawData, setRawData] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [hoveredDataPoint, setHoveredDataPoint] = useState<DataPoint | null>(null);
-  const [hoverPosition, setHoverPosition] = useState<{ x: number; y: number } | null>(null);
-  const [complianceHoverData, setComplianceHoverData] = useState<DataPoint | null>(null);
-  const [complianceHoverPosition, setComplianceHoverPosition] = useState<{ x: number; y: number } | null>(null);
+  const [hoveredDataPoint, setHoveredDataPoint] = useState<DataPoint | null>(
+    null
+  );
+  const [hoverPosition, setHoverPosition] = useState<{
+    x: number;
+    y: number;
+  } | null>(null);
+  const [complianceHoverData, setComplianceHoverData] =
+    useState<DataPoint | null>(null);
+  const [complianceHoverPosition, setComplianceHoverPosition] = useState<{
+    x: number;
+    y: number;
+  } | null>(null);
   const [chartZoom, setChartZoom] = useState<{
     x0: number;
     x1: number;
@@ -485,7 +517,8 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
       const cost = (row.Cost || 0) / 100;
       const carbon = (row.Carbon || 0) / 100;
       const comfortMetric = row.ComfortMetric as keyof typeof COMFORT_SYMBOL;
-      const complianceMetric = row.ComplianceMetric as keyof typeof COMPLIANCE_LABEL;
+      const complianceMetric =
+        row.ComplianceMetric as keyof typeof COMPLIANCE_LABEL;
 
       return {
         ...row,
@@ -495,26 +528,33 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
         ComfortColor: COMFORT_COLOUR[comfortMetric] || "#999999",
         ComfortSymbol: COMFORT_SYMBOL[comfortMetric] || "?",
         ComplianceLabel: COMPLIANCE_LABEL[complianceMetric] || "Unknown",
-        IconPath: complianceMetric ? "/assets/Compliance-logos/" + COMPLIANCE_ICON[complianceMetric] : "/assets/Compliance-logos/default.png",
+        IconPath: complianceMetric
+          ? "/assets/Compliance-logos/" + COMPLIANCE_ICON[complianceMetric]
+          : "/assets/Compliance-logos/default.png",
       };
     });
 
     // Pre-calculate arrays for traces (avoid mapping in render)
-    const costs = df.map(d => d.Cost);
-    const carbons = df.map(d => d.Carbon);
-    const comfortColors = df.map(d => d.ComfortColor).filter((color): color is string => color !== undefined);
-    const comfortLabels = df.map(d => d.ComfortLabel).filter((label): label is string => label !== undefined);
-    const circularityValues = df.map(d => d.Circularity);
+    const costs = df.map((d) => d.Cost);
+    const carbons = df.map((d) => d.Carbon);
+    const comfortColors = df
+      .map((d) => d.ComfortColor)
+      .filter((color): color is string => color !== undefined);
+    const comfortLabels = df
+      .map((d) => d.ComfortLabel)
+      .filter((label): label is string => label !== undefined);
+    const circularityValues = df.map((d) => d.Circularity);
 
     // Pre-calculate hover text
-    const hoverText = df.map((d) =>
-      `Fabric: ${d.Fabric}<br>Orientation: ${d.Orientation}<br>Behaviour: ${d.Behaviour}<br>Compliance: ${d.ComplianceLabel}<br>Comfort: ${d.ComfortLabel}<br>Cost: £${d.Cost.toFixed(0)}/m²<br>Carbon: ${d.Carbon.toFixed(1)} kgCO₂e/m²<br>Circularity: ${d.Circularity}`
+    const hoverText = df.map(
+      (d) =>
+        `Fabric: ${d.Fabric}<br>Orientation: ${d.Orientation}<br>Behaviour: ${d.Behaviour}<br>Compliance: ${d.ComplianceLabel}<br>Comfort: ${d.ComfortLabel}<br>Cost: £${d.Cost.toFixed(0)}/m²<br>Carbon: ${d.Carbon.toFixed(1)} kgCO₂e/m²<br>Circularity: ${d.Circularity}`
     );
 
     // Calculate sweet spot once
     const top5 = df
       .map((d, index) => ({ ...d, index }))
-      .sort((a, b) => (a.Cost + a.Carbon) - (b.Cost + b.Carbon))
+      .sort((a, b) => a.Cost + a.Carbon - (b.Cost + b.Carbon))
       .slice(0, 5);
 
     const minCost = Math.min(...costs);
@@ -553,7 +593,7 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
         y1: maxCarbon + 5,
         annotationX: minCost + 0.05,
         annotationY: minCarbon + 0.05,
-      }
+      },
     };
   }, [rawData]);
 
@@ -561,7 +601,15 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
   const plotData = useMemo((): Data[] => {
     if (!processedData) return [];
 
-    const { df, costs, carbons, comfortColors, comfortLabels, circularityValues, hoverText } = processedData;
+    const {
+      df,
+      costs,
+      carbons,
+      comfortColors,
+      comfortLabels,
+      circularityValues,
+      hoverText,
+    } = processedData;
 
     // Determine visibility and title based on selected view
     let trace1Visible = true;
@@ -608,11 +656,15 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
         type: "scatter",
         marker: {
           size: 16,
-          color: comfortColors.filter((color): color is string => color !== undefined),
+          color: comfortColors.filter(
+            (color): color is string => color !== undefined
+          ),
           symbol: "square",
           line: { width: 1, color: "white" },
         },
-        text: comfortLabels.filter((label): label is string => label !== undefined),
+        text: comfortLabels.filter(
+          (label): label is string => label !== undefined
+        ),
         hoverinfo: "text",
         name: "Comfort",
         visible: trace1Visible,
@@ -684,13 +736,13 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
     let zoomRange = null;
     if (selectedView === "compliance") {
       // Zoom to show compliance icons clearly
-      const complianceData = processedData.df.filter(d => d.ComplianceMetric);
+      const complianceData = processedData.df.filter((d) => d.ComplianceMetric);
       if (complianceData.length > 0) {
-        const costs = complianceData.map(d => d.Cost);
-        const carbons = complianceData.map(d => d.Carbon);
+        const costs = complianceData.map((d) => d.Cost);
+        const carbons = complianceData.map((d) => d.Carbon);
         const costRange = Math.max(...costs) - Math.min(...costs);
         const carbonRange = Math.max(...carbons) - Math.min(...carbons);
-        
+
         zoomRange = {
           x0: Math.min(...costs) - costRange * 0.12,
           x1: Math.max(...costs) + costRange * 0.12,
@@ -700,13 +752,15 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
       }
     } else if (selectedView === "comfort") {
       // Zoom to show comfort data points clearly
-      const comfortData = processedData.df.filter(d => d.ComfortMetric !== undefined);
+      const comfortData = processedData.df.filter(
+        (d) => d.ComfortMetric !== undefined
+      );
       if (comfortData.length > 0) {
-        const costs = comfortData.map(d => d.Cost);
-        const carbons = comfortData.map(d => d.Carbon);
+        const costs = comfortData.map((d) => d.Cost);
+        const carbons = comfortData.map((d) => d.Carbon);
         const costRange = Math.max(...costs) - Math.min(...costs);
         const carbonRange = Math.max(...carbons) - Math.min(...carbons);
-        
+
         zoomRange = {
           x0: Math.min(...costs) - costRange * 0.05,
           x1: Math.max(...costs) + costRange * 0.05,
@@ -716,13 +770,15 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
       }
     } else if (selectedView === "circularity") {
       // Zoom to show circularity data points clearly
-      const circularityData = processedData.df.filter(d => d.Circularity !== undefined);
+      const circularityData = processedData.df.filter(
+        (d) => d.Circularity !== undefined
+      );
       if (circularityData.length > 0) {
-        const costs = circularityData.map(d => d.Cost);
-        const carbons = circularityData.map(d => d.Carbon);
+        const costs = circularityData.map((d) => d.Cost);
+        const carbons = circularityData.map((d) => d.Carbon);
         const costRange = Math.max(...costs) - Math.min(...costs);
         const carbonRange = Math.max(...carbons) - Math.min(...carbons);
-        
+
         zoomRange = {
           x0: Math.min(...costs) - costRange * 0.05,
           x1: Math.max(...costs) + costRange * 0.05,
@@ -734,12 +790,12 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
 
     return {
       // title: { text: title },
-      xaxis: { 
+      xaxis: {
         title: { text: "Cost (£/m²)" },
         ...(zoomRange && { range: [zoomRange.x0, zoomRange.x1] }),
         autorange: !zoomRange,
       },
-      yaxis: { 
+      yaxis: {
         title: { text: "Carbon (kgCO₂e/m²)" },
         ...(zoomRange && { range: [zoomRange.y0, zoomRange.y1] }),
         autorange: !zoomRange,
@@ -763,9 +819,8 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
         ...img,
         visible: selectedView === "compliance",
         sizex: selectedView === "compliance" ? 50 : 50, // Larger icons for compliance view
-        sizey: selectedView === "compliance" ? 200  : -60,
+        sizey: selectedView === "compliance" ? 200 : -60,
       })),
-
     };
   }, [processedData, selectedView]);
 
@@ -824,28 +879,37 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
   }, [fetchData]);
 
   // Handle hover events for detailed data box
-  const handleHover = useCallback((event: any) => {
-    if (event.points && event.points.length > 0) {
-      const point = event.points[0];
-      const dataPoint = point.customdata as DataPoint;
-      
-      if (dataPoint) {
-        if (selectedView === "comfort") {
-          setHoveredDataPoint(dataPoint);
-          setHoverPosition({ x: event.event.clientX, y: event.event.clientY });
-          // Clear compliance hover when in comfort view
-          setComplianceHoverData(null);
-          setComplianceHoverPosition(null);
-        } else if (selectedView === "compliance") {
-          setComplianceHoverData(dataPoint);
-          setComplianceHoverPosition({ x: event.event.clientX, y: event.event.clientY });
-          // Clear comfort hover when in compliance view
-          setHoveredDataPoint(null);
-          setHoverPosition(null);
+  const handleHover = useCallback(
+    (event: any) => {
+      if (event.points && event.points.length > 0) {
+        const point = event.points[0];
+        const dataPoint = point.customdata as DataPoint;
+
+        if (dataPoint) {
+          if (selectedView === "comfort") {
+            setHoveredDataPoint(dataPoint);
+            setHoverPosition({
+              x: event.event.clientX,
+              y: event.event.clientY,
+            });
+            // Clear compliance hover when in comfort view
+            setComplianceHoverData(null);
+            setComplianceHoverPosition(null);
+          } else if (selectedView === "compliance") {
+            setComplianceHoverData(dataPoint);
+            setComplianceHoverPosition({
+              x: event.event.clientX,
+              y: event.event.clientY,
+            });
+            // Clear comfort hover when in compliance view
+            setHoveredDataPoint(null);
+            setHoverPosition(null);
+          }
         }
       }
-    }
-  }, [selectedView]);
+    },
+    [selectedView]
+  );
 
   const handleUnhover = useCallback(() => {
     if (selectedView === "comfort") {
@@ -861,17 +925,17 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
   const resetZoom = useCallback(() => {
     // Force chart to reset by triggering a re-render
     setChartZoom(null);
-    
+
     // Use a timeout to ensure the state update has taken effect
     setTimeout(() => {
       if (plotRef && plotRef.layout) {
         try {
           plotRef.relayout({
-            'xaxis.autorange': true,
-            'yaxis.autorange': true
+            "xaxis.autorange": true,
+            "yaxis.autorange": true,
           });
         } catch (error) {
-          console.log('Reset zoom error:', error);
+          console.log("Reset zoom error:", error);
         }
       }
     }, 50);
@@ -909,74 +973,98 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
 
   return (
     <div id="observability-chart" className="w-fullbpx-[16px]">
-
       <div className="w-full bg-white p-[10px] md:p-[20px] rounded-lg shadow-md">
         {isLoading ? (
           <SkeletonShimmer />
         ) : plotData.length > 0 ? (
-        
           <div className="relative h-[900px]">
-                                {/* Comfort Legend */}
-          {selectedView === "comfort" && (
-            <div className="flex justify-center items-center gap-4">
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 bg-[#10B981] rounded"></div>
-                <span className="text-sm font-medium">Comfortable</span>
+            {/* Comfort Legend */}
+            {selectedView === "comfort" && (
+              <div className="flex justify-center items-center gap-4">
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 bg-[#10B981] rounded"></div>
+                  <span className="text-sm font-medium">Comfortable</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 bg-[#EF4444] rounded"></div>
+                  <span className="text-sm font-medium">Overheating</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 bg-[#3B82F6] rounded"></div>
+                  <span className="text-sm font-medium">Underheating</span>
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 bg-[#EF4444] rounded"></div>
-                <span className="text-sm font-medium">Overheating</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 bg-[#3B82F6] rounded"></div>
-                <span className="text-sm font-medium">Underheating</span>
-              </div>
-            </div>
-          )}
+            )}
 
-          {/* Compliance Legend */}
-          {selectedView === "compliance" && (
-            <div className="flex justify-center items-center gap-4">
-              <div className="flex items-center gap-2">
-                <img src="/assets/Compliance-logos/partl.png" alt="Current regulations" className="w-6 h-6" />
-                <span className="text-sm font-medium">Current regulations</span>
+            {/* Compliance Legend */}
+            {selectedView === "compliance" && (
+              <div className="flex justify-center items-center gap-4">
+                <div className="flex items-center gap-2">
+                  <img
+                    src="/assets/Compliance-logos/partl.png"
+                    alt="Current regulations"
+                    className="w-6 h-6"
+                  />
+                  <span className="text-sm font-medium">
+                    Current regulations
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <img
+                    src="/assets/Compliance-logos/nzr.png"
+                    alt="Net Zero ready"
+                    className="w-6 h-6"
+                  />
+                  <span className="text-sm font-medium">Net Zero ready</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <img
+                    src="/assets/Compliance-logos/phc.png"
+                    alt="Passivhaus Classic"
+                    className="w-6 h-6"
+                  />
+                  <span className="text-sm font-medium">
+                    Passivhaus Classic
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <img
+                    src="/assets/Compliance-logos/php.png"
+                    alt="Passivhaus Plus"
+                    className="w-6 h-6"
+                  />
+                  <span className="text-sm font-medium">Passivhaus Plus</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <img
+                    src="/assets/Compliance-logos/5CZLogo.png"
+                    alt="Five C Zero"
+                    className="w-6 h-6"
+                  />
+                  <span className="text-sm font-medium">Five C Zero</span>
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <img src="/assets/Compliance-logos/nzr.png" alt="Net Zero ready" className="w-6 h-6" />
-                <span className="text-sm font-medium">Net Zero ready</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <img src="/assets/Compliance-logos/phc.png" alt="Passivhaus Classic" className="w-6 h-6" />
-                <span className="text-sm font-medium">Passivhaus Classic</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <img src="/assets/Compliance-logos/php.png" alt="Passivhaus Plus" className="w-6 h-6" />
-                <span className="text-sm font-medium">Passivhaus Plus</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <img src="/assets/Compliance-logos/5CZLogo.png" alt="Five C Zero" className="w-6 h-6" />
-                <span className="text-sm font-medium">Five C Zero</span>
-              </div>
-            </div>
-          )}
+            )}
 
-          {/* Circularity Legend */}
-          {selectedView === "circularity" && (
-            <div className="flex justify-center items-center gap-4 mt-4 mb-4">
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 bg-green-100 rounded"></div>
-                <span className="text-sm font-medium">Low Circularity</span>
+            {/* Circularity Legend */}
+            {selectedView === "circularity" && (
+              <div className="flex justify-center items-center gap-4 mt-4 mb-4">
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 bg-green-100 rounded"></div>
+                  <span className="text-sm font-medium">Low Circularity</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 bg-green-300 rounded"></div>
+                  <span className="text-sm font-medium">
+                    Medium Circularity
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 bg-green-600 rounded"></div>
+                  <span className="text-sm font-medium">High Circularity</span>
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 bg-green-300 rounded"></div>
-                <span className="text-sm font-medium">Medium Circularity</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 bg-green-600 rounded"></div>
-                <span className="text-sm font-medium">High Circularity</span>
-              </div>
-            </div>
-          )}
+            )}
             {/* Reset Zoom Button */}
             {/* {chartZoom && (
               <button
@@ -999,19 +1087,27 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
                     config={{
                       responsive: true,
                       displayModeBar: false,
-                    
                     }}
-                    style={{ width: '100%', height: '100%', paddingBottom: '20px' }}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      paddingBottom: "20px",
+                    }}
                     onHover={handleHover}
                     onUnhover={handleUnhover}
                     onRelayout={(eventData) => {
                       // Store zoom state when user manually zooms
-                      const x0 = eventData['xaxis.range[0]'];
-                      const x1 = eventData['xaxis.range[1]'];
-                      const y0 = eventData['yaxis.range[0]'];
-                      const y1 = eventData['yaxis.range[1]'];
-                      
-                      if (typeof x0 === 'number' && typeof x1 === 'number' && typeof y0 === 'number' && typeof y1 === 'number') {
+                      const x0 = eventData["xaxis.range[0]"];
+                      const x1 = eventData["xaxis.range[1]"];
+                      const y0 = eventData["yaxis.range[0]"];
+                      const y1 = eventData["yaxis.range[1]"];
+
+                      if (
+                        typeof x0 === "number" &&
+                        typeof x1 === "number" &&
+                        typeof y0 === "number" &&
+                        typeof y1 === "number"
+                      ) {
                         setChartZoom({
                           x0,
                           x1,
@@ -1024,18 +1120,20 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
                       setPlotRef(figure);
                     }}
                     onError={(error) => {
-                      console.error('Plotly error:', error);
-                      setError('Failed to load chart');
+                      console.error("Plotly error:", error);
+                      setError("Failed to load chart");
                     }}
                   />
                 );
               } catch (error) {
-                console.error('Plot component error:', error);
+                console.error("Plot component error:", error);
                 return (
                   <div className="flex items-center justify-center h-full">
                     <div className="text-center text-gray-500">
                       <div className="text-4xl mb-2">⚠️</div>
-                      <div className="text-lg font-medium">Chart loading error</div>
+                      <div className="text-lg font-medium">
+                        Chart loading error
+                      </div>
                       <div className="text-sm">Please refresh the page</div>
                     </div>
                   </div>
@@ -1052,8 +1150,19 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
             </div>
           </div>
         )}
-      
-         <div className="flex flex-col items-center justify-center gap-2"><p className="text-[12px] text-gray-500">See how the Five C Framework helps you priortise the right decisions</p><Link href="/resources" className="w-full bg-[#484AB7] text-white border-neutral-200 px-2 rounded-xl max-w-[185px] h-[45px] flex items-center justify-center text-[16px] font-semibold hover:bg-[#3c3f9d] transition-colors duration-200">Try the full toolset</Link></div>
+
+        <div className="flex flex-col items-center justify-center gap-2">
+          <p className="text-[12px] text-gray-500">
+            See how the Five C Framework helps you priortise the right decisions
+          </p>
+          <a
+            href="/resources"
+            target="_blank"
+            className="w-full bg-[#484AB7] text-white border-neutral-200 px-2 rounded-xl max-w-[185px] h-[45px] flex items-center justify-center text-[16px] font-semibold hover:bg-[#3c3f9d] transition-colors duration-200"
+          >
+            Try the full toolset
+          </a>
+        </div>
       </div>
 
       {/* Detailed Data Box */}
@@ -1063,12 +1172,12 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
         position={hoverPosition}
       />
 
-             {/* Compliance Hover Card */}
-       <ComplianceHoverCard
-         dataPoint={complianceHoverData}
-         isVisible={selectedView === "compliance" && !!complianceHoverData}
-         position={complianceHoverPosition}
-       />
+      {/* Compliance Hover Card */}
+      <ComplianceHoverCard
+        dataPoint={complianceHoverData}
+        isVisible={selectedView === "compliance" && !!complianceHoverData}
+        position={complianceHoverPosition}
+      />
     </div>
   );
 }
