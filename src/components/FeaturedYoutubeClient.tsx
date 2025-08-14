@@ -108,6 +108,7 @@ const YouTuberShowcaseClient: React.FC = () => {
     fetchVideos();
   }, []);
 
+  // If loading, show skeleton
   if (loading) {
     return (
       <div
@@ -136,60 +137,17 @@ const YouTuberShowcaseClient: React.FC = () => {
     );
   }
 
+  // If there's an error, hide the section completely
   if (error) {
-    return (
-      <div
-        className="mb-[40px] md:mb-[80px] pb-[10px] pt-[30px] md:py-[60px]"
-        style={{
-          backgroundBlendMode: "overlay",
-          backgroundSize: "cover",
-          backgroundImage: `url("/assets/images/coding-background-texture.jpg"), linear-gradient(180deg, #484AB7 0%, #9271f6 100%)`,
-        }}
-      >
-        <div className="container mx-auto px-[16px]">
-          <div>
-            <h2
-              id="reviews-title"
-              className="text-[24px] md:text-[48px] font-bold text-white sm:text-center"
-            >
-              Featured by popular YouTubers
-            </h2>
-            <p className="mt-2 text-lg text-white sm:text-center">
-              Error loading videos. Please try again later.
-            </p>
-          </div>
-        </div>
-      </div>
-    );
+    return null;
   }
 
+  // If no videos, hide the section completely
   if (videos.length === 0) {
-    return (
-      <div
-        className="mb-[40px] md:mb-[80px] pb-[10px] pt-[30px] md:py-[60px]"
-        style={{
-          backgroundBlendMode: "overlay",
-          backgroundSize: "cover",
-          backgroundImage: `url("/assets/images/coding-background-texture.jpg"), linear-gradient(180deg, #484AB7 0%, #9271f6 100%)`,
-        }}
-      >
-        <div className="container mx-auto px-[16px]">
-          <div>
-            <h2
-              id="reviews-title"
-              className="text-[24px] md:text-[48px] font-bold text-white sm:text-center"
-            >
-              Featured by popular YouTubers
-            </h2>
-            <p className="mt-2 text-lg text-white sm:text-center">
-              No videos available yet. Check back soon!
-            </p>
-          </div>
-        </div>
-      </div>
-    );
+    return null;
   }
 
+  // Only show the section if there are active videos
   return (
     <div
       className="mb-[40px] md:mb-[80px] pb-[10px] pt-[30px] md:py-[60px]"

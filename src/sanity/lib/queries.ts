@@ -9,6 +9,7 @@ export const youtubeVideosQuery = groq`
     description,
     gradient,
     order,
+    isActive,
     thumbnail {
       asset-> {
         _id,
@@ -33,6 +34,7 @@ export const youtubeVideoByIdQuery = groq`
     description,
     gradient,
     order,
+    isActive,
     thumbnail {
       asset-> {
         _id,

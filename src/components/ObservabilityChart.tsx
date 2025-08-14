@@ -740,7 +740,7 @@ export default function ObservabilityChart({ selectedView = "comfort" }: Observa
           <SkeletonShimmer />
         ) : plotData.length > 0 ? (
         
-          <div className="relative h-[620px]">
+          <div className="relative h-[670px]">
                        {/* Comfort Legend */}
          {selectedView === "comfort" && (
            <div className="flex justify-center items-center gap-4 mt-4 mb-4">

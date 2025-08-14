@@ -17,6 +17,7 @@ export interface YouTubeVideo {
   description: string
   gradient: string
   order: number
+  isActive: boolean
   thumbnail?: {
     asset: SanityImage
   }
