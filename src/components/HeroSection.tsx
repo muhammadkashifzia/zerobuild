@@ -23,8 +23,8 @@ const MemoizedButton = memo(({ href, children, className }: { href: string; chil
 MemoizedButton.displayName = "MemoizedButton";
 
 // Memoized link component
-const MemoizedLink = memo(({ href, children, className }: { href: string; children: React.ReactNode; className?: string }) => (
-  <Link href={href} className={className}>
+const MemoizedLink = memo(({ href, children, className, target, rel }: { href: string; children: React.ReactNode; className?: string; target?: string; rel?: string }) => (
+  <Link href={href} className={className} target={target} rel={rel}>
     {children}
   </Link>
 ));
@@ -127,7 +127,7 @@ const HeroSection = memo(({ heroData }: HeroSectionProps) => {
             className="mt-6 flex w-full gap-[10px] justify-center flex-col md:flex-row items-center"
             {...buttonsVariants}
           >
-            <MemoizedLink href={heroData.primaryButton.link} className={demoButtonStyle}>
+            <MemoizedLink href={heroData.primaryButton.link} className={demoButtonStyle} target="_blank" rel="noopener noreferrer">
               {heroData.primaryButton.text}
             </MemoizedLink>
             
