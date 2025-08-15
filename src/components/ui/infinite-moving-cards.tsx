@@ -2,6 +2,7 @@
 
 import { cn } from "@/utils/cn";
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 
 export const InfiniteMovingCards = ({
   items,
@@ -14,6 +15,7 @@ export const InfiniteMovingCards = ({
     quote: string;
     name: string;
     title: string;
+    logo?: string;
   }[];
   direction?: "left" | "right";
   speed?: "fast" | "normal" | "slow";
@@ -99,18 +101,36 @@ export const InfiniteMovingCards = ({
         aria-hidden="true"
         className="user-select-none -z-1 pointer-events-none absolute -left-0.5 -top-0.5 h-[calc(100%_+_4px)] w-[calc(100%_+_4px)]"
       ></div>
-      <span className=" relative z-20 text-sm leading-[1.6] text-gray-100 font-normal">
-        {item.quote}
-      </span>
-      <div className="relative z-20 mt-3 flex flex-row items-center">
-        <span className="flex flex-col gap-1">
-          <span className=" text-sm leading-[1.6] text-gray-400 font-normal">
-            {item.name}
+      
+      {/* Card Content with Left Text and Right Logo */}
+      <div className="relative z-20 flex items-start justify-between gap-4">
+        {/* Left Side - Text Content */}
+        <div className="flex-1 min-w-0">
+          <span className="text-sm leading-[1.6] text-gray-100 font-normal block mb-3">
+            {item.quote}
           </span>
-          <span className=" text-sm leading-[1.6] text-gray-400 font-normal">
-            {item.title}
-          </span>
-        </span>
+          <div className="flex flex-col gap-1">
+            <span className="text-sm leading-[1.6] text-gray-400 font-normal">
+              {item.name}
+            </span>
+            <span className="text-sm leading-[1.6] text-gray-400 font-normal">
+              {item.title}
+            </span>
+          </div>
+        </div>
+        
+        {/* Right Side - Logo */}
+        {item.logo && (
+          <div className="flex-shrink-0 w-16 h-16 md:w-20 md:h-20">
+            <Image
+              src={item.logo}
+              alt={`${item.name} logo`}
+              width={80}
+              height={80}
+              className="w-full h-full object-contain"
+            />
+          </div>
+        )}
       </div>
     </blockquote>
   </li>
