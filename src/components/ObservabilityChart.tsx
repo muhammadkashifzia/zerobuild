@@ -973,7 +973,7 @@ export default function ObservabilityChart({
 
   return (
     <div id="observability-chart" className="w-fullbpx-[16px]">
-      <div className="w-full bg-white p-[10px] md:p-[20px] rounded-lg shadow-md">
+      <div className="w-full bg-white p-[10px] md:p-[20px] rounded-lg shadow-md flex flex-col gap-[24px]">
         {isLoading ? (
           <SkeletonShimmer />
         ) : plotData.length > 0 ? (
