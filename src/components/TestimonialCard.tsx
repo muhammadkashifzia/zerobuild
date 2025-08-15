@@ -8,36 +8,42 @@ const musicSchoolTestimonials = [
       "CIBSE – widely respected internationally",
     name: "City of York Council 🇬🇧",
     title: "Active Building Centre (merged into ESC)",
+    logo: "/assets/Compliance-logos/5CZLogo.png"
   },
    {
     quote:
       "CIBSE – widely respected internationally",
     name: "City of York Council 🇬🇧",
     title: "Active Building Centre (merged into ESC)",
+    logo: "/assets/Compliance-logos/nzr.png"
   },
    {
     quote:
       "CIBSE – widely respected internationally",
     name: "City of York Council 🇬🇧",
     title: "Active Building Centre (merged into ESC)",
+    logo: "/assets/Compliance-logos/partl.png"
   },
    {
     quote:
       "CIBSE – widely respected internationally",
     name: "City of York Council 🇬🇧",
     title: "Active Building Centre (merged into ESC)",
+    logo: "/assets/Compliance-logos/phc.png"
   },
    {
     quote:
       "CIBSE – widely respected internationally",
     name: "City of York Council 🇬🇧",
     title: "Active Building Centre (merged into ESC)",
+    logo: "/assets/Compliance-logos/php.png"
   },
    {
     quote:
       "CIBSE – widely respected internationally",
     name: "City of York Council 🇬🇧",
     title: "Active Building Centre (merged into ESC)",
+    logo: "/assets/Compliance-logos/5CZLogo.png"
   },
 
 ];

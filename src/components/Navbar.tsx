@@ -42,6 +42,7 @@ const Navbar = ({ className }: { className?: string }) => {
             >
               <div className="relative h-8 w-[52px] flex items-center justify-start rounded-md text-[32px] antialiased">
                 <Image src="/assets/images/5CZLogo.png" alt="logo" width={100} height={100} className="h-[50px] w-auto" />
+                ZeroBuild
               </div>
             </Link>
           </div>
@@ -124,6 +125,7 @@ const Navbar = ({ className }: { className?: string }) => {
             >
               <div className="relative h-8 w-[200px] flex items-center justify-center rounded-md text-[32px] antialiased">
                <Image src="/assets/images/5CZLogo.png" alt="logo" width={100} height={100} className="h-[50px] w-auto" />
+               ZeroBuild
               </div>
             </HoveredLink>
           </div>
