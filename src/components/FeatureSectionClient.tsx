@@ -119,7 +119,7 @@ export default function FeatureSectionClient({ features }: { features: Feature[]
 							delay: 0.1 * index,
 							ease: [0.4, 0.0, 0.2, 1]
 						}}
-						className="relative bg-gradient-to-b dark:from-neutral-900 from-neutral-100 dark:to-neutral-950 to-white p-4 md:p-6 rounded-2xl md:rounded-3xl overflow-hidden hover:shadow-lg transition-all duration-300 hover:scale-105"
+						className="relative bg-gradient-to-b dark:from-neutral-900 from-neutral-100 dark:to-neutral-950 to-white p-4 md:p-6 rounded-2xl md:rounded-3xl overflow-hidden shadow-lg transition-all duration-300 hover:scale-105"
 					>
 						<Grid size={20} />
 						<div className="relative z-20">
