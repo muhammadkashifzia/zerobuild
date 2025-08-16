@@ -4,6 +4,7 @@ import { Project } from "@/types/Project";
 import { Resource } from "@/types/Resource";
 import { Contact } from "@/types/Contact";
 import { Feature } from "@/types/Feature";
+import { Company } from "@/types/Company";
 import clientConfig from "./config/client-config";
 
 export async function getServices(): Promise<Service[]> {
@@ -26,6 +27,17 @@ export async function getServices(): Promise<Service[]> {
     content,
     isOpen
   }
+    }`
+  );
+}
+
+export async function getFooterServices(): Promise<Pick<Service, '_id' | 'title' | 'slug' | 'publishedAt'>[]> {
+  return createClient(clientConfig).fetch(
+    groq`*[_type == "service"] | order(publishedAt desc)[0...6] {
+      _id,
+      title,
+      slug,
+      publishedAt
     }`
   );
 }
@@ -210,4 +222,16 @@ export async function getFeatures(): Promise<Feature[]> {
     console.error('Error fetching features:', error);
     throw error;
   }
+}
+
+export async function getCompanyInfo(): Promise<Company | null> {
+  return createClient(clientConfig).fetch(
+    groq`*[_type == "company" && isActive == true][0] {
+      _id,
+      name,
+      footerDescription,
+      tagline,
+      isActive
+    }`
+  );
 }

@@ -4,8 +4,10 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { FloatingDock } from "@/components/ui/floating-dock";
-import { getContacts } from "@/sanity/sanity-utils";
+import { getContacts, getFooterServices, getCompanyInfo } from "@/sanity/sanity-utils";
 import { Contact } from "@/types/Contact";
+import { Service } from "@/types/Service";
+import { Company } from "@/types/Company";
 
 import {
   IconBrandGithub,
@@ -19,6 +21,10 @@ import {
 
 function Footer() {
   const [contacts, setContacts] = useState<Contact[]>([]);
+  const [services, setServices] = useState<Pick<Service, '_id' | 'title' | 'slug' | 'publishedAt'>[]>([]);
+  const [companyInfo, setCompanyInfo] = useState<Company | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const links = [
     {
       title: "Facebook",
@@ -73,8 +79,23 @@ function Footer() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await getContacts();
-      setContacts(res);
+      try {
+        setIsLoading(true);
+        setError(null);
+        const [contactsRes, servicesRes, companyRes] = await Promise.all([
+          getContacts(),
+          getFooterServices(),
+          getCompanyInfo()
+        ]);
+        setContacts(contactsRes);
+        setServices(servicesRes);
+        setCompanyInfo(companyRes);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setError('Failed to load data');
+      } finally {
+        setIsLoading(false);
+      }
     };
     fetchData();
   }, []);
@@ -90,12 +111,18 @@ function Footer() {
               alt="logo"
               className="w-[22px] h-[22px] object-contain"
             />
-            ZeroBuild{" "}
+            {isLoading ? (
+              <span className="text-gray-400">Loading...</span>
+            ) : (
+              companyInfo?.name || "ZeroBuild"
+            )}{" "}
           </h2>
           <p className="max-w-full md:max-w-[350px]">
-            ZeroBuild accelerates the decarbonisation of the built environment
-            by empowering architects, engineers, developers, local authorities,
-            and housing associations to achieve Net Zero faster.
+            {isLoading ? (
+              <span className="text-gray-400">Loading company description...</span>
+            ) : (
+              companyInfo?.footerDescription || "ZeroBuild accelerates the decarbonisation of the built environment by empowering architects, engineers, developers, local authorities, and housing associations to achieve Net Zero faster."
+            )}
           </p>
         </div>
         <div className="max-w-full md:max-w-[520px]">
@@ -152,46 +179,30 @@ function Footer() {
                 Our Services
               </h2>
               <ul className="text-sm mt-4 flex flex-col justify-center space-y-4">
-                <li>
-                  <Link
-                    href="/"
-                    className="hover:text-black transition-colors duration-300"
-                  >
-                    Acoustic consulting
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/"
-                    className="hover:text-black transition-colors duration-300"
-                  >
-                    Advisory services
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/"
-                    className="hover:text-black transition-colors duration-300"
-                  >
-                    Architecture
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/"
-                    className="hover:text-black transition-colors duration-300"
-                  >
-                    Circular Economy
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/"
-                    className="hover:text-black transition-colors duration-300"
-                  >
-                    Experience design
-                  </Link>
-                </li>
+                {isLoading ? (
+                  <li>
+                    <span className="text-gray-400">Loading services...</span>
+                  </li>
+                ) : error ? (
+                  <li>
+                    <span className="text-red-400">{error}</span>
+                  </li>
+                ) : services.length > 0 ? (
+                  services.map((service) => (
+                    <li key={service._id}>
+                      <Link
+                        href={`/services/${service.slug.current}`}
+                        className="hover:text-black transition-colors duration-300"
+                      >
+                        {service.title}
+                      </Link>
+                    </li>
+                  ))
+                ) : (
+                  <li>
+                    <span className="text-gray-400">No services available</span>
+                  </li>
+                )}
               </ul>
             </div>
 
@@ -222,7 +233,7 @@ function Footer() {
       </div>
       {/* Footer Bottom */}
       <p className="text-center text-xs pb-10">
-        © 2025 ZeroBuild Ltd. All rights reserved
+        © 2025 {isLoading ? "Loading..." : companyInfo?.name || "ZeroBuild"} Ltd. All rights reserved
       </p>
     </footer>
   );
