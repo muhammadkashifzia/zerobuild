@@ -4,7 +4,11 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { FloatingDock } from "@/components/ui/floating-dock";
-import { getContacts, getFooterServices, getCompanyInfo } from "@/sanity/sanity-utils";
+import {
+  getContacts,
+  getFooterServices,
+  getCompanyInfo,
+} from "@/sanity/sanity-utils";
 import { Contact } from "@/types/Contact";
 import { Service } from "@/types/Service";
 import { Company } from "@/types/Company";
@@ -21,7 +25,9 @@ import {
 
 function Footer() {
   const [contacts, setContacts] = useState<Contact[]>([]);
-  const [services, setServices] = useState<Pick<Service, '_id' | 'title' | 'slug' | 'publishedAt'>[]>([]);
+  const [services, setServices] = useState<
+    Pick<Service, "_id" | "title" | "slug" | "publishedAt">[]
+  >([]);
   const [companyInfo, setCompanyInfo] = useState<Company | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -85,14 +91,14 @@ function Footer() {
         const [contactsRes, servicesRes, companyRes] = await Promise.all([
           getContacts(),
           getFooterServices(),
-          getCompanyInfo()
+          getCompanyInfo(),
         ]);
         setContacts(contactsRes);
         setServices(servicesRes);
         setCompanyInfo(companyRes);
       } catch (error) {
-        console.error('Error fetching data:', error);
-        setError('Failed to load data');
+        console.error("Error fetching data:", error);
+        setError("Failed to load data");
       } finally {
         setIsLoading(false);
       }
@@ -103,7 +109,7 @@ function Footer() {
     <footer className="bg-[#fafafa] text-[#332f2f] pt-12 border-t border-gray-200">
       <div className="mx-auto flex container px-[16px] flex-col items-start justify-between text-sm text-neutral-500 md:flex-row">
         <div>
-          <h2 className="text-black text-lg font-semibold mb-4 flex gap-2 items-center">
+          <h2 className="text-black text-lg font-semibold mb-4 flex gap-2 items-center bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
             <Image
               src="/assets/images/5CZLogo.png"
               width={22}
@@ -119,15 +125,53 @@ function Footer() {
           </h2>
           <p className="max-w-full md:max-w-[350px]">
             {isLoading ? (
-              <span className="text-gray-400">Loading company description...</span>
+              <span className="text-gray-400">
+                Loading company description...
+              </span>
             ) : (
-              companyInfo?.footerDescription || "ZeroBuild accelerates the decarbonisation of the built environment by empowering architects, engineers, developers, local authorities, and housing associations to achieve Net Zero faster."
+              companyInfo?.footerDescription ||
+              "ZeroBuild accelerates the decarbonisation of the built environment by empowering architects, engineers, developers, local authorities, and housing associations to achieve Net Zero faster."
             )}
           </p>
+           <ul className="text-sm mt-4 flex flex-col justify-center space-y-4">
+                <li>
+                  <Link
+                    href="/"
+                    className="hover:text-black transition-colors duration-300"
+                  >
+                    Privacy
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/"
+                    className="hover:text-black transition-colors duration-300"
+                  >
+                    Cookies
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/"
+                    className="hover:text-black transition-colors duration-300"
+                  >
+                    Terms of Use
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/"
+                    className="hover:text-black transition-colors duration-300"
+                  >
+                   Accessibility Statement
+                  </Link>
+                </li>
+              
+              </ul>
         </div>
         <div className="max-w-full md:max-w-[520px]">
-          <div className="mt-10 grid grid-cols-1 md:grid-cols-3 items-start gap-5 md:mt-0">
-            <div>
+          <div className="mt-10 flex items-start gap-5 md:mt-0 flex-wrap">
+            <div className="w-[47%] md:w-[22%]">
               <h2 className="text-black text-lg font-semibold mb-4">
                 Quick Links
               </h2>
@@ -174,7 +218,7 @@ function Footer() {
                 </li>
               </ul>
             </div>
-            <div>
+            <div className="w-[47%] md:w-[26%]">
               <h2 className="text-black text-lg font-semibold mb-4">
                 Our Services
               </h2>
@@ -206,7 +250,7 @@ function Footer() {
               </ul>
             </div>
 
-            <div>
+            <div className="w-full md:w-[46%]">
               <h2 className="text-black text-lg font-semibold mb-4">
                 Contact Us
               </h2>
@@ -233,7 +277,8 @@ function Footer() {
       </div>
       {/* Footer Bottom */}
       <p className="text-center text-xs pb-10">
-        © 2025 {isLoading ? "Loading..." : companyInfo?.name || "ZeroBuild"} Ltd. All rights reserved
+        © 2025 {isLoading ? "Loading..." : companyInfo?.name || "ZeroBuild"}{" "}
+        Ltd. All rights reserved
       </p>
     </footer>
   );

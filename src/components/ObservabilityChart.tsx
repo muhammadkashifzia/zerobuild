@@ -980,7 +980,7 @@ export default function ObservabilityChart({
           <div className="relative h-[900px]">
             {/* Comfort Legend */}
             {selectedView === "comfort" && (
-              <div className="flex justify-center items-center gap-4">
+              <div className="flex justify-center items-center gap-4 flex-wrap">
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 bg-[#10B981] rounded"></div>
                   <span className="text-sm font-medium">Comfortable</span>
@@ -998,7 +998,7 @@ export default function ObservabilityChart({
 
             {/* Compliance Legend */}
             {selectedView === "compliance" && (
-              <div className="flex justify-center items-center gap-4">
+              <div className="flex justify-center items-center gap-4 flex-wrap">
                 <div className="flex items-center gap-2">
                   <img
                     src="/assets/Compliance-logos/partl.png"
