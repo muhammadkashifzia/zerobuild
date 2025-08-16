@@ -6,22 +6,30 @@ export default function CTAButtons() {
      const words = [
    
     {
-      text: "an expert",
+      text: "Expert",
     },
     
   ];
   return (
-    <div className="my-[40px] flex items-center gap-2 md:gap-10 p-4 md:p-8 container mx-auto w-full bg-white rounded-lg shadow-md justify-between md:flex-row flex-col">
+    <div className=" p-4 md:p-8 container w-full ">
+     <div className="mb-[24px] max-w-[740px]">
+     <h2 className="text-black text-[24px] font-semibold mb-[10px]">
+      Looking to accelerate your project?
+      </h2>
+      <p className="text-black text-[16px] mb-[10px]">Whether you need expert support across the built environment, want to use our digital tools and 
+      datasets, or develop custom solutions tailored to your organisation, we are ready to help.</p>
+      <h3 className="text-black text-[18px] font-semibold mb-[10px]">Book a call with our team to get started</h3>
+     </div>
       {/* Main CTA Button */}
-      <Link href="/resources" className="relative flex items-center justify-between px-6 md:px-8 py-2 md:py-4 rounded-full border border-black   group overflow-hidden min-w-full md:min-w-[500px]">
+      <a href="https://outlook.office.com/book/ZeroBuildDiscoveryCall@zerobuild.io/s/0j-Jsl27BUuEcZ2ortBjhA2?ismsaljsauthenabled" target="_blank" className="relative flex items-center justify-between px-6 md:px-6 py-1 md:py-2 rounded-full border border-black group overflow-hidden max-w-[400px]">
        
     
-     <span className="flex items-center">  <span className="text-[20px] md:text-[48px] font-bold text-black mr-[7px]">Talk to </span> <TypewriterEffect words={words} /></span>
+     <span className="flex items-center">  <span className="text-[20px] md:text-[32px] font-bold text-black mr-[7px]">Talk to an</span> <TypewriterEffect words={words} /></span>
    
-        <span className="relative z-10 w-5 h-5 md:w-14 md:h-14 flex items-center justify-center rounded-full  text-white bg-[#484AB7]">
+        <span className="relative z-10 w-3 h-3 md:w-14 md:h-14 flex items-center justify-center rounded-full  text-white bg-[#484AB7]">
           <ArrowRight className="w-3 h-3 md:w-8 md:h-8" />
         </span>
-      </Link>
+      </a>
 
       {/* Side Buttons */}
       {/* <div className="flex flex-col gap-2 md:gap-4 w-full md:w-auto">

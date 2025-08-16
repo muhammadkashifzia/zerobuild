@@ -1156,7 +1156,7 @@ export default function ObservabilityChart({
             See how the Five C Framework helps you priortise the right decisions
           </p>
           <a
-            href="/resources"
+            href="https://outlook.office.com/book/ZeroBuildDiscoveryCall@zerobuild.io/s/0j-Jsl27BUuEcZ2ortBjhA2?ismsaljsauthenabled"
             target="_blank"
             className="w-full bg-[#484AB7] text-white border-neutral-200 px-2 rounded-xl max-w-[185px] h-[45px] flex items-center justify-center text-[16px] font-semibold hover:bg-[#3c3f9d] transition-colors duration-200"
           >

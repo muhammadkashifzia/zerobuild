@@ -35,14 +35,16 @@ const Navbar = ({ className }: { className?: string }) => {
       <div className="container flex justify-between h-[64px] mx-auto px-[16px]">
         {/* Logo */}
         <div className="flex items-center space-x-4">
-          <div className="flex">
+          <div className="flex w-[192px]">
             <Link
               className="flex items-center justify-center space-x-2 text-2xl font-bold text-center text-neutral-600"
               href="/"
             >
-              <div className="relative h-8 w-[52px] flex items-center justify-start rounded-md text-[32px] antialiased">
+              <div className="relative h-8 w-[192px] gap-[5px] flex items-center justify-between rounded-md text-[28px] antialiased">
                 <Image src="/assets/images/5CZLogo.png" alt="logo" width={100} height={100} className="h-[50px] w-auto" />
-                ZeroBuild
+                <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent font-bold">
+                  ZeroBuild
+                </span>
               </div>
             </Link>
           </div>
@@ -125,7 +127,9 @@ const Navbar = ({ className }: { className?: string }) => {
             >
               <div className="relative h-8 w-[200px] flex items-center justify-center rounded-md text-[32px] antialiased">
                <Image src="/assets/images/5CZLogo.png" alt="logo" width={100} height={100} className="h-[50px] w-auto" />
-               ZeroBuild
+               <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent font-bold">
+                 ZeroBuild
+               </span>
               </div>
             </HoveredLink>
           </div>

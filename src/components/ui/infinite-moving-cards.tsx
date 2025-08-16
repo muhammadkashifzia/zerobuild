@@ -121,13 +121,13 @@ export const InfiniteMovingCards = ({
         
         {/* Right Side - Logo */}
         {item.logo && (
-          <div className="flex-shrink-0 w-16 h-16 md:w-20 md:h-20">
+          <div className="flex-shrink-0 w-16 h-16 md:w-12 md:h-12">
             <Image
               src={item.logo}
               alt={`${item.name} logo`}
               width={80}
               height={80}
-              className="w-full h-full object-contain"
+              className="w-full h-full object-contain rounded-full"
             />
           </div>
         )}

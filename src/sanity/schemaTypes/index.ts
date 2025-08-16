@@ -8,8 +8,9 @@ import contactSubmission from './contactSubmission-schema';
 import { youtubeVideoType } from './youtube-video-schema';
 import { heroType } from './hero-schema';
 import { performanceType } from './performance-schema';
+import { featureType } from './feature-schema';
 
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [serviceType, projectType, resourceType, contactType, contactSubmission, youtubeVideoType, heroType, performanceType],
+  types: [serviceType, projectType, resourceType, contactType, contactSubmission, youtubeVideoType, heroType, performanceType, featureType],
 } 

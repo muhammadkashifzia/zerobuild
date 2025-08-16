@@ -3,6 +3,7 @@ import { Service } from "@/types/Service";
 import { Project } from "@/types/Project";
 import { Resource } from "@/types/Resource";
 import { Contact } from "@/types/Contact";
+import { Feature } from "@/types/Feature";
 import clientConfig from "./config/client-config";
 
 export async function getServices(): Promise<Service[]> {
@@ -181,4 +182,32 @@ export async function getContacts(): Promise<Contact[]> {
               email,
             }`
   );
+}
+
+/* Features */
+export async function getFeatures(): Promise<Feature[]> {
+  try {
+    console.log('Fetching features from Sanity...');
+    const features = await createClient(clientConfig).fetch(
+      groq`*[_type == "feature"] | order(order asc) {
+        _id,
+        _createdAt,
+        title,
+        description,
+        icon,
+        logoColors{
+          primaryColor,
+          secondaryColor,
+          gradientDirection
+        },
+        order,
+        isActive
+      }`
+    );
+    console.log('Features fetched:', features);
+    return features;
+  } catch (error) {
+    console.error('Error fetching features:', error);
+    throw error;
+  }
 }

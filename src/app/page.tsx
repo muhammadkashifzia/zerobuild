@@ -6,10 +6,10 @@ import ServiceSection from "@/components/ServiceSection"
 import TestimonialCard from "@/components/TestimonialCard";
 import Image from "next/image";
 import PerformanceSection from "@/components/PerformanceSection";
+import { FeaturesSectionDemo } from "@/components/FeatureSection";
 import type { Metadata } from "next";
 import { getHeroData } from "@/utils/hero";
 import { getPerformanceData } from "@/utils/performance";
-import { FeaturesSectionDemo as FeatureSection } from "@/components/FeatureSection";
 export const metadata: Metadata = {
   title: "ZeroBuild - Accelerating Net Zero Decarbonisation | Home",
   description: "ZeroBuild accelerates the decarbonisation of the built environment by empowering architects, engineers, developers, local authorities, and housing associations to achieve Net Zero faster. Our proprietary analytics and data-driven tools simplify Whole Life Carbon assessments, dynamic energy modelling, and lifecycle cost-benefit analysis—enabling quicker, clearer decisions that optimise sustainability, affordability, and compliance across diverse building portfolios.",
@@ -63,8 +63,9 @@ export default async function Home() {
       <HeroSection heroData={heroData} />
       <PerformanceSection performanceData={performanceData} />
       <ServiceSection />
+      <FeaturesSectionDemo />
       <FeaturedByYoutubers />
-      <FeatureSection />
+      
       <WorldMap />
       <TestimonialCard />
       <CtaSection />
