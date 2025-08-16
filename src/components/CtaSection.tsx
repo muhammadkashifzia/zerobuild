@@ -2,7 +2,7 @@
 import { TypewriterEffect } from "@/components/ui/typewriter-effect";
 import { ArrowRight } from 'lucide-react';
 import Link from "next/link";
-export default function CTAButtons() {
+export default function CtaSection() {
      const words = [
    
     {

@@ -1,158 +1,103 @@
 "use client";
-import { useRef } from "react";
+import { WorldMap } from "../components/ui/world-map";
 import { motion } from "framer-motion";
-import DottedMap from "dotted-map";
-import { useTheme } from "next-themes";
-import Image from "next/image";
-interface MapProps {
-  dots?: Array<{
-    start: { lat: number; lng: number; label?: string };
-    end: { lat: number; lng: number; label?: string };
-  }>;
-  lineColor?: string;
-}
 
-export function WorldMap({
-  dots = [
-    { start: { lat: 30.3753, lng: 69.3451 }, end: { lat: 20.5937, lng: 78.9629 } }, // Pakistan → India
-    { start: { lat: 30.3753, lng: 69.3451 }, end: { lat: 35.8617, lng: 104.1954 } }, // Pakistan → China
-    { start: { lat: 30.3753, lng: 69.3451 }, end: { lat: 23.4241, lng: 53.8478 } }, // Pakistan → UAE
-    { start: { lat: 30.3753, lng: 69.3451 }, end: { lat: 24.7136, lng: 46.6753 } }, // Pakistan → Saudi Arabia
-    { start: { lat: 30.3753, lng: 69.3451 }, end: { lat: 25.276987, lng: 51.520008 } }, // Pakistan → Qatar
-    { start: { lat: 30.3753, lng: 69.3451 }, end: { lat: 38.9637, lng: 35.2433 } }, // Pakistan → Turkey
-    { start: { lat: 30.3753, lng: 69.3451 }, end: { lat: 51.5074, lng: -0.1278 } }, // Pakistan → UK
-    { start: { lat: 30.3753, lng: 69.3451 }, end: { lat: 40.7128, lng: -74.006 } }, // Pakistan → USA
-    { start: { lat: 30.3753, lng: 69.3451 }, end: { lat: 45.4215, lng: -75.6972 } }, // Pakistan → Canada
-    { start: { lat: 30.3753, lng: 69.3451 }, end: { lat: 52.52, lng: 13.405 } }, // Pakistan → Germany
-    { start: { lat: 30.3753, lng: 69.3451 }, end: { lat: 48.8566, lng: 2.3522 } }, // Pakistan → France
-    { start: { lat: 30.3753, lng: 69.3451 }, end: { lat: -33.8688, lng: 151.2093 } }, // Pakistan → Australia
-    { start: { lat: 30.3753, lng: 69.3451 }, end: { lat: 35.6762, lng: 139.6503 } }, // Pakistan → Japan
-    { start: { lat: 30.3753, lng: 69.3451 }, end: { lat: -30.5595, lng: 22.9375 } }, // Pakistan → South Africa
-  ],
-  lineColor = "#0ea5e9",
-}: MapProps) {
-  const svgRef = useRef<SVGSVGElement>(null);
-  const map = new DottedMap({ height: 100, grid: "diagonal" });
-
-  const { theme } = useTheme();
-
-  const svgMap = map.getSVG({
-    radius: 0.22,
-    color: theme === "dark" ? "#FFFFFF40" : "#00000040",
-    shape: "circle",
-    backgroundColor: theme === "dark" ? "black" : "white",
-  });
-
-  const projectPoint = (lat: number, lng: number) => {
-    const x = (lng + 180) * (800 / 360);
-    const y = (90 - lat) * (400 / 180);
-    return { x, y };
+export function MapWorld() {
+  // 1. Define 24 countries with coordinates
+  const countryCoords: Record<string, { lat: number; lng: number }> = {
+    Pakistan: { lat: 30.3753, lng: 69.3451 },
+    India: { lat: 20.5937, lng: 78.9629 },
+    Bangladesh: { lat: 23.685, lng: 90.3563 },
+    China: { lat: 35.8617, lng: 104.1954 },
+    Japan: { lat: 35.6762, lng: 139.6503 },
+    SouthKorea: { lat: 37.5665, lng: 126.978 },
+    UAE: { lat: 23.4241, lng: 53.8478 },
+    SaudiArabia: { lat: 24.7136, lng: 46.6753 },
+    Qatar: { lat: 25.276987, lng: 51.520008 },
+    Turkey: { lat: 38.9637, lng: 35.2433 },
+    UK: { lat: 51.5074, lng: -0.1278 },
+    France: { lat: 48.8566, lng: 2.3522 },
+    Germany: { lat: 52.52, lng: 13.405 },
+    Spain: { lat: 40.4637, lng: -3.7492 },
+    Italy: { lat: 41.8719, lng: 12.5674 },
+    USA: { lat: 40.7128, lng: -74.006 },
+    Canada: { lat: 45.4215, lng: -75.6972 },
+    Brazil: { lat: -14.235, lng: -51.9253 },
+    Argentina: { lat: -38.4161, lng: -63.6167 },
+    Nigeria: { lat: 9.082, lng: 8.6753 },
+    Egypt: { lat: 26.8206, lng: 30.8025 },
+    SouthAfrica: { lat: -30.5595, lng: 22.9375 },
+    Australia: { lat: -33.8688, lng: 151.2093 },
+    NewZealand: { lat: -40.9006, lng: 174.886 },
   };
 
-  const createCurvedPath = (
-    start: { x: number; y: number },
-    end: { x: number; y: number }
-  ) => {
-    const midX = (start.x + end.x) / 2;
-    const midY = Math.min(start.y, end.y) - 50;
-    return `M ${start.x} ${start.y} Q ${midX} ${midY} ${end.x} ${end.y}`;
-  };
+  // 2. Define specific connections
+  const connections = [
+    { from: "Pakistan", to: "UAE" },
+    { from: "Pakistan", to: "India" },
+    { from: "India", to: "Bangladesh" },
+    { from: "Japan", to: "SouthKorea" },
+    { from: "China", to: "Pakistan" },
+    { from: "SaudiArabia", to: "Qatar" },
+    { from: "Turkey", to: "Germany" },
+    { from: "France", to: "UK" },
+    { from: "Spain", to: "Italy" },
+    { from: "USA", to: "Canada" },
+    { from: "USA", to: "Brazil" },
+    { from: "Argentina", to: "Brazil" },
+    { from: "Nigeria", to: "SouthAfrica" },
+    { from: "Egypt", to: "SaudiArabia" },
+    { from: "Australia", to: "NewZealand" },
+    { from: "Japan", to: "Australia" },
+    { from: "Germany", to: "France" },
+    { from: "UK", to: "USA" },
+    { from: "SouthAfrica", to: "Australia" },
+    { from: "China", to: "Japan" },
+    { from: "India", to: "China" },
+    { from: "Bangladesh", to: "Qatar" },
+    { from: "NewZealand", to: "Canada" },
+    { from: "Brazil", to: "France" },
+  ];
+
+  const dots = connections.map(({ from, to }) => ({
+    start: {
+      lat: countryCoords[from].lat,
+      lng: countryCoords[from].lng,
+      label: from,
+    },
+    end: {
+      lat: countryCoords[to].lat,
+      lng: countryCoords[to].lng,
+      label: to,
+    },
+  }));
 
   return (
-    <div className="w-full relative">
-      <Image
-        src={`data:image/svg+xml;utf8,${encodeURIComponent(svgMap)}`}
-        className="[mask-image:linear-gradient(to_bottom,transparent,white_10%,white_90%,transparent)] pointer-events-none select-none h-auto md:h-full w-full object-cover object-top"
-        alt="world map"
-        height="395"
-        width="1056"
-        draggable={true}
-      />
-      <svg
-        ref={svgRef}
-        viewBox="0 0 800 400"
-        className="w-full h-full absolute inset-0 pointer-events-none select-none"
-      >
-        {dots.map((dot, i) => {
-          const startPoint = projectPoint(dot.start.lat, dot.start.lng);
-          const endPoint = projectPoint(dot.end.lat, dot.end.lng);
-          return (
-            <g key={`path-group-${i}`}>
-              <motion.path
-                d={createCurvedPath(startPoint, endPoint)}
-                fill="none"
-                stroke="url(#path-gradient)"
-                strokeWidth="1"
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{
-                  duration: 1,
-                  delay: 0.5 * i,
-                  ease: "easeOut",
-                }}
-              />
-            </g>
-          );
-        })}
+    <div className="py-0 bg-white w-full">
+      <div className="max-w-7xl mx-auto text-center mb-[40px] px-4">
+        <p className="font-bold text-[32px] md:text-[48px] text-black max-w-[440px] md:max-w-full mx-auto md:mx-0">
+         Trusted by teams
 
-        <defs>
-          <linearGradient id="path-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="white" stopOpacity="0" />
-            <stop offset="5%" stopColor={lineColor} stopOpacity="1" />
-            <stop offset="95%" stopColor={lineColor} stopOpacity="1" />
-            <stop offset="100%" stopColor="white" stopOpacity="0" />
-          </linearGradient>
-        </defs>
+          <span className="text-[#484AB7] ml-[8px]">
+            {"worldwide.".split("").map((letter, idx) => (
+              <motion.span
+                key={idx}
+                className="inline-block"
+                initial={{ x: -10, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.5, delay: idx * 0.03 }}
+              >
+                {letter}
+              </motion.span>
+            ))}
+          </span>
+        </p>
+        <p className="text-sm md:text-lg text-black max-w-2xl mx-auto py-4">
+          We have supported new build and retrofit design strategies across sectors and regions, delivering clarity, speed and better outcomes.
+        </p>
+      </div>
 
-       {dots.map((dot, i) => (
-  <g key={`points-group-${i}`}>
-    {/* Start Point */}
-    <g>
-      <circle
-        cx={projectPoint(dot.start.lat, dot.start.lng).x}
-        cy={projectPoint(dot.start.lat, dot.start.lng).y}
-        r="4"
-        fill={lineColor}
-      >
-        {dot.start.label && <title>{dot.start.label}</title>}
-      </circle>
-      <circle
-        cx={projectPoint(dot.start.lat, dot.start.lng).x}
-        cy={projectPoint(dot.start.lat, dot.start.lng).y}
-        r="4"
-        fill={lineColor}
-        opacity="0.5"
-      >
-        <animate attributeName="r" from="4" to="12" dur="1.5s" repeatCount="indefinite" />
-        <animate attributeName="opacity" from="0.5" to="0" dur="1.5s" repeatCount="indefinite" />
-      </circle>
-    </g>
-
-    {/* End Point */}
-    <g>
-      <circle
-        cx={projectPoint(dot.end.lat, dot.end.lng).x}
-        cy={projectPoint(dot.end.lat, dot.end.lng).y}
-        r="4"
-        fill={lineColor}
-      >
-        {dot.end.label && <title>{dot.end.label}</title>}
-      </circle>
-      <circle
-        cx={projectPoint(dot.end.lat, dot.end.lng).x}
-        cy={projectPoint(dot.end.lat, dot.end.lng).y}
-        r="4"
-        fill={lineColor}
-        opacity="0.5"
-      >
-        <animate attributeName="r" from="4" to="12" dur="1.5s" repeatCount="indefinite" />
-        <animate attributeName="opacity" from="0.5" to="0" dur="1.5s" repeatCount="indefinite" />
-      </circle>
-    </g>
-  </g>
-))}
-
-      </svg>
+      <WorldMap dots={dots} lineColor="#484AB7" />
     </div>
   );
 }

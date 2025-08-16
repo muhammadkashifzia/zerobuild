@@ -1,7 +1,7 @@
 import HeroSection from "@/components/HeroSection";
 import FeaturedByYoutubers from "@/components/FeaturedYoutubeClient";
 import CtaSection from '@/components/CtaSection'
-import { WorldMap } from "@/components/MapWorld";
+import { MapWorld } from "@/components/MapWorld";
 import ServiceSection from "@/components/ServiceSection" 
 import TestimonialCard from "@/components/TestimonialCard";
 import Image from "next/image";
@@ -66,7 +66,7 @@ export default async function Home() {
       <FeaturesSectionDemo />
       <FeaturedByYoutubers />
       
-      <WorldMap />
+  <MapWorld />
       <TestimonialCard />
       <CtaSection />
     </main>
