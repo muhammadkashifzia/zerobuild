@@ -170,7 +170,7 @@ function Footer() {
               </ul>
         </div>
         <div className="max-w-full md:max-w-[520px]">
-          <div className="mt-10 flex items-start gap-5 md:mt-0 flex-wrap">
+          <div className="mt-10 flex items-start gap-5 md:mt-0 flex-wrap md:flex-nowrap">
             <div className="w-[47%] md:w-[22%]">
               <h2 className="text-black text-lg font-semibold mb-4">
                 Quick Links
