@@ -96,7 +96,7 @@ export default function FeatureSectionClient({ features }: { features: Feature[]
 					duration: 0.5,
 					ease: [0.4, 0.0, 0.2, 1],
 				}}
-				className="text-center text-[16px]  px-4 text-black max-w-4xl text-left mx-auto mb-8 md:mb-12 relative z-10"
+				className="text-center text-[16px]  px-4 text-black max-w-4xl text-left mx-auto mb-8 md:mb-12 relative z-10 leading-[32px]"
 			>
 				By combining data, simulation and design expertise, we support design teams, local authorities, housing 
 				providers and developers with actionable insights across 
