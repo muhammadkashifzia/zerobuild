@@ -57,7 +57,7 @@ let dataCache: {
 
 // Shimmer loading component
 const LoadingSkeleton: React.FC = () => (
-  <div className="container mx-auto px-4 py-8">
+  <div className="max-w-[1024px] mx-auto px-4 py-8">
     {/* Title skeleton */}
     <div className="h-10 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded-lg mb-8 w-1/3 animate-pulse bg-[length:200%_100%] animate-shimmer"></div>
 
@@ -215,9 +215,9 @@ const OptioneeringVisualization: React.FC = () => {
     return <div className="text-center py-8 text-red-500">Error: {error}</div>;
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-[32px] md:text-[60px] font-bold mb-8 text-black text-center max-w-full md:max-w-[900px] mx-auto">
-        Which type of project are you working on?
+    <div className="max-w-[1024px] mx-auto px-4 py-8">
+      <h1 className="text-[32px] md:text-[38px] font-bold mb-8 text-black text-center max-w-full md:max-w-[900px] mx-auto">
+        Pick your Project Type
       </h1>
 
       {/* Project Type Selection */}

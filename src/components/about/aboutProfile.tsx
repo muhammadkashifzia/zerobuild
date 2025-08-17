@@ -2,10 +2,10 @@
 "use client"; // use this only if you're using the app directory
 
 import Image from "next/image";
-
+import { ArrowRight } from "lucide-react";
 export default function AboutProfile() {
   return (
-    <div className="flex flex-col md:flex-row max-w-6xl mx-auto px-4 py-[80px] gap-8">
+    <div className="flex flex-col md:flex-row max-w-[1024px] mx-auto px-4 pt-[80px] pb-[100px] gap-8">
       {/* Left Image */}
       <div className="flex-shrink-0 w-full md:w-1/3">
         <Image
@@ -23,7 +23,12 @@ export default function AboutProfile() {
           Deepak Sadhwani
         </h1>
 
-        <div className="text-black text-[18px] font-bold mb-[24px]">Meet the founder</div>
+        <a
+          href="https://outlook.office.com/book/ZeroBuildDiscoveryCall@zerobuild.io/s/0j-Jsl27BUuEcZ2ortBjhA2?ismsaljsauthenabled" target="_blank"
+          className="gap-[15px] text-black text-[20px] px-[20px] items-center max-w-[280px] font-bold mb-[24px] rounded-full inline-flex leading-[100%] border border-[#757575] min-h-[44px]"
+        >
+          Contact our experts  <ArrowRight />
+        </a>
         {/* 
         <button className="w-fit bg-gray-100 hover:bg-gray-200 text-sm font-medium px-4 py-2 rounded-full border border-gray-300 transition">
           Contact our experts →
@@ -58,7 +63,7 @@ export default function AboutProfile() {
         <a
           href="https://www.linkedin.com/company/5c-zero/about/" // replace with real LinkedIn
           target="_blank"
-          className="text-black hover:underline inline-flex items-center gap-1 mt=[24px]"
+          className="text-[24px] text-black hover:underline inline-flex items-center gap-[10px] mt=[24px]"
         >
           Connect on LinkedIn
           <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">

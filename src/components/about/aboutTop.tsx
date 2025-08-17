@@ -1,28 +1,33 @@
 // components/FionaProfile.tsx
 "use client"; 
 import Image from "next/image";
+import { motion } from "motion/react";
+import { AuroraBackground } from "@/components/ui/aurora-background";
 export default function AboutTop() {
   return (
           <div>
-       <section
-        className="pt-[4rem] pb-24 mb-10"
-        style={{
-          backgroundBlendMode: "overlay",
-          backgroundSize: "cover",
-          backgroundImage: `url("/assets/images/coding-background-texture.jpg"), linear-gradient(180deg, #474ab6 0%, #9271f6 100%)`,
-        }}
-      >
-        <div className="container mx-auto px-4">
-          <h1 className="text-3xl md:text-6xl font-normal text-white leading-tight max-w-4xl">
-            About Us
-          </h1>
-          <p className="text-base md:text-2xl text-white mt-4 max-w-3xl">
-            From metro systems to concert halls, our sustainability projects
-            shape a better world.
-          </p>
-        </div>
-      </section>
-         <div className="container mx-auto px-[16px]">
+     
+       <AuroraBackground>
+            <motion.div
+              initial={{ opacity: 0.0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{
+                delay: 0.3,
+                duration: 0.8,
+                ease: "easeInOut",
+              }}
+              className="max-w-[1024px] mx-auto relative flex flex-col gap-4  px-4"
+            >
+              <div className="text-3xl md:text-6xl font-normal text-black leading-[1.2] max-w-[1000px]">
+              About Us
+              </div>
+              <div className="font-extralight text-base md:text-2xl dark:text-neutral-200 py-4 max-w-[1024px]">
+         From metro systems to concert halls, our sustainability projects shape a better world.
+              </div>
+          
+            </motion.div>
+          </AuroraBackground>
+         <div className="max-w-[1024px] mx-auto px-[16px] mt-[40px]">
         <p className="text-black mb-8 text-[16px] text-center">
           We believe buildings can be perfect, because they are built on data,
           Data that can shape perfectly comfortable homes for every age group,

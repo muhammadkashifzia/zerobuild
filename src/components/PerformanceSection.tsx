@@ -13,10 +13,18 @@ interface PerformanceSectionProps {
   performanceData?: Performance | null;
 }
 
+// Button Skeleton Component
+const ButtonSkeleton = () => (
+  <div className="px-4 py-2 text-[16px] font-bold rounded-xl animate-pulse">
+    <div className="h-6 bg-gray-200 rounded-md"></div>
+  </div>
+);
+
 export default function PerformanceSection({ performanceData }: PerformanceSectionProps) {
   // Move all hooks before early return
   const [showChart, setShowChart] = useState(true); // Changed to true to show chart by default
   const [selectedView, setSelectedView] = useState<string>("cost"); // Changed to "cost" as default
+  const [isLoading, setIsLoading] = useState(false); // Add loading state for buttons
 
   // Show skeleton while loading
   if (!performanceData) {
@@ -36,13 +44,20 @@ export default function PerformanceSection({ performanceData }: PerformanceSecti
     { label: "Circularity", value: "circularity" }
   ];
 
-  const handleButtonClick = (value: string) => {
+  const handleButtonClick = async (value: string) => {
     // Prevent changing from cost or carbon view - always keep them selected
     if (value === "cost" || value === "carbon") {
       return;
     }
-    setSelectedView(value);
-    setShowChart(true);
+    
+    setIsLoading(true);
+    try {
+      setSelectedView(value);
+      setShowChart(true);
+    } finally {
+      // Add a small delay to show the loading state
+      setTimeout(() => setIsLoading(false), 500);
+    }
   }; 
 
   return (
@@ -65,6 +80,11 @@ export default function PerformanceSection({ performanceData }: PerformanceSecti
         <div className="text-center mb-8">
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 justify-center gap-2 graph-btn">
             {chartButtons.map((button) => {
+              // Show skeleton while loading for interactive buttons
+              if (isLoading && (button.value === "comfort" || button.value === "compliance" || button.value === "circularity")) {
+                return <ButtonSkeleton key={button.value} />;
+              }
+
               // Use regular button for Cost and Carbon (no moving-border)
               if (button.value === "cost" || button.value === "carbon") {
                 return (
@@ -93,11 +113,12 @@ export default function PerformanceSection({ performanceData }: PerformanceSecti
                     defaultText={config.defaultText}
                     hoverText={config.hoverText}
                     onClick={() => handleButtonClick(button.value)}
+                    disabled={isLoading}
                     className={`${
                       selectedView === button.value
                         ? "bg-[#484AB7] text-white border border-[#484AB7] font-bold active"
                         : "bg-white text-black border border-gray-300 hover:bg-[#484AB7] hover:text-white active:bg-[#484AB7] active:text-white font-medium"
-                    }`}
+                    } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
                   />
                 );
               }
@@ -107,11 +128,12 @@ export default function PerformanceSection({ performanceData }: PerformanceSecti
                 <Button
                   key={button.value}
                   onClick={() => handleButtonClick(button.value)}
-                  className={`px-4 py-2 text-[16px] font-boldtransition-colors ${
+                  disabled={isLoading}
+                  className={`px-4 py-2 text-[16px] font-bold transition-colors ${
                     selectedView === button.value
                       ? "bg-[#484AB7] text-white border border-[#484AB7] font-bold active"
                       : "bg-white text-black border border-gray-300 hover:bg-[#484AB7] hover:text-white active:bg-[#484AB7] active:text-white font-medium"
-                  }`}
+                  } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
                   style={{
                     fontSize: '12px',
                   }}
