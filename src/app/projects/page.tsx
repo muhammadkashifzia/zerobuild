@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { getProjects } from "@/sanity/sanity-utils";
+import { getProjects, getProjectsPageBanner } from "@/sanity/sanity-utils";
 import { Project } from "@/types/Project";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation } from "swiper/modules";
@@ -9,20 +9,25 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { Button } from "@/components/ui/moving-border";
 import Link from "next/link";
-import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-with-collision";
+import { AuroraBackground } from "@/components/ui/aurora-background";
 
 export default function Page() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [banner, setBanner] = useState<{ title: string; description: string } | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await getProjects();
+      const [res, bannerRes] = await Promise.all([
+        getProjects(),
+        getProjectsPageBanner(),
+      ]);
       setProjects(res);
+      setBanner(bannerRes);
       setLoading(false);
     };
     fetchData();
@@ -31,23 +36,29 @@ export default function Page() {
   return (
     <div>
       {/* Header */}
-  <div className="container mx-auto mt-[64px]">
-      <BackgroundBeamsWithCollision>
-      <h2 className="max-w-full md:max-w-[950px] px-[16px] text-2xl relative z-20 md:text-4xl lg:text-7xl font-bold text-left text-black dark:text-white font-sans tracking-tight">
-        What&apos;s cooler than Beams?
-        <div className="relative mx-auto inline-block w-max [filter:drop-shadow(0px_1px_3px_rgba(27,_37,_80,_0.14))]">
-          <div className="absolute left-0 top-[1px] bg-clip-text bg-no-repeat text-transparent bg-gradient-to-r py-4 from-purple-500 via-violet-500 to-pink-500 [text-shadow:0_0_rgba(0,0,0,0.1)]">
-            <span className="">Exploding beams.</span>
-          </div>
-          <div className="relative bg-clip-text text-transparent bg-no-repeat bg-gradient-to-r from-purple-500 via-violet-500 to-pink-500 py-4">
-            <span className="">Exploding beams.</span>
-          </div>
-        
-        </div>
-        <p className="text-base md:text-2xl text-black mt-4 max-w-4xl font-normal">From metro systems to concert halls, our sustainability projects shape a better world.</p>
-      </h2>
-    </BackgroundBeamsWithCollision>
-    </div>
+      <div className="min-h-[1px] bg-white mt-[64px]">
+        <AuroraBackground>
+          <motion.div
+            initial={{ opacity: 0.0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{
+              delay: 0.3,
+              duration: 0.8,
+              ease: "easeInOut",
+            }}
+            className="container mx-auto relative flex flex-col gap-4 px-4"
+          >
+            <div className="max-w-[870px]">
+              <div className="text-3xl md:text-6xl font-normal text-black leading-[1.2] max-w-[1000px]">
+                {banner?.title || "Explore our projects across the built and natural environments"}
+              </div>
+              <div className="font-extralight text-base md:text-2xl dark:text-neutral-200 py-4 max-w-[1024px]">
+                {banner?.description || "From metro systems to concert halls, our sustainability projects demonstrate real-world impact across the built and natural environments."}
+              </div>
+            </div>
+          </motion.div>
+        </AuroraBackground>
+      </div>
       {/* Swiper Slider */}
       <div className="mt-[60px] relative w-full pt-14 overflow-x-hidden project-slider">
         {/* Slide Number Indicator */}

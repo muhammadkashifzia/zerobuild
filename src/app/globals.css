@@ -92,6 +92,7 @@ a{
   font-size: 28px;
   margin-top: 15px;
   margin-bottom: 15px;
+  font-weight: 600;
 }
 .service-body-content h1{
   font-size: 32px;
@@ -100,6 +101,7 @@ a{
   font-size: 20px;
   margin-top: 15px;
   margin-bottom: 15px;
+  font-weight: 400;
 }
 
 .project-slider .swiper-button-prev {
@@ -168,6 +170,7 @@ a{
   list-style: disc;
   padding-left: 18px;
   font-size: 20px;
+  margin: 15px 0px;
 }
 .detail-accordian ul{
     font-size: 20px;

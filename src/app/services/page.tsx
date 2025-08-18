@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Search, ArrowRight, Plus, X } from "lucide-react";
 import Link from "next/link";
 import { getServices, getServicesPageBanner } from "@/sanity/sanity-utils";
@@ -18,6 +18,7 @@ const ServicesPage = () => {
   const [modalView, setModalView] = useState<"disciplines" | "projectStages">("disciplines");
   const [services, setServices] = useState<Service[]>([]);
   const [bannerData, setBannerData] = useState<ServicesPageBanner | null>(null);
+  const listTopRef = useRef<HTMLDivElement | null>(null);
 
   const itemsPerPage = 10;
 
@@ -106,12 +107,33 @@ const ServicesPage = () => {
     return matchesSearch && matchesDiscipline && matchesProjectStage;
   });
 
+  // Sort services alphabetically by title (case-insensitive) before pagination
+  const sortedServices = [...filteredServices].sort((a, b) =>
+    a.title.localeCompare(b.title, undefined, { sensitivity: "base" })
+  );
+
   const totalPages = Math.ceil(filteredServices.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedServices = filteredServices.slice(
+  const paginatedServices = sortedServices.slice(
     startIndex,
     startIndex + itemsPerPage
   );
+
+  const scrollToListTop = () => {
+    if (typeof window === "undefined") return;
+    const offset = 80; // account for fixed header
+    if (listTopRef.current) {
+      const y = listTopRef.current.getBoundingClientRect().top + window.pageYOffset - offset;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  const goToPage = (pageNum: number) => {
+    setCurrentPage(Math.min(Math.max(1, pageNum), Math.max(1, totalPages)));
+    scrollToListTop();
+  };
 
   const handleSearch = () => {
     setCurrentPage(1);
@@ -312,6 +334,7 @@ const ServicesPage = () => {
         </section>
 
         <section className="py-8 bg-white container mx-auto">
+          <div ref={listTopRef} />
           <div className="max-w-[958px]">
             <div className="text-sm text-gray-600 mb-2">
               Showing {startIndex + 1}–
@@ -368,7 +391,7 @@ const ServicesPage = () => {
               <div className="flex items-center gap-2">
                 {/* Previous Page Button */}
                 <button
-                  onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                  onClick={() => goToPage(currentPage - 1)}
                   disabled={currentPage === 1}
                   className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                     currentPage === 1
@@ -398,7 +421,7 @@ const ServicesPage = () => {
                     return (
                       <button
                         key={pageNum}
-                        onClick={() => setCurrentPage(pageNum)}
+                        onClick={() => goToPage(pageNum)}
                         className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                           currentPage === pageNum
                             ? 'bg-black text-white'
@@ -413,7 +436,7 @@ const ServicesPage = () => {
 
                 {/* Next Page Button */}
                 <button
-                  onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                  onClick={() => goToPage(currentPage + 1)}
                   disabled={currentPage === totalPages}
                   className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                     currentPage === totalPages

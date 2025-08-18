@@ -11,8 +11,9 @@ import { performanceType } from './performance-schema';
 import { featureType } from './feature-schema';
 import { companyType } from './company-schema';
 import { servicesPageType } from './services-page-schema';
+import { projectsPageType } from './projects-page-schema';
 
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [serviceType, projectType, resourceType, contactType, contactSubmission, youtubeVideoType, heroType, performanceType, featureType, companyType, servicesPageType],
+  types: [serviceType, projectType, resourceType, contactType, contactSubmission, youtubeVideoType, heroType, performanceType, featureType, companyType, servicesPageType, projectsPageType],
 } 

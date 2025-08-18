@@ -6,6 +6,7 @@ import { Contact } from "@/types/Contact";
 import { Feature } from "@/types/Feature";
 import { Company } from "@/types/Company";
 import clientConfig from "./config/client-config";
+import { projectsPageQuery } from "./lib/queries";
 
 export async function getServices(): Promise<Service[]> {
   return createClient(clientConfig).fetch(
@@ -36,7 +37,10 @@ export async function getServicesPageBanner() {
     groq`*[_type == "servicesPage" && isActive == true][0] {
       _id,
       title,
-      description
+      description,
+      ctaTitle,
+      ctaButtonText,
+      ctaButtonLink
     }`
   );
 }
@@ -92,6 +96,10 @@ export async function getProjects(): Promise<Project[]> {
   body
     }`
   );
+}
+
+export async function getProjectsPageBanner(): Promise<{ _id: string; title: string; description: string } | null> {
+  return createClient(clientConfig).fetch(projectsPageQuery);
 }
 
 export async function getProject(slug: string): Promise<Project> {

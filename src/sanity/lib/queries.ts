@@ -71,7 +71,10 @@ export const servicesPageQuery = groq`
   *[_type == "servicesPage" && isActive == true][0] {
     _id,
     title,
-    description
+    description,
+    ctaTitle,
+    ctaButtonText,
+    ctaButtonLink
   }
 `
 
@@ -82,3 +85,11 @@ export const performanceQuery = groq`
     description
   }
 ` 
+
+export const projectsPageQuery = groq`
+  *[_type == "projectsPage" && isActive == true][0] {
+    _id,
+    title,
+    description
+  }
+`

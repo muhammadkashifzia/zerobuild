@@ -22,6 +22,27 @@ export const servicesPageType = defineType({
       initialValue: 'We offer a wide range of services that address every priority in the built and natural environments. Search below or use the filters to explore services by discipline and project stage.',
     }),
     defineField({
+      name: 'ctaTitle',
+      title: 'CTA Title',
+      type: 'string',
+      description: 'Title shown in the service detail CTA box',
+      initialValue: 'Get in touch with our team',
+    }),
+    defineField({
+      name: 'ctaButtonText',
+      title: 'CTA Button Text',
+      type: 'string',
+      description: 'Button text for the service detail CTA',
+      initialValue: 'Contact',
+    }),
+    defineField({
+      name: 'ctaButtonLink',
+      title: 'CTA Button Link',
+      type: 'string',
+      description: 'Internal link path for the CTA button (e.g. /contact)',
+      initialValue: '/contact',
+    }),
+    defineField({
       name: 'isActive',
       title: 'Is Active',
       type: 'boolean',
