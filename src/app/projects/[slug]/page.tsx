@@ -154,8 +154,8 @@ export default async function Page({
         <div className="container mx-auto px-0 md:px-[16px] pt-[60px]">
           <div className="lg:col-span-3">
             <p className="text-[20px] text-[#757575] mb-[20px]">Projects</p>
-          <div >
-              <h2 className="text-[38px] font-normal text-black mb-8">Explore more climate & sustainability projects</h2>
+          <div className="flex items-center justify-between mb-6">
+              <h2 className="text-[38px] font-normal text-black max-w-[500px]">Explore more climate & sustainability projects</h2>
             <Link href="/services" className="text-black flex items-center gap-2 border border-gray-300 rounded-full px-5 py-2 hover:bg-gray-100 transition">
             View all Projects <ArrowRight className="w-4 h-4" />
           </Link>
