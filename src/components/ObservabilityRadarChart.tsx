@@ -483,7 +483,7 @@ const OptioneeringVisualization: React.FC = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.3 }}
-                  className="text-black mb-4"
+                  className="text-black mb-4 text-[20px]"
                 >
                   We eliminate poor-performing and non-compliant options and score
                   the remaining against the client&apos;s priorities. This helps us
@@ -642,6 +642,7 @@ const MainRadarPlot: React.FC<{ data: OptionData[] }> = React.memo(
               bgcolor: adjustAlpha(fillColor, 0.9),
               bordercolor: color,
               font: { color: getContrastingTextColor(fillColor) },
+              padding: { l: 5, r: 5, t: 5, b: 5 },
             },
             hoverinfo: "text" as const,
             hovertext: generateHoverText(option, index + 1),
@@ -662,32 +663,39 @@ const MainRadarPlot: React.FC<{ data: OptionData[] }> = React.memo(
         showlegend: false,
         margin: { l: 0, r: 0, t: 10, b: 10 },
         hovermode: "closest" as const,
-        ...Array.from({ length: rows * cols }, (_, i) => ({
-          [`polar${i + 1}`]: {
-            domain: {
-              row: Math.floor(i / cols),
-              column: i % cols,
-              x: [(i % cols) / cols + 0.01, ((i % cols) + 1) / cols - 0.01],
-              y: [
-                1 - (Math.floor(i / cols) + 1) / rows + 0.01,
-                1 - Math.floor(i / cols) / rows - 0.01,
-              ],
+        ...Array.from({ length: rows * cols }, (_, i) => {
+          const key = `polar${i + 1}`;
+          return {
+            [key]: {
+              domain: {
+                row: Math.floor(i / cols),
+                column: i % cols,
+                x: [(i % cols) / cols + 0.01, ((i % cols) + 1) / cols - 0.01],
+                y: [
+                  1 - (Math.floor(i / cols) + 1) / rows + 0.01,
+                  1 - Math.floor(i / cols) / rows - 0.01,
+                ],
+              },
+              radialaxis: {
+                visible: true,
+                showticklabels: false,
+                range: [0, 100],
+                gridcolor: "#ddd",
+                gridwidth: 0.5,
+              },
+              angularaxis: {
+                visible: true,
+                showticklabels: true,
+                tickfont: { size: 9, color: "#333" },
+                tickangle: 0,
+                rotation: 90,
+                direction: "clockwise" as const,
+                gridcolor: "#ccc",
+                gridwidth: 0.5,
+              },
             },
-            radialaxis: {
-              visible: true,
-              showticklabels: false,
-              range: [0, 100],
-              gridcolor: "#ddd",
-              gridwidth: 0.5,
-            },
-            angularaxis: {
-              visible: true,
-              showticklabels: false,
-              gridcolor: "#ccc",
-              gridwidth: 0.5,
-            },
-          },
-        })).reduce((acc, polar) => ({ ...acc, ...polar }), {}),
+          };
+        }).reduce((acc, polar) => ({ ...acc, ...polar }), {}),
       }),
       [rows, cols]
     );
@@ -745,6 +753,7 @@ const SummaryRadarPlot: React.FC<{ data: OptionData[] }> = React.memo(
               bgcolor: adjustAlpha(fillColor, 0.9),
               bordercolor: color,
               font: { color: getContrastingTextColor(fillColor) },
+              padding: { l: 5, r: 5, t: 5, b: 5 },
             },
             hoverinfo: "text" as const,
             hovertext: generateHoverText(option, index + 1),
@@ -950,8 +959,8 @@ const generateHoverText = (row: OptionData, index: number): string => {
     User behaviour: ${row.User_behaviour}<br>
     Compliance: ${complianceLabels[row.Compliance_metric] || "Unknown"}<br>
     Comfort: ${comfortLabels[row.Comfort_metric] || "Unknown"}<br>
-    Cost: £${Math.round(row.Cost / 1000)}k/m<sup>2</sup><br>
-    Carbon: ${Math.round(row.Carbon / 1000)} tCO₂e/m<sup>2</sup><br>
+    Cost £${Math.round(row.Cost / 1000)}k<br>
+    Carbon ${Math.round(row.Carbon / 1000)} tCO₂e<br>
     Circularity: ${Math.round(row.Circularity)}
   `;
 };
