@@ -14,6 +14,7 @@ import "swiper/css";
 import Image from "next/image";
 import { Autoplay, Navigation } from "swiper/modules";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
 
 const Plot = dynamic(() => import("react-plotly.js"), {
   ssr: false,
@@ -152,6 +153,7 @@ const OptioneeringVisualization: React.FC = () => {
   const [projectType, setProjectType] = useState<
     "new-build" | "retrofit" | null
   >("new-build");
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
@@ -214,120 +216,170 @@ const OptioneeringVisualization: React.FC = () => {
   if (error)
     return <div className="text-center py-8 text-red-500">Error: {error}</div>;
 
+  const handleProjectTypeChange = (type: "new-build" | "retrofit") => {
+    if (type === projectType) return;
+    setProjectType(type);
+  };
+
   return (
     <div className="max-w-[1024px] mx-auto px-4 py-8">
-      <h1 className="text-[32px] md:text-[38px] font-bold mb-8 text-black text-center max-w-full md:max-w-[900px] mx-auto">
+      <motion.h1 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="text-[32px] md:text-[38px] font-bold mb-8 text-black text-center max-w-full md:max-w-[900px] mx-auto"
+      >
         Pick your Project Type
-      </h1>
+      </motion.h1>
 
       {/* Project Type Selection */}
-      <div className="mb-8">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        className="mb-8"
+      >
         <div className="flex gap-4 justify-center">
-          <button
-            onClick={() => setProjectType("new-build")}
-            className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => handleProjectTypeChange("new-build")}
+            className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
               projectType === "new-build"
-                ? "w-full bg-[#484AB7] text-white border-neutral-200 dark:border-[#484AB7] p-5 rounded-2xl max-w-[256px] h-[56px] flex items-center justify-center text-[16px] font-semibold hover:bg-[#3c3f9d] transition-colors duration-200"
-                : "flex h-14 w-full items-center justify-center !rounded-2xl border border-transparent bg-white text-sm text-black shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] transition duration-200 hover:shadow-lg max-w-[256px] text-[16px] font-semibold"
+                ? "w-full bg-[#484AB7] text-white border-neutral-200 dark:border-[#484AB7] p-5 rounded-2xl max-w-[256px] h-[56px] flex items-center justify-center text-[16px] font-semibold hover:bg-[#3c3f9d] transition-colors duration-200 shadow-lg"
+                : "flex h-14 w-full items-center justify-center !rounded-2xl border border-transparent bg-white text-sm text-black shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] transition duration-200 hover:shadow-lg max-w-[256px] text-[16px] font-semibold hover:bg-gray-50"
             }`}
           >
             New Build
-          </button>
-          <button
-            onClick={() => setProjectType("retrofit")}
-            className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => handleProjectTypeChange("retrofit")}
+            className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
               projectType === "retrofit"
-                ? "w-full bg-[#484AB7] text-white border-neutral-200 dark:border-[#484AB7] p-5 rounded-2xl max-w-[256px] h-[56px] flex items-center justify-center text-[16px] font-semibold hover:bg-[#3c3f9d] transition-colors duration-200"
-                : "flex h-14 w-full items-center justify-center !rounded-2xl border border-transparent bg-white text-sm text-black shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] transition duration-200 hover:shadow-lg max-w-[256px] text-[16px] font-semibold"
+                ? "w-full bg-[#484AB7] text-white border-neutral-200 dark:border-[#484AB7] p-5 rounded-2xl max-w-[256px] h-[56px] flex items-center justify-center text-[16px] font-semibold hover:bg-[#3c3f9d] transition-colors duration-200 shadow-lg"
+                : "flex h-14 w-full items-center justify-center !rounded-2xl border border-transparent bg-white text-sm text-black shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] transition duration-200 hover:shadow-lg max-w-[256px] text-[16px] font-semibold hover:bg-gray-50"
             }`}
           >
             Retrofit
-          </button>
+          </motion.button>
         </div>
-      </div>
+      </motion.div>
 
-      {/* New Build Content */}
-      {projectType === "new-build" && (
-        <>
-          <div className="mb-12 rounded-lg shadow-lg p-[20px] bg-white relative">
-            <p className="text-2xl font-semibold mb-4 text-black">
+      {/* Content Sections with Enhanced Animations */}
+      <AnimatePresence mode="wait">
+        {projectType === "new-build" && (
+          <motion.div
+            key="new-build"
+            initial={{ opacity: 0, y: 50, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -50, scale: 0.95 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            className="mb-12 rounded-lg shadow-lg p-[20px] bg-white relative"
+          >
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="text-2xl font-semibold mb-4 text-black"
+            >
               Ever wondered what might&apos;ve happened if you chose a different
               strategy, system, or construction method? One that could have
               performed better over the long term?
-            </p>
+            </motion.p>
 
-            <p className="mb-4 text-black">
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="mb-4 text-black"
+            >
               Now you don&apos;t have to wonder.
-            </p>
+            </motion.p>
 
-            <p className="mb-6 text-black">
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="mb-6 text-black"
+            >
               Our 5C Zero New Build Framework allows teams to explore over 1,000
               design options at any stage of the design. We combine our
               expertise in building physics, dynamic simulation modelling, life
               cycle assessment with in-house datasets covering all of the 5Cs to
               rapidly score and filter high-performing options.
-            </p>
+            </motion.p>
 
-            <div className="overflow-x-auto text-center">
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="overflow-x-auto text-center"
+            >
               <Suspense fallback={<ChartSkeleton />}>
                 <MainRadarPlot data={combinedData} />
               </Suspense>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
+        )}
 
-          <div>
-            <p className="text-black mb-4">
-              We eliminate poor-performing and non-compliant options and score
-              the remaining against the client&apos;s priorities. This helps us
-              get clear, evidence-based rationale for the design decisions. We
-              recommend using these outputs to develop brief for architects and
-              engineers
-            </p>
-            <div className="bg-white p-4 rounded-lg shadow-lg relative">
-              <div className="overflow-x-auto">
-              <Suspense fallback={<ChartSkeleton />}>
-                <SummaryRadarPlot data={summaryData} />
-              </Suspense>
-              </div>
-              <div className="flex flex-col justify-center items-center">
-                <p className="text-black text-center">
-                  The result: A confident, futureproof path to Net Zero from day
-                  one.
-                </p>
-                <button className="mt-[10px] px-6 py-3 rounded-lg font-medium transition-all duration-200 w-full bg-[#484AB7] text-white border-neutral-200 dark:border-[#484AB7] p-5 max-w-[256px] h-[56px] flex items-center justify-center text-[16px]  hover:bg-[#3c3f9d]">
-                  Explore new build projects
-                </button>
-              </div>
-            </div>
-          </div>
-        </>
-      )}
-
-      {/* Retrofit Content */}
-      {projectType === "retrofit" && (
-        <>
-          <div className="mb-12 overflow-x-auto">
-            <p className="text-[16px] md:text-[20px] font-semibold mb-4 text-black">
+        {projectType === "retrofit" && (
+          <motion.div
+            key="retrofit"
+            initial={{ opacity: 0, y: 50, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -50, scale: 0.95 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            className="mb-12 overflow-x-auto"
+          >
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="text-[16px] md:text-[20px] font-semibold mb-4 text-black"
+            >
               We treat retrofit projects with care — because they carry
               heritage, sentiment, and unique constraints.
-            </p>
+            </motion.p>
 
-            <p className="mb-4 text-black">
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="mb-4 text-black"
+            >
               Our 5C Zero Retrofit Framework begins with deep diagnostics.
-            </p>
+            </motion.p>
 
-            <p className="mb-6 text-black">
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="mb-6 text-black"
+            >
               We use SLAM + LiDAR 3D scanners to build an accurate BIM of the
               building.
-            </p>
-            <p className="mb-6 text-black">
+            </motion.p>
+            
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="mb-6 text-black"
+            >
               We combine this with thermal imaging, moisture readings, air
               permeability tests, internal climate sensors, and smart HTC
               monitoring to build a performance scorecard of the building&apos;s
               current state.{" "}
-            </p>
+            </motion.p>
 
-            <div className="relative w-full pt-14 overflow-x-hidden project-slider">
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="relative w-full pt-14 overflow-x-hidden project-slider"
+            >
               <div className="absolute top-4 right-4 z-10 flex gap-2">
                 <button className="swiper-button-prev">
                   <ArrowLeft className="w-5 h-5 text-gray-600" />
@@ -410,53 +462,142 @@ const OptioneeringVisualization: React.FC = () => {
                   </div>
                 </SwiperSlide>
               </Swiper>
-            </div>
-          </div>
-          <div>
-            <p className="text-black mb-4">
-              We then simulate and compare retrofit pathways:
-            </p>
-            <ul className="text-black">
-              <li> Fabric-first</li>
-              <li> Systems-led</li>
-              <li>Hybrid approaches</li>
-            </ul>
-            <p className="text-black">
-              Each is evaluated across the building&apos;s future lifecycle,
-              scored against the 5Cs, and mapped to your priorities.
-            </p>
-            <div className="bg-white p-4 rounded-lg shadow-lg relative">
-              <Suspense fallback={<ChartSkeleton />}>
-                <SummaryRadarPlot data={summaryData} />
-              </Suspense>
-              <div className="flex flex-col justify-center items-center">
-                <p className="text-black text-center">
-                  The result: a clear pathway to improvement that&apos;s aligned
-                  with both project&apos;s values and Net Zero goals.
-                </p>
-                <button className="mt-[10px] px-6 py-3 rounded-lg font-medium transition-all duration-200 w-full bg-[#484AB7] text-white border-neutral-200 dark:border-[#484AB7] p-5 max-w-[256px] h-[56px] flex items-center justify-center text-[16px]  hover:bg-[#3c3f9d]">
-                  Explore retrofit projects
-                </button>
-              </div>
-            </div>
-          </div>
-        </>
-      )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      {/* Default State */}
-      {!projectType && (
-        <div className="text-center py-12">
-          <div className="max-w-2xl mx-auto">
-            <h3 className="text-xl font-semibold mb-4 text-gray-600">
-              Select a project type to view the optioneering visualization
-            </h3>
-            <p className="text-gray-500">
-              Choose between New Build or Retrofit to explore different design
-              options and performance scenarios.
-            </p>
-          </div>
-        </div>
-      )}
+      {/* Summary Section - Animated based on project type */}
+      <AnimatePresence mode="wait">
+        {projectType && (
+          <motion.div
+            key={`summary-${projectType}`}
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -50 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            {projectType === "new-build" ? (
+              <div>
+                <motion.p 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                  className="text-black mb-4"
+                >
+                  We eliminate poor-performing and non-compliant options and score
+                  the remaining against the client&apos;s priorities. This helps us
+                  get clear, evidence-based rationale for the design decisions. We
+                  recommend using these outputs to develop brief for architects and
+                  engineers
+                </motion.p>
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.4 }}
+                  className="bg-white p-4 rounded-lg shadow-lg relative"
+                >
+                  <div className="overflow-x-auto">
+                    <Suspense fallback={<ChartSkeleton />}>
+                      <SummaryRadarPlot data={summaryData} />
+                    </Suspense>
+                  </div>
+                  <div className="flex flex-col justify-center items-center">
+                    <p className="text-black text-center">
+                      The result: A confident, futureproof path to Net Zero from day
+                      one.
+                    </p>
+                    <motion.button 
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="mt-[10px] px-6 py-3 rounded-lg font-medium transition-all duration-200 w-full bg-[#484AB7] text-white border-neutral-200 dark:border-[#484AB7] p-5 max-w-[256px] h-[56px] flex items-center justify-center text-[16px] hover:bg-[#3c3f9d] shadow-lg"
+                    >
+                      Explore new build projects
+                    </motion.button>
+                  </div>
+                </motion.div>
+              </div>
+            ) : (
+              <div>
+                <motion.p 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                  className="text-black mb-4"
+                >
+                  We then simulate and compare retrofit pathways:
+                </motion.p>
+                <motion.ul 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.4 }}
+                  className="text-black"
+                >
+                  <li> Fabric-first</li>
+                  <li> Systems-led</li>
+                  <li>Hybrid approaches</li>
+                </motion.ul>
+                <motion.p 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.5 }}
+                  className="text-black"
+                >
+                  Each is evaluated across the building&apos;s future lifecycle,
+                  scored against the 5Cs, and mapped to your priorities.
+                </motion.p>
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.6 }}
+                  className="bg-white p-4 rounded-lg shadow-lg relative"
+                >
+                  <Suspense fallback={<ChartSkeleton />}>
+                    <SummaryRadarPlot data={summaryData} />
+                  </Suspense>
+                  <div className="flex flex-col justify-center items-center">
+                    <p className="text-black text-center">
+                      The result: a clear pathway to improvement that&apos;s aligned
+                      with both project&apos;s values and Net Zero goals.
+                    </p>
+                    <motion.button 
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="mt-[10px] px-6 py-3 rounded-lg font-medium transition-all duration-200 w-full bg-[#484AB7] text-white border-neutral-200 dark:border-[#484AB7] p-5 max-w-[256px] h-[56px] flex items-center justify-center text-[16px] hover:bg-[#3c3f9d] shadow-lg"
+                    >
+                      Explore retrofit projects
+                    </motion.button>
+                  </div>
+                </motion.div>
+              </div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Default State - Only show when no project type is selected */}
+      <AnimatePresence mode="wait">
+        {!projectType && (
+          <motion.div
+            key="default"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -30 }}
+            transition={{ duration: 0.4 }}
+            className="text-center py-12"
+          >
+            <div className="max-w-2xl mx-auto">
+              <h3 className="text-xl font-semibold mb-4 text-gray-600">
+                Select a project type to view the optioneering visualization
+              </h3>
+              <p className="text-gray-500">
+                Choose between New Build or Retrofit to explore different design
+                options and performance scenarios.
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

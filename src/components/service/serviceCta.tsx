@@ -8,7 +8,7 @@ export default function CtaSection() {
     },
   ];
   return (
-    <div className=" p-4 md:p-8 max-w-[1024px] mx-auto w-full flex items-center justify-between flex-wrap">
+    <div className="my-[40px] px-[16px] container mx-auto w-full flex items-center justify-between flex-wrap">
       <div className="max-w-[740px] w-[44%]">
         <h2 className="text-black text-[24px] font-semibold mb-[10px]">
           Ready to take the next step?

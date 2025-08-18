@@ -3,10 +3,12 @@
 import React, { useState, useEffect } from "react";
 import { Search, ArrowRight, Plus, X } from "lucide-react";
 import Link from "next/link";
-import { getServices } from "@/sanity/sanity-utils";
+import { getServices, getServicesPageBanner } from "@/sanity/sanity-utils";
 import { Service } from "@/types/Service";
+import { ServicesPageBanner } from "@/types/servicesPage";
 import { AuroraBackground } from "@/components/ui/aurora-background";
 import { motion } from "motion/react";
+import ServiceCta from "@/components/service/serviceCta"
 const ServicesPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedDiscipline, setSelectedDiscipline] = useState("All");
@@ -15,18 +17,24 @@ const ServicesPage = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalView, setModalView] = useState<"disciplines" | "projectStages">("disciplines");
   const [services, setServices] = useState<Service[]>([]);
+  const [bannerData, setBannerData] = useState<ServicesPageBanner | null>(null);
 
-  const itemsPerPage = 15;
+  const itemsPerPage = 10;
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await getServices();
-      setServices(res);
+      const [servicesRes, bannerRes] = await Promise.all([
+        getServices(),
+        getServicesPageBanner()
+      ]);
+      setServices(servicesRes);
+      setBannerData(bannerRes);
       
       // Debug logging
-      console.log('Services loaded:', res.length);
-      console.log('All project stages:', Array.from(new Set(res.flatMap((s) => s.projectStage || []))));
-      console.log('All disciplines:', Array.from(new Set(res.flatMap((s) => s.disciplines || []))));
+      console.log('Services loaded:', servicesRes.length);
+      console.log('Banner data loaded:', bannerRes);
+      console.log('All project stages:', Array.from(new Set(servicesRes.flatMap((s) => s.projectStage || []))));
+      console.log('All disciplines:', Array.from(new Set(servicesRes.flatMap((s) => s.disciplines || []))));
     };
     fetchData();
   }, []);
@@ -75,12 +83,12 @@ const ServicesPage = () => {
   }
 
   const mainDisciplineFilters = Object.entries(disciplineCount)
-    .sort((a, b) => b[1] - a[1])
+    .sort((a, b) => a[0].localeCompare(b[0])) // Sort alphabetically by discipline name
     .slice(0, 6)
     .map(([name]) => name);
 
   const mainProjectStageFilters = Object.entries(projectStageCount)
-    .sort((a, b) => b[1] - a[1])
+    .sort((a, b) => a[0].localeCompare(b[0])) // Sort alphabetically by project stage name
     .slice(0, 6)
     .map(([name]) => name);
 
@@ -122,6 +130,15 @@ const ServicesPage = () => {
     setModalOpen(true);
   };
 
+  // Fallback banner content if no data from Sanity
+  const fallbackBanner = {
+    title: "Explore our services across the built and natural environments",
+    description: "We offer a wide range of services that address every priority in the built and natural environments. Search below or use the filters to explore services by discipline and project stage."
+  };
+
+  const bannerTitle = bannerData?.title || fallbackBanner.title;
+  const bannerDescription = bannerData?.description || fallbackBanner.description;
+
   return (
     <div className="min-h-screen bg-white mt-[64px]">
     
@@ -137,19 +154,21 @@ const ServicesPage = () => {
         }}
         className="container mx-auto relative flex flex-col gap-4  px-4"
       >
-        <div className="text-3xl md:text-6xl font-normal text-black leading-[1.2] max-w-[1000px]">
-         Explore our services across the built and natural environments
+       <div className="max-w-[870px]">
+         <div className="text-3xl md:text-6xl font-normal text-black leading-[1.2] max-w-[1000px]">
+         {bannerTitle}
         </div>
         <div className="font-extralight text-base md:text-2xl dark:text-neutral-200 py-4 max-w-[1024px]">
-    We offer a wide range of services that address every priority in the built and natural environments. Search below or use the filters to explore services by discipline and project stage.
+    {bannerDescription}
         </div>
+       </div>
     
       </motion.div>
     </AuroraBackground>
       <div className="mt-[60px] pt-8 pb-10 md:px-8 px-4">
         <section className=" container mx-auto">
           <div className="pb-10 border-b mb-6">
-            <div className="relative max-w-[832px]">
+            <div className="relative max-w-[850px]">
               <input
                 type="text"
                 placeholder="Search services..."
@@ -342,6 +361,73 @@ const ServicesPage = () => {
           </div>
         </section>
 
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <section className=" bg-white container mx-auto">
+            <div className="max-w-[958px] flex justify-start">
+              <div className="flex items-center gap-2">
+                {/* Previous Page Button */}
+                <button
+                  onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                  disabled={currentPage === 1}
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                    currentPage === 1
+                      ? 'text-gray-400 cursor-not-allowed'
+                      : 'text-gray-700 hover:text-black hover:bg-gray-100'
+                  }`}
+                >
+                  ← 
+                </button>
+
+                {/* Page Numbers */}
+                <div className="flex items-center gap-1">
+                  {Array.from({ length: Math.min(7, totalPages) }, (_, i) => {
+                    let pageNum;
+                    if (totalPages <= 7) {
+                      pageNum = i + 1;
+                    } else if (currentPage <= 4) {
+                      pageNum = i + 1;
+                    } else if (currentPage >= totalPages - 3) {
+                      pageNum = totalPages - 6 + i;
+                    } else {
+                      pageNum = currentPage - 3 + i;
+                    }
+
+                    if (pageNum < 1 || pageNum > totalPages) return null;
+
+                    return (
+                      <button
+                        key={pageNum}
+                        onClick={() => setCurrentPage(pageNum)}
+                        className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                          currentPage === pageNum
+                            ? 'bg-black text-white'
+                            : 'text-gray-700 hover:text-black hover:bg-gray-100'
+                        }`}
+                      >
+                        {pageNum}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Next Page Button */}
+                <button
+                  onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                  disabled={currentPage === totalPages}
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                    currentPage === totalPages
+                      ? 'text-gray-400 cursor-not-allowed'
+                      : 'text-gray-700 hover:text-black hover:bg-gray-100'
+                  }`}
+                >
+                   →
+                </button>
+              </div>
+            </div>
+          </section>
+        )}
+
         {modalOpen && (
           <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
             <div className="relative w-full max-w-[630px] mx-auto">
@@ -470,6 +556,7 @@ const ServicesPage = () => {
           </div>
         )}
       </div>
+      <ServiceCta />
     </div>
   );
 };

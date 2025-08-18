@@ -97,12 +97,13 @@ export default async function Page({
                 alt={`Gallery image ${idx + 1}`}
                 width={400}
                 height={300}
-                className="rounded-md object-cover w-full h-auto md:h-[300px] lg:h-[515px] object-top shadow-md"
+                className="rounded-md object-cover w-full h-auto md:h-[300px] lg:h-[400px] object-top shadow-md"
               />
             ))}
           </div>
         </div>
       )}
+      <h1 className="text-black !mt-[40px] text-[60px] leading-[62px] font-normal max-w-[522px]">{service.title}</h1>
       <div className="container grid grid-cols-1 lg:grid-cols-3 px-0 md:px-[16px] gap-[20px] mx-auto pt-0 md:pt-[40px] pb-[60px]">
         {/* Left: Content */}
         <div className="lg:col-span-2 space-y-2">
@@ -116,8 +117,8 @@ export default async function Page({
               className="rounded-xl object-cover"
             />
           )}
-          {/* Disciplines */}
-          {(service.disciplines?.length ?? 0) > 0 && (
+       
+          {/* {(service.disciplines?.length ?? 0) > 0 && (
             <div className="flex flex-wrap gap-2 mt-4">
               {(service.disciplines ?? []).map((discipline: string, index: number) => (
                 <span
@@ -130,7 +131,7 @@ export default async function Page({
             </div>
           )}
 
-          {/* Project Stage */}
+       
           {(service.projectStage?.length ?? 0) > 0 && (
             <div className="flex flex-wrap gap-2 mt-4">
             
@@ -143,7 +144,7 @@ export default async function Page({
                 </span>
               ))}
             </div>
-          )}
+          )} */}
 
           {/* Rich Body Content */}
           {service.body && (

@@ -67,6 +67,14 @@ export const heroQuery = groq`
   }
 `
 
+export const servicesPageQuery = groq`
+  *[_type == "servicesPage" && isActive == true][0] {
+    _id,
+    title,
+    description
+  }
+`
+
 export const performanceQuery = groq`
   *[_type == "performance" && isActive == true][0] {
     _id,
