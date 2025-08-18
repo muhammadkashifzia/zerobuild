@@ -13,7 +13,7 @@ import { motion } from "motion/react";
 import { Button } from "@/components/ui/moving-border";
 import Link from "next/link";
 import { AuroraBackground } from "@/components/ui/aurora-background";
-
+import ProjectCta from "@/components/project/projectCta"
 export default function Page() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
@@ -182,6 +182,7 @@ export default function Page() {
               </div>
             ))}
       </div>
+      <ProjectCta />
     </div>
   );
 }
