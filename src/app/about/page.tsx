@@ -1,9 +1,9 @@
 import React from "react";
 import TestimonialCard from "@/components/TestimonialCard";
-import AboutProfile from "@/components/about/AboutProfile";
+import AboutProfile from "@/components/about/aboutProfile";
 import ObservabilityRadarChart from "@/components/ObservabilityRadarChart";
-import AboutTop from "@/components/about/AboutTop";
-import AboutCta from "@/components/about/AboutCta"
+import AboutTop from "@/components/about/aboutTop";
+import AboutCta from "@/components/about/aboutCta"
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
