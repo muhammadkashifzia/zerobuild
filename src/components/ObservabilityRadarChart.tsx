@@ -15,7 +15,7 @@ import Image from "next/image";
 import { Autoplay, Navigation } from "swiper/modules";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
-
+import Link from "next/link";
 const Plot = dynamic(() => import("react-plotly.js"), {
   ssr: false,
   loading: () => <ChartSkeleton />,
@@ -560,13 +560,13 @@ const OptioneeringVisualization: React.FC = () => {
                       The result: a clear pathway to improvement that&apos;s aligned
                       with both project&apos;s values and Net Zero goals.
                     </p>
-                    <motion.button 
+                    <Link href="/projects"  className="mt-[10px] px-6 py-3 rounded-lg font-medium transition-all duration-200 w-full bg-[#484AB7] text-white border-neutral-200 dark:border-[#484AB7] p-5 max-w-[256px] h-[56px] flex items-center justify-center text-[16px] hover:bg-[#3c3f9d] shadow-lg">  <motion.button 
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="mt-[10px] px-6 py-3 rounded-lg font-medium transition-all duration-200 w-full bg-[#484AB7] text-white border-neutral-200 dark:border-[#484AB7] p-5 max-w-[256px] h-[56px] flex items-center justify-center text-[16px] hover:bg-[#3c3f9d] shadow-lg"
+                     
                     >
-                      Explore retrofit projects
-                    </motion.button>
+                    Explore retrofit projects
+                    </motion.button></Link>
                   </div>
                 </motion.div>
               </div>
@@ -638,6 +638,11 @@ const MainRadarPlot: React.FC<{ data: OptionData[] }> = React.memo(
             marker: { size: 6, color: "black" },
             line: { color },
             fillcolor: fillColor,
+            hoverlabel: {
+              bgcolor: adjustAlpha(fillColor, 0.9),
+              bordercolor: color,
+              font: { color: getContrastingTextColor(fillColor) },
+            },
             hoverinfo: "text" as const,
             hovertext: generateHoverText(option, index + 1),
             showlegend: false,
@@ -692,7 +697,7 @@ const MainRadarPlot: React.FC<{ data: OptionData[] }> = React.memo(
         data={makeSubplots()}
         layout={layout}
         config={{
-          displayModeBar: true,
+          displayModeBar: false,
           modeBarButtonsToRemove: ["pan2d", "select2d", "lasso2d"],
           displaylogo: false,
           responsive: true,
@@ -736,10 +741,15 @@ const SummaryRadarPlot: React.FC<{ data: OptionData[] }> = React.memo(
             },
             line: { color },
             fillcolor: fillColor,
+            hoverlabel: {
+              bgcolor: adjustAlpha(fillColor, 0.9),
+              bordercolor: color,
+              font: { color: getContrastingTextColor(fillColor) },
+            },
             hoverinfo: "text" as const,
             hovertext: generateHoverText(option, index + 1),
             showlegend: false,
-            subplot: `polar${index + 1}`,
+            subplot: index === 0 ? ("polar" as const) : (`polar${index + 1}` as const),
           };
         }),
       [data]
@@ -747,39 +757,44 @@ const SummaryRadarPlot: React.FC<{ data: OptionData[] }> = React.memo(
 
     const layout = useMemo(
       () => ({
-        height: 400,
-        width: 1200,
+        autosize: true,
         grid: { rows: 1, columns: 3, pattern: "independent" as const },
         showlegend: false,
-        margin: { l: 50, r: 50, t: 50, b: 50 },
+        margin: { l: 20, r: 20, t: 20, b: 20 },
         hovermode: "closest" as const,
-        ...Array.from({ length: 3 }, (_, i) => ({
-          [`polar${i + 1}`]: {
-            domain: {
-              row: 0,
-              column: i,
-              x: [i / 3 + 0.04, (i + 1) / 3 - 0.02],
-              y: [0.03, 0.98],
+        paper_bgcolor: "rgba(0,0,0,0)",
+        plot_bgcolor: "rgba(0,0,0,0)",
+        ...Array.from({ length: 3 }, (_, i) => {
+          const key = i === 0 ? "polar" : `polar${i + 1}`;
+          return {
+            [key]: {
+              domain: {
+                row: 0,
+                column: i,
+                x: [i / 3 + 0.04, (i + 1) / 3 - 0.02],
+                y: [0.05, 0.95],
+              },
+              bgcolor: "rgba(0,0,0,0)",
+              radialaxis: {
+                visible: true,
+                range: [0, 100],
+                showticklabels: false,
+                ticks: "",
+                showline: false,
+                gridcolor: "rgba(0,0,0,0.15)",
+                gridwidth: 1.5,
+              },
+              angularaxis: {
+                visible: true,
+                tickfont: { size: 13, family: "Arial Black", color: "black" },
+                tickangle: 0,
+                rotation: 90,
+                direction: "clockwise" as const,
+                ticks: "",
+              },
             },
-            radialaxis: {
-              visible: true,
-              range: [0, 100],
-              showticklabels: false,
-              ticks: "",
-              showline: false,
-              gridcolor: "rgba(0,0,0,0.2)",
-              gridwidth: 2,
-            },
-            angularaxis: {
-              visible: true,
-              tickfont: { size: 13, family: "Arial Black", color: "black" },
-              tickangle: 0,
-              rotation: 90,
-              direction: "clockwise" as const,
-              ticks: "",
-            },
-          },
-        })).reduce((acc, polar) => ({ ...acc, ...polar }), {}),
+          };
+        }).reduce((acc, polar) => ({ ...acc, ...polar }), {}),
         images: [
           {
             // source: '/icons/carbon.png',
@@ -843,21 +858,24 @@ const SummaryRadarPlot: React.FC<{ data: OptionData[] }> = React.memo(
           },
         ],
       }),
-      []
+      [data]
     );
 
     return (
-      <Plot
-        data={traces}
-        layout={layout}
-        config={{
-          displayModeBar: true,
-          modeBarButtonsToRemove: ["pan2d", "select2d", "lasso2d"],
-          displaylogo: false,
-          responsive: true,
-        }}
-        useResizeHandler={true}
-      />
+      <div className="w-full h-[360px] sm:h-[420px]">
+        <Plot
+          data={traces}
+          layout={layout}
+          config={{
+            displayModeBar: false,
+            modeBarButtonsToRemove: ["pan2d", "select2d", "lasso2d"],
+            displaylogo: false,
+            responsive: true,
+          }}
+          style={{ width: "100%", height: "100%" }}
+          useResizeHandler={true}
+        />
+      </div>
     );
   }
 );
@@ -887,6 +905,26 @@ const getColor = (row: OptionData): string => {
 
 const rgbaFromColor = (name: string): string => {
   return COLOR_MAP[name] || "rgba(100,100,100,0.4)";
+};
+
+// Increase or change the alpha of an rgba color string
+const adjustAlpha = (rgbaColor: string, alpha: number): string => {
+  const match = rgbaColor.match(/rgba?\((\d+)\s*,\s*(\d+)\s*,\s*(\d+)(?:\s*,\s*([\d.]+))?\)/i);
+  if (!match) return rgbaColor;
+  const r = match[1];
+  const g = match[2];
+  const b = match[3];
+  return `rgba(${r},${g},${b},${alpha})`;
+};
+
+const getContrastingTextColor = (rgbaColor: string): string => {
+  const match = rgbaColor.match(/rgba?\((\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i);
+  if (!match) return "white";
+  const r = Number(match[1]);
+  const g = Number(match[2]);
+  const b = Number(match[3]);
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  return luminance > 0.6 ? "black" : "white";
 };
 
 const generateHoverText = (row: OptionData, index: number): string => {
