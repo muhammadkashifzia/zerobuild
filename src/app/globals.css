@@ -94,6 +94,9 @@ a{
   margin-bottom: 15px;
   font-weight: 600;
 }
+.service-body-content h2 strong{
+  font-weight: bold;
+}
 .service-body-content h1{
   font-size: 32px;
 }

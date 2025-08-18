@@ -5,6 +5,7 @@ export interface Project {
   publishedAt: string;
   image?: { asset: { url: string } };
   description?: string;
+  location?: string;
   categories?: string[];
   gallery?: { asset: { url: string } }[];
   body?: any;

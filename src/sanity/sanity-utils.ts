@@ -91,6 +91,7 @@ export async function getProjects(): Promise<Project[]> {
   publishedAt,
   image { asset->{url} },
   description,
+  location,
   categories,
   "gallery": gallery[].asset->url,
   body
@@ -111,6 +112,7 @@ export async function getProject(slug: string): Promise<Project> {
       publishedAt,
       image { asset->{url} },
       description,
+      location,
       categories,
       gallery[]{ asset->{url} },
       body

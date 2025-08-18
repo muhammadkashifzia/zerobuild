@@ -41,6 +41,12 @@ export const projectType = defineType({
       validation: (rule) => rule.max(300),
     }),
     defineField({
+      name: 'location',
+      title: 'Location (right side header)',
+      type: 'string',
+      description: 'Shown on the right side of the project header',
+    }),
+    defineField({
       name: 'categories',
       title: 'Categories',
       type: 'array',

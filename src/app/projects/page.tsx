@@ -124,7 +124,7 @@ export default function Page() {
                         {project.title}
                       </h3>
                       <p className="text-sm text-gray-600 line-clamp-2">
-                        {project.description ?? "Sustainable infrastructure"}
+                        {project.location}
                       </p>
                     </motion.div>
                   )}
