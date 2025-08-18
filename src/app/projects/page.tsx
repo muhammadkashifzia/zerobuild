@@ -13,7 +13,7 @@ import { motion } from "motion/react";
 import { Button } from "@/components/ui/moving-border";
 import Link from "next/link";
 import { AuroraBackground } from "@/components/ui/aurora-background";
-import ProjectCta from "@/components/project/projectCta"
+import ProjectCta from "@/components/project/ProjectCta"
 export default function Page() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
@@ -145,7 +145,7 @@ export default function Page() {
       </div>
 
       {/* Projects Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-[16px] md:px-8 mb-32">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-[16px]  mb-12">
         {loading
           ? [...Array(8)].map((_, i) => (
               <div key={i} className="group animate-pulse">

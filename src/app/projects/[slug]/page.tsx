@@ -84,7 +84,7 @@ export default async function Page({
   const relatedProjects = await getRelatedProjects(slug, project.categories);
 
   return (
-    <div className="px-[16px] md:py-28 mx-auto space-y-5">
+    <div className="px-[16px] md:pt-28 mx-auto space-y-5">
       <Link href="/projects" className="text-black font-semibold flex gap-[10px] mb-[30px] link items-center"> <ArrowLeft /> 
       <span className="hover:link-underline">Back to Projects</span>
       </Link>
