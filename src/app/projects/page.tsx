@@ -136,7 +136,7 @@ export default function Page() {
       </div>
 
       {/* View All Projects Button */}
-      <div className="px-8 flex justify-end mb-6">
+      <div className="px-[16px] flex justify-end mb-6">
         <Link href="/projects/all-projects" className="w-full max-w-[160px]">
           <Button className="flex gap-2 h-12 w-full items-center justify-center !rounded-xl bg-white text-sm text-black shadow transition duration-200 hover:shadow-lg">
             View all Projects <ArrowRight />
