@@ -331,7 +331,7 @@ const OptioneeringVisualization: React.FC = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -50, scale: 0.95 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
-            className="mb-12 overflow-x-auto"
+            className="mb-12 overflow-x-auto overflow-y-hidden"
           >
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
