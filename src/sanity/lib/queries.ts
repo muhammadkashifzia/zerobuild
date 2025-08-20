@@ -98,6 +98,15 @@ export const aboutPageQuery = groq`
   *[_type == "aboutPage" && isActive == true][0] {
     _id,
     title,
-    description
+    description,
+    introText,
+    introImage {
+      asset-> {
+        _id,
+        url,
+        metadata { dimensions { width, height } }
+      }
+    },
+    introImageAlt
   }
 `

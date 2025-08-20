@@ -17,25 +17,17 @@ export default async function AboutTop() {
           description={aboutPageData?.description || "From metro systems to concert halls, our sustainability projects shape a better world."}
         />
       </AuroraBackground>
-         <div className="max-w-[1024px] mx-auto px-[16px] mt-[40px]">
-        <p className="text-black mb-8 text-[16px] text-center">
-          We believe buildings can be perfect, because they are built on data,
-          Data that can shape perfectly comfortable homes for every age group,
-          weather and location Data that can help us choose materials with the
-          lowest environmental impact. Data that can optimise how we use
-          resources, and Data that can help even generate income from energy
-          rather than simply paying for it Data that can inform all functional,
-          and technical design decisions with measurable outcomes. Our mission
-          is to harness this data to create buildings that are not just
-          compliant, but outstanding in comfort, carbon performance, cost
-          efficiency, and circularity. We bring clarity to Net Zero by turning
-          complexity into simple, confident decisions.
-        </p>
+      <div className="max-w-[1024px] mx-auto px-[16px] mt-[40px]">
+        {aboutPageData?.introText && (
+          <p className="text-black mb-8 text-[16px] text-center">
+            {aboutPageData.introText}
+          </p>
+        )}
         <Image
-          src="/assets/images/about-image.png"
-          alt="About Us"
-          width={1200}
-          height={600}
+          src={aboutPageData?.introImage?.asset?.url || "/assets/images/about-image.png"}
+          alt={aboutPageData?.introImageAlt || "About Us"}
+          width={aboutPageData?.introImage?.asset?.metadata?.dimensions?.width || 1200}
+          height={aboutPageData?.introImage?.asset?.metadata?.dimensions?.height || 600}
           className="w-full h-auto object-cover rounded-lg mb-8 max-w-full md:max-w-[800px] mx-auto"
         />
       </div>

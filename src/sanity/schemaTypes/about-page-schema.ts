@@ -22,6 +22,28 @@ export const aboutPageType = defineType({
       initialValue: 'From metro systems to concert halls, our sustainability projects shape a better world.',
     }),
     defineField({
+      name: 'introText',
+      title: 'Introductory Text',
+      type: 'text',
+      description: 'Longer paragraph below the banner explaining the company mission',
+      initialValue:
+        'We believe buildings can be perfect, because they are built on data, Data that can shape perfectly comfortable homes for every age group, weather and location Data that can help us choose materials with the lowest environmental impact. Data that can optimise how we use resources, and Data that can help even generate income from energy rather than simply paying for it Data that can inform all functional, and technical design decisions with measurable outcomes. Our mission is to harness this data to create buildings that are not just compliant, but outstanding in comfort, carbon performance, cost efficiency, and circularity. We bring clarity to Net Zero by turning complexity into simple, confident decisions.',
+    }),
+    defineField({
+      name: 'introImage',
+      title: 'Introductory Image',
+      type: 'image',
+      options: { hotspot: true },
+      description: 'Image displayed below the introductory text',
+    }),
+    defineField({
+      name: 'introImageAlt',
+      title: 'Intro Image Alt Text',
+      type: 'string',
+      description: 'Accessible alt text for the intro image',
+      initialValue: 'About Us',
+    }),
+    defineField({
       name: 'isActive',
       title: 'Is Active',
       type: 'boolean',
