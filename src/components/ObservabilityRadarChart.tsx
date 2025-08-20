@@ -276,7 +276,7 @@ const OptioneeringVisualization: React.FC = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -50, scale: 0.95 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
-            className="mb-12 rounded-lg shadow-lg p-[20px] bg-white relative"
+            className="mb-12 relative"
           >
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
@@ -331,7 +331,7 @@ const OptioneeringVisualization: React.FC = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -50, scale: 0.95 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
-            className="mb-12 overflow-x-auto"
+            className="mb-12 overflow-x-auto overflow-y-hidden"
           >
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
@@ -495,7 +495,7 @@ const OptioneeringVisualization: React.FC = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.4 }}
-                  className="bg-white p-4 rounded-lg shadow-lg relative"
+                  className=" relative"
                 >
                   <div className="overflow-x-auto">
                     <Suspense fallback={<ChartSkeleton />}>
@@ -550,7 +550,7 @@ const OptioneeringVisualization: React.FC = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.6 }}
-                  className="bg-white p-4 rounded-lg shadow-lg relative"
+                  className="relative"
                 >
                   <Suspense fallback={<ChartSkeleton />}>
                     <SummaryRadarPlot data={summaryData} />

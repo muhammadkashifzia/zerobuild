@@ -1,32 +1,22 @@
-// components/FionaProfile.tsx
-"use client"; 
+// components/AboutTop.tsx
 import Image from "next/image";
-import { motion } from "motion/react";
 import { AuroraBackground } from "@/components/ui/aurora-background";
-export default function AboutTop() {
+import { client } from "@/sanity/lib/client";
+import { aboutPageQuery } from "@/sanity/lib/queries";
+import { AboutPageBanner } from "@/types/aboutPage";
+import AboutTopClient from "./AboutTopClient";
+
+export default async function AboutTop() {
+  const aboutPageData: AboutPageBanner | null = await client.fetch(aboutPageQuery);
+
   return (
-          <div>
-     
-       <AuroraBackground>
-            <motion.div
-              initial={{ opacity: 0.0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{
-                delay: 0.3,
-                duration: 0.8,
-                ease: "easeInOut",
-              }}
-              className="max-w-[1024px] mx-auto relative flex flex-col gap-4  px-4"
-            >
-              <div className="text-3xl md:text-6xl font-normal text-black leading-[1.2] max-w-[1000px]">
-              About Us
-              </div>
-              <div className="font-extralight text-base md:text-2xl dark:text-neutral-200 py-4 max-w-[1024px]">
-         From metro systems to concert halls, our sustainability projects shape a better world.
-              </div>
-          
-            </motion.div>
-          </AuroraBackground>
+    <div>
+      <AuroraBackground>
+        <AboutTopClient 
+          title={aboutPageData?.title || "About Us"}
+          description={aboutPageData?.description || "From metro systems to concert halls, our sustainability projects shape a better world."}
+        />
+      </AuroraBackground>
          <div className="max-w-[1024px] mx-auto px-[16px] mt-[40px]">
         <p className="text-black mb-8 text-[16px] text-center">
           We believe buildings can be perfect, because they are built on data,
