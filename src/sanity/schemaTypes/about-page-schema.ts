@@ -36,13 +36,7 @@ export const aboutPageType = defineType({
       options: { hotspot: true },
       description: 'Image displayed below the introductory text',
     }),
-    defineField({
-      name: 'introImageAlt',
-      title: 'Intro Image Alt Text',
-      type: 'string',
-      description: 'Accessible alt text for the intro image',
-      initialValue: 'About Us',
-    }),
+  
     defineField({
       name: 'isActive',
       title: 'Is Active',

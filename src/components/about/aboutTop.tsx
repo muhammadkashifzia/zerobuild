@@ -25,7 +25,7 @@ export default async function AboutTop() {
         )}
         <Image
           src={aboutPageData?.introImage?.asset?.url || "/assets/images/about-image.png"}
-          alt={aboutPageData?.introImageAlt || "About Us"}
+          alt="About Us"
           width={aboutPageData?.introImage?.asset?.metadata?.dimensions?.width || 1200}
           height={aboutPageData?.introImage?.asset?.metadata?.dimensions?.height || 600}
           className="w-full h-auto object-cover rounded-lg mb-8 max-w-full md:max-w-[800px] mx-auto"

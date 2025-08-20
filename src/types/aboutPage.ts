@@ -4,5 +4,5 @@ export interface AboutPageBanner {
   description: string;
   introText?: string;
   introImage?: { asset?: { url: string; metadata?: { dimensions?: { width: number; height: number } } } };
-  introImageAlt?: string;
+
 }
