@@ -5,7 +5,7 @@ import { getProject, getRelatedProjects } from "@/sanity/sanity-utils";
 import { Project } from "@/types/Project";
 import type { Metadata } from "next";
 import { ArrowRight, ArrowLeft } from "lucide-react";
-import CtaSection from '@/components/CtaSection'
+import CtaSection from "@/components/CtaSection";
 export async function generateMetadata({
   params,
 }: {
@@ -22,8 +22,10 @@ export async function generateMetadata({
   }
 
   const title = `${project.title} - ZeroBuild Net Zero Decarbonisation Project`;
-  const description = project.description || `Explore ${project.title} project by ZeroBuild. Our Net Zero decarbonisation case study demonstrates how we help architects, engineers, developers, and local authorities achieve their sustainability goals.`;
-  const keywords = `${project.title}, ZeroBuild project, Net Zero decarbonisation case study, ${project.categories?.join(', ') || 'sustainability project'}, built environment project, carbon reduction, energy efficiency, retrofit project, new build project, architects, engineers, developers, local authorities, housing associations, UK sustainability, Greater Manchester, SHDF, PSDS, ESG compliance`;
+  const description =
+    project.description ||
+    `Explore ${project.title} project by ZeroBuild. Our Net Zero decarbonisation case study demonstrates how we help architects, engineers, developers, and local authorities achieve their sustainability goals.`;
+  const keywords = `${project.title}, ZeroBuild project, Net Zero decarbonisation case study, ${project.categories?.join(", ") || "sustainability project"}, built environment project, carbon reduction, energy efficiency, retrofit project, new build project, architects, engineers, developers, local authorities, housing associations, UK sustainability, Greater Manchester, SHDF, PSDS, ESG compliance`;
 
   return {
     title,
@@ -36,30 +38,34 @@ export async function generateMetadata({
       title,
       description,
       url: `https://zerobuild.io/projects/${slug}`,
-      siteName: 'ZeroBuild',
-      images: project.image?.asset?.url ? [
-        {
-          url: project.image.asset.url,
-          width: 1200,
-          height: 630,
-          alt: `${project.title} - ZeroBuild Project`,
-        },
-      ] : [
-        {
-          url: '/assets/images/coding-background-texture.jpg',
-          width: 1200,
-          height: 630,
-          alt: `${project.title} - ZeroBuild Project`,
-        },
-      ],
-      locale: 'en_GB',
-      type: 'website',
+      siteName: "ZeroBuild",
+      images: project.image?.asset?.url
+        ? [
+            {
+              url: project.image.asset.url,
+              width: 1200,
+              height: 630,
+              alt: `${project.title} - ZeroBuild Project`,
+            },
+          ]
+        : [
+            {
+              url: "/assets/images/coding-background-texture.jpg",
+              width: 1200,
+              height: 630,
+              alt: `${project.title} - ZeroBuild Project`,
+            },
+          ],
+      locale: "en_GB",
+      type: "website",
     },
     twitter: {
-      card: 'summary_large_image',
+      card: "summary_large_image",
       title,
       description,
-      images: project.image?.asset?.url ? [project.image.asset.url] : ['/assets/images/coding-background-texture.jpg'],
+      images: project.image?.asset?.url
+        ? [project.image.asset.url]
+        : ["/assets/images/coding-background-texture.jpg"],
     },
   };
 }
@@ -85,8 +91,13 @@ export default async function Page({
 
   return (
     <div className="px-[16px] md:pt-28 mx-auto space-y-5">
-      <Link href="/projects" className="text-black font-semibold flex gap-[10px] mb-[30px] link items-center"> <ArrowLeft /> 
-      <span className="hover:link-underline">Back to Projects</span>
+      <Link
+        href="/projects"
+        className="text-black font-semibold flex gap-[10px] mb-[30px] link items-center"
+      >
+        {" "}
+        <ArrowLeft />
+        <span className="hover:link-underline">Back to Projects</span>
       </Link>
       {/* Header: Title left, Location right */}
       <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 !mb-[48px]">
@@ -99,6 +110,7 @@ export default async function Page({
           </div>
         )}
       </div>
+     
       {project.image?.asset?.url && (
         <Image
           src={project.image.asset.url}
@@ -111,7 +123,6 @@ export default async function Page({
       <div className="container grid grid-cols-1 lg:grid-cols-3 px-0 md:px-[16px] gap-[20px] mx-auto pt-0 md:pt-[40px]">
         {/* Left: Content */}
         <div className="lg:col-span-2 space-y-2">
-
           {/* Categories */}
           {/* {(project.categories?.length ?? 0) > 0 && (
             <div className="flex flex-wrap gap-2 mt-4">
@@ -165,12 +176,17 @@ export default async function Page({
         <div className="container mx-auto px-0 md:px-[16px] pt-[60px]">
           <div className="lg:col-span-3">
             <p className="text-[20px] text-[#757575] mb-[0px]">Projects</p>
-          <div className="flex items-center justify-between mb-6">
-              <h2 className="text-[38px] font-normal text-black">Explore more climate & sustainability projects</h2>
-            <Link href="/projects/all-projects" className="text-black flex items-center gap-2 border border-gray-300 rounded-full px-5 py-2 hover:bg-gray-100 transition">
-            View all Projects <ArrowRight className="w-4 h-4" />
-          </Link>
-          </div>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-[38px] font-normal text-black">
+                Explore more climate & sustainability projects
+              </h2>
+              <Link
+                href="/projects/all-projects"
+                className="text-black flex items-center gap-2 border border-gray-300 rounded-full px-5 py-2 hover:bg-gray-100 transition"
+              >
+                View all Projects <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {relatedProjects.map((relatedProject) => (
                 <Link
@@ -218,7 +234,7 @@ export default async function Page({
           </div>
         </div>
       )}
-           <CtaSection />
+      <CtaSection />
     </div>
   );
 }

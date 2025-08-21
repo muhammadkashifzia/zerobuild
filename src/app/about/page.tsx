@@ -5,6 +5,9 @@ import ObservabilityRadarChart from "@/components/ObservabilityRadarChart";
 import AboutTop from "@/components/about/aboutTop";
 import AboutCta from "@/components/about/aboutCta"
 import type { Metadata } from "next";
+import { client } from "@/sanity/lib/client";
+import { aboutPageQuery } from "@/sanity/lib/queries";
+import { AboutPageBanner } from "@/types/aboutPage";
 
 export const metadata: Metadata = {
   title: "About ZeroBuild - Net Zero Decarbonisation Experts | Company Overview",
@@ -37,11 +40,31 @@ export const metadata: Metadata = {
   },
 };
 
-function page() {
+async function page() {
+  const aboutPageData: AboutPageBanner | null = await client.fetch(aboutPageQuery);
+
   return (
     <div className="min-h-screen  py-12 pt-24 md:pt-[4rem]">
       <AboutTop />
-      <ObservabilityRadarChart />
+      <ObservabilityRadarChart 
+        newBuildButtonText={aboutPageData?.newBuildButtonText}
+        retrofitButtonText={aboutPageData?.retrofitButtonText}
+        exploreNewBuildButtonText={aboutPageData?.exploreNewBuildButtonText}
+        exploreRetrofitButtonText={aboutPageData?.exploreRetrofitButtonText}
+        swiperImages={aboutPageData?.swiperImages}
+        mainHeading={aboutPageData?.mainHeading}
+        newBuildIntroText={aboutPageData?.newBuildIntroText}
+        newBuildSubText={aboutPageData?.newBuildSubText}
+        newBuildDescription={aboutPageData?.newBuildDescription}
+        newBuildThermalText={aboutPageData?.newBuildThermalText}
+        newBuildSummaryText={aboutPageData?.newBuildSummaryText}
+        newBuildResultText={aboutPageData?.newBuildResultText}
+        retrofitIntroText={aboutPageData?.retrofitIntroText}
+        retrofitDescription={aboutPageData?.retrofitDescription}
+        retrofitResultText={aboutPageData?.retrofitResultText}
+        defaultHeading={aboutPageData?.defaultHeading}
+        defaultDescription={aboutPageData?.defaultDescription}
+      />
     <AboutProfile />
     <TestimonialCard />
     <AboutCta />
