@@ -16,6 +16,30 @@ import { Autoplay, Navigation } from "swiper/modules";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import Link from "next/link";
+
+interface ObservabilityRadarChartProps {
+  newBuildButtonText?: string;
+  retrofitButtonText?: string;
+  exploreNewBuildButtonText?: string;
+  exploreRetrofitButtonText?: string;
+  swiperImages?: Array<{
+    image: { asset?: { url: string; metadata?: { dimensions?: { width: number; height: number } } } };
+    altText: string;
+  }>;
+  mainHeading?: string;
+  newBuildIntroText?: string;
+  newBuildSubText?: string;
+  newBuildDescription?: string;
+  newBuildThermalText?: string;
+  newBuildSummaryText?: string;
+  newBuildResultText?: string;
+  retrofitIntroText?: string;
+  retrofitDescription?: string;
+  retrofitResultText?: string;
+  defaultHeading?: string;
+  defaultDescription?: string;
+}
+
 const Plot = dynamic(() => import("react-plotly.js"), {
   ssr: false,
   loading: () => <ChartSkeleton />,
@@ -142,7 +166,46 @@ const COLOR_MAP: Record<string, string> = {
   goldenrod: "rgba(218,165,32,0.4)",
 };
 
-const OptioneeringVisualization: React.FC = () => {
+const OptioneeringVisualization: React.FC<ObservabilityRadarChartProps> = ({
+  newBuildButtonText = "New Build",
+  retrofitButtonText = "Retrofit",
+  exploreNewBuildButtonText = "Explore new build projects",
+  exploreRetrofitButtonText = "Explore retrofit projects",
+  swiperImages = [
+    {
+      image: { asset: { url: "/assets/images/image1.jpg", metadata: { dimensions: { width: 900, height: 400 } } } },
+      altText: "asdsa",
+    },
+    {
+      image: { asset: { url: "/assets/images/image1.jpg", metadata: { dimensions: { width: 900, height: 400 } } } },
+      altText: "asdsa",
+    },
+    {
+      image: { asset: { url: "/assets/images/image1.jpg", metadata: { dimensions: { width: 900, height: 400 } } } },
+      altText: "asdsa",
+    },
+    {
+      image: { asset: { url: "/assets/images/image1.jpg", metadata: { dimensions: { width: 900, height: 400 } } } },
+      altText: "asdsa",
+    },
+    {
+      image: { asset: { url: "/assets/images/image1.jpg", metadata: { dimensions: { width: 900, height: 400 } } } },
+      altText: "asdsa",
+    },
+  ],
+  mainHeading = "Pick your Project Type",
+  newBuildIntroText = "Ever wondered what might've happened if you chose a different strategy, system, or construction method? One that could have performed better over the long term?",
+  newBuildSubText = "Now you don't have to wonder.",
+  newBuildDescription = "Our 5C Zero New Build Framework allows teams to explore over 1,000 design options at any stage of the design. We combine our expertise in building physics, dynamic simulation modelling, life cycle assessment with in-house datasets covering all of the 5Cs to rapidly score and filter high-performing options.",
+  newBuildThermalText = "We combine this with thermal imaging, moisture readings, air permeability tests, internal climate sensors, and smart HTC monitoring to build a performance scorecard of the building's current state.",
+  newBuildSummaryText = "We eliminate poor-performing and non-compliant options and score the remaining against the client's priorities. This helps us get clear, evidence-based rationale for the design decisions. We recommend using these outputs to develop brief for architects and engineers",
+  newBuildResultText = "The result: A confident, futureproof path to Net Zero from day one.",
+  retrofitIntroText = "We then simulate and compare retrofit pathways:",
+  retrofitDescription = "Each is evaluated across the building's future lifecycle, scored against the 5Cs, and mapped to your priorities.",
+  retrofitResultText = "The result: a clear pathway to improvement that's aligned with both project's values and Net Zero goals.",
+  defaultHeading = "Select a project type to view the optioneering visualization",
+  defaultDescription = "Choose between New Build or Retrofit to explore different design options and performance scenarios.",
+}) => {
   const [rawData, setRawData] = useState<OptionData[]>([]);
   const [combinedData, setCombinedData] = useState<OptionData[]>([]);
   const [summaryData, setSummaryData] = useState<OptionData[]>([]);
@@ -228,9 +291,9 @@ const OptioneeringVisualization: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
         className="text-[32px] md:text-[38px] font-bold mb-8 text-black text-center max-w-full md:max-w-[900px] mx-auto"
-      >
-        Pick your Project Type
-      </motion.h1>
+              >
+          {mainHeading || "Pick your Project Type"}
+        </motion.h1>
 
       {/* Project Type Selection */}
       <motion.div 
@@ -249,9 +312,9 @@ const OptioneeringVisualization: React.FC = () => {
                 ? "w-full bg-[#484AB7] text-white border-neutral-200 dark:border-[#484AB7] p-5 rounded-2xl max-w-[256px] h-[56px] flex items-center justify-center text-[16px] font-semibold hover:bg-[#3c3f9d] transition-colors duration-200 shadow-lg"
                 : "flex h-14 w-full items-center justify-center !rounded-2xl border border-transparent bg-white text-sm text-black shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] transition duration-200 hover:shadow-lg max-w-[256px] text-[16px] font-semibold hover:bg-gray-50"
             }`}
-          >
-            New Build
-          </motion.button>
+                      >
+              {newBuildButtonText}
+            </motion.button>
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -261,9 +324,9 @@ const OptioneeringVisualization: React.FC = () => {
                 ? "w-full bg-[#484AB7] text-white border-neutral-200 dark:border-[#484AB7] p-5 rounded-2xl max-w-[256px] h-[56px] flex items-center justify-center text-[16px] font-semibold hover:bg-[#3c3f9d] transition-colors duration-200 shadow-lg"
                 : "flex h-14 w-full items-center justify-center !rounded-2xl border border-transparent bg-white text-sm text-black shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] transition duration-200 hover:shadow-lg max-w-[256px] text-[16px] font-semibold hover:bg-gray-50"
             }`}
-          >
-            Retrofit
-          </motion.button>
+                      >
+              {retrofitButtonText}
+            </motion.button>
         </div>
       </motion.div>
 
@@ -283,33 +346,27 @@ const OptioneeringVisualization: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
               className="text-2xl font-semibold mb-4 text-black"
-            >
-              Ever wondered what might&apos;ve happened if you chose a different
-              strategy, system, or construction method? One that could have
-              performed better over the long term?
-            </motion.p>
+                          >
+                {newBuildIntroText || "Ever wondered what might've happened if you chose a different strategy, system, or construction method? One that could have performed better over the long term?"}
+              </motion.p>
 
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
               className="mb-4 text-black"
-            >
-              Now you don&apos;t have to wonder.
-            </motion.p>
+                          >
+                {newBuildSubText || "Now you don't have to wonder."}
+              </motion.p>
 
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
               className="mb-6 text-black"
-            >
-              Our 5C Zero New Build Framework allows teams to explore over 1,000
-              design options at any stage of the design. We combine our
-              expertise in building physics, dynamic simulation modelling, life
-              cycle assessment with in-house datasets covering all of the 5Cs to
-              rapidly score and filter high-performing options.
-            </motion.p>
+                          >
+                {newBuildDescription || "Our 5C Zero New Build Framework allows teams to explore over 1,000 design options at any stage of the design. We combine our expertise in building physics, dynamic simulation modelling, life cycle assessment with in-house datasets covering all of the 5Cs to rapidly score and filter high-performing options."}
+              </motion.p>
 
             <motion.div 
               initial={{ opacity: 0, y: 30 }}
@@ -367,12 +424,9 @@ const OptioneeringVisualization: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
               className="mb-6 text-black"
-            >
-              We combine this with thermal imaging, moisture readings, air
-              permeability tests, internal climate sensors, and smart HTC
-              monitoring to build a performance scorecard of the building&apos;s
-              current state.{" "}
-            </motion.p>
+                          >
+                {newBuildThermalText || "We combine this with thermal imaging, moisture readings, air permeability tests, internal climate sensors, and smart HTC monitoring to build a performance scorecard of the building's current state."}
+              </motion.p>
 
             <motion.div 
               initial={{ opacity: 0, y: 30 }}
@@ -406,61 +460,19 @@ const OptioneeringVisualization: React.FC = () => {
                   1024: { slidesPerView: 3 },
                 }}
               >
-                <SwiperSlide>
-                  <div className="relative rounded-xl overflow-hidden">
-                    <Image
-                      src="/assets/images/image1.jpg"
-                      alt="asdsa"
-                      width={900}
-                      height={400}
-                      className="w-full h-[400px] object-cover rounded-xl"
-                    />
-                  </div>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <div className="relative rounded-xl overflow-hidden">
-                    <Image
-                      src="/assets/images/image1.jpg"
-                      alt="asdsa"
-                      width={900}
-                      height={400}
-                      className="w-full h-[400px] object-cover rounded-xl"
-                    />
-                  </div>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <div className="relative rounded-xl overflow-hidden">
-                    <Image
-                      src="/assets/images/image1.jpg"
-                      alt="asdsa"
-                      width={900}
-                      height={400}
-                      className="w-full h-[400px] object-cover rounded-xl"
-                    />
-                  </div>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <div className="relative rounded-xl overflow-hidden">
-                    <Image
-                      src="/assets/images/image1.jpg"
-                      alt="asdsa"
-                      width={900}
-                      height={400}
-                      className="w-full h-[400px] object-cover rounded-xl"
-                    />
-                  </div>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <div className="relative rounded-xl overflow-hidden">
-                    <Image
-                      src="/assets/images/image1.jpg"
-                      alt="asdsa"
-                      width={900}
-                      height={400}
-                      className="w-full h-[400px] object-cover rounded-xl"
-                    />
-                  </div>
-                </SwiperSlide>
+                {swiperImages.map((image, index) => (
+                  <SwiperSlide key={index}>
+                    <div className="relative rounded-xl overflow-hidden">
+                      <Image
+                        src={image.image.asset?.url || "/assets/images/image1.jpg"}
+                        alt={image.altText}
+                        width={image.image.asset?.metadata?.dimensions?.width || 900}
+                        height={image.image.asset?.metadata?.dimensions?.height || 400}
+                        className="w-full h-[400px] object-cover rounded-xl"
+                      />
+                    </div>
+                  </SwiperSlide>
+                ))}
               </Swiper>
             </motion.div>
           </motion.div>
@@ -484,13 +496,9 @@ const OptioneeringVisualization: React.FC = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.3 }}
                   className="text-black mb-4 text-[20px]"
-                >
-                  We eliminate poor-performing and non-compliant options and score
-                  the remaining against the client&apos;s priorities. This helps us
-                  get clear, evidence-based rationale for the design decisions. We
-                  recommend using these outputs to develop brief for architects and
-                  engineers
-                </motion.p>
+                                  >
+                    {newBuildSummaryText || "We eliminate poor-performing and non-compliant options and score the remaining against the client's priorities. This helps us get clear, evidence-based rationale for the design decisions. We recommend using these outputs to develop brief for architects and engineers"}
+                  </motion.p>
                 <motion.div 
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -504,16 +512,15 @@ const OptioneeringVisualization: React.FC = () => {
                   </div>
                   <div className="flex flex-col justify-center items-center">
                     <p className="text-black text-center">
-                      The result: A confident, futureproof path to Net Zero from day
-                      one.
+                      {newBuildResultText || "The result: A confident, futureproof path to Net Zero from day one."}
                     </p>
                     <motion.button 
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       className="mt-[10px] px-6 py-3 rounded-lg font-medium transition-all duration-200 w-full bg-[#484AB7] text-white border-neutral-200 dark:border-[#484AB7] p-5 max-w-[256px] h-[56px] flex items-center justify-center text-[16px] hover:bg-[#3c3f9d] shadow-lg"
-                    >
-                      Explore new build projects
-                    </motion.button>
+                                          >
+                        {exploreNewBuildButtonText}
+                      </motion.button>
                   </div>
                 </motion.div>
               </div>
@@ -524,9 +531,9 @@ const OptioneeringVisualization: React.FC = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.3 }}
                   className="text-black mb-4"
-                >
-                  We then simulate and compare retrofit pathways:
-                </motion.p>
+                                  >
+                    {retrofitIntroText || "We then simulate and compare retrofit pathways:"}
+                  </motion.p>
                 <motion.ul 
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -542,10 +549,9 @@ const OptioneeringVisualization: React.FC = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.5 }}
                   className="text-black"
-                >
-                  Each is evaluated across the building&apos;s future lifecycle,
-                  scored against the 5Cs, and mapped to your priorities.
-                </motion.p>
+                                  >
+                    {retrofitDescription || "Each is evaluated across the building's future lifecycle, scored against the 5Cs, and mapped to your priorities."}
+                  </motion.p>
                 <motion.div 
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -557,16 +563,15 @@ const OptioneeringVisualization: React.FC = () => {
                   </Suspense>
                   <div className="flex flex-col justify-center items-center">
                     <p className="text-black text-center">
-                      The result: a clear pathway to improvement that&apos;s aligned
-                      with both project&apos;s values and Net Zero goals.
+                      {retrofitResultText || "The result: a clear pathway to improvement that's aligned with both project's values and Net Zero goals."}
                     </p>
                     <Link href="/projects"  className="mt-[10px] px-6 py-3 rounded-lg font-medium transition-all duration-200 w-full bg-[#484AB7] text-white border-neutral-200 dark:border-[#484AB7] p-5 max-w-[256px] h-[56px] flex items-center justify-center text-[16px] hover:bg-[#3c3f9d] shadow-lg">  <motion.button 
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                      
-                    >
-                    Explore retrofit projects
-                    </motion.button></Link>
+                                          >
+                        {exploreRetrofitButtonText}
+                      </motion.button></Link>
                   </div>
                 </motion.div>
               </div>
@@ -588,11 +593,10 @@ const OptioneeringVisualization: React.FC = () => {
           >
             <div className="max-w-2xl mx-auto">
               <h3 className="text-xl font-semibold mb-4 text-gray-600">
-                Select a project type to view the optioneering visualization
+                {defaultHeading || "Select a project type to view the optioneering visualization"}
               </h3>
               <p className="text-gray-500">
-                Choose between New Build or Retrofit to explore different design
-                options and performance scenarios.
+                {defaultDescription || "Choose between New Build or Retrofit to explore different design options and performance scenarios."}
               </p>
             </div>
           </motion.div>

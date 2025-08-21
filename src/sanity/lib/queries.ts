@@ -107,6 +107,32 @@ export const aboutPageQuery = groq`
         metadata { dimensions { width, height } }
       }
     },
-    introImageAlt
+    introImageAlt,
+    newBuildButtonText,
+    retrofitButtonText,
+    exploreNewBuildButtonText,
+    exploreRetrofitButtonText,
+    swiperImages[] {
+      image {
+        asset-> {
+          _id,
+          url,
+          metadata { dimensions { width, height } }
+        }
+      },
+      altText
+    },
+    mainHeading,
+    newBuildIntroText,
+    newBuildSubText,
+    newBuildDescription,
+    newBuildThermalText,
+    newBuildSummaryText,
+    newBuildResultText,
+    retrofitIntroText,
+    retrofitDescription,
+    retrofitResultText,
+    defaultHeading,
+    defaultDescription
   }
 `
