@@ -682,7 +682,7 @@ const MainRadarPlot: React.FC<{ data: OptionData[] }> = React.memo(
               },
               radialaxis: {
                 visible: true,
-                showticklabels: false,
+                showticklabels: false, 
                 range: [0, 100],
                 gridcolor: "#ddd",
                 gridwidth: 0.5,
