@@ -5,6 +5,8 @@ import ObservabilityChart from "./ObservabilityChart";
 import { Button } from "./ui/moving-border";
 import { AnimatedButton } from "./ui/animated-button";
 import type { Performance } from "@/types/performance";
+import { PortableText } from "@portabletext/react";
+import Link from "next/link";
 
 // Lazy load skeleton component
 const PerformanceSkeleton = lazy(() => import("./shimmer/PerformanceSkeleton").then(mod => ({ default: mod.default })));
@@ -63,8 +65,7 @@ export default function PerformanceSection({ performanceData }: PerformanceSecti
   return (
     <section className="text-black py-[40px] z-[999]">
       <div className="container mx-auto px-[16px]">
-        {/* Chart buttons - shown first */}
-            {/* New section below buttons */}
+        {/* Title and description */}
             <div className="text-center mb-8">
           <div className="text-[24px] md:text-[28px] leading-[1.3] mb-[15px] font-bold">
             <p>{performanceData.mainTitle}</p>
@@ -77,6 +78,14 @@ export default function PerformanceSection({ performanceData }: PerformanceSecti
           </div>
         </div>
 
+        {/* Content above graph */}
+        {performanceData.contentAboveGraph && (
+          <div className="prose max-w-none text-black text-center mb-8">
+            <PortableText value={performanceData.contentAboveGraph} />
+          </div>
+        )}
+
+        {/* Chart buttons */}
         <div className="text-center mb-8">
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 justify-center gap-2 graph-btn">
             {chartButtons.map((button) => {
@@ -150,6 +159,24 @@ export default function PerformanceSection({ performanceData }: PerformanceSecti
         {showChart && (
           <div className="mb-12">
             <ObservabilityChart selectedView={selectedView} />
+          </div>
+        )}
+
+        {/* Content below graph */}
+        {performanceData.contentBelowGraph && (
+          <div className="prose max-w-none text-black text-center mb-8">
+            <PortableText value={performanceData.contentBelowGraph} />
+          </div>
+        )}
+
+        {/* Build CTA button */}
+        {performanceData.cta?.text && (
+          <div className="text-center">
+            <Link href={performanceData.cta.link || "/contact"} className="inline-block">
+              <Button className="px-6 py-3 text-[16px] font-bold bg-[#484AB7] text-white rounded-xl">
+                {performanceData.cta.text}
+              </Button>
+            </Link>
           </div>
         )}
       </div>

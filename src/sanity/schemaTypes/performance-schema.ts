@@ -21,6 +21,33 @@ export const performanceType = defineType({
     }),
 
     defineField({
+      name: 'contentAboveGraph',
+      title: 'Content Above Graph',
+      type: 'array',
+      description: 'Rich text displayed above the graph/buttons',
+      of: [{ type: 'block' }],
+    }),
+
+    defineField({
+      name: 'contentBelowGraph',
+      title: 'Content Below Graph',
+      type: 'array',
+      description: 'Rich text displayed below the graph',
+      of: [{ type: 'block' }],
+    }),
+
+    defineField({
+      name: 'cta',
+      title: 'Build CTA',
+      type: 'object',
+      description: 'Configurable call-to-action button',
+      fields: [
+        defineField({ name: 'text', title: 'Button Text', type: 'string', initialValue: 'Build' }),
+        defineField({ name: 'link', title: 'Button Link', type: 'url', initialValue: '/contact' }),
+      ],
+    }),
+
+    defineField({
       name: 'isActive',
       title: 'Is Active',
       type: 'boolean',

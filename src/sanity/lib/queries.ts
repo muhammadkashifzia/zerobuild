@@ -82,7 +82,10 @@ export const performanceQuery = groq`
   *[_type == "performance" && isActive == true][0] {
     _id,
     mainTitle,
-    description
+    description,
+    contentAboveGraph,
+    contentBelowGraph,
+    cta { text, link }
   }
 ` 
 
@@ -99,14 +102,6 @@ export const aboutPageQuery = groq`
     _id,
     title,
     description,
-    introText,
-    introImage {
-      asset-> {
-        _id,
-        url,
-        metadata { dimensions { width, height } }
-      }
-    },
-    introImageAlt
+    introContent
   }
 `

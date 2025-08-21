@@ -3,4 +3,7 @@ export interface Performance {
   mainTitle: string;
   description: string;
   isActive: boolean;
+  contentAboveGraph?: any;
+  contentBelowGraph?: any;
+  cta?: { text?: string; link?: string };
 } 
