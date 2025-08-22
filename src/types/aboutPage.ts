@@ -12,12 +12,10 @@ export interface AboutPageBanner {
     image: { asset?: { url: string; metadata?: { dimensions?: { width: number; height: number } } } };
     altText: string;
   }>;
-  newBuildIntroText?: string;
-  newBuildSubText?: string;
-  newBuildDescription?: string;
-  newBuildThermalText?: string;
+  newBuildIntroText?: any;
   newBuildSummaryText?: string;
   newBuildResultText?: string;
+  newBuildResultCta?: { text?: string; link?: string };
   retrofitIntroText?: string;
   retrofitDescription?: string;
   retrofitResultText?: string;

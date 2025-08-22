@@ -54,11 +54,9 @@ async function page() {
         swiperImages={aboutPageData?.swiperImages}
         mainHeading={aboutPageData?.mainHeading}
         newBuildIntroText={aboutPageData?.newBuildIntroText}
-        newBuildSubText={aboutPageData?.newBuildSubText}
-        newBuildDescription={aboutPageData?.newBuildDescription}
-        newBuildThermalText={aboutPageData?.newBuildThermalText}
         newBuildSummaryText={aboutPageData?.newBuildSummaryText}
         newBuildResultText={aboutPageData?.newBuildResultText}
+        newBuildResultCta={aboutPageData?.newBuildResultCta}
         retrofitIntroText={aboutPageData?.retrofitIntroText}
         retrofitDescription={aboutPageData?.retrofitDescription}
         retrofitResultText={aboutPageData?.retrofitResultText}

@@ -120,11 +120,9 @@ export const aboutPageQuery = groq`
       altText
     },
     newBuildIntroText,
-    newBuildSubText,
-    newBuildDescription,
-    newBuildThermalText,
     newBuildSummaryText,
     newBuildResultText,
+    newBuildResultCta { text, link },
     retrofitIntroText,
     retrofitDescription,
     retrofitResultText,

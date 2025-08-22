@@ -67,26 +67,24 @@ export const aboutPageType = defineType({
     defineField({
       name: 'newBuildIntroText',
       title: 'New Build Intro Text',
-      type: 'text',
-      initialValue: "Ever wondered what might’ve happened if you chose a different strategy, system, or construction method? One that could have performed better over the long term?",
-    }),
-    defineField({
-      name: 'newBuildSubText',
-      title: 'New Build Sub Text',
-      type: 'text',
-      initialValue: "Now you don’t have to wonder.",
-    }),
-    defineField({
-      name: 'newBuildDescription',
-      title: 'New Build Description',
-      type: 'text',
-      initialValue: "Our 5C Zero New Build Framework allows teams to explore over 1,000 design options at any stage of the design. We combine our expertise in building physics, dynamic simulation modelling, life cycle assessment with in-house datasets covering all of the 5Cs to rapidly score and filter high-performing options.",
-    }),
-    defineField({
-      name: 'newBuildThermalText',
-      title: 'New Build Thermal/Diagnostics Text',
-      type: 'text',
-      initialValue: "We combine this with thermal imaging, moisture readings, air permeability tests, internal climate sensors, and smart HTC monitoring to build a performance scorecard of the building's current state.",
+      type: 'array',
+      description: 'Rich content below the banner; supports text, headings, lists, and images',
+      of: [
+        { type: 'block' },
+        {
+          type: 'image',
+          options: { hotspot: true },
+          fields: [
+            {
+              name: 'alt',
+              type: 'string',
+              title: 'Alt text',
+              description: 'Accessible description of image for screen readers',
+              validation: (Rule) => Rule.required().warning('Provide alt text for accessibility'),
+            },
+          ],
+        },
+      ],
     }),
     defineField({
       name: 'newBuildSummaryText',
@@ -99,6 +97,23 @@ export const aboutPageType = defineType({
       title: 'New Build Result Text',
       type: 'string',
       initialValue: 'The result: A confident, futureproof path to Net Zero from day one.',
+    }),
+    defineField({
+      name: 'newBuildResultCta',
+      title: 'New Build Result CTA',
+      type: 'object',
+      fields: [
+        defineField({
+          name: 'text',
+          title: 'Button Text',
+          type: 'string',
+        }),
+        defineField({
+          name: 'link',
+          title: 'Button Link URL',
+          type: 'url',
+        })
+      ]
     }),
     defineField({
       name: 'retrofitIntroText',

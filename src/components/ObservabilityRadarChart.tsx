@@ -16,6 +16,7 @@ import { Autoplay, Navigation } from "swiper/modules";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import Link from "next/link";
+import { PortableText } from "@portabletext/react";
 
 interface ObservabilityRadarChartProps {
   newBuildButtonText?: string;
@@ -26,18 +27,16 @@ interface ObservabilityRadarChartProps {
     image: { asset?: { url: string; metadata?: { dimensions?: { width: number; height: number } } } };
     altText: string;
   }>;
-  mainHeading?: string;
-  newBuildIntroText?: string;
-  newBuildSubText?: string;
-  newBuildDescription?: string;
-  newBuildThermalText?: string;
-  newBuildSummaryText?: string;
-  newBuildResultText?: string;
-  retrofitIntroText?: string;
-  retrofitDescription?: string;
-  retrofitResultText?: string;
-  defaultHeading?: string;
-  defaultDescription?: string;
+  mainHeading?: unknown;
+  newBuildIntroText?: unknown;
+  newBuildSummaryText?: unknown;
+  newBuildResultText?: unknown;
+  newBuildResultCta?: { text?: string; link?: string };
+  retrofitIntroText?: unknown;
+  retrofitDescription?: unknown;
+  retrofitResultText?: unknown;
+  defaultHeading?: unknown;
+  defaultDescription?: unknown;
 }
 
 const Plot = dynamic(() => import("react-plotly.js"), {
@@ -195,11 +194,9 @@ const OptioneeringVisualization: React.FC<ObservabilityRadarChartProps> = ({
   ],
   mainHeading = "Pick your Project Type",
   newBuildIntroText = "Ever wondered what might've happened if you chose a different strategy, system, or construction method? One that could have performed better over the long term?",
-  newBuildSubText = "Now you don't have to wonder.",
-  newBuildDescription = "Our 5C Zero New Build Framework allows teams to explore over 1,000 design options at any stage of the design. We combine our expertise in building physics, dynamic simulation modelling, life cycle assessment with in-house datasets covering all of the 5Cs to rapidly score and filter high-performing options.",
-  newBuildThermalText = "We combine this with thermal imaging, moisture readings, air permeability tests, internal climate sensors, and smart HTC monitoring to build a performance scorecard of the building's current state.",
   newBuildSummaryText = "We eliminate poor-performing and non-compliant options and score the remaining against the client's priorities. This helps us get clear, evidence-based rationale for the design decisions. We recommend using these outputs to develop brief for architects and engineers",
   newBuildResultText = "The result: A confident, futureproof path to Net Zero from day one.",
+  newBuildResultCta,
   retrofitIntroText = "We then simulate and compare retrofit pathways:",
   retrofitDescription = "Each is evaluated across the building's future lifecycle, scored against the 5Cs, and mapped to your priorities.",
   retrofitResultText = "The result: a clear pathway to improvement that's aligned with both project's values and Net Zero goals.",
@@ -217,6 +214,12 @@ const OptioneeringVisualization: React.FC<ObservabilityRadarChartProps> = ({
     "new-build" | "retrofit" | null
   >("new-build");
   const [isTransitioning, setIsTransitioning] = useState(false);
+
+  const safeText = (value: unknown, fallback: string): string =>
+    typeof value === "string" && value.trim().length > 0 ? value : fallback;
+
+  const isBlocks = (value: unknown): value is any[] =>
+    Array.isArray(value) && (value as any[]).length > 0 && typeof (value as any[])[0] === "object";
 
   useEffect(() => {
     setIsClient(true);
@@ -292,7 +295,7 @@ const OptioneeringVisualization: React.FC<ObservabilityRadarChartProps> = ({
         transition={{ duration: 0.6 }}
         className="text-[32px] md:text-[38px] font-bold mb-8 text-black text-center max-w-full md:max-w-[900px] mx-auto"
               >
-          {mainHeading || "Pick your Project Type"}
+          {safeText(mainHeading, "Pick your Project Type")}
         </motion.h1>
 
       {/* Project Type Selection */}
@@ -341,32 +344,25 @@ const OptioneeringVisualization: React.FC<ObservabilityRadarChartProps> = ({
             transition={{ duration: 0.4, ease: "easeOut" }}
             className="mb-12 relative"
           >
-            <motion.p 
+            <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
               className="text-2xl font-semibold mb-4 text-black"
                           >
-                {newBuildIntroText || "Ever wondered what might've happened if you chose a different strategy, system, or construction method? One that could have performed better over the long term?"}
-              </motion.p>
+              {isBlocks(newBuildIntroText) ? (
+                <div className="prose max-w-none text-black">
+                  <PortableText value={newBuildIntroText as any[]} />
+                </div>
+              ) : (
+                safeText(
+                  newBuildIntroText,
+                  "Ever wondered what might've happened if you chose a different strategy, system, or construction method? One that could have performed better over the long term?"
+                )
+              )}
+            </motion.div>
 
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="mb-4 text-black"
-                          >
-                {newBuildSubText || "Now you don't have to wonder."}
-              </motion.p>
-
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="mb-6 text-black"
-                          >
-                {newBuildDescription || "Our 5C Zero New Build Framework allows teams to explore over 1,000 design options at any stage of the design. We combine our expertise in building physics, dynamic simulation modelling, life cycle assessment with in-house datasets covering all of the 5Cs to rapidly score and filter high-performing options."}
-              </motion.p>
+            {/* Removed: newBuildSubText and newBuildDescription sections */}
 
             <motion.div 
               initial={{ opacity: 0, y: 30 }}
@@ -409,24 +405,7 @@ const OptioneeringVisualization: React.FC<ObservabilityRadarChartProps> = ({
               Our 5C Zero Retrofit Framework begins with deep diagnostics.
             </motion.p>
 
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="mb-6 text-black"
-            >
-              We use SLAM + LiDAR 3D scanners to build an accurate BIM of the
-              building.
-            </motion.p>
-            
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              className="mb-6 text-black"
-                          >
-                {newBuildThermalText || "We combine this with thermal imaging, moisture readings, air permeability tests, internal climate sensors, and smart HTC monitoring to build a performance scorecard of the building's current state."}
-              </motion.p>
+            {/* Removed: newBuildThermalText section */}
 
             <motion.div 
               initial={{ opacity: 0, y: 30 }}
@@ -497,8 +476,11 @@ const OptioneeringVisualization: React.FC<ObservabilityRadarChartProps> = ({
                   transition={{ duration: 0.5, delay: 0.3 }}
                   className="text-black mb-4 text-[20px]"
                                   >
-                    {newBuildSummaryText || "We eliminate poor-performing and non-compliant options and score the remaining against the client's priorities. This helps us get clear, evidence-based rationale for the design decisions. We recommend using these outputs to develop brief for architects and engineers"}
-                  </motion.p>
+                  {safeText(
+                    newBuildSummaryText,
+                    "We eliminate poor-performing and non-compliant options and score the remaining against the client's priorities. This helps us get clear, evidence-based rationale for the design decisions. We recommend using these outputs to develop brief for architects and engineers"
+                  )}
+                </motion.p>
                 <motion.div 
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -512,15 +494,27 @@ const OptioneeringVisualization: React.FC<ObservabilityRadarChartProps> = ({
                   </div>
                   <div className="flex flex-col justify-center items-center">
                     <p className="text-black text-center">
-                      {newBuildResultText || "The result: A confident, futureproof path to Net Zero from day one."}
+                      {safeText(
+                        newBuildResultText,
+                        "The result: A confident, futureproof path to Net Zero from day one."
+                      )}
                     </p>
-                    <motion.button 
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="mt-[10px] px-6 py-3 rounded-lg font-medium transition-all duration-200 w-full bg-[#484AB7] text-white border-neutral-200 dark:border-[#484AB7] p-5 max-w-[256px] h-[56px] flex items-center justify-center text-[16px] hover:bg-[#3c3f9d] shadow-lg"
-                                          >
+                    {newBuildResultCta?.text && newBuildResultCta?.link ? (
+                      <Link
+                        href={newBuildResultCta.link}
+                        className="mt-[10px] px-6 py-3 rounded-lg font-medium transition-all duration-200 w-full bg-[#484AB7] text-white border-neutral-200 dark:border-[#484AB7] p-5 max-w-[256px] h-[56px] flex items-center justify-center text-[16px] hover:bg-[#3c3f9d] shadow-lg"
+                      >
+                        {newBuildResultCta.text}
+                      </Link>
+                    ) : (
+                      <motion.button 
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="mt-[10px] px-6 py-3 rounded-lg font-medium transition-all duration-200 w-full bg-[#484AB7] text-white border-neutral-200 dark:border-[#484AB7] p-5 max-w-[256px] h-[56px] flex items-center justify-center text[16px] hover:bg-[#3c3f9d] shadow-lg"
+                      >
                         {exploreNewBuildButtonText}
                       </motion.button>
+                    )}
                   </div>
                 </motion.div>
               </div>
@@ -532,8 +526,11 @@ const OptioneeringVisualization: React.FC<ObservabilityRadarChartProps> = ({
                   transition={{ duration: 0.5, delay: 0.3 }}
                   className="text-black mb-4"
                                   >
-                    {retrofitIntroText || "We then simulate and compare retrofit pathways:"}
-                  </motion.p>
+                  {safeText(
+                    retrofitIntroText,
+                    "We then simulate and compare retrofit pathways:"
+                  )}
+                </motion.p>
                 <motion.ul 
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -550,8 +547,11 @@ const OptioneeringVisualization: React.FC<ObservabilityRadarChartProps> = ({
                   transition={{ duration: 0.5, delay: 0.5 }}
                   className="text-black"
                                   >
-                    {retrofitDescription || "Each is evaluated across the building's future lifecycle, scored against the 5Cs, and mapped to your priorities."}
-                  </motion.p>
+                  {safeText(
+                    retrofitDescription,
+                    "Each is evaluated across the building's future lifecycle, scored against the 5Cs, and mapped to your priorities."
+                  )}
+                </motion.p>
                 <motion.div 
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -563,15 +563,17 @@ const OptioneeringVisualization: React.FC<ObservabilityRadarChartProps> = ({
                   </Suspense>
                   <div className="flex flex-col justify-center items-center">
                     <p className="text-black text-center">
-                      {retrofitResultText || "The result: a clear pathway to improvement that's aligned with both project's values and Net Zero goals."}
+                      {safeText(
+                        retrofitResultText,
+                        "The result: a clear pathway to improvement that's aligned with both project's values and Net Zero goals."
+                      )}
                     </p>
                     <Link href="/projects"  className="mt-[10px] px-6 py-3 rounded-lg font-medium transition-all duration-200 w-full bg-[#484AB7] text-white border-neutral-200 dark:border-[#484AB7] p-5 max-w-[256px] h-[56px] flex items-center justify-center text-[16px] hover:bg-[#3c3f9d] shadow-lg">  <motion.button 
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                     
-                                          >
-                        {exploreRetrofitButtonText}
-                      </motion.button></Link>
+                    >
+                      {exploreRetrofitButtonText}
+                    </motion.button></Link>
                   </div>
                 </motion.div>
               </div>
@@ -593,10 +595,16 @@ const OptioneeringVisualization: React.FC<ObservabilityRadarChartProps> = ({
           >
             <div className="max-w-2xl mx-auto">
               <h3 className="text-xl font-semibold mb-4 text-gray-600">
-                {defaultHeading || "Select a project type to view the optioneering visualization"}
+                {safeText(
+                  defaultHeading,
+                  "Select a project type to view the optioneering visualization"
+                )}
               </h3>
               <p className="text-gray-500">
-                {defaultDescription || "Choose between New Build or Retrofit to explore different design options and performance scenarios."}
+                {safeText(
+                  defaultDescription,
+                  "Choose between New Build or Retrofit to explore different design options and performance scenarios."
+                )}
               </p>
             </div>
           </motion.div>
