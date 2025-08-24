@@ -80,15 +80,13 @@ let dataCache: {
 // Shimmer loading component
 const LoadingSkeleton: React.FC = () => (
   <div className="max-w-[1024px] mx-auto px-4 py-8">
-    {/* Title skeleton */}
-    <div className="h-10 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded-lg mb-8 w-1/3 animate-pulse bg-[length:200%_100%] animate-shimmer"></div>
 
     {/* All Options Skeleton */}
     <div>
-      <div className="h-8 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded-lg mb-4 w-1/4 animate-pulse bg-[length:200%_100%] animate-shimmer"></div>
-      <div className="bg-white p-4 rounded-lg shadow-lg min-w-[2000px]">
-        <div className="grid grid-cols-10 gap-2">
-          {Array.from({ length: 50 }).map((_, i) => (
+
+      <div className="bg-white p-4 rounded-lg shadow-lg">
+        <div className="grid grid-cols-1 gap-2">
+          {Array.from({ length: 1 }).map((_, i) => (
             <div
               key={i}
               className="aspect-square bg-gray-50 rounded-lg flex items-center justify-center border border-gray-100"
@@ -102,10 +100,10 @@ const LoadingSkeleton: React.FC = () => (
 
     {/* Summary Options Skeleton */}
     <div>
-      <div className="h-8 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded-lg mb-4 w-1/4 animate-pulse bg-[length:200%_100%] animate-shimmer"></div>
+   
       <div className="bg-white p-4 rounded-lg shadow-lg">
-        <div className="grid grid-cols-3 gap-4">
-          {Array.from({ length: 3 }).map((_, i) => (
+        <div className="grid grid-cols-1 gap-4">
+          {Array.from({ length: 1 }).map((_, i) => (
             <div
               key={i}
               className="aspect-square bg-gray-50 rounded-lg flex items-center justify-center border border-gray-100"

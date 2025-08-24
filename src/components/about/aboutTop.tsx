@@ -43,7 +43,7 @@ export default async function AboutTop() {
                 block: {
                   h1: ({ children }) => <h1 className="text-3xl font-bold text-center">{children}</h1>,
                   h2: ({ children }) => <h2 className="text-2xl font-semibold text-center">{children}</h2>,
-                  normal: ({ children }) => <p className="text-[16px] text-center">{children}</p>,
+                  normal: ({ children }) => <p className="text-[16px] text-left md:text-center">{children}</p>,
                 },
                 list: {
                   bullet: ({ children }) => <ul className="list-disc list-inside space-y-1">{children}</ul>,

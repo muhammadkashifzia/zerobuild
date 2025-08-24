@@ -125,7 +125,7 @@ const Navbar = ({ className }: { className?: string }) => {
               className="flex items-center justify-center space-x-2 text-2xl font-bold text-center text-neutral-600"
               href="/"
             >
-              <div className="relative h-8 w-[200px] flex items-center justify-center rounded-md text-[32px] antialiased">
+              <div className="relative h-8 w-[200px] flex items-center justify-center rounded-md text-[32px] antialiased gap-[10px]">
                <Image src="/assets/images/5CZLogo.png" alt="logo" width={100} height={100} className="h-[50px] w-auto" />
                <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent font-bold">
                  ZeroBuild
@@ -135,7 +135,7 @@ const Navbar = ({ className }: { className?: string }) => {
           </div>
 
           <div className="flex flex-col items-start px-[16px] pt-[50px] space-y-1">
-            {["home", "about", "projects", "contact"].map((item) => (
+            {["home", "about", "services", "projects", "contact"].map((item) => (
               <HoveredLink
                 key={item}
                 href={getLinkPath(item)}
