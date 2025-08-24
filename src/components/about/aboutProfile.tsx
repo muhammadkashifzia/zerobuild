@@ -39,7 +39,7 @@ export default function AboutProfile({
   linkedinButtonText = "Connect on LinkedIn"
 }: AboutProfileProps) {
   return (
-    <div className="flex flex-col md:flex-row max-w-[1024px] mx-auto px-4 pt-[80px] pb-[100px] gap-8">
+    <div className="flex flex-col md:flex-row max-w-[1024px] mx-auto px-4 pt-[40px] md:pt-[80px] pb-[40px] md:pb-[80px] gap-8">
       {/* Left Image */}
       <div className="flex-shrink-0 w-full md:w-1/3">
         <Image
@@ -53,7 +53,7 @@ export default function AboutProfile({
 
       {/* Right Text Section */}
       <div className="flex flex-col justify-start  md:w-2/3">
-        <h1 className="text-[32px] md:text-[40px] lg:text-[48px] font-serif font-medium text-gray-900 mb-[0px]">
+        <h1 className="mb-[20px] md:mb-0 text-[32px] md:text-[40px] lg:text-[48px] font-serif font-medium text-gray-900">
           {name}
         </h1>
 

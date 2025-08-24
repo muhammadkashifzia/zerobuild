@@ -322,7 +322,7 @@ const OptioneeringVisualization: React.FC<ObservabilityRadarChartProps> = ({
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="text-[32px] md:text-[38px] font-bold mb-8 text-black text-center max-w-full md:max-w-[900px] mx-auto"
+        className="text-[24px] md:text-[38px] font-bold mb-8 text-black text-center max-w-full md:max-w-[900px] mx-auto"
               >
           {safeText(mainHeading, "Pick your Project Type")}
         </motion.h1>

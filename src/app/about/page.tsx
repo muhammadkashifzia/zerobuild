@@ -49,7 +49,7 @@ async function page() {
   console.log('All about pages:', allAboutPages);
 
   return (
-    <div className="min-h-screen  py-12 pt-24 md:pt-[4rem]">
+    <div className="min-h-screen  py-12 pt-[4rem] md:pt-[4rem]">
      
       <AboutTop />
       <ObservabilityRadarChart 

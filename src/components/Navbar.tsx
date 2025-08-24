@@ -120,7 +120,7 @@ const Navbar = ({ className }: { className?: string }) => {
         </div>
 
         <div className="pt-[15px]">
-          <div className="flex items-center justify-center pt-2">
+          <div className="flex items-center justify-center pt-2 px-[16px]">
             <HoveredLink
               className="flex items-center justify-center space-x-2 text-2xl font-bold text-center text-neutral-600"
               href="/"
