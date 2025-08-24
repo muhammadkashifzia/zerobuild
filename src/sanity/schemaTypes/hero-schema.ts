@@ -32,18 +32,18 @@ export const heroType = defineType({
       title: 'Primary Button',
       type: 'object',
       fields: [
-        defineField({
+        {
           name: 'text',
           title: 'Button Text',
           type: 'string',
           validation: (Rule) => Rule.required(),
-        }),
-        defineField({
+        },
+        {
           name: 'link',
           title: 'Button Link',
           type: 'string',
           validation: (Rule) => Rule.required(),
-        }),
+        },
       ],
       validation: (Rule) => Rule.required(),
     }),
@@ -52,18 +52,18 @@ export const heroType = defineType({
       title: 'Secondary Button',
       type: 'object',
       fields: [
-        defineField({
+        {
           name: 'text',
           title: 'Button Text',
           type: 'string',
           validation: (Rule) => Rule.required(),
-        }),
-        defineField({
+        },
+        {
           name: 'link',
           title: 'Button Link',
           type: 'string',
           validation: (Rule) => Rule.required(),
-        }),
+        },
       ],
       validation: (Rule) => Rule.required(),
     }),

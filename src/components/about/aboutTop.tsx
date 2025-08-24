@@ -9,6 +9,9 @@ import AboutTopClient from "./AboutTopClient";
 
 export default async function AboutTop() {
   const aboutPageData: AboutPageBanner | null = await client.fetch(aboutPageQuery);
+  
+  // Debug logging to check what data is being fetched
+  console.log('AboutTop component data:', aboutPageData);
 
   return (
     <div>

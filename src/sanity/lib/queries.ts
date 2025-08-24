@@ -98,18 +98,23 @@ export const projectsPageQuery = groq`
 `
 
 export const aboutPageQuery = groq`
-  *[_type == "aboutPage" && isActive == true][0] {
+  *[_type == "aboutPage" && (isActive == true || !defined(isActive))][0] {
     _id,
     title,
     description,
-    introContent
-    ,
+    introContent,
     mainHeading,
     newBuildButtonText,
+    retrofitSelectorButtonText,
     retrofitButtonText,
-    exploreNewBuildButtonText,
-    exploreRetrofitButtonText,
-    swiperImages[] {
+
+    newBuildIntroText,
+    newBuildSummaryText,
+    newBuildResultText,
+    newBuildResultCta { text, link },
+    retrofitIntroText,
+    retrofitContent,
+    retrofitSlider[] {
       image {
         asset-> {
           _id,
@@ -119,14 +124,42 @@ export const aboutPageQuery = groq`
       },
       altText
     },
-    newBuildIntroText,
-    newBuildSummaryText,
-    newBuildResultText,
-    newBuildResultCta { text, link },
-    retrofitIntroText,
-    retrofitDescription,
+
     retrofitResultText,
-    defaultHeading,
-    defaultDescription
+    retrofitButtonText,
+    retrofitButtonUrl,
+
+    // Profile Section
+    profileImage {
+      asset-> {
+        _id,
+        url,
+        metadata { dimensions { width, height } }
+      },
+      alt
+    },
+    profileName,
+    profileTitle,
+    profileBio,
+    contactButtonText,
+    contactButtonUrl,
+    linkedinUrl,
+    linkedinButtonText,
+
+    // CTA Section
+    ctaTitle,
+    ctaDescription,
+    ctaButtonText,
+    ctaButtonUrl,
+    ctaTypewriterWords
+  }
+`
+
+export const allAboutPagesQuery = groq`
+  *[_type == "aboutPage"] {
+    _id,
+    title,
+    description,
+    isActive
   }
 `

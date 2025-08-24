@@ -24,7 +24,7 @@ SANITY_WRITE_TOKEN=your_sanity_write_token
 ### Microsoft 365 App Password Setup
 1. Go to your Microsoft 365 account settings
 2. Enable 2-factor authentication if not already enabled
-3. Generate an app password for "info@eastlogic.com"
+3. Generate an app password for "deepak@zerobuild.io"
 4. Use this app password as the `EMAIL_APP_PASSWORD` environment variable
 
 ## Testing Email Configuration

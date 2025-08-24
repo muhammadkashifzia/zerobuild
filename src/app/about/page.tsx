@@ -6,7 +6,7 @@ import AboutTop from "@/components/about/aboutTop";
 import AboutCta from "@/components/about/aboutCta"
 import type { Metadata } from "next";
 import { client } from "@/sanity/lib/client";
-import { aboutPageQuery } from "@/sanity/lib/queries";
+import { aboutPageQuery, allAboutPagesQuery } from "@/sanity/lib/queries";
 import { AboutPageBanner } from "@/types/aboutPage";
 
 export const metadata: Metadata = {
@@ -42,30 +42,49 @@ export const metadata: Metadata = {
 
 async function page() {
   const aboutPageData: AboutPageBanner | null = await client.fetch(aboutPageQuery);
+  const allAboutPages = await client.fetch(allAboutPagesQuery);
+  
+  // Debug logging to check what data is being fetched
+  console.log('About page data:', aboutPageData);
+  console.log('All about pages:', allAboutPages);
 
   return (
     <div className="min-h-screen  py-12 pt-24 md:pt-[4rem]">
+     
       <AboutTop />
       <ObservabilityRadarChart 
         newBuildButtonText={aboutPageData?.newBuildButtonText}
-        retrofitButtonText={aboutPageData?.retrofitButtonText}
-        exploreNewBuildButtonText={aboutPageData?.exploreNewBuildButtonText}
-        exploreRetrofitButtonText={aboutPageData?.exploreRetrofitButtonText}
-        swiperImages={aboutPageData?.swiperImages}
+        retrofitButtonText={aboutPageData?.retrofitSelectorButtonText}
+
         mainHeading={aboutPageData?.mainHeading}
         newBuildIntroText={aboutPageData?.newBuildIntroText}
         newBuildSummaryText={aboutPageData?.newBuildSummaryText}
         newBuildResultText={aboutPageData?.newBuildResultText}
         newBuildResultCta={aboutPageData?.newBuildResultCta}
         retrofitIntroText={aboutPageData?.retrofitIntroText}
-        retrofitDescription={aboutPageData?.retrofitDescription}
+        retrofitContent={aboutPageData?.retrofitContent}
+        retrofitSlider={aboutPageData?.retrofitSlider}
         retrofitResultText={aboutPageData?.retrofitResultText}
-        defaultHeading={aboutPageData?.defaultHeading}
-        defaultDescription={aboutPageData?.defaultDescription}
+        retrofitButtonUrl={aboutPageData?.retrofitButtonUrl}
       />
-    <AboutProfile />
-    <TestimonialCard />
-    <AboutCta />
+      <AboutProfile 
+        profileImage={aboutPageData?.profileImage}
+        name={aboutPageData?.profileName}
+        title={aboutPageData?.profileTitle}
+        bio={aboutPageData?.profileBio}
+        contactButtonText={aboutPageData?.contactButtonText}
+        contactButtonUrl={aboutPageData?.contactButtonUrl}
+        linkedinUrl={aboutPageData?.linkedinUrl}
+        linkedinButtonText={aboutPageData?.linkedinButtonText}
+      />
+      <TestimonialCard />
+      <AboutCta 
+        title={aboutPageData?.ctaTitle}
+        description={aboutPageData?.ctaDescription}
+        buttonText={aboutPageData?.ctaButtonText}
+        buttonUrl={aboutPageData?.ctaButtonUrl}
+        typewriterWords={aboutPageData?.ctaTypewriterWords?.map(word => ({ text: word }))}
+      />
     </div>
   );
 }

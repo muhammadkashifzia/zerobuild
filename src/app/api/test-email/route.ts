@@ -22,7 +22,7 @@ export async function POST() {
 
     console.log('✅ SMTP connection test passed, sending test email...');
     const emailResult = await sendEmail({
-      to: "info@eastlogic.com",
+      to: "deepak@zerobuild.io",
       subject: "Test Email - Zero Build Contact Form",
       html: `
         <h2>Test Email - Contact Form Verification</h2>

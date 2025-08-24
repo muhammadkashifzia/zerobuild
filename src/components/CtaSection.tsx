@@ -33,7 +33,7 @@ export default function CtaSection() {
 
       {/* Side Buttons */}
       {/* <div className="flex flex-col gap-2 md:gap-4 w-full md:w-auto">
-        <a href="mailto:team@zerobuild.io" className="flex items-center justify-between px-6 py-3 rounded-full bg-[#484AB7] text-white text-sm font-medium w-full md:w-56 border border-[#484AB7]">
+        <a href="mailto:deepak@zerobuild.io" className="flex items-center justify-between px-6 py-3 rounded-full bg-[#484AB7] text-white text-sm font-medium w-full md:w-56 border border-[#484AB7]">
           Talk to an Expert
           <span className="ml-2 w-5 h-5 flex items-center justify-center rounded-full bg-white text-[#484AB7]">
             <ArrowRight className="w-3 h-3" />

@@ -42,8 +42,18 @@ export const performanceType = defineType({
       type: 'object',
       description: 'Configurable call-to-action button',
       fields: [
-        defineField({ name: 'text', title: 'Button Text', type: 'string', initialValue: 'Build' }),
-        defineField({ name: 'link', title: 'Button Link', type: 'url', initialValue: '/contact' }),
+        {
+          name: 'text',
+          title: 'Button Text',
+          type: 'string',
+          initialValue: 'Build'
+        },
+        {
+          name: 'link',
+          title: 'Button Link',
+          type: 'url',
+          initialValue: '/contact'
+        },
       ],
     }),
 

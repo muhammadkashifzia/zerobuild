@@ -28,21 +28,21 @@ export const featureType = defineType({
       title: 'Logo Colors',
       type: 'object',
       fields: [
-        defineField({
+        {
           name: 'primaryColor',
           title: 'Primary Color',
           type: 'string',
           description: 'Primary color for the logo (hex, rgb, or CSS color)',
           initialValue: '#3B82F6',
-        }),
-        defineField({
+        },
+        {
           name: 'secondaryColor',
           title: 'Secondary Color',
           type: 'string',
           description: 'Secondary color for gradient effect (hex, rgb, or CSS color)',
           initialValue: '#8B5CF6',
-        }),
-        defineField({
+        },
+        {
           name: 'gradientDirection',
           title: 'Gradient Direction',
           type: 'string',
@@ -56,7 +56,7 @@ export const featureType = defineType({
             ],
           },
           initialValue: 'to bottom right',
-        }),
+        },
       ],
     }),
     defineField({
