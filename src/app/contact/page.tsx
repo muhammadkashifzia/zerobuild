@@ -150,13 +150,13 @@ const ContactPage = () => {
           {contacts.map((contact, index) => (
             <div
               key={contact.email || index}
-              className="my-10 hidden flex-col items-center justify-between gap-4 md:flex-row lg:flex"
+              className="my-10 hidden flex-col items-center justify-between w-full gap-4 md:flex-row lg:flex"
             >
-              <p className="text-sm text-neutral-500 dark:text-neutral-400 max-w-full md:max-w-[200px]">
+              <p className="text-sm text-neutral-500 dark:text-neutral-400 max-w-full md:max-w-[250px]">
                 {contact.address}
               </p>
              <div className="flex items-center gap-[10px]">
-               <div className="h-1 w-1 rounded-full bg-neutral-500 dark:bg-neutral-400"></div>
+               <div className="h-1 w-1 rounded-full bg-neutral-500 dark:bg-neutral-400 "></div>
               <p className="text-sm text-neutral-500 dark:text-neutral-400">
                 {contact.phone}
               </p>
