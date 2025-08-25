@@ -95,6 +95,7 @@ const ContactPage = () => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
+  const [formStartTs, setFormStartTs] = useState<number>(() => Date.now());
 
   useEffect(() => {
     const fetchData = async () => {
@@ -121,6 +122,10 @@ const ContactPage = () => {
     document.body.appendChild(script);
   }, []);
 
+  useEffect(() => {
+    setFormStartTs(Date.now());
+  }, []);
+
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -129,6 +134,7 @@ const ContactPage = () => {
       message: "",
       purpose: [] as string[],
       role: "",
+      honeypot: "",
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Required"),
@@ -159,7 +165,11 @@ const ContactPage = () => {
             const res = await fetch("/api/contact", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ ...values, recaptchaToken: token }),
+              body: JSON.stringify({
+                ...values,
+                recaptchaToken: token,
+                elapsedMs: Math.max(0, Date.now() - formStartTs),
+              }),
             });
 
             const result = await res.json();
@@ -170,7 +180,7 @@ const ContactPage = () => {
               if (result.warning) {
                 console.warn("Email delivery warning:", result.warning);
               }
-              setTimeout(() => router.push("/resources"), 6000);
+              // Stay on page after success
             } else {
               setError(
                 result.error || "Something went wrong. Please try again."
@@ -338,10 +348,24 @@ const ContactPage = () => {
         <div className="relative mx-auto flex w-full max-w-2xl flex-col items-start gap-4 overflow-hidden rounded-3xl bg-gradient-to-b from-gray-100 to-gray-200 pt-[30px] pb-[40px] px-[40px] dark:from-neutral-900 dark:to-neutral-950">
           {success ? (
             <div className="bg-green-100 p-4 rounded text-black">
-              Thank you! Your submission has been received.
+              Thanks — we will reply within one business day.
             </div>
           ) : (
             <form onSubmit={formik.handleSubmit} className="space-y-4">
+              {/* Honeypot field for bots */}
+              <div className="hidden" aria-hidden="true">
+                <label>
+                  Do not fill this field
+                  <input
+                    type="text"
+                    name="honeypot"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={formik.values.honeypot}
+                    onChange={formik.handleChange}
+                  />
+                </label>
+              </div>
               <div>
                 <label className="block font-semibold text-black mb-[8px]">
                   Name <span className="text-[#ff0000]">*</span>

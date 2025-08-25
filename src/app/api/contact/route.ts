@@ -11,8 +11,7 @@ const createSuccessResponse = (submissionId: string, warning?: string) => {
   const response: any = {
     success: true,
     submissionId,
-    message: "Thanks for reaching out! We'll be in touch soon. In the meantime, check out our latest tools.",
-    resourcesLink: "/resources",
+    message: "Thanks — we will reply within one business day.",
   };
   
   if (warning) {
@@ -22,6 +21,22 @@ const createSuccessResponse = (submissionId: string, warning?: string) => {
   return NextResponse.json(response);
 };
 
+// Simple in-memory rate limiter (per serverless instance)
+const rateLimitStore: Map<string, number[]> = new Map();
+const RATE_LIMIT_MAX = 5; // 5 submissions per window
+const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour
+
+function getClientIp(req: Request): string {
+  const xff = req.headers.get("x-forwarded-for");
+  if (xff) {
+    const ip = xff.split(",")[0].trim();
+    if (ip) return ip;
+  }
+  const realIp = req.headers.get("x-real-ip");
+  if (realIp) return realIp;
+  return "unknown";
+}
+
 export async function POST(req: Request) {
   try {
     const data = await req.json();
@@ -30,6 +45,25 @@ export async function POST(req: Request) {
     if (data.honeypot && data.honeypot.trim() !== "") {
       return NextResponse.json({ success: true });
     }
+
+    // Minimum time on form (3s)
+    const elapsedMs = typeof data.elapsedMs === 'number' ? data.elapsedMs : 0;
+    if (elapsedMs < 3000) {
+      return NextResponse.json({ success: false, error: "Submission too fast. Please try again." }, { status: 400 });
+    }
+
+    // Rate limiting by IP
+    const ip = getClientIp(req);
+    const now = Date.now();
+    const windowStart = now - RATE_LIMIT_WINDOW_MS;
+    const prior = rateLimitStore.get(ip) || [];
+    const recent = prior.filter(ts => ts > windowStart);
+    if (recent.length >= RATE_LIMIT_MAX) {
+      return NextResponse.json({ success: false, error: "Too many submissions. Please try again later." }, { status: 429 });
+    }
+    // Tentatively record this attempt; we'll keep it even if later steps fail to slow abuse
+    recent.push(now);
+    rateLimitStore.set(ip, recent);
 
     // reCAPTCHA verification
     if (!data.recaptchaToken || typeof data.recaptchaToken !== 'string' || data.recaptchaToken.trim() === '') {
