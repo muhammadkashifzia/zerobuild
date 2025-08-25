@@ -89,6 +89,23 @@ export default async function Page({
   <Link href="/resources" className="text-black text-[20px] font-semibold flex gap-[10px] mb-[30px] link items-center"> <ArrowLeft /> 
       <span className="hover:link-underline">Back to Resources</span>
       </Link>
+   
+       <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 !mb-[48px]">
+        <h1 className="text-black text-[32px] md:text-[40px] leading-[1.1] font-normal max-w-[740px]">
+          {resource.title}
+        </h1>
+       {resource.purpose && Array.isArray(resource.purpose) ? (
+  <div className="text-[#9b9b9b] text-[18px] md:text-[24px] leading-tight">
+    {resource.purpose.slice(0, 1).map((item: string, index: number) => (
+      <div key={index}>{item}</div>
+    ))}
+  </div>
+) : (
+  <div className="text-[#9b9b9b] text-[18px] md:text-[24px] leading-tight">
+    {resource.purpose}
+  </div>
+)}
+      </div>
       {(resource.gallery?.length ?? 0) > 0 && (
         <div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -119,7 +136,7 @@ export default async function Page({
             />
           )}
           {/* Purpose */}
-          {(resource.purpose?.length ?? 0) > 0 && (
+          {/* {(resource.purpose?.length ?? 0) > 0 && (
             <div className="flex flex-wrap gap-2 mt-4">
               {(resource.purpose ?? []).map((purpose: string, index: number) => (
                 <span
@@ -130,9 +147,9 @@ export default async function Page({
                 </span>
               ))}
             </div>
-          )}
+          )} */}
           {/* Focus Area */}
-          {(resource.focusArea?.length ?? 0) > 0 && (
+          {/* {(resource.focusArea?.length ?? 0) > 0 && (
             <div className="flex flex-wrap gap-2 mt-2">
               <span className="text-sm font-medium text-gray-700">Focus Area:</span>
               {(resource.focusArea ?? []).map((focus: string, index: number) => (
@@ -144,7 +161,7 @@ export default async function Page({
                 </span>
               ))}
             </div>
-          )}
+          )} */}
 
           {/* Rich Body Content */}
           {resource.body && (
@@ -181,11 +198,11 @@ export default async function Page({
       </div>
       {/* Related Resources Section */}
       {relatedResources.length > 0 && (
-        <div className="container mx-auto px-0 md:px-[16px] pt-[60px]">
+        <div className="container mx-auto px-0 md:px-[16px] py-[60px]">
           <div className="lg:col-span-3">
             <p className="text-[20px] text-[#757575] mb-[0px]">Resources</p>
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-[38px] font-normal text-black">
+              <h2 className="text-[38px] font-normal text-black max-w-full md:max-w-[650px]">
                 Explore more climate & sustainability resources
               </h2>
               <Link
@@ -200,11 +217,11 @@ export default async function Page({
                 <Link
                   key={relatedResource._id}
                   href={`/resources/${relatedResource.slug}`}
-                  className="group block"
+                  className="group block "
                 >
                   <div className="overflow-hidden transition-shadow duration-300">
                     {relatedResource.image?.asset?.url && (
-                      <div className="relative h-[220px] overflow-hidden rounded-[12px]">
+                      <div className=" relative h-[220px] overflow-hidden rounded-[12px]">
                         <Image
                           src={relatedResource.image.asset.url}
                           alt={relatedResource.title}
