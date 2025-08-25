@@ -346,11 +346,6 @@ const ContactPage = () => {
         </div>
 
         <div className="relative mx-auto flex w-full max-w-2xl flex-col items-start gap-4 overflow-hidden rounded-3xl bg-gradient-to-b from-gray-100 to-gray-200 pt-[30px] pb-[40px] px-[40px] dark:from-neutral-900 dark:to-neutral-950">
-          {success ? (
-            <div className="bg-green-100 p-4 rounded text-black">
-              Thanks — we will reply within one business day.
-            </div>
-          ) : (
             <form onSubmit={formik.handleSubmit} className="space-y-4">
               {/* Honeypot field for bots */}
               <div className="hidden" aria-hidden="true">
@@ -544,6 +539,10 @@ const ContactPage = () => {
                 )}
               </button>
             </form>
+            {success && (
+            <div className="bg-green-100 p-4 rounded text-black mt-4">
+              Thanks — we will reply within one business day.
+            </div>
           )}
         </div>
       </div>
