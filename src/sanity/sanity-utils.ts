@@ -5,6 +5,7 @@ import { Resource } from "@/types/Resource";
 import { Contact } from "@/types/Contact";
 import { Feature } from "@/types/Feature";
 import { Company } from "@/types/Company";
+import { ContactPageBanner } from "@/types/Contact";
 import clientConfig from "./config/client-config";
 import { projectsPageQuery } from "./lib/queries";
 
@@ -208,11 +209,27 @@ export async function getRelatedResources(currentSlug: string, purpose?: string[
 /* Contact */
 export async function getContacts(): Promise<Contact[]> {
   return createClient(clientConfig).fetch(
-    groq`*[_type == "contact"]{
-            address,
-            phone,
-              email,
-            }`
+    groq`coalesce(
+      *[_type == "contactPage" && isActive == true][0].contacts[]{ address, phone, email },
+      *[_type == "contact"][]{ address, phone, email }
+    )`
+  );
+}
+
+export async function getContactPageBanner(): Promise<ContactPageBanner | null> {
+  return createClient(clientConfig).fetch(
+    groq`*[_type == "contactPage" && isActive == true][0] {
+      _id,
+      title,
+      description,
+      cta{ note },
+      "contacts": coalesce(contacts[]{
+        address,
+        phone,
+        email,
+      }, []),
+      isActive
+    }`
   );
 }
 

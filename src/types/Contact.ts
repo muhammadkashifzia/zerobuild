@@ -4,5 +4,14 @@ export interface Contact {
   email?: string
 }
  
+export interface ContactPageBanner {
+  _id?: string;
+  title?: string;
+  description?: string;
+  cta?: { note?: string };
+  isActive?: boolean;
+  contacts?: Contact[];
+}
+
 
  
