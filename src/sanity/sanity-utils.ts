@@ -6,6 +6,7 @@ import { Contact } from "@/types/Contact";
 import { Feature } from "@/types/Feature";
 import { Company } from "@/types/Company";
 import { ContactPageBanner } from "@/types/Contact";
+import { ResourcesPageBanner } from "@/types/resourcesPage";
 import clientConfig from "./config/client-config";
 import { projectsPageQuery } from "./lib/queries";
 
@@ -203,6 +204,19 @@ export async function getRelatedResources(currentSlug: string, purpose?: string[
       }
     `,
     { currentSlug, purpose, focusArea }
+  );
+}
+
+export async function getResourcesPageBanner(): Promise<ResourcesPageBanner | null> {
+  return createClient(clientConfig).fetch(
+    groq`*[_type == "resourcesPage" && isActive == true][0] {
+      _id,
+      title,
+      description,
+      ctaTitle,
+      ctaButtonText,
+      ctaButtonLink
+    }`
   );
 }
 

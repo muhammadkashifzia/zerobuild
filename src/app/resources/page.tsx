@@ -3,11 +3,16 @@
 import React, { useState, useEffect } from "react";
 import { Search, ArrowRight, Plus, X } from "lucide-react";
 import Link from "next/link";
-import { getResources } from "@/sanity/sanity-utils";
+import { getResources, getResourcesPageBanner } from "@/sanity/sanity-utils";
 import { Resource } from "@/types/Resource";
+import { ResourcesPageBanner } from "@/types/resourcesPage";
+import { AuroraBackground } from "@/components/ui/aurora-background";
+import { motion } from "motion/react";
+import CtaSection from "@/components/CtaSection";
 
 const ResourcePage = () => {
   const [resources, setResources] = useState<Resource[]>([]);
+  const [bannerData, setBannerData] = useState<ResourcesPageBanner | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedPurpose, setSelectedPurpose] = useState("All");
   const [selectedFocusArea, setSelectedFocusArea] = useState("All");
@@ -17,8 +22,12 @@ const ResourcePage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await getResources();
+      const [res, banner] = await Promise.all([
+        getResources(),
+        getResourcesPageBanner()
+      ]);
       setResources(res);
+      setBannerData(banner);
       // Debug
       console.log('All purposes:', Array.from(new Set(res.flatMap((r) => r.purpose || []))));
       console.log('All focus areas:', Array.from(new Set(res.flatMap((r) => r.focusArea || []))));
@@ -79,27 +88,38 @@ const ResourcePage = () => {
     setSearchTerm("");
   };
 
+  // Fallback banner content
+  const fallbackBanner = {
+    title: "Explore our resources across the built and natural environments",
+    description: "We offer a wide range of resources that address every priority in the built and natural environments. Search below or use the filters to explore resources by purpose and focus area."
+  };
+
+  const bannerTitle = bannerData?.title || fallbackBanner.title;
+  const bannerDescription = bannerData?.description || fallbackBanner.description;
+
   return (
-    <div className="min-h-screen bg-white">
-      <section
-        className="pt-24 pb-10 lg:pb-12"
-        style={{
-          backgroundBlendMode: "overlay",
-          backgroundSize: "cover",
-          backgroundImage: `url("/assets/images/coding-background-texture.jpg"), linear-gradient(180deg, #474ab6 0%, #9271f6 100%)`,
-        }}
-      >
-        <div className="container mx-auto px-4">
-          <h1 className="text-3xl md:text-6xl font-normal text-white max-w-[1000px] leading-[1.2]">
-            Explore our resources across the built and natural environments
-          </h1>
-          <p className="text-base md:text-2xl text-white max-w-[1000px] mt-4 md:mt-7">
-            We offer a wide range of resources that address every priority in the
-            built and natural environments. Search below or use the filters to
-            explore resources by purpose and focus area.
-          </p>
-        </div>
-      </section>
+    <div className="min-h-screen bg-white mt-[64px]">
+      <AuroraBackground>
+        <motion.div
+          initial={{ opacity: 0.0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{
+            delay: 0.3,
+            duration: 0.8,
+            ease: "easeInOut",
+          }}
+          className="container mx-auto relative flex flex-col gap-4 px-4"
+        >
+          <div className="max-w-[870px]">
+            <div className="text-3xl md:text-6xl font-normal text-black leading-[1.2] max-w-[1000px]">
+              {bannerTitle}
+            </div>
+            <div className="font-extralight text-base md:text-2xl dark:text-neutral-200 py-4 max-w-[1024px]">
+              {bannerDescription}
+            </div>
+          </div>
+        </motion.div>
+      </AuroraBackground>
 
       <div className="pt-8 pb-10 md:px-8 px-4">
         <section className="container mx-auto">
@@ -302,6 +322,7 @@ const ResourcePage = () => {
           </div>
         )}
       </div>
+      <CtaSection />
     </div>
   );
 };

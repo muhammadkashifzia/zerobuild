@@ -8,7 +8,7 @@ import { Service } from "@/types/Service";
 import { ServicesPageBanner } from "@/types/servicesPage";
 import { AuroraBackground } from "@/components/ui/aurora-background";
 import { motion } from "motion/react";
-import ServiceCta from "@/components/service/serviceCta"
+import CtaSection from "@/components/CtaSection"
 const ServicesPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedDiscipline, setSelectedDiscipline] = useState("All");
@@ -579,7 +579,7 @@ const ServicesPage = () => {
           </div>
         )}
       </div>
-      <ServiceCta />
+      <CtaSection />
     </div>
   );
 };

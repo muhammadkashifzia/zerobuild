@@ -53,7 +53,7 @@ const Navbar = ({ className }: { className?: string }) => {
         {/* Desktop Menu */}
         <div className="hidden lg:flex items-center w-full justify-between relative navLink">
           <Menu setActive={setActive}>
-            {["home", "about", "services", "projects", "contact"].map(
+            {["about", "services", "projects", "contact"].map(
               (item) => (
                 <HoveredLink
                   key={item}
@@ -135,7 +135,7 @@ const Navbar = ({ className }: { className?: string }) => {
           </div>
 
           <div className="flex flex-col items-start px-[16px] pt-[50px] space-y-1">
-            {["home", "about", "services", "projects", "contact"].map((item) => (
+            {["about", "services", "projects", "contact"].map((item) => (
               <HoveredLink
                 key={item}
                 href={getLinkPath(item)}

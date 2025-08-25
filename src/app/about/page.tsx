@@ -3,7 +3,7 @@ import TestimonialCard from "@/components/TestimonialCard";
 import AboutProfile from "@/components/about/aboutProfile";
 import ObservabilityRadarChart from "@/components/ObservabilityRadarChart";
 import AboutTop from "@/components/about/aboutTop";
-import AboutCta from "@/components/about/aboutCta"
+import CtaSection from "@/components/CtaSection"
 import type { Metadata } from "next";
 import { client } from "@/sanity/lib/client";
 import { aboutPageQuery, allAboutPagesQuery } from "@/sanity/lib/queries";
@@ -78,13 +78,7 @@ async function page() {
         linkedinButtonText={aboutPageData?.linkedinButtonText}
       />
       <TestimonialCard />
-      <AboutCta 
-        title={aboutPageData?.ctaTitle}
-        description={aboutPageData?.ctaDescription}
-        buttonText={aboutPageData?.ctaButtonText}
-        buttonUrl={aboutPageData?.ctaButtonUrl}
-        typewriterWords={aboutPageData?.ctaTypewriterWords?.map(word => ({ text: word }))}
-      />
+      <CtaSection />
     </div>
   );
 }

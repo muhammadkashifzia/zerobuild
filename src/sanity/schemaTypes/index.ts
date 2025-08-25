@@ -13,6 +13,7 @@ import { servicesPageType } from './services-page-schema';
 import { projectsPageType } from './projects-page-schema';
 import { aboutPageType } from './about-page-schema';
 import { contactPageType } from './contact-page-schema';
+import { resourcesPageType } from './resources-page-schema';
 
 
 export const schema: { types: SchemaTypeDefinition[] } = {
@@ -27,6 +28,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     featureType,
     companyType,
     servicesPageType,
+    resourcesPageType,
     projectsPageType,
     aboutPageType,
     contactPageType,

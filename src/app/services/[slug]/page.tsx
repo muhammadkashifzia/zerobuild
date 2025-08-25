@@ -6,6 +6,7 @@ import { Service } from "@/types/Service";
 import type { Metadata } from "next";
 import Accordion from "@/components/ui/accordion";
 import { ArrowRight, ArrowLeft } from "lucide-react";
+import CtaSection from "@/components/CtaSection";
 export async function generateMetadata({
   params,
 }: {
@@ -291,6 +292,7 @@ export default async function Page({
         </div>
       </div>
     </section>
+    <CtaSection />
     </div>
   );
 }

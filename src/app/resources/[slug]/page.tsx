@@ -1,10 +1,11 @@
 import { PortableText } from "@portabletext/react";
 import Image from "next/image";
 import Link from "next/link";
-import { getResource, getRelatedResources } from "@/sanity/sanity-utils";
+import { getResource, getRelatedResources, getResourcesPageBanner } from "@/sanity/sanity-utils";
 import { Resource } from "@/types/Resource";
 import type { Metadata } from "next";
 import { ArrowLeft } from "lucide-react";
+import CtaSection from "@/components/CtaSection";
 export async function generateMetadata({
   params,
 }: {
@@ -70,6 +71,7 @@ export default async function Page({
 }) {
   const { slug } = await params;
   const resource: Resource = await getResource(slug);
+  const resourcesPageBanner = await getResourcesPageBanner();
 
   if (!resource) {
     return (
@@ -165,13 +167,13 @@ export default async function Page({
         <div className="lg:col-span-1">
           <div className="rounded-[.75rem] border border-[#e0e0e0] p-[2rem] sticky top-[90px]">
             <h3 className="text-[22px] font-semibold mb-2 text-black">
-              Get in touch with our team
+              {resourcesPageBanner?.ctaTitle || "Get in touch with our team"}
             </h3>
             <Link
-              href="/contact"
+              href={resourcesPageBanner?.ctaButtonLink || "/contact"}
               className="relative w-full bg-[#484AB7] text-white p-5 rounded-xl max-w-[150px] h-[50px] flex items-center text-lg font-semibold hover:bg-[#3c3f9d] transition-colors duration-200 mt-[2rem]"
             >
-              <span>Contact</span>
+              <span>{resourcesPageBanner?.ctaButtonText || "Contact"}</span>
               <span className="absolute right-[15px]">→</span>
             </Link>
           </div>
@@ -218,6 +220,7 @@ export default async function Page({
           </div>
         </div>
       )}
+      <CtaSection />
     </div>
   );
 }
