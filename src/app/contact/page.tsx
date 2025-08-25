@@ -177,6 +177,7 @@ const ContactPage = () => {
             if (res.ok && result.success) {
               setSuccess(true);
               formik.resetForm();
+              setLoading(false);
               if (result.warning) {
                 console.warn("Email delivery warning:", result.warning);
               }
