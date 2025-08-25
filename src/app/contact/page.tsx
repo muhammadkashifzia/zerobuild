@@ -129,7 +129,7 @@ const ContactPage = () => {
   // Auto-hide success message after 60 seconds
   useEffect(() => {
     if (!success) return;
-    const timer = setTimeout(() => setSuccess(false), 60000);
+    const timer = setTimeout(() => setSuccess(false), 1000);
     return () => clearTimeout(timer);
   }, [success]);
 
