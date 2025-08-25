@@ -4,7 +4,7 @@ import Link from "next/link";
 import { getResource, getRelatedResources, getResourcesPageBanner } from "@/sanity/sanity-utils";
 import { Resource } from "@/types/Resource";
 import type { Metadata } from "next";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ArrowRight  } from "lucide-react";
 import CtaSection from "@/components/CtaSection";
 export async function generateMetadata({
   params,
@@ -183,8 +183,18 @@ export default async function Page({
       {relatedResources.length > 0 && (
         <div className="container mx-auto px-0 md:px-[16px] pt-[60px]">
           <div className="lg:col-span-3">
-            <p className="text-[20px] text-[#757575] mb-[20px]">Resources</p>
-            <h2 className="text-[38px] font-normal text-black mb-8">Explore more resources</h2>
+            <p className="text-[20px] text-[#757575] mb-[0px]">Resources</p>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-[38px] font-normal text-black">
+                Explore more climate & sustainability resources
+              </h2>
+              <Link
+                href="/resources"
+                className="text-black flex items-center gap-2 border border-gray-300 rounded-full px-5 py-2 hover:bg-gray-100 transition"
+              >
+                View all Resources <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {relatedResources.map((relatedResource) => (
                 <Link
@@ -194,7 +204,7 @@ export default async function Page({
                 >
                   <div className="overflow-hidden transition-shadow duration-300">
                     {relatedResource.image?.asset?.url && (
-                      <div className="relative h-[250px] overflow-hidden">
+                      <div className="relative h-[220px] overflow-hidden rounded-[12px]">
                         <Image
                           src={relatedResource.image.asset.url}
                           alt={relatedResource.title}
