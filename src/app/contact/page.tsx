@@ -126,6 +126,13 @@ const ContactPage = () => {
     setFormStartTs(Date.now());
   }, []);
 
+  // Auto-hide success message after 60 seconds
+  useEffect(() => {
+    if (!success) return;
+    const timer = setTimeout(() => setSuccess(false), 60000);
+    return () => clearTimeout(timer);
+  }, [success]);
+
   const formik = useFormik({
     initialValues: {
       name: "",
