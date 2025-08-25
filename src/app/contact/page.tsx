@@ -14,7 +14,8 @@ import { ArrowRight } from "lucide-react";
 // import { WorldMapDemo } from "@/components/contact-map";
 const SITE_KEY = recaptchaSiteKey;
 
-const ContactPage = ({ features }: { features: Feature[] }) => {
+const ContactPage = () => {
+  const features: Feature[] = [];
   const words = [
     {
       text: "Expert",
