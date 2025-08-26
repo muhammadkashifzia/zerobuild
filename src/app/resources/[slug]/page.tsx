@@ -6,6 +6,7 @@ import { Resource } from "@/types/Resource";
 import type { Metadata } from "next";
 import { ArrowLeft, ArrowRight  } from "lucide-react";
 import CtaSection from "@/components/CtaSection";
+import Accordion from "@/components/ui/accordion";
 export async function generateMetadata({
   params,
 }: {
@@ -165,7 +166,7 @@ export default async function Page({
 
           {/* Rich Body Content */}
           {resource.body && (
-            <div className="prose prose-blue max-w-none mt-8 text-black service-body-content">
+            <div className="prose prose-blue max-w-none mt-8 text-black mb-[48px] service-body-content">
               <PortableText
                 value={resource.body}
                 components={{
@@ -178,6 +179,17 @@ export default async function Page({
               />
             </div>
           )}
+
+            {/* FAQ Accordion */}
+                    {resource.accordion && resource.accordion.length > 0 && (
+                      <div>
+                        <Accordion 
+                          items={resource.accordion} 
+                          className="max-w-none"
+                        />
+                      </div>
+                    )}
+          
         </div>
 
         {/* Right: CTA */}

@@ -64,5 +64,50 @@ export const resourceType = defineType({
       type: 'array',
       of: [{ type: 'block' }],
     }),
+      defineField({
+          name: 'accordion',
+          title: 'Resources Accordion',
+          type: 'array',
+          of: [
+            {
+              type: 'object',
+              name: 'accordionItem',
+              title: 'Accordion Item',
+              fields: [
+                {
+                  name: 'title',
+                  title: 'Question/Title',
+                  type: 'string',
+                  validation: (rule) => rule.required(),
+                },
+                {
+                  name: 'content',
+                  title: 'Answer/Content',
+                  type: 'array',
+                  of: [{ type: 'block' }],
+                  validation: (rule) => rule.required(),
+                },
+                {
+                  name: 'isOpen',
+                  title: 'Open by Default',
+                  type: 'boolean',
+                  initialValue: false,
+                },
+              ],
+              preview: {
+                select: {
+                  title: 'title',
+                  isOpen: 'isOpen',
+                },
+                prepare({ title, isOpen }) {
+                  return {
+                    title: title,
+                    subtitle: isOpen ? 'Open by default' : 'Closed by default',
+                  }
+                },
+              },
+            },
+          ],
+        }),
   ],
 })
