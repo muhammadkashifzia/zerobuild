@@ -6,6 +6,7 @@ import { Resource } from "@/types/Resource";
 import type { Metadata } from "next";
 import { ArrowLeft, ArrowRight  } from "lucide-react";
 import CtaSection from "@/components/CtaSection";
+import Accordion from "@/components/ui/accordion";
 export async function generateMetadata({
   params,
 }: {
@@ -158,6 +159,16 @@ export default async function Page({
                     normal: ({ children }) => <p>{children}</p>,
                   },
                 }}
+              />
+            </div>
+          )}
+
+          {/* FAQ Accordion */}
+          {resource.accordion && resource.accordion.length > 0 && (
+            <div className="mt-12">
+              <Accordion 
+                items={resource.accordion} 
+                className="mt-6"
               />
             </div>
           )}

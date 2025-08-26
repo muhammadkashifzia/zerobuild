@@ -176,7 +176,13 @@ export async function getResource(slug: string): Promise<Resource> {
       purpose,
       focusArea,
       gallery[]{ asset->{url} },
-      body
+      body,
+      accordion[]{
+        _key,
+        title,
+        content,
+        isOpen
+      }
     }
   `,
     { slug }
