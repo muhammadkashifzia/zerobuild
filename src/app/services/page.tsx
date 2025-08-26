@@ -214,8 +214,8 @@ const ServicesPage = () => {
 
         {/* Discipline Filters */}
         <section className="container mx-auto mb-4">
-          <div className="flex items-start gap-3 mb-3">
-            <h3 className="text-sm font-medium text-gray-700 mt-[8px]">Disciplines:</h3>
+          <div className="flex items-start gap-3 mb-3 flex-col md:flex-row">
+            <h3 className="text-sm font-medium text-gray-700 mt-0 md:mt-[8px]">Disciplines:</h3>
                 
           <div className="flex flex-wrap items-center gap-[16px]">
             {mainDisciplineFilters.map((filter) => (
@@ -270,14 +270,14 @@ const ServicesPage = () => {
 
         {/* Project Stage Filters */}
         <section className="container mx-auto mb-6">
-          <div className="flex items-start gap-3 mt-[24px]">
-            <h3 className="text-sm font-medium text-gray-700 mt-[8px]">Project Stage:</h3>
+          <div className="flex items-start gap-3 mt-[24px] flex-col md:flex-row">
+            <h3 className="text-sm font-medium text-gray-700 mt-0 md:mt-[8px]">Project Stage:</h3>
             {/* Debug info */}
             {/* <span className="text-xs text-gray-500">
               ({displayProjectStages.length} total stages)
             </span> */}
          
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3 ">
             {mainProjectStageFilters.length > 0 ? (
               mainProjectStageFilters.map((filter) => (
                 <div key={filter} className="relative">
@@ -333,7 +333,7 @@ const ServicesPage = () => {
             )}
         </section>
 
-        <section className="py-8 bg-white container mx-auto">
+        <section className="py-4 md:py-8 bg-white container mx-auto">
           <div ref={listTopRef} />
           <div className="max-w-[958px]">
             <div className="text-sm text-gray-600 mb-2">
