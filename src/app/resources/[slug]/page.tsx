@@ -180,7 +180,7 @@ export default async function Page({
             </div>
           )}
 
-          {/* FAQ Accordion */}
+          {/* Resource Accordion */}
           {resource.accordion && resource.accordion.length > 0 && (
             <div className="mt-12">
               <Accordion 
