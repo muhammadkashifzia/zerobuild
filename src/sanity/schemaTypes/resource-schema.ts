@@ -66,7 +66,7 @@ export const resourceType = defineType({
     }),
     defineField({
       name: 'accordion',
-      title: 'FAQ Accordion',
+      title: 'Resource Accordion',
       type: 'array',
       of: [
         {

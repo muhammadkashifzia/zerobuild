@@ -22,6 +22,62 @@ export const resourcesPageType = defineType({
       initialValue: 'We offer a wide range of resources that address every priority in the built and natural environments. Search below or use the filters to explore resources by purpose and focus area.',
     }),
     defineField({
+      name: 'faqSection',
+      title: 'FAQ Section',
+      type: 'object',
+      fields: [
+        defineField({
+          name: 'title',
+          title: 'FAQ Section Title',
+          type: 'string',
+          initialValue: 'Frequently Asked Questions',
+        }),
+        defineField({
+          name: 'faqs',
+          title: 'FAQ Items',
+          type: 'array',
+          of: [
+            {
+              type: 'object',
+              fields: [
+                defineField({
+                  name: 'title',
+                  title: 'Question',
+                  type: 'string',
+                  validation: (Rule) => Rule.required(),
+                }),
+                defineField({
+                  name: 'content',
+                  title: 'Answer',
+                  type: 'array',
+                  of: [{ type: 'block' }],
+                  validation: (Rule) => Rule.required(),
+                }),
+                defineField({
+                  name: 'isOpen',
+                  title: 'Open by Default',
+                  type: 'boolean',
+                  initialValue: false,
+                }),
+              ],
+              preview: {
+                select: {
+                  title: 'title',
+                  isOpen: 'isOpen',
+                },
+                prepare({ title, isOpen }) {
+                  return {
+                    title: title || 'FAQ Item',
+                    subtitle: isOpen ? 'Open by default' : 'Closed by default',
+                  }
+                },
+              },
+            },
+          ],
+        }),
+      ],
+    }),
+    defineField({
       name: 'ctaTitle',
       title: 'CTA Title',
       type: 'string',
@@ -63,5 +119,3 @@ export const resourcesPageType = defineType({
     },
   },
 })
-
-

@@ -196,7 +196,7 @@ export default async function Page({
                 >
                   <div className="overflow-hidden transition-shadow duration-300">
                     {relatedProject.image?.asset?.url && (
-                      <div className="relative h-[220px] overflow-hidden rounded-[12px]">
+                      <div className="shadow relative h-[220px] overflow-hidden rounded-[12px]">
                         <Image
                           src={relatedProject.image.asset.url}
                           alt={relatedProject.title}

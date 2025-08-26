@@ -20,4 +20,11 @@ export interface AccordionItem {
 }
  
 
+export interface AccordionItem {
+  _key: string;
+  title: string;
+  content: any;
+  isOpen?: boolean;
+}
+ 
  
