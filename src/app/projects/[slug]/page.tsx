@@ -6,6 +6,7 @@ import { Project } from "@/types/Project";
 import type { Metadata } from "next";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 import CtaSection from "@/components/CtaSection";
+import Accordion from "@/components/ui/accordion";
 export async function generateMetadata({
   params,
 }: {
@@ -90,17 +91,17 @@ export default async function Page({
   const relatedProjects = await getRelatedProjects(slug, project.categories);
 
   return (
-    <div className="px-[16px] md:pt-28 mx-auto space-y-5">
+    <div className="px-[16px] pt-[30px] md:pt-[25px] mx-auto space-y-5 mt-[60px] pb-[60px]">
       <Link
         href="/projects"
-        className="text-black font-semibold flex gap-[10px] mb-[30px] link items-center"
+        className="text-black font-semibold flex gap-[10px] mb-[20px] link items-center"
       >
         {" "}
         <ArrowLeft />
         <span className="hover:link-underline">Back to Projects</span>
       </Link>
       {/* Header: Title left, Location right */}
-      <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 !mb-[48px]">
+      <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 !mb-[20px]">
         <h1 className="text-black text-[32px] md:text-[40px] leading-[1.1] font-normal max-w-[740px]">
           {project.title}
         </h1>
@@ -117,7 +118,7 @@ export default async function Page({
           alt={project.title}
           width={900}
           height={500}
-          className="rounded-xl object-cover w-full h-[663px]"
+          className="rounded-xl object-cover w-full h-auto md:h-[663px]"
         />
       )}
       <div className="container grid grid-cols-1 lg:grid-cols-3 px-0 md:px-[16px] gap-[20px] mx-auto pt-0 md:pt-[40px]">
@@ -139,7 +140,7 @@ export default async function Page({
 
           {/* Rich Body Content */}
           {project.body && (
-            <div className="prose prose-blue max-w-none mt-8 text-black service-body-content">
+            <div className="prose prose-blue max-w-none mt-0 md:mt-8 text-black service-body-content">
               <PortableText
                 value={project.body}
                 components={{
@@ -152,6 +153,14 @@ export default async function Page({
               />
             </div>
           )}
+            {project.accordion && project.accordion.length > 0 && (
+                      <div className="mt-12">
+                        <Accordion 
+                          items={project.accordion} 
+                          className="mt-6"
+                        />
+                      </div>
+                    )}
         </div>
 
         {/* Right: CTA */}
@@ -173,11 +182,11 @@ export default async function Page({
 
       {/* Related Projects Section */}
       {relatedProjects.length > 0 && (
-        <div className="container mx-auto px-0 md:px-[16px] pt-[60px]">
+        <div className="container mx-auto px-0 md:px-[16px] md:pt-[60px]">
           <div className="lg:col-span-3">
             <p className="text-[20px] text-[#757575] mb-[0px]">Projects</p>
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-[38px] font-normal text-black">
+            <div className="flex items-end md:items-center justify-between mb-6 md:flex-row flex-col gap-4">
+              <h2 className="text-[32px] md:text-[38px] font-normal text-black">
                 Explore more climate & sustainability projects
               </h2>
               <Link

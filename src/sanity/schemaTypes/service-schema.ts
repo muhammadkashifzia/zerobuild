@@ -66,13 +66,13 @@ export const serviceType = defineType({
     }),
     defineField({
       name: 'accordion',
-      title: 'FAQ Accordion',
+      title: 'Service Accordion',
       type: 'array',
       of: [
         {
           type: 'object',
           name: 'accordionItem',
-          title: 'Accordion Item',
+          title: 'Service Accordion Item',
           fields: [
             {
               name: 'title',

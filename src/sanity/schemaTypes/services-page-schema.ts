@@ -2,7 +2,7 @@ import { defineField, defineType } from 'sanity'
 
 export const servicesPageType = defineType({
   name: 'servicesPage',
-  title: 'Services Page',
+  title: 'Services Banner',
   type: 'document',
   fields: [
     defineField({

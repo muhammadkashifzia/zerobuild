@@ -216,7 +216,7 @@ export default async function Page({
         </div>
       </div>
          <section className="container mx-auto">
-      <div className="bg-gray-50 py-12 px-4 md:px-12">
+      <div className="bg-gray-50 pt-12 px-4 md:px-12 pb-[40px]">
         {/* Heading */}
         <p className="text-sm text-gray-600 mb-2">Explore</p>
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">

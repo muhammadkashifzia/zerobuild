@@ -96,7 +96,8 @@ export async function getProjects(): Promise<Project[]> {
   location,
   categories,
   "gallery": gallery[].asset->url,
-  body
+  body,
+  
     }`
   );
 }
@@ -117,7 +118,13 @@ export async function getProject(slug: string): Promise<Project> {
       location,
       categories,
       gallery[]{ asset->{url} },
-      body
+      body,
+     accordion[]{
+        _key,
+        title,
+        content,
+        isOpen
+      }
     }
   `,
     { slug }
