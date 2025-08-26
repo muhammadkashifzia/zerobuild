@@ -53,7 +53,7 @@ export default function Accordion({ items, title, className = '' }: AccordionPro
                 className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[transparent] focus:ring-inset"
                 aria-expanded={isOpen}
               >
-                <span className="font-normal text-black text-[28px] pr-4">
+                <span className="font-normal text-black text-[28px] pr-4 break-all">
                   {item.title}
                 </span>
                 <ChevronDown

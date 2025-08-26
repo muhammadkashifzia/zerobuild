@@ -106,7 +106,7 @@ export default async function Page({
     relatedByDiscipline.length > 0 || relatedByProjectStage.length > 0;
 
   return (
-    <div className="px-[16px] md:p-8 mx-auto space-y-5 mt-16">
+    <div className="px-[16px] py-[30px] mx-auto space-y-5 mt-16">
           <Link href="/services" className="text-black text-[20px] font-semibold flex gap-[10px] mb-[30px] link items-center"> <ArrowLeft /> 
       <span className="hover:link-underline">Back to Services</span>
       </Link>

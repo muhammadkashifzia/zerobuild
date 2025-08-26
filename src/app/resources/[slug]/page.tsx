@@ -86,8 +86,8 @@ export default async function Page({
   const relatedResources = await getRelatedResources(slug, resource.purpose, resource.focusArea);
 
   return (
-    <div className="px-[16px] md:p-8 mx-auto space-y-5 mt-[60px]">
-  <Link href="/resources" className="text-black text-[20px] font-semibold flex gap-[10px] mb-[30px] link items-center"> <ArrowLeft /> 
+    <div className="px-[16px] py-[30px] mx-auto space-y-5 mt-[60px]">
+  <Link href="/resources" className="text-black text-[20px] font-semibold flex gap-[10px] mb-[20px] link items-center"> <ArrowLeft /> 
       <span className="hover:link-underline">Back to Resources</span>
       </Link>
    
@@ -123,7 +123,7 @@ export default async function Page({
           </div>
         </div>
       )}
-      <div className="container grid grid-cols-1 lg:grid-cols-3 px-0 md:px-[16px] gap-[20px] mx-auto pt-0 md:pt-[40px] pb-[60px]">
+      <div className="container grid grid-cols-1 lg:grid-cols-3 px-0 md:px-[16px] gap-[20px] mx-auto pt-0 md:pt-[40px] pb-[10px] md:pb-[60px]">
         {/* Left: Content */}
         <div className="lg:col-span-2 space-y-2">
           {/* Cover Image */}
@@ -209,11 +209,11 @@ export default async function Page({
       </div>
       {/* Related Resources Section */}
       {relatedResources.length > 0 && (
-        <div className="container mx-auto px-0 md:px-[16px] py-[60px]">
+        <div className="container mx-auto px-0 md:px-[16px] py-[30px] md:py-[60px]">
           <div className="lg:col-span-3">
             <p className="text-[20px] text-[#757575] mb-[0px]">Resources</p>
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-[38px] font-normal text-black max-w-full md:max-w-[650px]">
+            <div className="flex items-end md:items-center justify-between mb-6 md:flex-row flex-col gap-4">
+              <h2 className="text-[32px] md:text-[38px] font-normal text-black max-w-full md:max-w-[650px]">
                 Explore more climate & sustainability resources
               </h2>
               <Link
