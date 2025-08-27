@@ -92,11 +92,11 @@ export default async function Page({
 
   return (
     <div className="px-[16px] pt-[30px] md:pt-[25px] mx-auto space-y-5 mt-[60px] pb-[60px]">
-      <Link
+   <div className="container mx-auto px-[16px]">
+       <Link
         href="/projects"
         className="text-black font-semibold flex gap-[10px] mb-[20px] link items-center"
       >
-        {" "}
         <ArrowLeft />
         <span className="hover:link-underline">Back to Projects</span>
       </Link>
@@ -121,6 +121,7 @@ export default async function Page({
           className="rounded-xl object-cover w-full h-auto md:h-[663px]"
         />
       )}
+   </div>
       <div className="container grid grid-cols-1 lg:grid-cols-3 px-0 md:px-[16px] gap-[20px] mx-auto pt-0 md:pt-[40px]">
         {/* Left: Content */}
         <div className="lg:col-span-2 space-y-2">
