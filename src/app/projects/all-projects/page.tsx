@@ -51,7 +51,7 @@ export default function Page() {
             placeholder="Search..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pr-16 pl-6 py-4 border border-[#757575] focus:ring-1 rounded-full text-black bg-white h-[76px] text-base"
+            className="w-full pr-16 pl-6 py-4 border border-[#757575] focus:ring-1 rounded-full text-black bg-white h-[40px] md:h-[76px] text-base"
           />
           <span className="absolute rotate-90 right-6 top-1/2 -translate-y-1/2 text-black">
             <Search />

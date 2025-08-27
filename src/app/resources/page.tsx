@@ -128,7 +128,7 @@ const ResourcePage = () => {
               <input
                 type="text"
                 placeholder="Search resources..."
-                className="w-full pr-16 pl-6 py-4 border border-[#757575] focus:ring-1 rounded-full text-black bg-white h-[76px] text-base"
+                className="w-full pr-16 pl-6 py-4 border border-[#757575] focus:ring-1 rounded-full text-black bg-white h-[40px] md:h-[76px] text-base"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && setModalOpen(false)}
@@ -151,7 +151,7 @@ const ResourcePage = () => {
             {mainPurposeFilters.map((filter) => (
               <div key={filter} className="relative">
                 <button
-                  className={`px-4 py-2 rounded-full text-sm border pr-8 transition ${
+                  className={`px-4 py-2 rounded-full text-[12px] md:text-sm border pr-8 transition ${
                     selectedPurpose === filter
                       ? "bg-[#484AB7] text-white border-[#484AB7]"
                       : "text-black border-gray-300 hover:bg-gray-100"
@@ -199,7 +199,7 @@ const ResourcePage = () => {
             {displayFocusAreas.map((filter) => (
               <div key={filter} className="relative">
                 <button
-                  className={`px-4 py-2 rounded-full text-sm border pr-8 transition ${
+                  className={`px-2 md:px-4 py-2 rounded-full text-[12px] md:text-sm  border pr-8 transition ${
                     selectedFocusArea === filter
                       ? "bg-[#484AB7] text-white border-[#484AB7]"
                       : "text-black border-gray-300 hover:bg-gray-100"

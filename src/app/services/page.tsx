@@ -194,7 +194,7 @@ const ServicesPage = () => {
               <input
                 type="text"
                 placeholder="Search services..."
-                className="w-full pr-16 pl-6 py-4 border border-[#757575] focus:ring-1 rounded-full text-black bg-white h-[76px] text-base"
+                className="w-full pr-16 pl-6 py-4 border border-[#757575] focus:ring-1 rounded-full text-black bg-white h-[40px] md:h-[76px] text-base"
                 value={searchTerm}
                 onChange={(e) => {
                   setSearchTerm(e.target.value);
@@ -217,11 +217,11 @@ const ServicesPage = () => {
           <div className="flex items-start gap-3 mb-3 flex-col md:flex-row">
             <h3 className="text-sm font-medium text-gray-700 mt-0 md:mt-[8px]">Disciplines:</h3>
                 
-          <div className="flex flex-wrap items-center gap-[16px]">
+          <div className="flex flex-wrap items-center gap-[8px] md:gap-[16px]">
             {mainDisciplineFilters.map((filter) => (
               <div key={filter} className="relative">
                 <button
-                  className={`px-4 py-2 rounded-full text-sm border pr-8 transition ${
+                  className={`px-2 md:px-4 py-2 rounded-full text-[12px] md:text-sm  border pr-8 transition ${
                     selectedDiscipline === filter
                       ? "bg-[#484AB7] text-white border-[#484AB7]"
                       : "text-black border-gray-300 hover:bg-gray-100"
@@ -282,7 +282,7 @@ const ServicesPage = () => {
               mainProjectStageFilters.map((filter) => (
                 <div key={filter} className="relative">
                   <button
-                    className={`px-4 py-2 rounded-full text-sm border pr-8 transition ${
+                    className={`px-2 md:px-4 py-2 rounded-full text-[12px] md:text-sm  border pr-8 transition ${
                       selectedProjectStage === filter
                         ? "bg-[#484AB7] text-white border-[#484AB7]"
                         : "text-black border-gray-300 hover:bg-gray-100"
