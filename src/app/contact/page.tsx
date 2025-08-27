@@ -28,9 +28,9 @@ const ContactPage = () => {
           {
             _id: "fallback-1",
             _createdAt: new Date().toISOString(),
-            title: "Whole Life Carbon Assessment",
+            title: "Advisory & Research",
             description:
-              "Comprehensive carbon footprint analysis across the entire building lifecycle, from construction to demolition.",
+              "Strategic insight and evidence-based guidance for future-ready decisions.",
             icon: "leaf",
             order: 1,
             isActive: true,
@@ -38,9 +38,9 @@ const ContactPage = () => {
           {
             _id: "fallback-2",
             _createdAt: new Date().toISOString(),
-            title: "Dynamic Energy Modelling",
+            title: "Architecture",
             description:
-              "Advanced energy performance simulation and optimization for new builds and retrofit projects.",
+              "Designing beautiful, performance-driven spaces grounded in building physics.",
             icon: "zap",
             order: 2,
             isActive: true,
@@ -48,9 +48,9 @@ const ContactPage = () => {
           {
             _id: "fallback-3",
             _createdAt: new Date().toISOString(),
-            title: "Lifecycle Cost-Benefit Analysis",
+            title: "Digital & Data",
             description:
-              "Financial assessment of sustainability investments with long-term ROI calculations and risk analysis.",
+              "Harnessing data, simulation and automation to drive smarter design.",
             icon: "chart",
             order: 3,
             isActive: true,
@@ -58,9 +58,9 @@ const ContactPage = () => {
           {
             _id: "fallback-4",
             _createdAt: new Date().toISOString(),
-            title: "ESG Compliance Support",
+            title: "Engineering",
             description:
-              "Expert guidance on environmental, social, and governance compliance for built environment projects.",
+              "Integrated building systems designed for efficiency, comfort and resilience.",
             icon: "shield",
             order: 4,
             isActive: true,
@@ -68,9 +68,9 @@ const ContactPage = () => {
           {
             _id: "fallback-5",
             _createdAt: new Date().toISOString(),
-            title: "Procurement Strategy",
+            title: "Net Zero & Sustainability",
             description:
-              "Sustainable procurement solutions and supplier assessment for green building materials and services.",
+              "Delivering whole life carbon, circularity and climate-positive outcomes.",
             icon: "shopping-cart",
             order: 5,
             isActive: true,
@@ -78,9 +78,9 @@ const ContactPage = () => {
           {
             _id: "fallback-6",
             _createdAt: new Date().toISOString(),
-            title: "Portfolio Optimization",
+            title: "Planning & Urbanism",
             description:
-              "Strategic portfolio-wide sustainability planning and optimization for multiple building assets.",
+              "Shaping sustainable places through joined-up planning and design.",
             icon: "building",
             order: 6,
             isActive: true,
