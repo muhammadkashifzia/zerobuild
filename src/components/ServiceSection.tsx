@@ -17,9 +17,9 @@ const ServiceSection = () => {
           </div>
           <Link
             href="/services"
-            className="w-full bg-[#484AB7] text-white border-neutral-200 dark:border-[#484AB7] p-2 rounded-2xl max-w-[180px] h-[50px] flex items-center justify-center text-lg font-semibold hover:bg-[#3c3f9d] transition-colors duration-200"
+            className="gap-[5px] w-full bg-[#484AB7] text-white border-neutral-200 dark:border-[#484AB7] p-2 rounded-2xl max-w-[200px] h-[50px] flex items-center justify-center text-lg font-semibold hover:bg-[#3c3f9d] transition-colors duration-200"
           >
-            View all services
+            View all services <ArrowRight />
           </Link>
 
          

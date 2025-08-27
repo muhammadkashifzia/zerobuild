@@ -6,6 +6,8 @@ import { usePathname } from "next/navigation";
 import { HoveredLink, Menu, MenuItem } from "./ui/navbar-menu";
 import { cn } from "@/utils/cn";
 import Image from "next/image";
+import { ArrowRight  } from "lucide-react";
+
 const Navbar = ({ className }: { className?: string }) => {
   const pathname = usePathname();
 
@@ -79,9 +81,9 @@ const Navbar = ({ className }: { className?: string }) => {
 
           <Link
             href="/resources"
-            className="w-full bg-[#484AB7] text-white border-neutral-200 px-2 rounded-xl max-w-[185px] h-[45px] flex items-center justify-center text-[16px] font-semibold hover:bg-[#3c3f9d] transition-colors duration-200"
+            className="gap-[5px] w-full bg-[#484AB7] text-white border-neutral-200 px-2 rounded-xl max-w-[200px] h-[45px] flex items-center justify-center text-[16px] font-semibold hover:bg-[#3c3f9d] transition-colors duration-200"
           >
-            View all Resources
+            View all Resources <ArrowRight />
           </Link>
         </div>
 

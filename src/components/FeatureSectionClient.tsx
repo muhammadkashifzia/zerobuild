@@ -5,6 +5,9 @@ import React, { useId } from "react";
 import { motion } from "motion/react";
 import { Highlight } from "@/components/ui/hero-highlight";
 import { Feature } from "@/types/Feature";
+import { Button } from "@/components/ui/moving-border";
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 
 export default function FeatureSectionClient({ features }: { features: Feature[] }) {
@@ -130,6 +133,13 @@ export default function FeatureSectionClient({ features }: { features: Feature[]
 					</motion.div>
 				))}
 			</div>
+			 <div className="px-[16px] flex justify-center mt-[50px]">
+        <Link href="/services" className="w-full max-w-[200px]">
+          <Button className="flex gap-[5px] h-12 w-full items-center justify-center !rounded-xl bg-white text-sm text-black shadow transition duration-200 hover:shadow-lg">
+            Explore all services <ArrowRight />
+          </Button>
+        </Link>
+      </div>
 		</div>
 	);
 }

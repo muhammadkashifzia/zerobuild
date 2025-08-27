@@ -144,17 +144,18 @@ const DetailedDataBox = ({
           </div>
           <div className="flex gap-2">
             <span className=" font-medium text-white">Cost</span>
-            <div className="text-white">£{dataPoint.Cost.toFixed(0)}</div>
+            <div className="text-white">£{dataPoint.Cost.toFixed(0)}/m²</div>
           </div>
           <div className="flex gap-2">
             <span className="font-medium text-white">Carbon</span>
             <div className="text-white">{dataPoint.Carbon.toFixed(1)}</div>
-            <div className="text-[12px] text-white">kgCO₂e/m²</div>
+            <div className="text-[12px] text-white">kgCO₂e<span className="text-white">/m²</span></div>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-1">
             <div className=" font-medium text-white">Circularity</div>
-            <div className="text-white">{dataPoint.Circularity}</div>
             <div className="text-[12px] text-white">score</div>
+            <div className="text-white">{dataPoint.Circularity}</div>
+           
           </div>
         </div>
       </div>
@@ -300,17 +301,18 @@ const ComplianceHoverCard = ({
           </div>
           <div className="flex gap-2">
             <span className=" font-medium text-black">Cost</span>
-            <div className="text-black">£{dataPoint.Cost.toFixed(0)}</div>
+            <div className="text-black">£{dataPoint.Cost.toFixed(0)}<span className="text-red-600">/m²</span></div>
           </div>
           <div className="flex gap-2">
             <span className="font-medium text-black">Carbon</span>
             <div className="text-black">{dataPoint.Carbon.toFixed(1)}</div>
-            <div className="text-[12px] text-black">kgCO₂e/m²</div>
+            <div className="text-[12px] text-black">kgCO₂e<span className="text-red-600">/m²</span></div>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-1">
             <div className=" font-medium text-black">Circularity</div>
+             <div className="text-[12px] text-rose-600">score</div>
             <div className="text-black">{dataPoint.Circularity}</div>
-            <div className="text-[12px] text-black">score</div>
+           
           </div>
         </div>
       </div>
