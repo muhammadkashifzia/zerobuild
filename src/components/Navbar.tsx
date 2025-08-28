@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { HoveredLink, Menu, MenuItem } from "./ui/navbar-menu";
 import { cn } from "@/utils/cn";
 import Image from "next/image";
-import { ArrowRight  } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 const Navbar = ({ className }: { className?: string }) => {
   const pathname = usePathname();
@@ -43,7 +43,13 @@ const Navbar = ({ className }: { className?: string }) => {
               href="/"
             >
               <div className="relative h-8 w-[192px] gap-[5px] flex items-center justify-between rounded-md text-[28px] antialiased">
-                <Image src="/assets/images/5CZLogo.png" alt="logo" width={100} height={100} className="h-[50px] w-auto" />
+                <Image
+                  src="/assets/images/5CZLogo.png"
+                  alt="logo"
+                  width={100}
+                  height={100}
+                  className="h-[50px] w-auto"
+                />
                 <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent font-bold">
                   ZeroBuild
                 </span>
@@ -55,28 +61,22 @@ const Navbar = ({ className }: { className?: string }) => {
         {/* Desktop Menu */}
         <div className="hidden lg:flex items-center w-full justify-between relative navLink">
           <Menu setActive={setActive}>
-            {["about", "services", "projects", "contact"].map(
-              (item) => (
-                <HoveredLink
-                  key={item}
-                  href={getLinkPath(item)}
-             
+            {["about", "services", "projects", "contact"].map((item) => (
+              <HoveredLink key={item} href={getLinkPath(item)}>
+                <div
+                  className={cn(
+                    "relative  transition-[1s] text-black menuItem",
+                    isActive(item) && "font-bold activeMenuItem"
+                  )}
                 >
-                  <div
-                    className={cn(
-                      "relative  transition-[1s] text-black menuItem",
-                      isActive(item) && "font-bold activeMenuItem"
-                    )}
-                  >
-                    <MenuItem
-                      setActive={setActive}
-                      active={active}
-                      item={item.charAt(0).toUpperCase() + item.slice(1)}
-                    />
-                  </div>
-                </HoveredLink>
-              )
-            )}
+                  <MenuItem
+                    setActive={setActive}
+                    active={active}
+                    item={item.charAt(0).toUpperCase() + item.slice(1)}
+                  />
+                </div>
+              </HoveredLink>
+            ))}
           </Menu>
 
           <Link
@@ -126,12 +126,19 @@ const Navbar = ({ className }: { className?: string }) => {
             <HoveredLink
               className="flex items-center justify-center space-x-2 text-2xl font-bold text-center text-neutral-600"
               href="/"
+              onClick={handleCloseSidebar}
             >
               <div className="relative h-8 w-[200px] flex items-center justify-center rounded-md text-[32px] antialiased gap-[10px]">
-               <Image src="/assets/images/5CZLogo.png" alt="logo" width={100} height={100} className="h-[50px] w-auto" />
-               <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent font-bold">
-                 ZeroBuild
-               </span>
+                <Image
+                  src="/assets/images/5CZLogo.png"
+                  alt="logo"
+                  width={100}
+                  height={100}
+                  className="h-[50px] w-auto"
+                />
+                <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent font-bold">
+                  ZeroBuild
+                </span>
               </div>
             </HoveredLink>
           </div>
@@ -142,6 +149,7 @@ const Navbar = ({ className }: { className?: string }) => {
                 key={item}
                 href={getLinkPath(item)}
                 className={cn(isActive(item) ? "active" : "")}
+                onClick={handleCloseSidebar} // ✅ Close sidebar when clicked
               >
                 <div
                   className={cn(
