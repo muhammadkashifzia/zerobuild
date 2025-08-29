@@ -177,8 +177,8 @@ export default async function Page({
                   },
                 }}
               />
-            </div>
-          )}
+            </div> 
+          )} 
 
           {/* Resource Accordion */}
           {resource.accordion && resource.accordion.length > 0 && (
