@@ -2,7 +2,7 @@ import HeroSection from "@/components/HeroSection";
 import FeaturedByYoutubers from "@/components/FeaturedYoutubeClient";
 import CtaSection from '@/components/CtaSection'
 import { MapWorld } from "@/components/MapWorld";
-import ServiceSection from "@/components/ServiceSection" 
+// import ServiceSection from "@/components/ServiceSection" 
 import TestimonialCard from "@/components/TestimonialCard";
 import Image from "next/image";
 import PerformanceSection from "@/components/PerformanceSection";
@@ -10,6 +10,7 @@ import { FeaturesSectionDemo } from "@/components/FeatureSection";
 import type { Metadata } from "next";
 import { getHeroData } from "@/utils/hero";
 import { getPerformanceData } from "@/utils/performance";
+
 export const metadata: Metadata = {
   title: "ZeroBuild - Accelerating Net Zero Decarbonisation | Home",
   description: "ZeroBuild accelerates the decarbonisation of the built environment by empowering architects, engineers, developers, local authorities, and housing associations to achieve Net Zero faster. Our proprietary analytics and data-driven tools simplify Whole Life Carbon assessments, dynamic energy modelling, and lifecycle cost-benefit analysis—enabling quicker, clearer decisions that optimise sustainability, affordability, and compliance across diverse building portfolios.",
@@ -62,7 +63,7 @@ export default async function Home() {
       <Image src="/assets/svg/pattern-svg.svg" alt="pattenRight" width={1000} height={1000} className="absolute top-[65px] right-[0px] w-[890px] h-auto object-cover"/>
       <HeroSection heroData={heroData} />
       <PerformanceSection performanceData={performanceData} />
-      <ServiceSection />
+      {/* <ServiceSection /> */}
       <FeaturesSectionDemo />
       <FeaturedByYoutubers />
       

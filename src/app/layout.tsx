@@ -3,7 +3,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Providers } from "@/components/providers";
-
+import CookieBanner from '@/components/CookieBanner';
 export const metadata: Metadata = {
   title: "ZeroBuild - Accelerating Net Zero Decarbonisation in the Built Environment",
   description: "ZeroBuild accelerates the decarbonisation of the built environment by empowering architects, engineers, developers, local authorities, and housing associations to achieve Net Zero faster. Our proprietary analytics and data-driven tools simplify Whole Life Carbon assessments, dynamic energy modelling, and lifecycle cost-benefit analysis.",
@@ -71,6 +71,7 @@ export default function RootLayout({
             <Navbar />
           </div>
           {children}
+           <CookieBanner />
           <Footer />
         </Providers>
       </body>
