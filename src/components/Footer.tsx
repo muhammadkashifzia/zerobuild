@@ -37,49 +37,49 @@ function Footer() {
       icon: (
         <IconBrandFacebook className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ),
-      href: "#",
+      href: "https://www.linkedin.com/company/zero-build/",
     },
     {
       title: "Linkedin",
       icon: (
         <IconBrandLinkedin className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ),
-      href: "#",
+      href: "https://www.linkedin.com/company/zero-build/",
     },
     {
       title: "Instagram",
       icon: (
         <IconBrandInstagram className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ),
-      href: "#",
+      href: "https://www.instagram.com/zerobuild.io/",
     },
     {
       title: "Twitter",
       icon: (
         <IconBrandX className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ),
-      href: "#",
+      href: "https://x.com/zerobuild_io",
     },
     {
       title: "Youtube",
       icon: (
         <IconBrandYoutube className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ),
-      href: "#",
+      href: "https://www.youtube.com/@ZeroBuild-io",
     },
     {
       title: "Bluesky",
       icon: (
         <IconBrandBluesky className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ),
-      href: "#",
+      href: "https://bsky.app/profile/zerobuild.bsky.social",
     },
     {
       title: "GitHub",
       icon: (
         <IconBrandGithub className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ),
-      href: "#",
+      href: "https://github.com/Zero-Build",
     },
   ];
 
@@ -269,10 +269,11 @@ function Footer() {
         </div>
       </div>
       <div className="pt-14 pb-4">
-        {" "}
+
         <FloatingDock
           mobileClassName="translate-y-20" // only for demo, remove for production
           items={links}
+         
         />
       </div>
       {/* Footer Bottom */}

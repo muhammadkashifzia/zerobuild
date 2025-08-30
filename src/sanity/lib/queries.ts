@@ -154,12 +154,3 @@ export const aboutPageQuery = groq`
     ctaTypewriterWords
   }
 `
-
-export const allAboutPagesQuery = groq`
-  *[_type == "aboutPage"] {
-    _id,
-    title,
-    description,
-    isActive
-  }
-`

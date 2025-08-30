@@ -6,7 +6,7 @@ import AboutTop from "@/components/about/aboutTop";
 import CtaSection from "@/components/CtaSection"
 import type { Metadata } from "next";
 import { client } from "@/sanity/lib/client";
-import { aboutPageQuery, allAboutPagesQuery } from "@/sanity/lib/queries";
+import { aboutPageQuery } from "@/sanity/lib/queries";
 import { AboutPageBanner } from "@/types/aboutPage";
 
 export const metadata: Metadata = {
@@ -42,11 +42,10 @@ export const metadata: Metadata = {
 
 async function page() {
   const aboutPageData: AboutPageBanner | null = await client.fetch(aboutPageQuery);
-  const allAboutPages = await client.fetch(allAboutPagesQuery);
+ 
   
   // Debug logging to check what data is being fetched
   console.log('About page data:', aboutPageData);
-  console.log('All about pages:', allAboutPages);
 
   return (
     <div className="min-h-screen  py-12 pt-[4rem] md:pt-[4rem]">
