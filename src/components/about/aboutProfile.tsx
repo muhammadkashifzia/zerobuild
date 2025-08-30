@@ -39,7 +39,7 @@ export default function AboutProfile({
   linkedinButtonText = "Connect on LinkedIn"
 }: AboutProfileProps) {
   return (
-    <div className="flex flex-col md:flex-row max-w-[1024px] mx-auto px-4 pt-[40px] md:pt-[80px] pb-[40px] md:pb-[80px] gap-8">
+    <div className="flex flex-col md:flex-row container mx-auto px-4 pt-[40px] md:pt-[80px] pb-[40px] md:pb-[80px] gap-8">
       {/* Left Image */}
       <div className="flex-shrink-0 w-full md:w-1/3">
         <Image

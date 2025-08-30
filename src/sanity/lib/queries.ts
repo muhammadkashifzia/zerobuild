@@ -107,7 +107,6 @@ export const aboutPageQuery = groq`
     newBuildButtonText,
     retrofitSelectorButtonText,
     retrofitButtonText,
-
     newBuildIntroText,
     newBuildSummaryText,
     newBuildResultText,
@@ -124,7 +123,6 @@ export const aboutPageQuery = groq`
       },
       altText
     },
-
     retrofitResultText,
     retrofitButtonText,
     retrofitButtonUrl,

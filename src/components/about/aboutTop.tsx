@@ -21,7 +21,7 @@ export default async function AboutTop() {
           description={aboutPageData?.description || "From metro systems to concert halls, our sustainability projects shape a better world."}
         />
       </AuroraBackground>
-      <div className="max-w-[1024px] mx-auto px-[16px] mt-[40px]">
+      <div className="container mx-auto px-[16px] mt-[40px]">
         {aboutPageData?.introContent && (
           <div className="prose max-w-none text-black mb-8 about-intro-content">
             <PortableText

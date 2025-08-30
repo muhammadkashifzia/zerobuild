@@ -18,7 +18,7 @@ export default function CtaSection({
   typewriterWords = [{ text: "Expert" }]
 }: AboutCtaProps) {
   return (
-    <div className=" p-4 md:p-8 max-w-[1024px] mx-auto w-full flex items-center justify-between flex-wrap">
+    <div className=" p-4 md:p-8 container mx-auto w-full flex items-center justify-between flex-wrap">
       <div className="max-w-full w-full md:max-w-[740px] md:w-[44%] mb-[15px]">
         <h2 className="text-black text-[24px] font-semibold mb-[10px]">
           {title}

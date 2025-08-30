@@ -16,7 +16,7 @@ export default function AboutTopClient({ title, description }: AboutTopClientPro
         duration: 0.8,
         ease: "easeInOut",
       }}
-      className="max-w-[1024px] mx-auto relative flex flex-col gap-4 px-4"
+      className="container mx-auto relative flex flex-col gap-4 px-4"
     >
       <div className="text-3xl md:text-6xl font-normal text-black leading-[1.2] max-w-[1000px]">
         {title}
