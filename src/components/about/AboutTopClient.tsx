@@ -2,8 +2,8 @@
 import { motion } from "motion/react";
 
 interface AboutTopClientProps {
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
 }
 
 export default function AboutTopClient({ title, description }: AboutTopClientProps) {
