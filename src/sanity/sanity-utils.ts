@@ -8,28 +8,29 @@ import { Company } from "@/types/Company";
 import { ContactPageBanner } from "@/types/Contact";
 import { ResourcesPageBanner } from "@/types/resourcesPage";
 import clientConfig from "./config/client-config";
-import { projectsPageQuery } from "./lib/queries";
+import { projectsPageQuery, aboutPageQuery } from "./lib/queries";
 
+/* ---------------- SERVICES ---------------- */
 export async function getServices(): Promise<Service[]> {
   return createClient(clientConfig).fetch(
     groq`*[_type == "service"]{
-  _id,
-  _createdAt,
-  title,
-  "slug": slug.current,
-  publishedAt,
-  "image": image.asset->url,
-  description,
-  disciplines,
-  projectStage,
-  "gallery": gallery[].asset->url,
-  body,
-  accordion[]{
-    _key,
-    title,
-    content,
-    isOpen
-  }
+      _id,
+      _createdAt,
+      title,
+      "slug": slug.current,
+      publishedAt,
+      "image": image.asset->url,
+      description,
+      disciplines,
+      projectStage,
+      "gallery": gallery[].asset->url,
+      body,
+      accordion[] {
+        _key,
+        title,
+        content,
+        isOpen
+      }
     }`
   );
 }
@@ -47,7 +48,9 @@ export async function getServicesPageBanner() {
   );
 }
 
-export async function getFooterServices(): Promise<Pick<Service, '_id' | 'title' | 'slug' | 'publishedAt'>[]> {
+export async function getFooterServices(): Promise<
+  Pick<Service, "_id" | "title" | "slug" | "publishedAt">[]
+> {
   return createClient(clientConfig).fetch(
     groq`*[_type == "service"] | order(publishedAt desc)[0...6] {
       _id,
@@ -71,7 +74,7 @@ export async function getService(slug: string): Promise<Service> {
       projectStage,
       gallery[]{ asset->{url} },
       body,
-      accordion[]{
+      accordion[] {
         _key,
         title,
         content,
@@ -83,26 +86,30 @@ export async function getService(slug: string): Promise<Service> {
   );
 }
 
+/* ---------------- PROJECTS ---------------- */
 export async function getProjects(): Promise<Project[]> {
   return createClient(clientConfig).fetch(
     groq`*[_type == "project"]{
-  _id,
-  _createdAt,
-  title,
-  "slug": slug.current,
-  publishedAt,
-  image { asset->{url} },
-  description,
-  location,
-  categories,
-  "gallery": gallery[].asset->url,
-  body,
-  
+      _id,
+      _createdAt,
+      title,
+      "slug": slug.current,
+      publishedAt,
+      image { asset->{url} },
+      description,
+      location,
+      categories,
+      "gallery": gallery[].asset->url,
+      body
     }`
   );
 }
 
-export async function getProjectsPageBanner(): Promise<{ _id: string; title: string; description: string } | null> {
+export async function getProjectsPageBanner(): Promise<{
+  _id: string;
+  title: string;
+  description: string;
+} | null> {
   return createClient(clientConfig).fetch(projectsPageQuery);
 }
 
@@ -119,7 +126,7 @@ export async function getProject(slug: string): Promise<Project> {
       categories,
       gallery[]{ asset->{url} },
       body,
-     accordion[]{
+      accordion[] {
         _key,
         title,
         content,
@@ -131,14 +138,18 @@ export async function getProject(slug: string): Promise<Project> {
   );
 }
 
-export async function getRelatedProjects(currentSlug: string, categories?: string[]): Promise<Project[]> {
+export async function getRelatedProjects(
+  currentSlug: string,
+  categories?: string[]
+): Promise<Project[]> {
   if (!categories || categories.length === 0) {
     return [];
   }
 
   return createClient(clientConfig).fetch(
     groq`
-    *[_type == "project" && slug.current != $currentSlug && count(categories[@ in $categories]) > 0] | order(publishedAt desc)[0...4] {
+    *[_type == "project" && slug.current != $currentSlug && count(categories[@ in $categories]) > 0] 
+    | order(publishedAt desc)[0...4] {
       _id,
       title,
       "slug": slug.current,
@@ -152,21 +163,21 @@ export async function getRelatedProjects(currentSlug: string, categories?: strin
   );
 }
 
-/* Resources */
+/* ---------------- RESOURCES ---------------- */
 export async function getResources(): Promise<Resource[]> {
   return createClient(clientConfig).fetch(
     groq`*[_type == "resource"]{
-  _id,
-  _createdAt,
-  title,
-  slug,
-  publishedAt,
-  image { asset->{url} },
-  description,
-  purpose,
-  focusArea,
-  gallery[]{ asset->{url} },
-  body
+      _id,
+      _createdAt,
+      title,
+      slug,
+      publishedAt,
+      image { asset->{url} },
+      description,
+      purpose,
+      focusArea,
+      gallery[]{ asset->{url} },
+      body
     }`
   );
 }
@@ -184,7 +195,7 @@ export async function getResource(slug: string): Promise<Resource> {
       focusArea,
       gallery[]{ asset->{url} },
       body,
-      accordion[]{
+      accordion[] {
         _key,
         title,
         content,
@@ -196,7 +207,11 @@ export async function getResource(slug: string): Promise<Resource> {
   );
 }
 
-export async function getRelatedResources(currentSlug: string, purpose?: string[], focusArea?: string[]): Promise<Resource[]> {
+export async function getRelatedResources(
+  currentSlug: string,
+  purpose?: string[],
+  focusArea?: string[]
+): Promise<Resource[]> {
   if ((!purpose || purpose.length === 0) && (!focusArea || focusArea.length === 0)) {
     return [];
   }
@@ -233,7 +248,7 @@ export async function getResourcesPageBanner(): Promise<ResourcesPageBanner | nu
   );
 }
 
-/* Contact */
+/* ---------------- CONTACT ---------------- */
 export async function getContacts(): Promise<Contact[]> {
   return createClient(clientConfig).fetch(
     groq`coalesce(
@@ -250,7 +265,7 @@ export async function getContactPageBanner(): Promise<ContactPageBanner | null> 
       title,
       description,
       cta{ note },
-      "contacts": coalesce(contacts[]{
+      "contacts": coalesce(contacts[] {
         address,
         phone,
         email,
@@ -260,10 +275,10 @@ export async function getContactPageBanner(): Promise<ContactPageBanner | null> 
   );
 }
 
-/* Features */
+/* ---------------- FEATURES ---------------- */
 export async function getFeatures(): Promise<Feature[]> {
   try {
-    console.log('Fetching features from Sanity...');
+    console.log("Fetching features from Sanity...");
     const features = await createClient(clientConfig).fetch(
       groq`*[_type == "feature"] | order(order asc) {
         _id,
@@ -271,7 +286,7 @@ export async function getFeatures(): Promise<Feature[]> {
         title,
         description,
         icon,
-        logoColors{
+        logoColors {
           primaryColor,
           secondaryColor,
           gradientDirection
@@ -280,14 +295,15 @@ export async function getFeatures(): Promise<Feature[]> {
         isActive
       }`
     );
-    console.log('Features fetched:', features);
+    console.log("Features fetched:", features);
     return features;
   } catch (error) {
-    console.error('Error fetching features:', error);
+    console.error("Error fetching features:", error);
     throw error;
   }
 }
 
+/* ---------------- COMPANY ---------------- */
 export async function getCompanyInfo(): Promise<Company | null> {
   return createClient(clientConfig).fetch(
     groq`*[_type == "company" && isActive == true][0] {
@@ -298,4 +314,9 @@ export async function getCompanyInfo(): Promise<Company | null> {
       isActive
     }`
   );
+}
+
+/* ---------------- ABOUT PAGE ---------------- */
+export async function getAboutPage() {
+  return createClient(clientConfig).fetch(aboutPageQuery);
 }
