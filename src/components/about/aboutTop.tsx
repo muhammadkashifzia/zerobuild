@@ -32,7 +32,7 @@ export default async function AboutTop() {
                     <div className="w-full flex justify-center my-6">
                       <Image
                         src={value?.asset?.url || "/assets/images/about-image.png"}
-                        alt={value?.alt || "About Us"}
+                        alt={value?.alt}
                         width={1200}
                         height={600}
                         className="w-full h-auto object-cover rounded-lg max-w-full md:max-w-[800px]"
