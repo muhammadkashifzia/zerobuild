@@ -21,7 +21,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     serviceType,
     projectType,
     resourceType,
-    contactSubmission,
+    contactSubmission, 
     youtubeVideoType,
     heroType,
     performanceType,
