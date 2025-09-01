@@ -16,7 +16,8 @@ import { aboutPageType } from './about-page-schema';
 import { contactPageType } from './contact-page-schema';
 import { resourcesPageType } from './resources-page-schema';
 import { worldMapType } from './worldmap-schema';
-
+import { testimonialType } from './testimonial-schema';
+import { ctaType } from './cta-schema';
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -30,6 +31,8 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     featureType,
     featureHeadingType,
     worldMapType,
+    testimonialType,
+    ctaType,
     companyType,
     servicesPageType,
     resourcesPageType,

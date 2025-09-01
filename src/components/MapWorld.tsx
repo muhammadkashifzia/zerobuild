@@ -1,9 +1,10 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { WorldMap } from "../components/ui/world-map";
-import { motion } from "framer-motion";
-import { WorldMapHeading } from "@/types/WorldMap";
+import { motion } from "framer-motion"; // ✅ keep only framer-motion
+import { WorldMapHeader } from "@/types/home";
 import { getWorldMapHeading } from "@/sanity/sanity-utils";
+
 export function MapWorld() {
   // 1. Define 24 countries with coordinates
   const countryCoords: Record<string, { lat: number; lng: number }> = {
@@ -61,6 +62,7 @@ export function MapWorld() {
     { from: "Brazil", to: "France" },
   ];
 
+  // 3. Transform into dots (start → end)
   const dots = connections.map(({ from, to }) => ({
     start: {
       lat: countryCoords[from].lat,
@@ -73,51 +75,56 @@ export function MapWorld() {
       label: to,
     },
   }));
-  const [worldMaps, setWorldMaps] =  useState<WorldMapHeading | null>(
-      null
-    );
-   useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const [headingRes] = await Promise.all([
-  
-            getWorldMapHeading(),
-          ]);
+
+  // 4. State for heading data
+  const [worldMaps, setWorldMaps] = useState<WorldMapHeader | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const headingRes = await getWorldMapHeading();
+
+        // ✅ Handle if API returns array or object
+        if (Array.isArray(headingRes)) {
           setWorldMaps(headingRes[0] || null);
-        } catch (error) {
-          console.error("Error fetching data:", error);
+        } else {
+          setWorldMaps(headingRes || null);
         }
-      };
-      fetchData();
-    }, []);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
   return (
     <div className="py-0 bg-white w-full">
-        {worldMaps && (
-      <div className="max-w-7xl mx-auto text-center mb-[40px] px-4">
-        <p className="font-bold text-[32px] md:text-[48px] text-black max-w-[440px] md:max-w-full mx-auto md:mx-0">
-      
-            {worldMaps.highlightText} 
+      {worldMaps && (
+        <div className="max-w-7xl mx-auto text-center mb-[40px] px-4">
+          <p className="font-bold text-[32px] md:text-[48px] text-black max-w-[440px] md:max-w-full mx-auto md:mx-0">
+            {worldMaps.mainheading}
+            {worldMaps.bluehighlight && (
+              <span className="text-[#484AB7] ml-[8px]">
+                {worldMaps.bluehighlight.split("").map((letter, idx) => (
+                  <motion.span
+                    key={idx}
+                    className="inline-block"
+                    initial={{ x: -10, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ duration: 0.5, delay: idx * 0.03 }}
+                  >
+                    {letter}
+                  </motion.span>
+                ))}
+              </span>
+            )}
+          </p>
 
-          <span className="text-[#484AB7] ml-[8px]">
-                {worldMaps.highlightText}  
-            {"worldwide.".split("").map((letter, idx) => (
-              <motion.span
-                key={idx}
-                className="inline-block"
-                initial={{ x: -10, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ duration: 0.5, delay: idx * 0.03 }}
-              >
-                {letter}
-              </motion.span>
-            ))}
-          </span>
-        </p>
-        <p className="text-sm md:text-lg text-black max-w-2xl mx-auto py-4">
-          {worldMaps.description}
-        </p>
-      </div>
-    )}
+          <p className="text-sm md:text-lg text-black max-w-2xl mx-auto py-4">
+            {worldMaps.subtext}
+          </p>
+        </div>
+      )}
       <WorldMap dots={dots} lineColor="#484AB7" />
     </div>
   );

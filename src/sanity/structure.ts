@@ -57,7 +57,6 @@ export const structure: StructureResolver = (S) =>
                         .child(
                           S.documentTypeList("feature")
                             .title("Feature List")
-                            // 👇 filter out the heading doc so it won’t appear in the list
                             .filter('_type == "feature"')
                         ),
                     ])
@@ -69,9 +68,11 @@ export const structure: StructureResolver = (S) =>
               S.listItem()
                 .title("YouTube Video Section")
                 .schemaType("youtubeVideo")
-                .child(S.documentTypeList("youtubeVideo").title("YouTube Video")),
+                .child(
+                  S.documentTypeList("youtubeVideo").title("YouTube Video")
+                ),
 
-                            S.divider(),
+              S.divider(),
 
               // WorldMap Section
               S.listItem()
@@ -82,7 +83,7 @@ export const structure: StructureResolver = (S) =>
                     .items([
                       // WorldMap Heading (single doc)
                       S.listItem()
-                        .title("WordMap Heading")
+                        .title("WorldMap Heading")
                         .child(
                           S.document()
                             .schemaType("worldMapHeading")
@@ -90,17 +91,26 @@ export const structure: StructureResolver = (S) =>
                         ),
 
                       S.divider(),
+                    ])
+                ),
+  S.divider(),
 
-                      // Feature List (multi docs)
-                      // S.listItem()
-                      //   .title("Feature List")
-                      //   .schemaType("feature")
-                      //   .child(
-                      //     S.documentTypeList("feature")
-                      //       .title("Feature List")
-                      //       // 👇 filter out the heading doc so it won’t appear in the list
-                      //       .filter('_type == "feature"')
-                      //   ),
+              // Testimonial Section
+              S.listItem()
+                .title("Testimonial Section")
+                .child(
+                  S.list()
+                    .title("Testimonial Section")
+                    .items([
+                      // Testimonial Slides (multi docs)
+                      S.listItem()
+                        .title("Testimonial Slides")
+                        .schemaType("testimonialSlider")
+                        .child(
+                          S.documentTypeList("testimonialSlider")
+                            .title("Testimonial Slides")
+                            .filter('_type == "testimonialSlider"')
+                        ),
                     ])
                 ),
             ])
@@ -159,6 +169,15 @@ export const structure: StructureResolver = (S) =>
                 .title("Resource List")
                 .schemaType("resource")
                 .child(S.documentTypeList("resource").title("Resource List")),
+
+            
             ])
         ),
+
+              S.divider(),
+
+              S.listItem()
+                .title("Call to Action Section")
+                .schemaType("cta")
+                .child(S.documentTypeList("cta").title("CTA Section")),
     ]);

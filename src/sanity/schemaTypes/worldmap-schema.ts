@@ -6,22 +6,21 @@ export const worldMapType = defineType({
   type: 'document',
   fields: [
     defineField({
-      name: 'heading',
-      title: 'MainHeading',
+      name: 'mainheading',
+      title: 'Main Heading',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
+    }),
+     defineField({
+      name: 'bluehighlight',
+      title: 'Text Highlight',
       type: 'string',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: 'description',
+      name: 'subtext',
       title: 'Sub Text',
       type: 'text',
-      validation: (Rule) => Rule.required(),
-    }),
-   
-    defineField({
-      name: 'highlightText',
-      title: 'Highlight Text',
-      type: 'string',
       validation: (Rule) => Rule.required(),
     }),
    

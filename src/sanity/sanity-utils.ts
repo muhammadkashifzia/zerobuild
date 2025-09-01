@@ -10,7 +10,9 @@ import { ContactPageBanner } from "@/types/Contact";
 import { ResourcesPageBanner } from "@/types/resourcesPage";
 import clientConfig from "./config/client-config";
 import { projectsPageQuery, aboutPageQuery } from "./lib/queries";
-import { WorldMapHeading } from "@/types/WorldMap";
+import { WorldMapHeader, TestimonialSlider, CTAButton } from "@/types/home";
+
+
 /* ---------------- SERVICES ---------------- */
 export async function getServices(): Promise<Service[]> {
   return createClient(clientConfig).fetch(
@@ -213,7 +215,10 @@ export async function getRelatedResources(
   purpose?: string[],
   focusArea?: string[]
 ): Promise<Resource[]> {
-  if ((!purpose || purpose.length === 0) && (!focusArea || focusArea.length === 0)) {
+  if (
+    (!purpose || purpose.length === 0) &&
+    (!focusArea || focusArea.length === 0)
+  ) {
     return [];
   }
 
@@ -339,15 +344,15 @@ export async function getAboutPage() {
 }
 
 /* ---------------- World Map  ---------------- */
-export async function getWorldMapHeading(): Promise<WorldMapHeading[]> {
+export async function getWorldMapHeading(): Promise<WorldMapHeader[]> {
   try {
     const mapHeading = await createClient(clientConfig).fetch(
       groq`*[_type == "worldMapHeading" && isActive == true] {
         _id,
         _createdAt,
-        heading,
-        description,  
-        order,
+        mainheading,
+        bluehighlight,
+        subtext,  
         isActive
       }`
     );
@@ -356,5 +361,58 @@ export async function getWorldMapHeading(): Promise<WorldMapHeading[]> {
   } catch (error) {
     console.error("Error fetching worldMap:", error);
     throw error;
+  }
+}
+
+/* ---------------- Testimonial ---------------- */
+export async function getTestimonialSlider(): Promise<TestimonialSlider[]> {
+  try {
+    const sliders = await createClient(clientConfig).fetch(
+      groq`*[_type == "testimonialSlider" && isActive == true] {
+        _id,
+        _createdAt,
+        title,
+        address,
+        description,  
+        isActive,
+        image {
+          asset->{
+            _id,
+            url,
+            metadata { 
+              dimensions, 
+              lqip 
+            }
+          },
+          alt
+        }
+      }`
+    );
+    console.log("✅ Testimonial Slider fetched:", sliders);
+    return sliders;
+  } catch (error) {
+    console.error("❌ Error fetching Testimonial Slider:", error);
+    throw error;
+  }
+}
+
+export async function getCTA(): Promise<CTAButton | null> {
+  try {
+    const data = await createClient(clientConfig).fetch(
+      `*[_type == "cta" && isActive == true][0]{
+        _id,
+        _createdAt,
+        title,
+        subtext,
+        ctabtntext,
+        ctabtntextanimation,
+        ctabtnurl,
+        isActive
+      }`
+    );
+    return data || null;
+  } catch (error) {
+    console.error("Error fetching CTA:", error);
+    return null;
   }
 }
