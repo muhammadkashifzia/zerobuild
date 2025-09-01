@@ -1,7 +1,9 @@
-export interface FeatureMainHeading {
+
+
+export interface WorldMapHeading {
   _id: string
   _createdAt: string
-  title: string
+  heading: string
   description: string
   highlightText: string
   isActive: boolean

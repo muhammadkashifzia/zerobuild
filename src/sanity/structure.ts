@@ -70,6 +70,39 @@ export const structure: StructureResolver = (S) =>
                 .title("YouTube Video Section")
                 .schemaType("youtubeVideo")
                 .child(S.documentTypeList("youtubeVideo").title("YouTube Video")),
+
+                            S.divider(),
+
+              // WorldMap Section
+              S.listItem()
+                .title("WorldMap Section")
+                .child(
+                  S.list()
+                    .title("WorldMap Section")
+                    .items([
+                      // WorldMap Heading (single doc)
+                      S.listItem()
+                        .title("WordMap Heading")
+                        .child(
+                          S.document()
+                            .schemaType("worldMapHeading")
+                            .documentId("WorldMapHeadings")
+                        ),
+
+                      S.divider(),
+
+                      // Feature List (multi docs)
+                      // S.listItem()
+                      //   .title("Feature List")
+                      //   .schemaType("feature")
+                      //   .child(
+                      //     S.documentTypeList("feature")
+                      //       .title("Feature List")
+                      //       // 👇 filter out the heading doc so it won’t appear in the list
+                      //       .filter('_type == "feature"')
+                      //   ),
+                    ])
+                ),
             ])
         ),
 

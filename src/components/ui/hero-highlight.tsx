@@ -2,7 +2,7 @@
 import { cn } from "@/utils/cn";
 import { useMotionValue, motion, useMotionTemplate } from "motion/react";
 import React from "react";
-import { FeaturesSectionDemo as FeatureSection } from "@/components/FeatureSection";
+import FeatureSection from "@/components/FeatureSection";
 export const HeroHighlight = ({
   children,
   className,

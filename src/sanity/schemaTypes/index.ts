@@ -15,6 +15,7 @@ import { projectsPageType } from './projects-page-schema';
 import { aboutPageType } from './about-page-schema';
 import { contactPageType } from './contact-page-schema';
 import { resourcesPageType } from './resources-page-schema';
+import { worldMapType } from './worldmap-schema';
 
 
 export const schema: { types: SchemaTypeDefinition[] } = {
@@ -28,6 +29,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     performanceType,
     featureType,
     featureHeadingType,
+    worldMapType,
     companyType,
     servicesPageType,
     resourcesPageType,

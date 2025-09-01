@@ -1,12 +1,12 @@
 import HeroSection from "@/components/HeroSection";
-import FeaturedByYoutubers from "@/components/FeaturedYoutubeClient";
+// import FeaturedByYoutubers from "@/components/FeaturedYoutubeClient";
 import CtaSection from '@/components/CtaSection'
 import { MapWorld } from "@/components/MapWorld";
 // import ServiceSection from "@/components/ServiceSection" 
 import TestimonialCard from "@/components/TestimonialCard";
 import Image from "next/image";
 import PerformanceSection from "@/components/PerformanceSection";
-import { FeaturesSectionDemo } from "@/components/FeatureSection";
+import FeaturesSection from "@/components/FeatureSection";
 import type { Metadata } from "next";
 import { getHeroData } from "@/utils/hero";
 import { getPerformanceData } from "@/utils/performance";
@@ -64,8 +64,8 @@ export default async function Home() {
       <HeroSection heroData={heroData} />
       <PerformanceSection performanceData={performanceData} />
       {/* <ServiceSection /> */}
-      <FeaturesSectionDemo />
-      <FeaturedByYoutubers />
+      <FeaturesSection />
+      {/* <FeaturedByYoutubers /> */}
       
   <MapWorld />
       <TestimonialCard />

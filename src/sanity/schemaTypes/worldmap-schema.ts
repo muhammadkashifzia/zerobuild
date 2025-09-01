@@ -1,8 +1,8 @@
 import { defineField, defineType } from 'sanity'
 
-export const featureHeadingType = defineType({
-  name: 'featureMainHeading',
-  title: 'Feature Main Heading',
+export const worldMapType = defineType({
+  name: 'worldMapHeading',
+  title: 'World Map Heading',
   type: 'document',
   fields: [
     defineField({
