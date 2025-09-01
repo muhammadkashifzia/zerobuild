@@ -287,6 +287,7 @@ export async function getFeatureHeading(): Promise<FeatureHeading[]> {
         _createdAt,
         heading,
         description,  
+        highlightText,
         order,
         isActive
       }`

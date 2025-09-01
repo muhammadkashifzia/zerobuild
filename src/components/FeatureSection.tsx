@@ -37,28 +37,27 @@ export default function Page() {
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-800 dark:text-white mb-4">
             {featureHeading.heading}
           </h1>
-       
-         
-            <motion.p
-          initial={{
-            opacity: 0,
-            y: 20,
-          }}
-          animate={{
-            opacity: 1,
-            y: [20, -5, 0],
-          }}
-          transition={{
-            duration: 0.5,
-            ease: [0.4, 0.0, 0.2, 1],
-          }}
-          className="text-center text-[16px]  px-4 text-black max-w-4xl  mx-auto mb-8 md:mb-12 relative z-10 leading-[32px]"
-        >
-             {featureHeading.description}  <Highlight className="text-black dark:text-white">
-          {featureHeading.highlightText}  
-          </Highlight>
-           </motion.p>
-     
+
+          <motion.p
+            initial={{
+              opacity: 0,
+              y: 20,
+            }}
+            animate={{
+              opacity: 1,
+              y: [20, -5, 0],
+            }}
+            transition={{
+              duration: 0.5,
+              ease: [0.4, 0.0, 0.2, 1],
+            }}
+            className="text-center text-[16px]  px-4 text-black max-w-4xl  mx-auto mb-8 md:mb-12 relative z-10 leading-[32px]"
+          >
+            {featureHeading.description}
+            <Highlight className="text-black dark:text-white">
+              {featureHeading.highlightText}
+            </Highlight>
+          </motion.p>
         </div>
       )}
 
@@ -150,13 +149,13 @@ export default function Page() {
           </p>
         )}
       </div>
-        <div className="px-[16px] flex justify-center mt-[50px]">
+      <div className="px-[16px] flex justify-center mt-[50px]">
         <Link href="/services" className="w-full max-w-[254px]">
           <Button className="flex gap-[5px] h-12 w-full max-w-[254px] items-center justify-center !rounded-xl bg-white text-sm text-black shadow transition duration-200 hover:shadow-lg">
-            Explore all services <span className="absolute right-[15px]"><ArrowRight  /></span>
-
-
-
+            Explore all services{" "}
+            <span className="absolute right-[15px]">
+              <ArrowRight />
+            </span>
           </Button>
         </Link>
       </div>
