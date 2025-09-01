@@ -152,14 +152,9 @@ const ServicesPage = () => {
     setModalOpen(true);
   };
 
-  // Fallback banner content if no data from Sanity
-  const fallbackBanner = {
-    title: "Explore our services across the built and natural environments",
-    description: "We offer a wide range of services that address every priority in the built and natural environments. Search below or use the filters to explore services by discipline and project stage."
-  };
-
-  const bannerTitle = bannerData?.title || fallbackBanner.title;
-  const bannerDescription = bannerData?.description || fallbackBanner.description;
+  
+  const bannerTitle = bannerData?.title;
+  const bannerDescription = bannerData?.description;
 
   return (
     <div className="min-h-screen bg-white mt-[64px]">

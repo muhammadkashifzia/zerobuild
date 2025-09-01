@@ -89,36 +89,39 @@ export const structure: StructureResolver = (S) =>
                             .schemaType("worldMapHeading")
                             .documentId("WorldMapHeadings")
                         ),
-
-                      S.divider(),
-                    ])
-                ),
-  S.divider(),
-
-              // Testimonial Section
-              S.listItem()
-                .title("Testimonial Section")
-                .child(
-                  S.list()
-                    .title("Testimonial Section")
-                    .items([
-                      // Testimonial Slides (multi docs)
-                      S.listItem()
-                        .title("Testimonial Slides")
-                        .schemaType("testimonialSlider")
-                        .child(
-                          S.documentTypeList("testimonialSlider")
-                            .title("Testimonial Slides")
-                            .filter('_type == "testimonialSlider"')
-                        ),
                     ])
                 ),
             ])
         ),
 
       // Divider (optional)
+      // Divider (optional)
       S.divider(),
 
+      // Resource
+      S.listItem()
+        .title("Service")
+        .child(
+          S.list()
+            .title("Service")
+            .items([
+              S.listItem()
+                .title("Service Page Banner")
+                .child(
+                  S.document()
+                    .schemaType("servicesPage")
+                    .documentId("servicesPage")
+                ),
+
+              S.divider(),
+
+              S.listItem()
+                .title("Service List")
+                .schemaType("service")
+                .child(S.documentTypeList("service").title("Service List")),
+            ])
+        ),
+      S.divider(),
       // Projects
       S.listItem()
         .title("Projects")
@@ -169,15 +172,40 @@ export const structure: StructureResolver = (S) =>
                 .title("Resource List")
                 .schemaType("resource")
                 .child(S.documentTypeList("resource").title("Resource List")),
-
-            
             ])
         ),
 
+      // Global
+      S.listItem()
+        .title("Global Sections")
+        .child(
+          S.list()
+            .title("CTA Section")
+            .items([
+              S.listItem()
+                .title("CTA Section")
+                .child(S.document().schemaType("cta").documentId("ctaSection")),
+
               S.divider(),
 
+              // Testimonial Section
               S.listItem()
-                .title("Call to Action Section")
-                .schemaType("cta")
-                .child(S.documentTypeList("cta").title("CTA Section")),
+                .title("Testimonial Section")
+                .child(
+                  S.list()
+                    .title("Testimonial Section")
+                    .items([
+                      // Testimonial Slides (multi docs)
+                      S.listItem()
+                        .title("Testimonial Slides")
+                        .schemaType("testimonialSlider")
+                        .child(
+                          S.documentTypeList("testimonialSlider")
+                            .title("Testimonial Slides")
+                            .filter('_type == "testimonialSlider"')
+                        ),
+                    ])
+                ),
+            ])
+        ),
     ]);
