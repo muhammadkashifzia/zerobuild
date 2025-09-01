@@ -12,14 +12,7 @@ export const performanceType = defineType({
       description: 'The main heading above the graph',
       validation: (Rule) => Rule.required(),
     }),
-    defineField({
-      name: 'description',
-      title: 'Description',
-      type: 'text',
-      description: 'The descriptive text below the main title',
-      validation: (Rule) => Rule.required(),
-    }),
-
+   
     defineField({
       name: 'contentAboveGraph',
       title: 'Content Above Graph',

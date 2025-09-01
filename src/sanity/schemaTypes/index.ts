@@ -8,6 +8,7 @@ import { youtubeVideoType } from './youtube-video-schema';
 import { heroType } from './hero-schema';
 import { performanceType } from './performance-schema';
 import { featureType } from './feature-schema';
+import { featureHeadingType } from './featureHeading-schema';
 import { companyType } from './company-schema';
 import { servicesPageType } from './services-page-schema';
 import { projectsPageType } from './projects-page-schema';
@@ -26,6 +27,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     heroType,
     performanceType,
     featureType,
+    featureHeadingType,
     companyType,
     servicesPageType,
     resourcesPageType,

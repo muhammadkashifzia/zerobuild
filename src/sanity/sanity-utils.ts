@@ -4,6 +4,7 @@ import { Project } from "@/types/Project";
 import { Resource } from "@/types/Resource";
 import { Contact } from "@/types/Contact";
 import { Feature } from "@/types/Feature";
+import { FeatureMainHeading } from "@/types/FeatureHeading";
 import { Company } from "@/types/Company";
 import { ContactPageBanner } from "@/types/Contact";
 import { ResourcesPageBanner } from "@/types/resourcesPage";
@@ -276,6 +277,17 @@ export async function getContactPageBanner(): Promise<ContactPageBanner | null> 
 }
 
 /* ---------------- FEATURES ---------------- */
+export async function getFeatureHeading(): Promise<FeatureMainHeading | null> {
+  return createClient(clientConfig).fetch(
+    groq`*[_type == "FeatureMainHeading" && isActive == true][0] {
+      _id,
+       title,
+        description, 
+       highlightText,
+      isActive
+    }`
+  );
+}
 export async function getFeatures(): Promise<Feature[]> {
   try {
     console.log("Fetching features from Sanity...");
@@ -284,13 +296,7 @@ export async function getFeatures(): Promise<Feature[]> {
         _id,
         _createdAt,
         title,
-        description,
-        icon,
-        logoColors {
-          primaryColor,
-          secondaryColor,
-          gradientDirection
-        },
+        description,  
         order,
         isActive
       }`

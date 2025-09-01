@@ -149,7 +149,7 @@ export default function FeatureSectionClient({
         ))}
       </div>
       <div className="px-[16px] flex justify-center mt-[50px]">
-        <Link href="/services" className="w-full max-w-[200px]">
+        <Link href="/services" className="w-full max-w-[254px]">
           <Button className="flex gap-[5px] h-12 w-full max-w-[254px] items-center justify-center !rounded-xl bg-white text-sm text-black shadow transition duration-200 hover:shadow-lg">
             Explore all services <span className="absolute right-[15px]"><ArrowRight  /></span>
           </Button>

@@ -1153,18 +1153,7 @@ export default function ObservabilityChart({
           </div>
         )}
 
-        <div className="flex flex-col items-center justify-center gap-2">
-          <p className="text-[12px] text-gray-500">
-            See how the Five C Framework helps you priortise the right decisions
-          </p>
-          <a
-            href="https://outlook.office.com/book/ZeroBuildDiscoveryCall@zerobuild.io/s/0j-Jsl27BUuEcZ2ortBjhA2?ismsaljsauthenabled"
-            target="_blank"
-            className="w-full bg-[#484AB7] text-white border-neutral-200 px-2 rounded-xl max-w-[185px] h-[45px] flex items-center justify-center text-[16px] font-semibold hover:bg-[#3c3f9d] transition-colors duration-200"
-          >
-            Try the full toolset
-          </a>
-        </div>
+       
       </div>
 
       {/* Detailed Data Box */}

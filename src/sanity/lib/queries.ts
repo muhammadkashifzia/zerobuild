@@ -82,7 +82,6 @@ export const performanceQuery = groq`
   *[_type == "performance" && isActive == true][0] {
     _id,
     mainTitle,
-    description,
     contentAboveGraph,
     contentBelowGraph,
     cta { text, link }

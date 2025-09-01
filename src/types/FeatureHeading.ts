@@ -1,8 +1,8 @@
-export interface Feature {
+export interface FeatureMainHeading {
   _id: string
   _createdAt: string
   title: string
   description: string
-  order: number
+  highlightText: string
   isActive: boolean
 }

@@ -9,7 +9,11 @@ import { PortableText } from "@portabletext/react";
 import Link from "next/link";
 
 // Lazy load skeleton component
-const PerformanceSkeleton = lazy(() => import("./shimmer/PerformanceSkeleton").then(mod => ({ default: mod.default })));
+const PerformanceSkeleton = lazy(() =>
+  import("./shimmer/PerformanceSkeleton").then((mod) => ({
+    default: mod.default,
+  }))
+);
 
 interface PerformanceSectionProps {
   performanceData?: Performance | null;
@@ -22,7 +26,9 @@ const ButtonSkeleton = () => (
   </div>
 );
 
-export default function PerformanceSection({ performanceData }: PerformanceSectionProps) {
+export default function PerformanceSection({
+  performanceData,
+}: PerformanceSectionProps) {
   // Move all hooks before early return
   const [showChart, setShowChart] = useState(true); // Changed to true to show chart by default
   const [selectedView, setSelectedView] = useState<string>("cost"); // Changed to "cost" as default
@@ -31,7 +37,9 @@ export default function PerformanceSection({ performanceData }: PerformanceSecti
   // Show skeleton while loading
   if (!performanceData) {
     return (
-      <Suspense fallback={<div className="h-64 w-full bg-gray-100 animate-pulse" />}>
+      <Suspense
+        fallback={<div className="h-64 w-full bg-gray-100 animate-pulse" />}
+      >
         <PerformanceSkeleton />
       </Suspense>
     );
@@ -43,7 +51,7 @@ export default function PerformanceSection({ performanceData }: PerformanceSecti
     { label: "Carbon", value: "carbon" },
     { label: "Comfort", value: "comfort" },
     { label: "Compliance", value: "compliance" },
-    { label: "Circularity", value: "circularity" }
+    { label: "Circularity", value: "circularity" },
   ];
 
   const handleButtonClick = async (value: string) => {
@@ -51,7 +59,7 @@ export default function PerformanceSection({ performanceData }: PerformanceSecti
     if (value === "cost" || value === "carbon") {
       return;
     }
-    
+
     setIsLoading(true);
     try {
       setSelectedView(value);
@@ -60,37 +68,34 @@ export default function PerformanceSection({ performanceData }: PerformanceSecti
       // Add a small delay to show the loading state
       setTimeout(() => setIsLoading(false), 500);
     }
-  }; 
+  };
 
   return (
     <section className="text-black py-[40px] z-[999]">
       <div className="container mx-auto px-[16px]">
         {/* Title and description */}
-            <div className="text-center mb-8">
+        <div className="text-center mb-8">
           <div className="text-[24px] md:text-[28px] leading-[1.3] mb-[15px] font-bold">
             <p>{performanceData.mainTitle}</p>
           </div>
-
-          <div className="space-y-6"> 
-            <p className="text-black text-center max-w-[950px] mx-auto">
-              {performanceData.description}
-            </p>
-          </div>
+          {performanceData.contentAboveGraph && (
+            <div className="prose max-w-none text-black text-center mb-8">
+              <PortableText value={performanceData.contentAboveGraph} />
+            </div>
+          )}
         </div>
-
-        {/* Content above graph */}
-        {performanceData.contentAboveGraph && (
-          <div className="prose max-w-none text-black text-center mb-8">
-            <PortableText value={performanceData.contentAboveGraph} />
-          </div>
-        )}
 
         {/* Chart buttons */}
         <div className="text-center mb-8">
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 justify-center gap-2 graph-btn">
             {chartButtons.map((button) => {
               // Show skeleton while loading for interactive buttons
-              if (isLoading && (button.value === "comfort" || button.value === "compliance" || button.value === "circularity")) {
+              if (
+                isLoading &&
+                (button.value === "comfort" ||
+                  button.value === "compliance" ||
+                  button.value === "circularity")
+              ) {
                 return <ButtonSkeleton key={button.value} />;
               }
 
@@ -105,17 +110,31 @@ export default function PerformanceSection({ performanceData }: PerformanceSecti
                   </button>
                 );
               }
-              
+
               // Use AnimatedButton for Comfort, Compliance, and Circularity
-              if (button.value === "comfort" || button.value === "compliance" || button.value === "circularity") {
+              if (
+                button.value === "comfort" ||
+                button.value === "compliance" ||
+                button.value === "circularity"
+              ) {
                 const buttonConfig = {
-                  comfort: { defaultText: "Comfort", hoverText: "Click to Assess" },
-                  compliance: { defaultText: "Compliance", hoverText: "Click to Assess" },
-                  circularity: { defaultText: "Circularity", hoverText: "Click to Assess" }
+                  comfort: {
+                    defaultText: "Comfort",
+                    hoverText: "Click to Assess",
+                  },
+                  compliance: {
+                    defaultText: "Compliance",
+                    hoverText: "Click to Assess",
+                  },
+                  circularity: {
+                    defaultText: "Circularity",
+                    hoverText: "Click to Assess",
+                  },
                 };
-                
-                const config = buttonConfig[button.value as keyof typeof buttonConfig];
-                
+
+                const config =
+                  buttonConfig[button.value as keyof typeof buttonConfig];
+
                 return (
                   <AnimatedButton
                     key={button.value}
@@ -127,11 +146,11 @@ export default function PerformanceSection({ performanceData }: PerformanceSecti
                       selectedView === button.value
                         ? "bg-[#484AB7] text-white border border-[#484AB7] font-bold active"
                         : "bg-white text-black border border-gray-300 hover:bg-[#484AB7] hover:text-white active:bg-[#484AB7] active:text-white font-medium"
-                    } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    } ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
                   />
                 );
               }
-              
+
               // Use moving-border Button for other buttons (fallback)
               return (
                 <Button
@@ -142,9 +161,9 @@ export default function PerformanceSection({ performanceData }: PerformanceSecti
                     selectedView === button.value
                       ? "bg-[#484AB7] text-white border border-[#484AB7] font-bold active"
                       : "bg-white text-black border border-gray-300 hover:bg-[#484AB7] hover:text-white active:bg-[#484AB7] active:text-white font-medium"
-                  } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  } ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
                   style={{
-                    fontSize: '12px',
+                    fontSize: "12px",
                   }}
                 >
                   {button.label}
@@ -154,7 +173,6 @@ export default function PerformanceSection({ performanceData }: PerformanceSecti
           </div>
         </div>
 
-    
         {/* Chart section - shown when button is clicked */}
         {showChart && (
           <div className="mb-12">
@@ -172,7 +190,10 @@ export default function PerformanceSection({ performanceData }: PerformanceSecti
         {/* Build CTA button */}
         {performanceData.cta?.text && (
           <div className="text-center">
-            <Link href={performanceData.cta.link || "/contact"} className="inline-block">
+            <Link
+              href={performanceData.cta.link || "/contact"}
+              className="inline-block"
+            >
               <Button className="px-6 py-3 text-[16px] font-bold bg-[#484AB7] text-white rounded-xl">
                 {performanceData.cta.text}
               </Button>

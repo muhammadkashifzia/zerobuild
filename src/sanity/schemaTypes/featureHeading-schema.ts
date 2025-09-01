@@ -1,8 +1,8 @@
 import { defineField, defineType } from 'sanity'
 
-export const featureType = defineType({
-  name: 'feature',
-  title: 'Feature',
+export const featureHeadingType = defineType({
+  name: 'featureMainHeading',
+  title: 'Feature Main Heading',
   type: 'document',
   fields: [
     defineField({
@@ -13,18 +13,18 @@ export const featureType = defineType({
     }),
     defineField({
       name: 'description',
-      title: 'Description',
+      title: 'Sub Text',
       type: 'text',
       validation: (Rule) => Rule.required(),
     }),
    
     defineField({
-      name: 'order',
-      title: 'Display Order',
-      type: 'number',
-      description: 'Order in which this feature should appear (lower numbers appear first)',
-      validation: (Rule) => Rule.required().min(1),
+      name: 'highlightText',
+      title: 'Highlight Text',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
     }),
+   
     defineField({
       name: 'isActive',
       title: 'Active',
@@ -33,16 +33,5 @@ export const featureType = defineType({
       initialValue: true,
     }),
   ],
-  preview: {
-    select: {
-      title: 'title',
-      order: 'order',
-    },
-    prepare({ title, order }) {
-      return {
-        title: title,
-        subtitle: `Order: ${order}`,
-      }
-    },
-  },
+ 
 })
