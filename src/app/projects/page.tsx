@@ -48,7 +48,7 @@ export default function Page() {
             }}
             className="container mx-auto relative flex flex-col gap-4 px-4"
           >
-            <div className="max-w-[870px]">
+            <div className="max-w-[1024px]">
               <div className="text-3xl md:text-6xl font-normal text-black leading-[1.2] max-w-[1000px]">
                 {banner?.title || "Explore our projects across the built and natural environments"}
               </div>
