@@ -27,26 +27,23 @@ export const TypewriterEffect = ({
     let isCancelled = false;
 
     const runAnimation = async () => {
+      if (!scope.current) return; // prevent null access
+
+      const spans = scope.current.querySelectorAll("span");
+
       while (!isCancelled) {
         // Hide all characters first
         await animate(
-          "span",
+          spans,
           { opacity: 0 },
           { duration: 0.1, delay: stagger(0.02), ease: "easeOut" }
         );
 
         // Show characters one by one
         await animate(
-          "span",
-          {
-            display: "inline-block",
-            opacity: 1,
-          },
-          {
-            duration: 0.3,
-            delay: stagger(0.1),
-            ease: "easeInOut",
-          }
+          spans,
+          { display: "inline-block", opacity: 1 },
+          { duration: 0.3, delay: stagger(0.1), ease: "easeInOut" }
         );
 
         // Pause before looping again
@@ -54,22 +51,28 @@ export const TypewriterEffect = ({
       }
     };
 
-    runAnimation();
+    // Run after mount
+    requestAnimationFrame(() => {
+      runAnimation();
+    });
 
     return () => {
       isCancelled = true;
     };
-  }, []);
+  }, [scope, animate]);
 
   const renderWords = () => {
     return (
       <motion.div ref={scope} className="h-[30px] flex">
         {wordsArray.map((word, idx) => (
-          <div key={`word-${idx}`} className="inline-block text-[20px] md:text-[32px]">
+          <div
+            key={`word-${idx}`}
+            className="inline-block text-[20px] md:text-[32px]"
+          >
             {word.text.map((char, index) => (
               <motion.span
                 initial={{ opacity: 0 }}
-                key={`char-${index}`}
+                key={`char-${idx}-${index}`}
                 className={cn(
                   `dark:text-white text-black opacity-0 hidden`,
                   word.className
@@ -101,10 +104,7 @@ export const TypewriterEffect = ({
           repeat: Infinity,
           repeatType: "reverse",
         }}
-        className={cn(
-          "inline-block",
-          cursorClassName
-        )}
+        className={cn("inline-block", cursorClassName)}
       ></motion.span>
     </div>
   );
