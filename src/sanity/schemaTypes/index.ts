@@ -18,6 +18,7 @@ import { resourcesPageType } from './resources-page-schema';
 import { worldMapType } from './worldmap-schema';
 import { testimonialType } from './testimonial-schema';
 import { ctaType } from './cta-schema';
+import { ctaBoxType } from './ctaSidebarBox-schema';
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -35,6 +36,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     ctaType,
     companyType,
     servicesBannerType,
+    ctaBoxType,
     resourcesPageType,
     projectsPageType,
     aboutPageType,

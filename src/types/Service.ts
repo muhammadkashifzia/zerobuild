@@ -7,7 +7,11 @@ export interface ServicesBanner {
   ctaButtonLink?: string;
 }
 
-
+export interface CtaBox {
+  ctaTitle: string;
+  ctaButtonText: string;
+  ctaButtonLink: string;
+}
 
 export interface Service {
   _id: string;

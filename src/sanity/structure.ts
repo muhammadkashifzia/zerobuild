@@ -95,7 +95,6 @@ export const structure: StructureResolver = (S) =>
         ),
 
       // Divider (optional)
-      // Divider (optional)
       S.divider(),
 
       // Resource
@@ -118,8 +117,14 @@ export const structure: StructureResolver = (S) =>
               S.listItem()
                 .title("Service List")
                 .schemaType("service")
-                .child(S.documentTypeList("service").title("Service List")),
+                .child(S.documentTypeList("servicesBanner").title("Service List")),
+                  // CTA Sidebar Box
+                 S.listItem()
+                .title("CTA Sidebar Box")
+                .schemaType("ctaSidebarBox")
+                .child(S.documentTypeList("ctaSidebarBox").title("Call To Action Box")),
             ])
+            
         ),
       S.divider(),
       // Projects
@@ -206,6 +211,41 @@ export const structure: StructureResolver = (S) =>
                         ),
                     ])
                 ),
+                  S.divider(),
+                 S.listItem()
+                .title("Company Information")
+                .child(S.document().schemaType("company").documentId("company")),
             ])
         ),
+            S.divider(),
+
+      // Resource
+      S.listItem()
+        .title("Contact Page")
+        .child(
+          S.list()
+            .title("Contact Page")
+            .items([
+              S.listItem()
+                .title("Contact Us")
+                .child(
+                  S.document()
+                    .schemaType("contactPage")
+                    .documentId("contactUs")
+                ),
+
+              S.divider(),
+
+              S.listItem()
+                .title("Contact Form Submission")
+                .schemaType("contactSubmission")
+                .child(S.documentTypeList("contactSubmission").title("Contact Form Submission")),
+            ])
+        ),
+          S.divider(),
+
+              S.listItem()
+                .title("About")
+                .schemaType("about")
+                .child(S.documentTypeList("about").title("About Us Page")),
     ]);

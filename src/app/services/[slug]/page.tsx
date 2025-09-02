@@ -1,12 +1,13 @@
 import { PortableText } from "@portabletext/react";
 import Image from "next/image";
 import Link from "next/link";
-import { getService, getServices, getServicesPageBanner } from "@/sanity/sanity-utils";
-import { Service } from "@/types/Service";
+import { getService, getServices } from "@/sanity/sanity-utils";
+import { Service, CtaBox } from "@/types/Service";
 import type { Metadata } from "next";
 import Accordion from "@/components/ui/accordion";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 import CtaSection from "@/components/CtaSection";
+import CtaBoxSection from "@/components/CtaSidebarBox";
 export async function generateMetadata({
   params,
 }: {
@@ -68,13 +69,13 @@ export async function generateMetadata({
 export default async function Page({
   params,
 }: {
-  params: Promise<{ slug: string }>; // Changed to Promise
+  params: Promise<{ slug: string }>; 
 }) {
-  const { slug } = await params; // Await the params
-  const service: Service = await getService(slug); // Use the awaited slug
-  const allServices = await getServices(); // Fetch all services for the banner
-  const servicesPageBanner = await getServicesPageBanner();
+  const { slug } = await params;
+  const service: Service = await getService(slug);
+  const allServices = await getServices();
 
+  
   if (!service) {
     return (
       <div className="text-center mt-10 text-lg text-red-500">
@@ -107,12 +108,13 @@ export default async function Page({
 
   return (
     <div className="px-[16px] py-[30px] mx-auto space-y-5 mt-16">
-          <Link href="/services" className="text-black text-[20px] font-semibold flex gap-[10px] mb-[30px] link items-center"> <ArrowLeft /> 
-      <span className="hover:link-underline">Back to Services</span>
+      <Link href="/services" className="text-black text-[20px] font-semibold flex gap-[10px] mb-[30px] link items-center"> 
+        <ArrowLeft /> 
+        <span className="hover:link-underline">Back to Services</span>
       </Link>
+      
       {(service.gallery?.length ?? 0) > 0 && (
         <div>
-        
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {(service.gallery ?? []).map((img, idx) => (
               <Image
@@ -127,7 +129,11 @@ export default async function Page({
           </div>
         </div>
       )}
-      <h1 className="text-black !mt-[40px] text-[40px] leading-9 font-bold max-w-full md:max-w-[650px]">{service.title}</h1>
+      
+      <h1 className="text-black !mt-[40px] text-[40px] leading-9 font-bold max-w-full md:max-w-[650px]">
+        {service.title}
+      </h1>
+      
       <div className="container grid grid-cols-1 lg:grid-cols-3 px-0 md:px-[16px] gap-[20px] mx-auto pt-0 md:pt-[40px] pb-[60px]">
         {/* Left: Content */}
         <div className="lg:col-span-2 space-y-2">
@@ -141,34 +147,6 @@ export default async function Page({
               className="rounded-xl object-cover"
             />
           )}
-       
-          {/* {(service.disciplines?.length ?? 0) > 0 && (
-            <div className="flex flex-wrap gap-2 mt-4">
-              {(service.disciplines ?? []).map((discipline: string, index: number) => (
-                <span
-                  key={index}
-                  className="bg-blue-100 text-blue-700 text-sm px-3 py-1 rounded-full"
-                >
-                  {discipline}
-                </span>
-              ))}
-            </div>
-          )}
-
-       
-          {(service.projectStage?.length ?? 0) > 0 && (
-            <div className="flex flex-wrap gap-2 mt-4">
-            
-              {(service.projectStage ?? []).map((stage: string, index: number) => (
-                <span
-                  key={index}
-                  className="bg-green-100 text-green-700 text-sm px-3 py-1 rounded-full"
-                >
-                  {stage}
-                </span>
-              ))}
-            </div>
-          )} */}
 
           {/* Rich Body Content */}
           {service.body && (
@@ -195,104 +173,91 @@ export default async function Page({
               />
             </div>
           )}
-
-          
         </div>
 
-        {/* Right: CTA */}
-        <div className="lg:col-span-1">
-          <div className="rounded-[.75rem] border border-[#e0e0e0] p-[2rem] sticky top-[90px]">
-            <h3 className="text-[22px] font-semibold mb-2 text-black">
-              {servicesPageBanner?.ctaTitle || "Get in touch with our team"}
-            </h3>
-            <Link
-              href={servicesPageBanner?.ctaButtonLink || "/contact"}
-              className="relative w-full bg-[#484AB7] text-white p-5 rounded-xl max-w-[150px] h-[50px] flex items-center text-lg font-semibold hover:bg-[#3c3f9d] transition-colors duration-200 mt-[2rem]"
-            >
-              <span>{servicesPageBanner?.ctaButtonText || "Contact"}</span>
-              <span className="absolute right-[15px]">→</span>
+        {/* Right: Dynamic CTA */}
+   <div className="lg:col-span-1">
+<CtaBoxSection />
+</div>
+
+      </div>
+      
+      <section className="container mx-auto">
+        <div className="bg-gray-50 pt-12 px-4 md:px-12 pb-[40px]">
+          {/* Heading */}
+          <p className="text-sm text-gray-600 mb-2">Explore</p>
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+            <h2 className="text-2xl md:text-3xl font-medium mb-4 md:mb-0 text-black">
+              Discover more of our expertise:
+            </h2>
+            <Link href="/services" className="text-black flex items-center gap-2 border border-gray-300 rounded-full px-5 py-2 hover:bg-gray-100 transition">
+              View all services <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
-        </div>
-      </div>
-         <section className="container mx-auto">
-      <div className="bg-gray-50 pt-12 px-4 md:px-12 pb-[40px]">
-        {/* Heading */}
-        <p className="text-sm text-gray-600 mb-2">Explore</p>
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
-          <h2 className="text-2xl md:text-3xl font-medium mb-4 md:mb-0 text-black">
-            Discover more of our expertise:
-          </h2>
-          <Link href="/services" className="text-black flex items-center gap-2 border border-gray-300 rounded-full px-5 py-2 hover:bg-gray-100 transition">
-            View all services <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
 
-        {/* Related Services: 3 by Discipline, 3 by Project Stage */}
-        <div className="border-t border-gray-200 pt-8">
-          <h3 className="text-2xl md:text-3xl font-medium mb-6 text-black">Services</h3>
-          {hasAnyRelated ? (
-            <div className="space-y-5">
-              {relatedByDiscipline.length > 0 && (
-                <div>
-      
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-6 md:gap-x-8 text-gray-800">
-                    {relatedByDiscipline.map((serviceItem, index) => (
-                      <Link
-                        key={serviceItem._id}
-                        href={`/services/${serviceItem.slug}`}
-                        className={`pr-4 border-gray-200 hover:text-[#484AB7] transition-colors duration-200 ${
-                          (index + 1) % 2 === 0 && "sm:border-r md:border-none"
-                        } ${index < 4 && "sm:pb-4"}`}
-                      >
-                        {serviceItem.title}
-                      </Link>
-                    ))}
+          {/* Related Services: 3 by Discipline, 3 by Project Stage */}
+          <div className="border-t border-gray-200 pt-8">
+            <h3 className="text-2xl md:text-3xl font-medium mb-6 text-black">Services</h3>
+            {hasAnyRelated ? (
+              <div className="space-y-5">
+                {relatedByDiscipline.length > 0 && (
+                  <div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-6 md:gap-x-8 text-gray-800">
+                      {relatedByDiscipline.map((serviceItem, index) => (
+                        <Link
+                          key={serviceItem._id}
+                          href={`/services/${serviceItem.slug}`}
+                          className={`pr-4 border-gray-200 hover:text-[#484AB7] transition-colors duration-200 ${
+                            (index + 1) % 2 === 0 && "sm:border-r md:border-none"
+                          } ${index < 4 && "sm:pb-4"}`}
+                        >
+                          {serviceItem.title}
+                        </Link>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
-              {relatedByProjectStage.length > 0 && (
-                <div>
-        
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-6 md:gap-x-8 text-gray-800">
-                    {relatedByProjectStage.map((serviceItem, index) => (
-                      <Link
-                        key={serviceItem._id}
-                        href={`/services/${serviceItem.slug}`}
-                        className={`pr-4 border-gray-200 hover:text-[#484AB7] transition-colors duration-200 ${
-                          (index + 1) % 2 === 0 && "sm:border-r md:border-none"
-                        } ${index < 4 && "sm:pb-4"}`}
-                      >
-                        {serviceItem.title}
-                      </Link>
-                    ))}
+                {relatedByProjectStage.length > 0 && (
+                  <div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-6 md:gap-x-8 text-gray-800">
+                      {relatedByProjectStage.map((serviceItem, index) => (
+                        <Link
+                          key={serviceItem._id}
+                          href={`/services/${serviceItem.slug}`}
+                          className={`pr-4 border-gray-200 hover:text-[#484AB7] transition-colors duration-200 ${
+                            (index + 1) % 2 === 0 && "sm:border-r md:border-none"
+                          } ${index < 4 && "sm:pb-4"}`}
+                        >
+                          {serviceItem.title}
+                        </Link>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-6 md:gap-x-8 text-gray-800">
-              {allServices
-                .filter((s) => s._id !== service._id)
-                .slice(0, 6)
-                .map((serviceItem, index) => (
-                  <Link
-                    key={serviceItem._id}
-                    href={`/services/${serviceItem.slug}`}
-                    className={`pr-4 border-gray-200 hover:text-[#484AB7] transition-colors duration-200 ${
-                      (index + 1) % 2 === 0 && "sm:border-r md:border-none"
-                    } ${index < 4 && "sm:pb-4"}`}
-                  >
-                    {serviceItem.title}
-                  </Link>
-                ))}
-            </div>
-          )}
+                )}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-6 md:gap-x-8 text-gray-800">
+                {allServices
+                  .filter((s) => s._id !== service._id)
+                  .slice(0, 6)
+                  .map((serviceItem, index) => (
+                    <Link
+                      key={serviceItem._id}
+                      href={`/services/${serviceItem.slug}`}
+                      className={`pr-4 border-gray-200 hover:text-[#484AB7] transition-colors duration-200 ${
+                        (index + 1) % 2 === 0 && "sm:border-r md:border-none"
+                      } ${index < 4 && "sm:pb-4"}`}
+                    >
+                      {serviceItem.title}
+                    </Link>
+                  ))}
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-    </section>
-    <CtaSection />
+      </section>
+      <CtaSection />
     </div>
   );
 }

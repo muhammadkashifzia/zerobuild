@@ -9,6 +9,7 @@ import { ServicesBanner } from "@/types/Service";
 import { AuroraBackground } from "@/components/ui/aurora-background";
 import { motion } from "motion/react";
 import CtaSection from "@/components/CtaSection"
+
 const ServicesPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedDiscipline, setSelectedDiscipline] = useState("All");
@@ -20,17 +21,20 @@ const ServicesPage = () => {
   const [bannerData, setBannerData] = useState<ServicesBanner | null>(null);
   const listTopRef = useRef<HTMLDivElement | null>(null);
 
+
+
   const itemsPerPage = 10;
 
   useEffect(() => {
     const fetchData = async () => {
       const [servicesRes, bannerRes] = await Promise.all([
         getServices(),
-        getServicesPageBanner()
+        getServicesPageBanner(),
+    
       ]);
       setServices(servicesRes);
       setBannerData(bannerRes);
-      
+     
       // Debug logging
       console.log('Services loaded:', servicesRes.length);
       console.log('Banner data loaded:', bannerRes);
@@ -48,20 +52,6 @@ const ServicesPage = () => {
     new Set(services.flatMap((s) => s.projectStage || []))
   ).sort();
 
-  // Fallback sample project stages if none exist in data
-  const fallbackProjectStages = [
-    "Concept Design",
-    "Detailed Design", 
-    "Construction",
-    "Post-Occupancy",
-    "Retrofit",
-    "New Build",
-    "Feasibility Study",
-    "Planning Application"
-  ];
-
-  const displayProjectStages = allProjectStages.length > 0 ? allProjectStages : fallbackProjectStages;
-
   const disciplineCount: Record<string, number> = {};
   services.forEach((s) => {
     (s.disciplines || []).forEach((discipline) => {
@@ -75,13 +65,6 @@ const ServicesPage = () => {
       projectStageCount[stage] = (projectStageCount[stage] || 0) + 1;
     });
   });
-
-  // Add counts for fallback stages if no real data exists
-  if (allProjectStages.length === 0) {
-    fallbackProjectStages.forEach((stage) => {
-      projectStageCount[stage] = 0;
-    });
-  }
 
   const mainDisciplineFilters = Object.entries(disciplineCount)
     .sort((a, b) => a[0].localeCompare(b[0])) // Sort alphabetically by discipline name
@@ -152,37 +135,30 @@ const ServicesPage = () => {
     setModalOpen(true);
   };
 
-  // Fallback banner content if no data from Sanity
-  
-  const bannerTitle = bannerData?.title;
-  const bannerDescription = bannerData?.description;
-
   return (
     <div className="min-h-screen bg-white mt-[64px]">
-    
-   
- <AuroraBackground>
-      <motion.div
-        initial={{ opacity: 0.0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{
-          delay: 0.3,
-          duration: 0.8,
-          ease: "easeInOut",
-        }}
-        className="container mx-auto relative flex flex-col gap-4  px-4"
-      >
-       <div className="max-w-[870px]">
-         <div className="text-3xl md:text-6xl font-normal text-black leading-[1.2] max-w-[1000px]">
-         {bannerTitle}
-        </div>
-        <div className="font-extralight text-base md:text-2xl dark:text-neutral-200 py-4 max-w-[1024px]">
-    {bannerDescription}
-        </div>
-       </div>
-    
-      </motion.div>
-    </AuroraBackground>
+      <AuroraBackground>
+        <motion.div
+          initial={{ opacity: 0.0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{
+            delay: 0.3,
+            duration: 0.8,
+            ease: "easeInOut",
+          }}
+          className="container mx-auto relative flex flex-col gap-4  px-4"
+        >
+          <div className="max-w-[870px]">
+            <div className="text-3xl md:text-6xl font-normal text-black leading-[1.2] max-w-[1000px]">
+              {bannerData?.title}
+            </div>
+            <div className="font-extralight text-base md:text-2xl dark:text-neutral-200 py-4 max-w-[1024px]">
+              {bannerData?.description}
+            </div>
+          </div>
+        </motion.div>
+      </AuroraBackground>
+
       <div className="mt-[60px] pt-8 pb-10 md:px-8 px-4">
         <section className=" container mx-auto">
           <div className="pb-10 border-b mb-6">
@@ -213,69 +189,65 @@ const ServicesPage = () => {
           <div className="flex items-start gap-3 mb-3 flex-col md:flex-row">
             <h3 className="text-sm font-medium text-gray-700 mt-0 md:mt-[8px]">Disciplines:</h3>
                 
-          <div className="flex flex-wrap items-center gap-[8px] md:gap-[16px]">
-            {mainDisciplineFilters.map((filter) => (
-              <div key={filter} className="relative">
-                <button
-                  className={`px-2 md:px-4 py-2 rounded-full text-[12px] md:text-sm  border pr-8 transition ${
-                    selectedDiscipline === filter
-                      ? "bg-[#484AB7] text-white border-[#484AB7]"
-                      : "text-black border-gray-300 hover:bg-gray-100"
-                  }`}
-                  onClick={() => {
-                    setSelectedDiscipline(filter);
-                    setCurrentPage(1);
-                  }}
-                >
-                  {filter}
-                </button>
-
-                {selectedDiscipline === filter && (
+            <div className="flex flex-wrap items-center gap-[8px] md:gap-[16px]">
+              {mainDisciplineFilters.map((filter) => (
+                <div key={filter} className="relative">
                   <button
+                    className={`px-2 md:px-4 py-2 rounded-full text-[12px] md:text-sm  border pr-8 transition ${
+                      selectedDiscipline === filter
+                        ? "bg-[#484AB7] text-white border-[#484AB7]"
+                        : "text-black border-gray-300 hover:bg-gray-100"
+                    }`}
                     onClick={() => {
-                      setSelectedDiscipline("All");
+                      setSelectedDiscipline(filter);
                       setCurrentPage(1);
                     }}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 text-white text-xs"
-                    aria-label="Clear filter"
                   >
-                    <X className="w-4 h-4" />
+                    {filter}
                   </button>
-                )}
-              </div>
-            ))}
 
-            <button
-              onClick={() => openModal("disciplines")}
-              className="px-4 py-2 rounded-full border border-gray-300 text-gray-600 flex items-center gap-1 hover:bg-gray-100"
-            >
-              View all <Plus className="w-4 h-4" />
-            </button>
-          </div>
-         
+                  {selectedDiscipline === filter && (
+                    <button
+                      onClick={() => {
+                        setSelectedDiscipline("All");
+                        setCurrentPage(1);
+                      }}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-white text-xs"
+                      aria-label="Clear filter"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+              ))}
+
+              {allDisciplines.length > 6 && (
+                <button
+                  onClick={() => openModal("disciplines")}
+                  className="px-4 py-2 rounded-full border border-gray-300 text-gray-600 flex items-center gap-1 hover:bg-gray-100"
+                >
+                  View all <Plus className="w-4 h-4" />
+                </button>
+              )}
+            </div>
           </div>
           {(selectedDiscipline !== "All") && (
-              <button
-                onClick={clearFilters}
-                className="text-xs text-blue-600 hover:text-blue-800 underline"
-              >
-                Clear all filters
-              </button>
-            )}
+            <button
+              onClick={clearFilters}
+              className="text-xs text-blue-600 hover:text-blue-800 underline"
+            >
+              Clear all filters
+            </button>
+          )}
         </section>
 
         {/* Project Stage Filters */}
         <section className="container mx-auto mb-6">
           <div className="flex items-start gap-3 mt-[24px] flex-col md:flex-row">
             <h3 className="text-sm font-medium text-gray-700 mt-0 md:mt-[8px]">Project Stage:</h3>
-            {/* Debug info */}
-            {/* <span className="text-xs text-gray-500">
-              ({displayProjectStages.length} total stages)
-            </span> */}
          
-          <div className="flex flex-wrap items-center gap-3 ">
-            {mainProjectStageFilters.length > 0 ? (
-              mainProjectStageFilters.map((filter) => (
+            <div className="flex flex-wrap items-center gap-3">
+              {mainProjectStageFilters.map((filter) => (
                 <div key={filter} className="relative">
                   <button
                     className={`px-2 md:px-4 py-2 rounded-full text-[12px] md:text-sm  border pr-8 transition ${
@@ -304,29 +276,26 @@ const ServicesPage = () => {
                     </button>
                   )}
                 </div>
-              ))
-            ) : (
-              <div className="text-sm text-gray-500 italic">
-                No project stages found in current services
-              </div>
-            )}
-{/* 
-            <button
-              onClick={() => openModal("projectStages")}
-              className="px-4 py-2 rounded-full border border-gray-300 text-gray-600 flex items-center gap-1 hover:bg-gray-100"
-            >
-              View all stages ({displayProjectStages.length}) <Plus className="w-4 h-4" />
-            </button> */}
-          </div>
+              ))}
+
+              {allProjectStages.length > 6 && (
+                <button
+                  onClick={() => openModal("projectStages")}
+                  className="px-4 py-2 rounded-full border border-gray-300 text-gray-600 flex items-center gap-1 hover:bg-gray-100"
+                >
+                  View all <Plus className="w-4 h-4" />
+                </button>
+              )}
+            </div>
           </div>
           {(selectedProjectStage !== "All") && (
-              <button
-                onClick={clearFilters}
-                className="text-xs text-blue-600 hover:text-blue-800 underline"
-              >
-                Clear all filters
-              </button>
-            )}
+            <button
+              onClick={clearFilters}
+              className="text-xs text-blue-600 hover:text-blue-800 underline"
+            >
+              Clear all filters
+            </button>
+          )}
         </section>
 
         <section className="py-4 md:py-8 bg-white container mx-auto">
@@ -352,25 +321,6 @@ const ServicesPage = () => {
                       <p className="text-sm md:text-base text-gray-600 mt-2 md:mt-4">
                         {service.description}
                       </p>
-                      {/* Display disciplines and project stages */}
-                      {/* <div className="flex flex-wrap gap-2 mt-2">
-                        {service.disciplines?.slice(0, 2).map((discipline, index) => (
-                          <span
-                            key={index}
-                            className="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full"
-                          >
-                            {discipline}
-                          </span>
-                        ))}
-                        {service.projectStage?.slice(0, 2).map((stage, index) => (
-                          <span
-                            key={index}
-                            className="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full"
-                          >
-                            {stage}
-                          </span>
-                        ))}
-                      </div> */}
                     </div>
                     <ArrowRight className="text-gray-400 hover:text-black" />
                   </div>
@@ -527,9 +477,9 @@ const ServicesPage = () => {
                   </>
                 ) : (
                   <>
-                                    <h2 className="text-xl font-semibold mb-4 text-black">
-                  Project Stages ({displayProjectStages.length})
-                </h2>
+                    <h2 className="text-xl font-semibold mb-4 text-black">
+                      Project Stages ({allProjectStages.length})
+                    </h2>
                     <div className="space-y-2">
                       <button
                         className={`w-full text-left py-2 px-3 rounded hover:bg-gray-100 text-black ${
@@ -546,7 +496,7 @@ const ServicesPage = () => {
                         All Project Stages
                       </button>
 
-                      {displayProjectStages
+                      {allProjectStages
                         .filter((f) =>
                           f.toLowerCase().includes(searchTerm.toLowerCase())
                         )

@@ -1,5 +1,5 @@
 import { createClient, groq } from "next-sanity";
-import { Service } from "@/types/Service";
+import { Service, CtaBox } from "@/types/Service";
 import { Project } from "@/types/Project";
 import { Resource } from "@/types/Resource";
 import { Contact } from "@/types/Contact";
@@ -44,13 +44,18 @@ export async function getServicesPageBanner() {
       _id,
       title,
       description,
-      ctaTitle,
-      ctaButtonText,
-      ctaButtonLink
     }`
   );
 }
-
+export async function getServicesCTABox(): Promise<CtaBox[]> {
+  return createClient(clientConfig).fetch(
+    `*[_type == "ctaSidebarBox"]{
+      ctaTitle,
+      ctaButtonText,
+      ctaButtonLink,
+    }`
+  );
+}
 export async function getFooterServices(): Promise<
   Pick<Service, "_id" | "title" | "slug" | "publishedAt">[]
 > {
