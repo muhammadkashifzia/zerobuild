@@ -106,11 +106,11 @@ export const structure: StructureResolver = (S) =>
             .title("Service")
             .items([
               S.listItem()
-                .title("Service Page Banner")
+                .title("Service Banner")
                 .child(
                   S.document()
-                    .schemaType("servicesPage")
-                    .documentId("servicesPage")
+                    .schemaType("servicesBanner")
+                    .documentId("servicesBanners")
                 ),
 
               S.divider(),

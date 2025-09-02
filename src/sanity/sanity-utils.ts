@@ -40,7 +40,7 @@ export async function getServices(): Promise<Service[]> {
 
 export async function getServicesPageBanner() {
   return createClient(clientConfig).fetch(
-    groq`*[_type == "servicesPage" && isActive == true][0] {
+    groq`*[_type == "servicesBanner" && isActive == true][0] {
       _id,
       title,
       description,

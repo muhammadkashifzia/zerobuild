@@ -5,7 +5,7 @@ import { Search, ArrowRight, Plus, X } from "lucide-react";
 import Link from "next/link";
 import { getServices, getServicesPageBanner } from "@/sanity/sanity-utils";
 import { Service } from "@/types/Service";
-import { ServicesPageBanner } from "@/types/servicesPage";
+import { ServicesBanner } from "@/types/Service";
 import { AuroraBackground } from "@/components/ui/aurora-background";
 import { motion } from "motion/react";
 import CtaSection from "@/components/CtaSection"
@@ -17,7 +17,7 @@ const ServicesPage = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalView, setModalView] = useState<"disciplines" | "projectStages">("disciplines");
   const [services, setServices] = useState<Service[]>([]);
-  const [bannerData, setBannerData] = useState<ServicesPageBanner | null>(null);
+  const [bannerData, setBannerData] = useState<ServicesBanner | null>(null);
   const listTopRef = useRef<HTMLDivElement | null>(null);
 
   const itemsPerPage = 10;
@@ -152,6 +152,7 @@ const ServicesPage = () => {
     setModalOpen(true);
   };
 
+  // Fallback banner content if no data from Sanity
   
   const bannerTitle = bannerData?.title;
   const bannerDescription = bannerData?.description;

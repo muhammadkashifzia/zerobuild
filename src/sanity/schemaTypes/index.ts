@@ -10,7 +10,7 @@ import { performanceType } from './performance-schema';
 import { featureType } from './feature-schema';
 import { featureHeadingType } from './featureHeading-schema';
 import { companyType } from './company-schema';
-import { servicesPageType } from './services-page-schema';
+import { servicesBannerType } from './services-page-schema';
 import { projectsPageType } from './projects-page-schema';
 import { aboutPageType } from './about-page-schema';
 import { contactPageType } from './contact-page-schema';
@@ -34,7 +34,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     testimonialType,
     ctaType,
     companyType,
-    servicesPageType,
+    servicesBannerType,
     resourcesPageType,
     projectsPageType,
     aboutPageType,
