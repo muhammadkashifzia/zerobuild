@@ -1,4 +1,4 @@
-export interface AboutPageBanner {
+export interface AboutPage {
   _id: string;
   title: string;
   description: string;

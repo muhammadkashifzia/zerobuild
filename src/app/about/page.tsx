@@ -5,9 +5,8 @@ import ObservabilityRadarChart from "@/components/ObservabilityRadarChart";
 import AboutTop from "@/components/about/aboutTop";
 import CtaSection from "@/components/CtaSection"
 import type { Metadata } from "next";
-import { client } from "@/sanity/lib/client";
-import { aboutPageQuery } from "@/sanity/lib/queries";
-import { AboutPageBanner } from "@/types/aboutPage";
+import { getAbout } from "@/sanity/sanity-utils";
+import { AboutPage } from "@/types/aboutPage";
 
 export const metadata: Metadata = {
   title: "About ZeroBuild - Net Zero Decarbonisation Experts | Company Overview",
@@ -41,20 +40,19 @@ export const metadata: Metadata = {
 };
 
 async function page() {
-  const aboutPageData: AboutPageBanner | null = await client.fetch(aboutPageQuery);
+  // Call the getAbout function directly and handle the array response
+  const aboutPageArray: AboutPage[] = await getAbout();
+  const aboutPageData: AboutPage | null = aboutPageArray?.[0] || null;
  
-  
   // Debug logging to check what data is being fetched
   console.log('About page data:', aboutPageData);
 
   return (
-    <div className="min-h-screen  py-12 pt-[4rem] md:pt-[4rem]">
-     
+    <div className="min-h-screen py-12 pt-[4rem] md:pt-[4rem]">
       <AboutTop />
       <ObservabilityRadarChart 
         newBuildButtonText={aboutPageData?.newBuildButtonText}
         retrofitButtonText={aboutPageData?.retrofitSelectorButtonText}
-
         mainHeading={aboutPageData?.mainHeading}
         newBuildIntroText={aboutPageData?.newBuildIntroText}
         newBuildSummaryText={aboutPageData?.newBuildSummaryText}

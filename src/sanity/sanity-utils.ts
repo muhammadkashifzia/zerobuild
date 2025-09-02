@@ -1,4 +1,5 @@
 import { createClient, groq } from "next-sanity";
+import { AboutPage } from "@/types/aboutPage";
 import { Service, CtaBox } from "@/types/Service";
 import { Project } from "@/types/Project";
 import { Resource } from "@/types/Resource";
@@ -9,9 +10,78 @@ import { Company } from "@/types/Company";
 import { ContactPageBanner } from "@/types/Contact";
 import { ResourcesPageBanner } from "@/types/resourcesPage";
 import clientConfig from "./config/client-config";
-import { projectsPageQuery, aboutPageQuery } from "./lib/queries";
+import { projectsPageQuery } from "./lib/queries";
 import { WorldMapHeader, TestimonialSlider, CTAButton } from "@/types/home";
 
+/* ---------------- About ---------------- */
+export async function getAbout(): Promise<AboutPage[]> {
+  return createClient(clientConfig).fetch(
+    groq`*[_type == "about"]{
+      _id,
+      title,
+      description,
+      introContent,
+      mainHeading,
+      newBuildButtonText,
+      retrofitSelectorButtonText,
+      retrofitButtonText,
+      newBuildIntroText,
+      newBuildSummaryText,
+      newBuildResultText,
+      newBuildResultCta { 
+        text, 
+        link 
+      },
+      retrofitIntroText,
+      retrofitContent,
+      retrofitSlider[] {
+        image {
+          asset-> {
+            _id,
+            url,
+            metadata { 
+              dimensions { 
+                width, 
+                height 
+              } 
+            }
+          }
+        },
+        altText
+      },
+      retrofitResultText,
+      retrofitButtonText,
+      retrofitButtonUrl,
+      profileImage {
+        asset-> {
+          _id,
+          url,
+          metadata { 
+            dimensions { 
+              width, 
+              height 
+            } 
+          }
+        },
+        alt
+      },
+      profileName,
+      profileTitle,
+      profileBio,
+      contactButtonText,
+      contactButtonUrl,
+      linkedinUrl,
+      linkedinButtonText,
+
+      // CTA Section
+      ctaTitle,
+      ctaDescription,
+      ctaButtonText,
+      ctaButtonUrl,
+      ctaTypewriterWords
+    }`
+  );
+}
 
 /* ---------------- SERVICES ---------------- */
 export async function getServices(): Promise<Service[]> {
@@ -47,15 +117,17 @@ export async function getServicesPageBanner() {
     }`
   );
 }
+
 export async function getServicesCTABox(): Promise<CtaBox[]> {
   return createClient(clientConfig).fetch(
-    `*[_type == "ctaSidebarBox"]{
+    groq`*[_type == "ctaSidebarBox"]{
       ctaTitle,
       ctaButtonText,
       ctaButtonLink,
     }`
   );
 }
+
 export async function getFooterServices(): Promise<
   Pick<Service, "_id" | "title" | "slug" | "publishedAt">[]
 > {
@@ -309,6 +381,7 @@ export async function getFeatureHeading(): Promise<FeatureHeading[]> {
     throw error;
   }
 }
+
 export async function getFeatures(): Promise<Feature[]> {
   try {
     console.log("Fetching features from Sanity...");
@@ -341,11 +414,6 @@ export async function getCompanyInfo(): Promise<Company | null> {
       isActive
     }`
   );
-}
-
-/* ---------------- ABOUT PAGE ---------------- */
-export async function getAboutPage() {
-  return createClient(clientConfig).fetch(aboutPageQuery);
 }
 
 /* ---------------- World Map  ---------------- */
@@ -404,7 +472,7 @@ export async function getTestimonialSlider(): Promise<TestimonialSlider[]> {
 export async function getCTA(): Promise<CTAButton | null> {
   try {
     const data = await createClient(clientConfig).fetch(
-      `*[_type == "cta" && isActive == true][0]{
+      groq`*[_type == "cta" && isActive == true][0]{
         _id,
         _createdAt,
         title,
