@@ -1,5 +1,4 @@
 export interface AboutPage {
-  _updatedAt: string | number | Date;
   _updatedAt: any;
   _id: string;
   title: string;
