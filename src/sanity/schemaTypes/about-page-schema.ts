@@ -1,7 +1,7 @@
 import { defineField, defineType } from 'sanity'
 
 export const aboutPageType = defineType({
-  name: 'about',
+  name: 'aboutSchema',
   title: 'About',
   type: 'document',
   fields: [
@@ -205,14 +205,8 @@ export const aboutPageType = defineType({
       description: 'URL for the retrofit button',
     }),
 
-    // Active Flag
-    defineField({
-      name: 'isActive',
-      title: 'Is Active',
-      type: 'boolean',
-      description: 'Only one about page configuration should be active at a time',
-      initialValue: true,
-    }),
+
+   
 
     // Profile Section
     defineField({
@@ -271,41 +265,12 @@ export const aboutPageType = defineType({
 
     }),
 
-    // CTA Section
-    defineField({
-      name: 'ctaTitle',
-      title: 'CTA Title',
-      type: 'string',
-      description: 'Title for the call-to-action section',
-
-    }),
-    defineField({
-      name: 'ctaDescription',
-      title: 'CTA Description',
-      type: 'text',
-      description: 'Description for the call-to-action section',
-    
-    }),
-    defineField({
-      name: 'ctaButtonText',
-      title: 'CTA Button Text',
-      type: 'string',
-      description: 'Text for the CTA button',
-
-    }),
-    defineField({
-      name: 'ctaButtonUrl',
-      title: 'CTA Button URL',
-      type: 'url',
-      description: 'URL for the CTA button',
-    
-    }),
-    defineField({
-      name: 'ctaTypewriterWords',
-      title: 'CTA Typewriter Words',
-      type: 'array',
-      description: 'Words for the typewriter effect in the CTA button',
-      of: [{ type: 'string' }],
+   defineField({
+      name: 'isActive',
+      title: 'Is Active',
+      type: 'boolean',
+      description: 'Only one about page configuration should be active at a time',
+      initialValue: true,
     }),
   ],
   preview: {

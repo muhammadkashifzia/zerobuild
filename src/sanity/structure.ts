@@ -246,6 +246,6 @@ export const structure: StructureResolver = (S) =>
 
               S.listItem()
                 .title("About")
-                .schemaType("about")
-                .child(S.documentTypeList("about").title("About Us Page")),
+                .schemaType("aboutSchema")
+                .child(S.documentTypeList("aboutSchema").title("About Us Page")),
     ]);

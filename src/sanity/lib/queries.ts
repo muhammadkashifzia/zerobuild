@@ -97,7 +97,7 @@ export const projectsPageQuery = groq`
 `
 
 export const aboutPageQuery = groq`
-  *[_type == "about" && isActive == true][0]  {
+  *[_type == "aboutSchema" && isActive == true][0]  {
     _id,
     title,
     description,
