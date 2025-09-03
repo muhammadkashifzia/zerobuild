@@ -2,36 +2,39 @@
 import Image from "next/image";
 import { PortableText } from "@portabletext/react";
 import { AuroraBackground } from "@/components/ui/aurora-background";
-import { client } from "@/sanity/lib/client";
-import { aboutPageQuery } from "@/sanity/lib/queries";
-import { AboutPageBanner } from "@/types/aboutPage";
+import { getAbout } from "@/sanity/sanity-utils";
+import { AboutPage } from "@/types/aboutPage";
 import AboutTopClient from "./AboutTopClient";
 
 export default async function AboutTop() {
-  const aboutPageData: AboutPageBanner | null = await client.fetch(aboutPageQuery);
+  // Call the getAbout function directly since it returns Promise<AboutPage[]>
+  const aboutPageData: AboutPage[] = await getAbout();
+  
+  // Get the first about page from the array, or null if no data
+  const aboutPage: AboutPage | null = aboutPageData?.[0] || null;
 
-  console.log("AboutTop component data:", aboutPageData);
+  console.log("AboutTop component data:", aboutPage);
 
   return (
     <div>
       <AuroraBackground>
         <AboutTopClient 
-          title={aboutPageData?.title}
-          description={aboutPageData?.description}
+          title={aboutPage?.title}
+          description={aboutPage?.description}
         />
       </AuroraBackground>
       <div className="container mx-auto px-[16px] mt-[40px]">
-        {aboutPageData?.introContent && (
+        {aboutPage?.introContent && (
           <div className="prose max-w-none text-black mb-8 about-intro-content">
             <PortableText
-              value={aboutPageData.introContent}
+              value={aboutPage.introContent}
               components={{
                 types: {
                   image: ({ value }) => (
                     <div className="w-full flex justify-center my-6">
                       <Image
                         src={value?.asset?.url}
-                        alt={value?.alt}
+                        alt={value?.alt || "About page image"}
                         width={1200}
                         height={600}
                         className="w-full h-auto object-cover rounded-lg max-w-full md:max-w-[800px]"
