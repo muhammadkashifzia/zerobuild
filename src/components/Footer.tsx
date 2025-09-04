@@ -222,32 +222,43 @@ function Footer() {
               <h2 className="text-black text-lg font-semibold mb-4">
                 Our Services
               </h2>
-              <ul className="text-sm mt-4 flex flex-col justify-center space-y-4">
-                {isLoading ? (
-                  <li>
-                    <span className="text-gray-400">Loading services...</span>
-                  </li>
-                ) : error ? (
-                  <li>
-                    <span className="text-red-400">{error}</span>
-                  </li>
-                ) : services.length > 0 ? (
-                  services.map((service) => (
-                    <li key={service._id}>
-                      <Link
-                        href={`/services/${service.slug.current}`}
-                        className="hover:text-black transition-colors duration-300"
-                      >
-                        {service.title}
-                      </Link>
-                    </li>
-                  ))
-                ) : (
-                  <li>
-                    <span className="text-gray-400">No services available</span>
-                  </li>
-                )}
-              </ul>
+             <ul className="text-sm mt-4 flex flex-col justify-center space-y-4">
+  {isLoading ? (
+    <li>
+      <span className="text-gray-400">Loading services...</span>
+    </li>
+  ) : error ? (
+    <li>
+      <span className="text-red-400">{error}</span>
+    </li>
+  ) : services.length > 0 ? (
+    services
+      .slice(0, 3) // ✅ show only latest 4 services
+      .map((service) => (
+        <li key={service._id}>
+          <Link
+            href={`/services/${service.slug.current}`}
+            className="hover:text-black transition-colors duration-300"
+          >
+            {service.title}
+          </Link>
+        </li>
+      ))
+  ) : (
+    <li>
+      <span className="text-gray-400">No services available</span>
+    </li>
+  )}
+  <li>
+    <Link
+      href="/services"
+      className="hover:text-black transition-colors duration-300"
+    >
+      View all Services
+    </Link>
+  </li>
+</ul>
+
             </div>
 
             <div className="w-full md:w-[46%]">
