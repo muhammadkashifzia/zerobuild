@@ -30,8 +30,9 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="container mx-auto pb-[40px] py-16 md:py-20 bg-white relative overflow-hidden">
-      {/* Dynamic Feature Heading */}
+    <div className="pb-[40px] py-16 md:py-20 bg-white relative overflow-hidden">
+     <div className="container mx-auto ">
+       {/* Dynamic Feature Heading */}
       {featureHeading && (
         <div className="text-center mb-8 md:mb-12 px-[2rem]">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-800 dark:text-white mb-4">
@@ -159,6 +160,7 @@ export default function Page() {
           </Button>
         </Link>
       </div>
+     </div>
     </div>
   );
 }
