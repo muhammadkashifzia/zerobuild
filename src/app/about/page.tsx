@@ -79,18 +79,7 @@ async function page() {
     
     return (
       <div className="min-h-screen py-12 pt-[4rem] md:pt-[4rem]">
-        {/* Debug info - only visible in development */}
-        {process.env.NODE_ENV === 'development' && (
-          <div className="fixed bottom-4 right-4 bg-gray-900 text-white text-xs p-3 rounded-lg shadow-lg z-50 max-w-xs">
-            <div className="font-semibold mb-2">Debug Info</div>
-            <div>Render ID: {renderId}</div>
-            <div>Load Time: {pageLoadTime}ms</div>
-            <div>Has Data: {aboutPageData ? '✅' : '❌'}</div>
-            <div>Updated: {aboutPageData?._updatedAt ? new Date(aboutPageData._updatedAt).toLocaleTimeString() : 'N/A'}</div>
-            <div>Fetched: {new Date().toLocaleTimeString()}</div>
-          </div>
-        )}
-        
+   
         <AboutTop />
         
         <ObservabilityRadarChart 

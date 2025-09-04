@@ -192,7 +192,7 @@ export default function PerformanceSection({
           <div className="text-center">
             <Link
               href={performanceData.cta.link || "/contact"}
-              className="inline-block"
+              className="inline-block max-w-[254px]"
             >
               <Button className="px-6 py-3 text-[16px] font-bold bg-[#484AB7] text-white rounded-xl">
                 {performanceData.cta.text}

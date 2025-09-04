@@ -6,7 +6,7 @@ const config: ClientConfig = {
   projectId,
   dataset,
   apiVersion,
-  useCdn: false, // Changed from true to false - this is the key fix!
+  useCdn: true, // Changed from true to false - this is the key fix!
   token: sanityToken,
   ignoreBrowserTokenWarning: true, // Suppress token warnings
   perspective: 'published' as const, // Properly typed perspective

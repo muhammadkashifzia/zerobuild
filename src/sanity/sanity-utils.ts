@@ -52,7 +52,19 @@ export async function getAbout(): Promise<AboutPage[]> {
         _updatedAt,
         title,
         description,
-        introContent,
+          introContent[]{
+      ...,
+      _type == "image" => {
+        ...,
+        asset->{
+          _id,
+          url,
+          metadata { 
+            dimensions { width, height }
+          }
+        }
+      }
+    },
         mainHeading,
         newBuildButtonText,
         retrofitSelectorButtonText,
