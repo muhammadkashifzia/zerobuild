@@ -129,7 +129,7 @@ export const Button = memo(({
 
   // Memoize content classes
   const contentClasses = useMemo(() => cn(
-    "relative border border-slate-800 backdrop-blur-xl text-white flex items-center justify-center w-full h-full text-sm antialiased",
+    "max-w-[254px] h-[56px] relative border border-slate-800 backdrop-blur-xl text-white flex items-center justify-center w-full h-full text-sm antialiased",
     className
   ), [className]);
 
