@@ -13,21 +13,19 @@ import clientConfig from "./config/client-config";
 import { projectsPageQuery } from "./lib/queries";
 import { WorldMapHeader, TestimonialSlider, CTAButton } from "@/types/home";
 
-// Create a client instance with explicit no-cache settings
 const createSanityClient = () => {
   return createClient({
     ...clientConfig,
-    useCdn: false, // Force real-time data
-    perspective: 'published' as const, // Ensure proper typing
+    useCdn: false,
+    perspective: 'published' as const, 
   });
 };
 
-// Default fetch options to prevent caching
 const defaultFetchOptions = {
   cache: 'no-store' as const,
   next: { 
     revalidate: 0,
-    tags: [] // Ensure no tag-based caching
+    tags: [] 
   }
 };
 
@@ -106,16 +104,10 @@ export async function getAbout(): Promise<AboutPage[]> {
         contactButtonUrl,
         linkedinUrl,
         linkedinButtonText,
-        ctaTitle,
-        ctaDescription,
-        ctaButtonText,
-        ctaButtonUrl,
-        ctaTypewriterWords
       }`,
       {},
       {
         ...defaultFetchOptions,
-        // Add request ID for debugging
         perspective: 'published',
       }
     );
@@ -142,8 +134,6 @@ export async function getAbout(): Promise<AboutPage[]> {
       duration: `${duration}ms`,
       timestamp: new Date().toISOString()
     });
-    
-    // Re-throw the error so the page can handle it
     throw error;
   }
 }

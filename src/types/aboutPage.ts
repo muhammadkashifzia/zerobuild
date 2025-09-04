@@ -43,11 +43,4 @@ export interface AboutPage {
   contactButtonUrl?: string;
   linkedinUrl?: string;
   linkedinButtonText?: string;
-
-  // CTA Section
-  ctaTitle?: string;
-  ctaDescription?: string;
-  ctaButtonText?: string;
-  ctaButtonUrl?: string;
-  ctaTypewriterWords?: string[];
 }
