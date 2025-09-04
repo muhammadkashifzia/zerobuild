@@ -636,7 +636,7 @@ const OptioneeringVisualization: React.FC<ObservabilityRadarChartProps> = ({
 const MainRadarPlot: React.FC<{ data: OptionData[] }> = React.memo(
   ({ data }) => {
     const rows = 5;
-    const cols = 10;
+    const cols = 9;
 
     const makeSubplots = useCallback(() => {
       const subplots: any[] = [];
@@ -715,7 +715,7 @@ const MainRadarPlot: React.FC<{ data: OptionData[] }> = React.memo(
               },
               angularaxis: {
                 visible: true,
-                showticklabels: true,
+                showticklabels: false,
                 tickfont: { size: 9, color: "#333" },
                 tickangle: 0,
                 rotation: 90,
@@ -837,7 +837,7 @@ const SummaryRadarPlot: React.FC<{ data: OptionData[] }> = React.memo(
               },
               angularaxis: {
                 visible: true,
-                tickfont: { size: 13, family: "Arial Black", color: "black" },
+                tickfont: { size: 0, family: "Arial Black", color: "black" },
                 tickangle: 0,
                 rotation: 90,
                 direction: "clockwise" as const,
