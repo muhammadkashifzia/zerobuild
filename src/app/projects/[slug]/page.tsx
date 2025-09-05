@@ -91,7 +91,7 @@ export default async function Page({
   const relatedProjects = await getRelatedProjects(slug, project.categories);
 
   return (
-    <div className="px-[16px] pt-[30px] md:pt-[25px] mx-auto space-y-5 mt-[60px] pb-[60px]">
+    <div className="px-[16px] pt-[30px] md:pt-[25px] mx-auto space-y-5 mt-[60px] pb-[60px] ">
    <div className="container mx-auto px-[16px]">
        <Link
         href="/projects"
@@ -192,12 +192,12 @@ export default async function Page({
               </h2>
               <Link
                 href="/projects/all-projects"
-                className="text-black flex items-center gap-2 border border-gray-300 rounded-full px-5 py-2 hover:bg-gray-100 transition"
+                className="text-black flex items-center gap-2 border border-gray-300 rounded-2xl px-2 py-2 hover:bg-gray-100 transition h-[56px] w-[200px] relative justify-center"
               >
-                View all Projects <ArrowRight className="w-4 h-4" />
+                View all Projects <ArrowRight className="w-4 h-4 absolute right-[15px]" />
               </Link>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-[60px]">
               {relatedProjects.map((relatedProject) => (
                 <Link
                   key={relatedProject._id}
