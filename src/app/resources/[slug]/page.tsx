@@ -218,7 +218,7 @@ export default async function Page({
               </h2>
               <Link
                 href="/resources"
-                className="text-black flex items-center gap-2 border border-gray-300 rounded-full px-5 py-2 hover:bg-gray-100 transition"
+                className="text-black flex items-center gap-2 border border-gray-300 rounded-2xl px-5 py-2 hover:bg-gray-100 transition max-w-[220px] h-[56px] relative justify-center"
               >
                 View all Resources <ArrowRight className="w-4 h-4" />
               </Link>

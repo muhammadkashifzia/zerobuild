@@ -142,6 +142,8 @@ const ContactPage = () => {
       purpose: [] as string[],
       role: "",
       honeypot: "",
+      privacyConsent: false,
+      marketingConsent: false,
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Required"),
@@ -149,6 +151,7 @@ const ContactPage = () => {
       company: Yup.string().required("Required"),
       message: Yup.string(),
       purpose: Yup.array().min(1, "Select at least one purpose"),
+      privacyConsent: Yup.boolean().oneOf([true], "You must agree to the Privacy Notice to proceed"),
     }),
     onSubmit: async (values) => {
       setLoading(true);
@@ -501,6 +504,51 @@ const ContactPage = () => {
                     {formik.errors.message}
                   </p>
                 )}
+              </div>
+
+              {/* Privacy Consent Checkbox */}
+              <div className="space-y-3">
+                <label className="flex items-start gap-3 text-black text-[15px]">
+                  <input
+                    type="checkbox"
+                    name="privacyConsent"
+                    checked={formik.values.privacyConsent}
+                    onChange={formik.handleChange}
+                    className="mt-1 flex-shrink-0"
+                  />
+                  <span>
+                    I agree to the processing of my data as described in the{" "}
+                    <a
+                      href="/privacy"
+                      target="_blank"
+                      className="underline hover:no-underline text-[#484AB7]"
+                    >
+                      Privacy Notice
+                    </a>
+                    . <span className="text-[#ff0000]">*</span>
+                  </span>
+                </label>
+                {formik.touched.privacyConsent && formik.errors.privacyConsent && (
+                  <p className="text-red-500 text-sm">
+                    {formik.errors.privacyConsent}
+                  </p>
+                )}
+              </div>
+
+              {/* Marketing Consent Checkbox */}
+              <div>
+                <label className="flex items-start gap-3 text-black text-[15px]">
+                  <input
+                    type="checkbox"
+                    name="marketingConsent"
+                    checked={formik.values.marketingConsent}
+                    onChange={formik.handleChange}
+                    className="mt-1 flex-shrink-0"
+                  />
+                  <span>
+                    Send me updates about tools and resources (optional)
+                  </span>
+                </label>
               </div>
 
               {error && (

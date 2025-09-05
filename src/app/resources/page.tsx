@@ -171,12 +171,12 @@ const ResourcePage = () => {
                 )}
               </div>
             ))}
-            <button
+            {/* <button
               onClick={() => openModal("purpose")}
               className="px-4 py-2 rounded-full border border-gray-300 text-gray-600 flex items-center gap-1 hover:bg-gray-100"
             >
               View all <Plus className="w-4 h-4" />
-            </button>
+            </button> */}
           </div>
           </div>
           {(selectedPurpose !== "All") && (
