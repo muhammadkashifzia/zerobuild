@@ -224,7 +224,7 @@ export async function POST(req: Request) {
     }
 
     // Minimum time on form check (prevent bot submissions)
-    if (sanitizedData.elapsedMs < 3000) {
+    if ((sanitizedData.elapsedMs ?? 0) < 3000) {
       return createErrorResponse("Submission too fast. Please try again.", 400);
     }
 
