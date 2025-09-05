@@ -129,12 +129,12 @@ export default async function Page({
           </div>
         </div>
       )}
-      
-      <h1 className="text-black !mt-[40px] text-[40px] leading-9 font-bold max-w-full md:max-w-[650px]">
+      <div className="container mx-auto px-0 md:px-[16px] pt-[60px]">
+      <h1 className="text-black  text-[40px] leading-9 font-bold">
         {service.title}
       </h1>
       
-      <div className="container grid grid-cols-1 lg:grid-cols-3 px-0 md:px-[16px] gap-[20px] mx-auto pt-0 md:pt-[40px] pb-[60px]">
+      <div className=" grid grid-cols-1 lg:grid-cols-3 gap-[20px] mx-auto pt-0 md:pt-[20px] pb-[60px]">
         {/* Left: Content */}
         <div className="lg:col-span-2 space-y-2">
           {/* Cover Image */}
@@ -150,7 +150,7 @@ export default async function Page({
 
           {/* Rich Body Content */}
           {service.body && (
-            <div className="prose prose-blue max-w-none mt-8 text-black mb-[48px] service-body-content">
+            <div className="prose prose-blue max-w-none  text-black mb-[48px] service-body-content">
               <PortableText
                 value={service.body}
                 components={{
@@ -181,7 +181,7 @@ export default async function Page({
 </div>
 
       </div>
-      
+      </div>
       <section className="container mx-auto">
         <div className="bg-gray-50 pt-12 px-4 md:px-12 pb-[40px]">
           {/* Heading */}
@@ -190,16 +190,16 @@ export default async function Page({
             <h2 className="text-2xl md:text-3xl font-medium mb-4 md:mb-0 text-black">
               Discover more of our expertise:
             </h2>
-            <Link href="/services" className="text-black flex items-center gap-2 border border-gray-300 rounded-full px-5 py-2 hover:bg-gray-100 transition">
-              View all services <ArrowRight className="w-4 h-4" />
+            <Link href="/services" className="text-black flex items-center gap-2 border border-gray-300 rounded-2xl h-[56px] w-[200px] px-5 py-2 hover:bg-gray-100 transition justify-center relative">
+              View all services <ArrowRight className="w-4 h-4 absolute right-[15px]" />
             </Link>
           </div>
 
           {/* Related Services: 3 by Discipline, 3 by Project Stage */}
           <div className="border-t border-gray-200 pt-8">
-            <h3 className="text-2xl md:text-3xl font-medium mb-6 text-black">Services</h3>
+            {/* <h3 className="text-2xl md:text-3xl font-medium mb-6 text-black">Services</h3> */}
             {hasAnyRelated ? (
-              <div className="space-y-5">
+              <div className="space-y-7">
                 {relatedByDiscipline.length > 0 && (
                   <div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-6 md:gap-x-8 text-gray-800">
@@ -207,7 +207,7 @@ export default async function Page({
                         <Link
                           key={serviceItem._id}
                           href={`/services/${serviceItem.slug}`}
-                          className={`pr-4 border-gray-200 hover:text-[#484AB7] transition-colors duration-200 ${
+                          className={`pr-4 border-gray-200 hover:text-[#484AB7] transition-colors duration-200 text-[18px] ${
                             (index + 1) % 2 === 0 && "sm:border-r md:border-none"
                           } ${index < 4 && "sm:pb-4"}`}
                         >
