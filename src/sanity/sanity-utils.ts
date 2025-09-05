@@ -116,6 +116,8 @@ export async function getAbout(): Promise<AboutPage[]> {
         contactButtonUrl,
         linkedinUrl,
         linkedinButtonText,
+        globallyTitle,
+        globallyDescription
       }`,
       {},
       {

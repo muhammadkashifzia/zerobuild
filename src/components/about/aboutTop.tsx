@@ -7,10 +7,7 @@ import { AboutPage } from "@/types/aboutPage";
 import AboutTopClient from "./AboutTopClient";
 
 export default async function AboutTop() {
-  // Call the getAbout function directly since it returns Promise<AboutPage[]>
   const aboutPageData: AboutPage[] = await getAbout();
-  
-  // Get the first about page from the array, or null if no data
   const aboutPage: AboutPage | null = aboutPageData?.[0] || null;
 
   console.log("AboutTop component data:", aboutPage);

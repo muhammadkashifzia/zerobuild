@@ -25,6 +25,7 @@ interface AboutProfileProps {
   contactButtonUrl?: string;
   linkedinUrl?: string;
   linkedinButtonText?: string;
+
 }
 
 export default function AboutProfile({
@@ -67,7 +68,7 @@ export default function AboutProfile({
             href={contactButtonUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="gap-[15px] text-black text-[20px] px-[20px] items-center max-w-[280px] font-bold mb-[24px] rounded-full inline-flex leading-[100%] border border-[#757575] min-h-[44px]"
+            className="mt-[15px] gap-[15px] text-black text-[20px] px-[20px] items-center max-w-[280px] font-bold mb-[24px] rounded-full inline-flex leading-[100%] border border-[#757575] min-h-[44px]"
           >
             {contactButtonText} <ArrowRight />
           </a>

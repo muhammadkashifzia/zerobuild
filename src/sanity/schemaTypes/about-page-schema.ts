@@ -257,6 +257,8 @@ export const aboutPageType = defineType({
       description: 'LinkedIn profile URL',
 
     }),
+
+  
     defineField({
       name: 'linkedinButtonText',
       title: 'LinkedIn Button Text',
@@ -264,7 +266,22 @@ export const aboutPageType = defineType({
       description: 'Text for the LinkedIn button',
 
     }),
+    // Global Section
+    defineField({
+      name: 'globallyTitle',
+      title: 'Globally Heading',
+      type: 'string',
+      description: 'Globally Heading Text',
 
+    }),
+
+     defineField({
+      name: 'globallyDescription',
+      title: 'Globally Description',
+      type: 'text',
+      description: 'Globally Description Text',
+
+    }),
    defineField({
       name: 'isActive',
       title: 'Is Active',

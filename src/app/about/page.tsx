@@ -7,6 +7,7 @@ import CtaSection from "@/components/CtaSection"
 import type { Metadata } from "next";
 import { getAbout } from "@/sanity/sanity-utils";
 import { AboutPage } from "@/types/aboutPage";
+import AboutGlobally from "@/components/about/aboutGlobally";
 
 // Force dynamic rendering - CRITICAL for production updates
 export const dynamic = 'force-dynamic';
@@ -107,7 +108,7 @@ async function page() {
           linkedinUrl={aboutPageData?.linkedinUrl}
           linkedinButtonText={aboutPageData?.linkedinButtonText}
         />
-        
+        <AboutGlobally />
         <TestimonialCard />
         <CtaSection />
       </div>

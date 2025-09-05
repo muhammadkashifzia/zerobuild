@@ -43,4 +43,7 @@ export interface AboutPage {
   contactButtonUrl?: string;
   linkedinUrl?: string;
   linkedinButtonText?: string;
+  // Global Section
+  globallyTitle?: string;
+  globallyDescription?: string;
 }
