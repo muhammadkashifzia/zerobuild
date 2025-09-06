@@ -38,22 +38,16 @@ const Skeleton = ({
       className={`inline-block animate-pulse bg-gray-200 rounded-md ${className}`}
     />
   ) : (
-    <div
-      className={`animate-pulse bg-gray-200 rounded-md ${className}`}
-    />
+    <div className={`animate-pulse bg-gray-200 rounded-md ${className}`} />
   );
 
 function Footer() {
   const [contacts, setContacts] = useState<Contact[]>([]);
-  const [copyright, setCopyright] = useState<CopyRight | null>(
-    null
-  );
+  const [copyright, setCopyright] = useState<CopyRight | null>(null);
   const [services, setServices] = useState<
     Pick<Service, "_id" | "title" | "slug" | "publishedAt">[]
   >([]);
-  const [companyInfo, setCompanyInfo] = useState<Company | null>(
-    null
-  );
+  const [companyInfo, setCompanyInfo] = useState<Company | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -114,17 +108,13 @@ function Footer() {
       try {
         setIsLoading(true);
         setError(null);
-        const [
-          contactsRes,
-          servicesRes,
-          companyRes,
-          copyrightRes,
-        ] = await Promise.all([
-          getContacts(),
-          getFooterServices(),
-          getCompanyInfo(),
-          getCopyRight(),
-        ]);
+        const [contactsRes, servicesRes, companyRes, copyrightRes] =
+          await Promise.all([
+            getContacts(),
+            getFooterServices(),
+            getCompanyInfo(),
+            getCopyRight(),
+          ]);
         setContacts(contactsRes || []);
         setServices(servicesRes || []);
         setCompanyInfo(companyRes || null);
@@ -180,9 +170,7 @@ function Footer() {
               <Link href="/terms">Terms of Use</Link>
             </li>
             <li>
-              <Link href="/accessibility">
-                Accessibility Statement
-              </Link>
+              <Link href="/accessibility">Accessibility Statement</Link>
             </li>
           </ul>
         </div>
@@ -243,9 +231,7 @@ function Footer() {
                   ))
                 ) : (
                   <li>
-                    <span className="text-gray-400">
-                      No services available
-                    </span>
+                    <span className="text-gray-400">No services available</span>
                   </li>
                 )}
                 <li>
@@ -293,10 +279,7 @@ function Footer() {
 
       {/* Social Links */}
       <div className="pt-14 pb-4">
-        <FloatingDock
-          mobileClassName="translate-y-20"
-          items={links}
-        />
+        <FloatingDock mobileClassName="translate-y-20" items={links} />
       </div>
 
       {/* Footer Bottom */}
