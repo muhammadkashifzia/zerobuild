@@ -1,6 +1,9 @@
 "use client";
 
-import React, { useEffect, useState, useId } from "react";
+"use client";
+import React, { useState, useEffect, useId } from "react";
+import { getFeatures, getFeatureHeading } from "@/sanity/sanity-utils";
+import { Feature, FeatureHeading } from "@/types/Feature";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
@@ -8,91 +11,45 @@ import { recaptchaSiteKey } from "@/sanity/env";
 import { motion } from "motion/react";
 import { getContacts, getContactPageBanner } from "@/sanity/sanity-utils";
 import { Contact } from "@/types/Contact";
-import { Feature } from "@/types/Feature";
 import { TypewriterEffect } from "@/components/ui/typewriter-effect";
 import { ArrowRight } from "lucide-react";
-// import { WorldMapDemo } from "@/components/contact-map";
 const SITE_KEY = recaptchaSiteKey;
 
 const ContactPage = () => {
-  const features: Feature[] = [];
+  const [Features, setFeatures] = useState<Feature[]>([]);
+    const [featureHeading, setFeatureHeading] = useState<FeatureHeading | null>(
+      null
+    );
+    const [loading, setLoading] = useState(true);
+  useEffect(() => {
+     const fetchData = async () => {
+       try {
+         const [featuresRes, headingRes] = await Promise.all([
+           getFeatures(),
+           getFeatureHeading(),
+         ]);
+         setFeatures(featuresRes);
+         setFeatureHeading(headingRes[0] || null);
+       } catch (error) {
+         console.error("Error fetching data:", error);
+       } finally {
+         setLoading(false);
+       }
+     };
+     fetchData();
+   }, []);
   const words = [
     {
       text: "Expert",
     },
   ];
-  const displayFeatures =
-    features && features.length > 0
-      ? features
-      : [
-          {
-            _id: "fallback-1",
-            _createdAt: new Date().toISOString(),
-            title: "Advisory & Research",
-            description:
-              "Strategic insight and evidence-based guidance for future-ready decisions.",
-            icon: "leaf",
-            order: 1,
-            isActive: true,
-          },
-          {
-            _id: "fallback-2",
-            _createdAt: new Date().toISOString(),
-            title: "Architecture",
-            description:
-              "Designing beautiful, performance-driven spaces grounded in building physics.",
-            icon: "zap",
-            order: 2,
-            isActive: true,
-          },
-          {
-            _id: "fallback-3",
-            _createdAt: new Date().toISOString(),
-            title: "Digital & Data",
-            description:
-              "Harnessing data, simulation and automation to drive smarter design.",
-            icon: "chart",
-            order: 3,
-            isActive: true,
-          },
-          {
-            _id: "fallback-4",
-            _createdAt: new Date().toISOString(),
-            title: "Engineering",
-            description:
-              "Integrated building systems designed for efficiency, comfort and resilience.",
-            icon: "shield",
-            order: 4,
-            isActive: true,
-          },
-          {
-            _id: "fallback-5",
-            _createdAt: new Date().toISOString(),
-            title: "Net Zero & Sustainability",
-            description:
-              "Delivering whole life carbon, circularity and climate-positive outcomes.",
-            icon: "shopping-cart",
-            order: 5,
-            isActive: true,
-          },
-          {
-            _id: "fallback-6",
-            _createdAt: new Date().toISOString(),
-            title: "Planning & Urbanism",
-            description:
-              "Shaping sustainable places through joined-up planning and design.",
-            icon: "building",
-            order: 6,
-            isActive: true,
-          },
-        ];
+ 
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [bannerTitle, setBannerTitle] = useState<string>("");
   const [bannerDescription, setBannerDescription] = useState<string>("");
   const [bannerLoading, setBannerLoading] = useState<boolean>(true);
   const [cta, setCta] = useState<{ note?: string }>({});
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
   const [formStartTs, setFormStartTs] = useState<number>(() => Date.now());
@@ -273,7 +230,19 @@ const ContactPage = () => {
                 </p>
               )}
               <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 lg:gap-10 max-w-7xl mx-auto relative z-10">
-                {displayFeatures.slice(0, 4).map((feature, index) => (
+                
+              {loading
+            ? Array.from({ length: 6 }).map((_, index) => (
+                <div
+                  key={index}
+                  className="animate-pulse bg-gradient-to-b dark:from-neutral-900 from-neutral-100 dark:to-neutral-950 to-white p-4 md:p-6 rounded-2xl md:rounded-3xl shadow-lg"
+                >
+                  <div className="h-6 w-1/2 bg-gray-300 dark:bg-gray-700 rounded mb-4"></div>
+                  <div className="h-4 w-3/4 bg-gray-200 dark:bg-gray-600 rounded mb-2"></div>
+                  <div className="h-4 w-2/3 bg-gray-200 dark:bg-gray-600 rounded"></div>
+                </div>
+              ))
+            : Features.map((feature, index) => (
                   <motion.div
                     key={feature._id}
                     initial={{ opacity: 0, y: 30 }}
@@ -507,7 +476,7 @@ const ContactPage = () => {
               </div>
 
               {/* Privacy Consent Checkbox */}
-              <div className="space-y-3">
+              <div className="space-y-1">
                 <label className="flex items-start gap-3 text-black text-[15px]">
                   <input
                     type="checkbox"

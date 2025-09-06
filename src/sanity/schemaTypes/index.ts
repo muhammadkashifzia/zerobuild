@@ -19,7 +19,7 @@ import { worldMapType } from './worldmap-schema';
 import { testimonialType } from './testimonial-schema';
 import { ctaType } from './cta-schema';
 import { ctaBoxType } from './ctaSidebarBox-schema';
-
+import { copyrightType } from './copyright-schema';
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
     serviceType,
@@ -41,5 +41,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     projectsPageType,
     aboutPageType,
     contactPageType,
+    copyrightType,
   ],
 } 

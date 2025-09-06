@@ -190,7 +190,37 @@ export const structure: StructureResolver = (S) =>
             ])
         ),
 
-      // Global
+    
+      S.divider(),
+
+      // Resource
+      S.listItem()
+        .title("Contact Page")
+        .child(
+          S.list()
+            .title("Contact Page")
+            .items([
+              S.listItem()
+                .title("Contact Us")
+                .child(
+                  S.document().schemaType("contactPage").documentId("contactUs")
+                ),
+
+              S.divider(),
+
+              S.listItem()
+                .title("Contact Form Submission")
+                .schemaType("contactSubmission")
+                .child(
+                  S.documentTypeList("contactSubmission").title(
+                    "Contact Form Submission"
+                  )
+                ),
+            ])
+        ),
+  S.divider(),
+
+          // Global
       S.listItem()
         .title("Global Sections")
         .child(
@@ -221,6 +251,23 @@ export const structure: StructureResolver = (S) =>
                         ),
                     ])
                 ),
+           
+            ])
+        ),
+
+          S.divider(),
+
+                // Global
+      S.listItem()
+        .title("Footer")
+        .child(
+          S.list()
+            .title("CopyRight Section")
+            .items([
+              S.listItem()
+                .title("CopyRight")
+                .child(S.document().schemaType("copyright").documentId("copyrightSection")),
+
               S.divider(),
               S.listItem()
                 .title("Company Information")
@@ -228,32 +275,5 @@ export const structure: StructureResolver = (S) =>
                   S.document().schemaType("company").documentId("company")
                 ),
             ])
-        ),
-      S.divider(),
-
-      // Resource
-      S.listItem()
-        .title("Contact Page")
-        .child(
-          S.list()
-            .title("Contact Page")
-            .items([
-              S.listItem()
-                .title("Contact Us")
-                .child(
-                  S.document().schemaType("contactPage").documentId("contactUs")
-                ),
-
-              S.divider(),
-
-              S.listItem()
-                .title("Contact Form Submission")
-                .schemaType("contactSubmission")
-                .child(
-                  S.documentTypeList("contactSubmission").title(
-                    "Contact Form Submission"
-                  )
-                ),
-            ])
-        ),
+        ), 
     ]);

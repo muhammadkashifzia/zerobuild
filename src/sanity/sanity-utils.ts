@@ -9,6 +9,7 @@ import { FeatureHeading } from "@/types/Feature";
 import { Company } from "@/types/Company";
 import { ContactPageBanner } from "@/types/Contact";
 import { ResourcesPageBanner } from "@/types/resourcesPage";
+import { CopyRight } from "@/types/Footer"
 import clientConfig from "./config/client-config";
 import { projectsPageQuery } from "./lib/queries";
 import { WorldMapHeader, TestimonialSlider, CTAButton } from "@/types/home";
@@ -706,6 +707,28 @@ export async function getCTA(): Promise<CTAButton | null> {
     return result || null;
   } catch (error) {
     console.error("❌ [getCTA] Error:", error);
+    return null;
+  }
+}
+
+
+
+export async function getCopyRight(): Promise<CopyRight | null> {
+  try {
+    const result = await createSanityClient().fetch(
+      groq`*[_type == "copyright" && isActive == true]{
+        _id,
+        _createdAt,
+        _updatedAt,
+        text,
+        isActive
+      }`,
+      {},
+      defaultFetchOptions
+    );
+    return result || null;
+  } catch (error) {
+    console.error("❌ [getCopyRight] Error:", error);
     return null;
   }
 }
