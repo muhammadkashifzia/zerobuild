@@ -17,3 +17,9 @@ export interface AccordionItem {
   content: any;
   isOpen?: boolean;
 }
+
+export interface ProjectsBanner {
+  _id: string;
+  title: string;
+  description: string;
+}

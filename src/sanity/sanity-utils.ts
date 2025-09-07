@@ -10,6 +10,7 @@ import { Company } from "@/types/Company";
 import { ContactPageBanner } from "@/types/Contact";
 import { ResourcesPageBanner } from "@/types/resourcesPage";
 import { CopyRight } from "@/types/Footer"
+import { ProjectsBanner } from "@/types/Project"
 import clientConfig from "./config/client-config";
 import { projectsPageQuery } from "./lib/queries";
 import { WorldMapHeader, TestimonialSlider, CTAButton } from "@/types/home";
@@ -311,16 +312,22 @@ export async function getProjects(): Promise<Project[]> {
   }
 }
 
-export async function getProjectsPageBanner(): Promise<{
-  _id: string;
-  title: string;
-   _updatedAt: any;
-  description: string;
-} | null> {
+
+export async function getProjectsBanner(): Promise<ProjectsBanner | null> {
   try {
-    return await createSanityClient().fetch(projectsPageQuery, {}, defaultFetchOptions);
+    const result = await createSanityClient().fetch(
+      groq`*[_type == "projectsPage" && isActive == true] | order(_updatedAt desc) [0] {
+        _id,
+        _updatedAt,
+        title,
+        description,
+      }`,
+      {},
+      defaultFetchOptions
+    );
+    return result;
   } catch (error) {
-    console.error('❌ [getProjectsPageBanner] Error:', error);
+    console.error('❌ [getProjectsBanner] Error:', error);
     return null;
   }
 }
@@ -733,3 +740,8 @@ export async function getCopyRight(): Promise<CopyRight | null> {
     return null;
   }
 }
+
+
+
+
+

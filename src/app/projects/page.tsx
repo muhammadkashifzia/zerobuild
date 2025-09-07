@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { getProjects, getProjectsPageBanner } from "@/sanity/sanity-utils";
+import { getProjects, getProjectsBanner } from "@/sanity/sanity-utils";
 import { Project } from "@/types/Project";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation } from "swiper/modules";
@@ -28,7 +28,7 @@ export default function Page() {
         console.log('Fetching banner data...');
         const [res, bannerRes] = await Promise.all([
           getProjects(),
-          getProjectsPageBanner(),
+          getProjectsBanner(),
         ]);
         
         console.log('Projects:', res);
@@ -79,14 +79,6 @@ export default function Page() {
                   banner?.description || "Default description"
                 )}
               </div>
-              
-              {/* Debug info - remove in production */}
-              {process.env.NODE_ENV === 'development' && (
-                <div className="text-xs text-gray-500 mt-2">
-                  Debug: Banner loaded = {banner ? 'Yes' : 'No'}, 
-                  Loading = {loading ? 'Yes' : 'No'}
-                </div>
-              )}
             </div>
           </motion.div>
         </AuroraBackground>
