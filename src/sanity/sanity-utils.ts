@@ -314,7 +314,7 @@ export async function getProjects(): Promise<Project[]> {
 export async function getProjectsPageBanner(): Promise<{
   _id: string;
   title: string;
-  
+   _updatedAt: any;
   description: string;
 } | null> {
   try {
