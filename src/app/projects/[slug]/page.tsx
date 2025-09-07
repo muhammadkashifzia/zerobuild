@@ -118,7 +118,7 @@ export default async function Page({
           alt={project.title}
           width={900}
           height={500}
-          className="rounded-xl object-cover w-full h-auto md:h-[663px]"
+          className="rounded-xl object-cover w-full h-auto md:h-auto"
         />
       )}
    </div>
