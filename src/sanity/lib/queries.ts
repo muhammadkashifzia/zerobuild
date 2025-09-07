@@ -88,13 +88,26 @@ export const performanceQuery = groq`
   }
 ` 
 
+// FIXED: This should match your Sanity schema
 export const projectsPageQuery = groq`
   *[_type == "projectsPage" && isActive == true][0] {
     _id,
-     _createdAt,
-        _updatedAt,
+    _createdAt,
+    _updatedAt,
     title,
-    description
+    description,
+    isActive
   }
 `
 
+// Alternative query if your schema uses a different type name
+export const projectsPageBannerQuery = groq`
+  *[_type == "projectsPageBanner" && isActive == true][0] {
+    _id,
+    _createdAt,
+    _updatedAt,
+    title,
+    description,
+    isActive
+  }
+`
