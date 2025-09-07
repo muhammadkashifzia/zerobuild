@@ -12,7 +12,6 @@ import { ResourcesPageBanner } from "@/types/resourcesPage";
 import { CopyRight } from "@/types/Footer"
 import { ProjectsBanner } from "@/types/Project"
 import clientConfig from "./config/client-config";
-import { projectsPageQuery } from "./lib/queries";
 import { WorldMapHeader, TestimonialSlider, CTAButton } from "@/types/home";
 
 const createSanityClient = () => {
