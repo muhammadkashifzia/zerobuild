@@ -50,10 +50,10 @@ export default function Page() {
           >
             <div className="max-w-[1024px]">
               <div className="text-3xl md:text-6xl font-normal text-black leading-[1.2] max-w-[1000px]">
-                {banner?.title || "Explore our projects across the built and natural environments"}
+                {banner?.title}
               </div>
               <div className="font-extralight text-base md:text-2xl dark:text-neutral-200 py-4 max-w-[1024px]">
-                {banner?.description || "From metro systems to concert halls, our sustainability projects demonstrate real-world impact across the built and natural environments."}
+                {banner?.description}
               </div>
             </div>
           </motion.div>

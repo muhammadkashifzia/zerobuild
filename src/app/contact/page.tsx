@@ -210,7 +210,7 @@ const ContactPage = () => {
   return (
     <div>
       <div className="mx-auto grid w-full container grid-cols-1 gap-10 py-20 px-[16px] md:py-32 lg:grid-cols-2">
-        <div className="relative flex flex-col items-center overflow-hidden lg:items-start">
+        <div className="relative flex flex-col items-start md:items-center overflow-hidden lg:items-start">
           {bannerLoading ? (
             <div className="w-full animate-pulse">
               <div className="h-8 md:h-10 lg:h-12 w-2/3 bg-neutral-200 rounded-md dark:bg-neutral-800" />
@@ -325,7 +325,7 @@ const ContactPage = () => {
           {/* <WorldMapDemo /> */}
         </div>
 
-        <div className="relative mx-auto flex w-full max-w-2xl flex-col items-start gap-4 overflow-hidden rounded-3xl bg-gradient-to-b from-gray-100 to-gray-200 pt-[30px] pb-[40px] px-[40px] dark:from-neutral-900 dark:to-neutral-950">
+        <div className="relative mx-auto flex w-full max-w-2xl flex-col items-start gap-4 overflow-hidden rounded-3xl bg-gradient-to-b from-gray-100 to-gray-200 pt-[30px] pb-[40px] px-[20px] md:px-[40px] dark:from-neutral-900 dark:to-neutral-950">
             <form onSubmit={formik.handleSubmit} className="space-y-4">
               {/* Honeypot field for bots */}
               <div className="hidden" aria-hidden="true">

@@ -91,6 +91,8 @@ export const performanceQuery = groq`
 export const projectsPageQuery = groq`
   *[_type == "projectsPage" && isActive == true][0] {
     _id,
+     _createdAt,
+        _updatedAt,
     title,
     description
   }
