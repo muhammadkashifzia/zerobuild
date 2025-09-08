@@ -1188,8 +1188,11 @@ export default function ObservabilityChart({
                         responsive: true,
                         displayModeBar: false, // Completely hide toolbar
                         scrollZoom: false, // Disable scroll zoom
-                        doubleClick: 'reset+autosize',
+                        doubleClick: 'reset',
                         showTips: false,
+                        
+                        
+                        
                       }}
                       style={{
                         width: "100%",
