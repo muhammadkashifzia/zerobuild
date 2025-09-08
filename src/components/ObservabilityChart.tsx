@@ -1186,16 +1186,8 @@ export default function ObservabilityChart({
                       layout={layout}
                       config={{
                         responsive: true,
-                        displayModeBar: isMobile ? false : true,
-                        modeBarButtonsToRemove: isMobile ? [] : [
-                          'pan2d',
-                          'select2d',
-                          'lasso2d',
-                          'resetScale2d',
-                          'toggleHover',
-                          'sendDataToCloud'
-                        ],
-                        scrollZoom: true,
+                        displayModeBar: false, // Completely hide toolbar
+                        scrollZoom: false, // Disable scroll zoom
                         doubleClick: 'reset+autosize',
                         showTips: false,
                       }}
@@ -1262,7 +1254,7 @@ export default function ObservabilityChart({
         </div>
       </div>
 
-      {/* Mobile instruction text */}
+      {/* Mobile instruction text - Updated without scroll zoom reference */}
       {isMobile && (selectedView === "comfort" || selectedView === "compliance") && (
         <div className="mt-2 text-center">
           <p className="text-xs text-gray-500">
