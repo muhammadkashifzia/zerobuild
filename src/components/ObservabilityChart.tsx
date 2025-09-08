@@ -49,10 +49,10 @@ const DetailedDataBox = ({
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   useEffect(() => {
@@ -73,10 +73,15 @@ const DetailedDataBox = ({
 
       // On mobile, show box at bottom center
       if (isMobile) {
-        const left = Math.max(10, Math.min(window.innerWidth - boxWidth - 10, 
-          (window.innerWidth - boxWidth) / 2));
+        const left = Math.max(
+          10,
+          Math.min(
+            window.innerWidth - boxWidth - 10,
+            (window.innerWidth - boxWidth) / 2
+          )
+        );
         const top = window.innerHeight - boxHeight - 20;
-        
+
         setBoxPosition({ left, top });
         return;
       }
@@ -134,7 +139,7 @@ const DetailedDataBox = ({
   return (
     <div
       className={`fixed z-50 border border-gray-300 rounded-lg shadow-xl backdrop-blur-sm ${
-        isMobile ? 'p-2 max-w-[250px]' : 'p-3 max-w-sm'
+        isMobile ? "p-2 max-w-[250px]" : "p-3 max-w-sm"
       }`}
       style={{
         left: boxPosition.left,
@@ -144,7 +149,9 @@ const DetailedDataBox = ({
       }}
     >
       <div className="space-y-1">
-        <div className={`grid grid-cols-1 ${isMobile ? 'text-[11px]' : 'text-[12px]'}`}>
+        <div
+          className={`grid grid-cols-1 ${isMobile ? "text-[11px]" : "text-[12px]"}`}
+        >
           <div className="flex gap-2">
             <span className="font-medium text-white">Fabric:</span>
             <div className="text-white">{dataPoint.Fabric}</div>
@@ -172,13 +179,19 @@ const DetailedDataBox = ({
           <div className="flex gap-2">
             <span className="font-medium text-white">Carbon</span>
             <div className="text-white">{dataPoint.Carbon.toFixed(1)}</div>
-            <div className={`${isMobile ? 'text-[11px]' : 'text-[12px]'} text-white`}>
+            <div
+              className={`${isMobile ? "text-[11px]" : "text-[12px]"} text-white`}
+            >
               kgCO₂e<span className="text-white">/m²</span>
             </div>
           </div>
           <div className="flex gap-1">
             <div className="font-medium text-white">Circularity</div>
-            <div className={`${isMobile ? 'text-[11px]' : 'text-[12px]'} text-white`}>score</div>
+            <div
+              className={`${isMobile ? "text-[11px]" : "text-[12px]"} text-white`}
+            >
+              score
+            </div>
             <div className="text-white">{dataPoint.Circularity}</div>
           </div>
         </div>
@@ -207,10 +220,10 @@ const ComplianceHoverCard = ({
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   useEffect(() => {
@@ -231,10 +244,15 @@ const ComplianceHoverCard = ({
 
       // On mobile, show card at bottom center
       if (isMobile) {
-        const left = Math.max(10, Math.min(window.innerWidth - cardWidth - 10, 
-          (window.innerWidth - cardWidth) / 2));
+        const left = Math.max(
+          10,
+          Math.min(
+            window.innerWidth - cardWidth - 10,
+            (window.innerWidth - cardWidth) / 2
+          )
+        );
         const top = window.innerHeight - cardHeight - 20;
-        
+
         setCardPosition({ left, top });
         return;
       }
@@ -289,13 +307,14 @@ const ComplianceHoverCard = ({
 
   if (!isVisible || !dataPoint || !cardPosition) return null;
 
-  const complianceIcon = dataPoint.IconPath || "/assets/Compliance-logos/default.png";
+  const complianceIcon =
+    dataPoint.IconPath || "/assets/Compliance-logos/default.png";
   const complianceLevel = dataPoint.ComplianceMetric || 0;
 
   return (
     <div
       className={`fixed z-50 bg-white border border-gray-200 rounded-xl shadow-2xl backdrop-blur-sm ${
-        isMobile ? 'p-3 max-w-[280px]' : 'p-4 max-w-sm'
+        isMobile ? "p-3 max-w-[280px]" : "p-4 max-w-sm"
       }`}
       style={{
         left: cardPosition.left,
@@ -313,17 +332,23 @@ const ComplianceHoverCard = ({
           />
         </div>
         <div>
-          <div className={`font-semibold text-gray-900 ${isMobile ? 'text-xs' : 'text-sm'}`}>
+          <div
+            className={`font-semibold text-gray-900 ${isMobile ? "text-xs" : "text-sm"}`}
+          >
             {dataPoint.ComplianceLabel || "Compliance Level"}
           </div>
-          <div className={`${isMobile ? 'text-[10px]' : 'text-xs'} text-gray-500`}>
+          <div
+            className={`${isMobile ? "text-[10px]" : "text-xs"} text-gray-500`}
+          >
             Level {complianceLevel} • {dataPoint.Fabric}
           </div>
         </div>
       </div>
 
       <div className="space-y-1">
-        <div className={`grid grid-cols-1 ${isMobile ? 'text-[11px]' : 'text-[12px]'} text-black`}>
+        <div
+          className={`grid grid-cols-1 ${isMobile ? "text-[11px]" : "text-[12px]"} text-black`}
+        >
           <div className="flex gap-2">
             <span className="font-medium text-black">Orientation:</span>
             <div className="text-black">{dataPoint.Orientation}</div>
@@ -342,18 +367,27 @@ const ComplianceHoverCard = ({
           </div>
           <div className="flex gap-2">
             <span className="font-medium text-black">Cost</span>
-            <div className="text-black">£{dataPoint.Cost.toFixed(0)}<span className="text-red-600">/m²</span></div>
+            <div className="text-black">
+              £{dataPoint.Cost.toFixed(0)}
+              <span className="text-red-600">/m²</span>
+            </div>
           </div>
           <div className="flex gap-2">
             <span className="font-medium text-black">Carbon</span>
             <div className="text-black">{dataPoint.Carbon.toFixed(1)}</div>
-            <div className={`${isMobile ? 'text-[10px]' : 'text-[12px]'} text-black`}>
+            <div
+              className={`${isMobile ? "text-[10px]" : "text-[12px]"} text-black`}
+            >
               kgCO₂e<span className="text-red-600">/m²</span>
             </div>
           </div>
           <div className="flex gap-1">
             <div className="font-medium text-black">Circularity</div>
-            <div className={`${isMobile ? 'text-[10px]' : 'text-[12px]'} text-rose-600`}>score</div>
+            <div
+              className={`${isMobile ? "text-[10px]" : "text-[12px]"} text-rose-600`}
+            >
+              score
+            </div>
             <div className="text-black">{dataPoint.Circularity}</div>
           </div>
         </div>
@@ -520,12 +554,15 @@ export default function ObservabilityChart({
   const [rawData, setRawData] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [hoveredDataPoint, setHoveredDataPoint] = useState<DataPoint | null>(null);
+  const [hoveredDataPoint, setHoveredDataPoint] = useState<DataPoint | null>(
+    null
+  );
   const [hoverPosition, setHoverPosition] = useState<{
     x: number;
     y: number;
   } | null>(null);
-  const [complianceHoverData, setComplianceHoverData] = useState<DataPoint | null>(null);
+  const [complianceHoverData, setComplianceHoverData] =
+    useState<DataPoint | null>(null);
   const [complianceHoverPosition, setComplianceHoverPosition] = useState<{
     x: number;
     y: number;
@@ -545,10 +582,10 @@ export default function ObservabilityChart({
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   // Ensure component is mounted before rendering
@@ -570,7 +607,8 @@ export default function ObservabilityChart({
       const cost = (row.Cost || 0) / 100;
       const carbon = (row.Carbon || 0) / 100;
       const comfortMetric = row.ComfortMetric as keyof typeof COMFORT_SYMBOL;
-      const complianceMetric = row.ComplianceMetric as keyof typeof COMPLIANCE_LABEL;
+      const complianceMetric =
+        row.ComplianceMetric as keyof typeof COMPLIANCE_LABEL;
 
       return {
         ...row,
@@ -839,18 +877,18 @@ export default function ObservabilityChart({
 
     return {
       xaxis: {
-        title: { 
+        title: {
           text: "Cost (£/m²)",
-          font: { size: isMobile ? 12 : 14 }
+          font: { size: isMobile ? 12 : 14 },
         },
         ...(zoomRange && { range: [zoomRange.x0, zoomRange.x1] }),
         autorange: !zoomRange,
         tickfont: { size: isMobile ? 10 : 12 },
       },
       yaxis: {
-        title: { 
+        title: {
           text: "Carbon (kgCO₂e/m²)",
-          font: { size: isMobile ? 12 : 14 }
+          font: { size: isMobile ? 12 : 14 },
         },
         ...(zoomRange && { range: [zoomRange.y0, zoomRange.y1] }),
         autorange: !zoomRange,
@@ -877,8 +915,8 @@ export default function ObservabilityChart({
         sizex: selectedView === "compliance" ? (isMobile ? 40 : 50) : 50,
         sizey: selectedView === "compliance" ? (isMobile ? 160 : 200) : -60,
       })),
-      margin: isMobile 
-        ? { l: 50, r: 20, t: 20, b: 50 } 
+      margin: isMobile
+        ? { l: 50, r: 20, t: 20, b: 50 }
         : { l: 60, r: 40, t: 40, b: 60 },
     };
   }, [processedData, selectedView, isMobile]);
@@ -1070,44 +1108,60 @@ export default function ObservabilityChart({
   return (
     <div id="observability-chart" className="w-full px-2 md:px-4">
       {/* Mobile: Full width container with horizontal scroll */}
-      <div className={`${isMobile ? 'overflow-x-auto' : ''} bg-white rounded-lg shadow-md`}>
-        <div className={`${
-          isMobile 
-            ? 'min-w-[600px] p-3' // Minimum width for mobile with horizontal scroll
-            : 'w-full p-4 md:p-5'
-        } flex flex-col gap-8 md:gap-12`}>
-          
+      <div
+        className={`${isMobile ? "overflow-x-auto" : ""} bg-white rounded-lg shadow-md`}
+      >
+        <div
+          className={`${
+            isMobile
+              ? "min-w-[600px] p-3" // Minimum width for mobile with horizontal scroll
+              : "w-full p-4 md:p-5"
+          } flex flex-col gap-8 md:gap-12`}
+        >
           {isLoading ? (
             <SkeletonShimmer />
           ) : plotData.length > 0 ? (
-            <div className={`relative ${isMobile ? 'h-[500px]' : 'h-[700px] md:h-[900px]'}`}>
-              
+            <div
+              className={`relative ${isMobile ? "h-[500px]" : "h-[700px] md:h-[900px]"}`}
+            >
               {/* Legends */}
               {selectedView === "comfort" && (
-                <div className={`flex justify-center items-center ${
-                  isMobile ? 'gap-2 mb-4 flex-wrap text-xs' : 'gap-4 flex-wrap'
-                }`}>
+                <div
+                  className={`flex justify-center items-center ${
+                    isMobile
+                      ? "gap-2 mb-4 flex-wrap text-xs"
+                      : "gap-4 flex-wrap"
+                  }`}
+                >
                   <div className="flex items-center gap-2">
                     <div className="w-3 h-3 md:w-4 md:h-4 bg-[#10B981] rounded"></div>
-                    <span className="text-xs md:text-sm font-medium">Comfortable</span>
+                    <span className="text-xs md:text-sm font-medium">
+                      Comfortable
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-3 h-3 md:w-4 md:h-4 bg-[#EF4444] rounded"></div>
-                    <span className="text-xs md:text-sm font-medium">Overheating</span>
+                    <span className="text-xs md:text-sm font-medium">
+                      Overheating
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-3 h-3 md:w-4 md:h-4 bg-[#3B82F6] rounded"></div>
-                    <span className="text-xs md:text-sm font-medium">Underheating</span>
+                    <span className="text-xs md:text-sm font-medium">
+                      Underheating
+                    </span>
                   </div>
                 </div>
               )}
 
               {selectedView === "compliance" && (
-                <div className={`flex justify-center items-center ${
-                  isMobile 
-                    ? 'gap-1 mb-4 flex-wrap text-[10px] overflow-x-auto pb-2' 
-                    : 'gap-4 flex-wrap'
-                }`}>
+                <div
+                  className={`flex justify-center items-center ${
+                    isMobile
+                      ? "gap-1 mb-4 flex-wrap text-[10px] overflow-x-auto pb-2"
+                      : "gap-4 flex-wrap"
+                  }`}
+                >
                   <div className="flex items-center gap-1 md:gap-2 flex-shrink-0">
                     <img
                       src="/assets/Compliance-logos/partl.png"
@@ -1124,7 +1178,9 @@ export default function ObservabilityChart({
                       alt="Net Zero ready"
                       className="w-4 h-4 md:w-6 md:h-6"
                     />
-                    <span className="text-[10px] md:text-sm font-medium whitespace-nowrap">Net Zero ready</span>
+                    <span className="text-[10px] md:text-sm font-medium whitespace-nowrap">
+                      Net Zero ready
+                    </span>
                   </div>
                   <div className="flex items-center gap-1 md:gap-2 flex-shrink-0">
                     <img
@@ -1142,7 +1198,9 @@ export default function ObservabilityChart({
                       alt="Passivhaus Plus"
                       className="w-4 h-4 md:w-6 md:h-6"
                     />
-                    <span className="text-[10px] md:text-sm font-medium whitespace-nowrap">Passivhaus Plus</span>
+                    <span className="text-[10px] md:text-sm font-medium whitespace-nowrap">
+                      Passivhaus Plus
+                    </span>
                   </div>
                   <div className="flex items-center gap-1 md:gap-2 flex-shrink-0">
                     <img
@@ -1150,26 +1208,36 @@ export default function ObservabilityChart({
                       alt="Five C Zero"
                       className="w-4 h-4 md:w-6 md:h-6"
                     />
-                    <span className="text-[10px] md:text-sm font-medium whitespace-nowrap">Five C Zero</span>
+                    <span className="text-[10px] md:text-sm font-medium whitespace-nowrap">
+                      Five C Zero
+                    </span>
                   </div>
                 </div>
               )}
 
               {selectedView === "circularity" && (
-                <div className={`flex justify-center items-center ${
-                  isMobile ? 'gap-2 mb-4 mt-4 text-xs' : 'gap-4 mt-4 mb-4'
-                }`}>
+                <div
+                  className={`flex justify-center items-center ${
+                    isMobile ? "gap-2 mb-4 mt-4 text-xs" : "gap-4 mt-4 mb-4"
+                  }`}
+                >
                   <div className="flex items-center gap-2">
                     <div className="w-3 h-3 md:w-4 md:h-4 bg-green-100 rounded"></div>
-                    <span className="text-xs md:text-sm font-medium">Low Circularity</span>
+                    <span className="text-xs md:text-sm font-medium">
+                      Low Circularity
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-3 h-3 md:w-4 md:h-4 bg-green-300 rounded"></div>
-                    <span className="text-xs md:text-sm font-medium">Medium Circularity</span>
+                    <span className="text-xs md:text-sm font-medium">
+                      Medium Circularity
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-3 h-3 md:w-4 md:h-4 bg-green-600 rounded"></div>
-                    <span className="text-xs md:text-sm font-medium">High Circularity</span>
+                    <span className="text-xs md:text-sm font-medium">
+                      High Circularity
+                    </span>
                   </div>
                 </div>
               )}
@@ -1183,16 +1251,17 @@ export default function ObservabilityChart({
                   return (
                     <Plot
                       data={plotData}
-                      layout={layout}
+                      layout={{
+                        ...layout,
+                        dragmode: false,
+                        autosize: true,
+                      }}
                       config={{
                         responsive: true,
                         displayModeBar: false, // Completely hide toolbar
                         scrollZoom: false, // Disable scroll zoom
-                        doubleClick: 'reset',
+                        doubleClick: "reset",
                         showTips: false,
-                        
-                        
-                        
                       }}
                       style={{
                         width: "100%",
@@ -1237,7 +1306,9 @@ export default function ObservabilityChart({
                     <div className="flex items-center justify-center h-full">
                       <div className="text-center text-gray-500">
                         <div className="text-4xl mb-2">⚠️</div>
-                        <div className="text-lg font-medium">Chart loading error</div>
+                        <div className="text-lg font-medium">
+                          Chart loading error
+                        </div>
                         <div className="text-sm">Please refresh the page</div>
                       </div>
                     </div>
@@ -1258,13 +1329,15 @@ export default function ObservabilityChart({
       </div>
 
       {/* Mobile instruction text - Updated without scroll zoom reference */}
-      {isMobile && (selectedView === "comfort" || selectedView === "compliance") && (
-        <div className="mt-2 text-center">
-          <p className="text-xs text-gray-500">
-            Tap on data points to view details • Pinch to zoom • Scroll horizontally for full view
-          </p>
-        </div>
-      )}
+      {isMobile &&
+        (selectedView === "comfort" || selectedView === "compliance") && (
+          <div className="mt-2 text-center">
+            <p className="text-xs text-gray-500">
+              Tap on data points to view details • Pinch to zoom • Scroll
+              horizontally for full view
+            </p>
+          </div>
+        )}
 
       {/* Detailed Data Box - Mobile optimized */}
       <DetailedDataBox
