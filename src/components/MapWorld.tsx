@@ -104,7 +104,7 @@ export function MapWorld() {
           <p className="font-bold text-[32px] md:text-[48px] text-black max-w-[440px] md:max-w-full mx-auto md:mx-0">
             {worldMaps.mainheading}
             {worldMaps.bluehighlight && (
-              <span className="text-[#484AB7] ml-[8px]">
+              <span className="text-[#484AB7] ml-[8px] block md:inline-block">
                 {worldMaps.bluehighlight.split("").map((letter, idx) => (
                   <motion.span
                     key={idx}

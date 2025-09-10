@@ -144,12 +144,12 @@ const Navbar = ({ className }: { className?: string }) => {
           </div>
 
           <div className="flex flex-col items-start px-[16px] pt-[50px] space-y-1">
-            {["about", "services", "projects", "contact"].map((item) => (
+            {["about", "services", "projects", "resources", "contact"].map((item) => (
               <HoveredLink
                 key={item}
                 href={getLinkPath(item)}
                 className={cn(isActive(item) ? "active" : "")}
-                onClick={handleCloseSidebar} // ✅ Close sidebar when clicked
+                onClick={handleCloseSidebar} 
               >
                 <div
                   className={cn(

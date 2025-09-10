@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Search, ArrowRight, Plus, X } from "lucide-react";
+import { Search, ArrowRight, Plus, Minus, Circle } from "lucide-react";
 import Link from "next/link";
 import { getServices, getServicesPageBanner } from "@/sanity/sanity-utils";
 import { Service } from "@/types/Service";
@@ -20,7 +20,7 @@ const ServicesPage = () => {
   const [services, setServices] = useState<Service[]>([]);
   const [bannerData, setBannerData] = useState<ServicesBanner | null>(null);
   const listTopRef = useRef<HTMLDivElement | null>(null);
-
+ const [filtersOpen, setFiltersOpen] = useState(false);
 
 
   const itemsPerPage = 10;
@@ -159,14 +159,14 @@ const ServicesPage = () => {
         </motion.div>
       </AuroraBackground>
 
-      <div className="mt-[60px] pt-8 pb-10 md:px-8 px-4">
+      <div className="mt-[24px] md:mt-[60px] pt-0 md:pt-8 pb-[20px] md:pb-10 md:px-8 px-4">
         <section className=" container mx-auto">
           <div className="pb-10 border-b mb-6">
             <div className="relative max-w-[850px]">
               <input
                 type="text"
                 placeholder="Search services..."
-                className="w-full pr-16 pl-6 py-4 border border-[#757575] focus:ring-1 rounded-full text-black bg-white h-[40px] md:h-[76px] text-base"
+                className="w-full pr-16 pl-6 py-4 border border-[#757575] focus:ring-1 rounded-full text-black bg-white h-[56px] md:h-[76px] text-base"
                 value={searchTerm}
                 onChange={(e) => {
                   setSearchTerm(e.target.value);
@@ -185,7 +185,7 @@ const ServicesPage = () => {
         </section>
 
         {/* Discipline Filters */}
-        <section className="container mx-auto mb-4">
+        <section className="container mx-auto mb-4 hidden md:block">
           <div className="flex items-start gap-3 mb-3 flex-col md:flex-row">
             <h3 className="text-sm font-medium text-gray-700 mt-0 md:mt-[8px]">Disciplines:</h3>
                 
@@ -215,7 +215,7 @@ const ServicesPage = () => {
                       className="absolute right-2 top-1/2 -translate-y-1/2 text-white text-xs"
                       aria-label="Clear filter"
                     >
-                      <X className="w-4 h-4" />
+                      <Minus className="w-4 h-4" />
                     </button>
                   )}
                 </div>
@@ -242,7 +242,7 @@ const ServicesPage = () => {
         </section>
 
         {/* Project Stage Filters */}
-        <section className="container mx-auto mb-6">
+        <section className="container mx-auto mb-6 hidden md:block">
           <div className="flex items-start gap-3 mt-[24px] flex-col md:flex-row">
             <h3 className="text-sm font-medium text-gray-700 mt-0 md:mt-[8px]">Project Stage:</h3>
          
@@ -272,7 +272,7 @@ const ServicesPage = () => {
                       className="absolute right-2 top-1/2 -translate-y-1/2 text-white text-xs"
                       aria-label="Clear filter"
                     >
-                      <X className="w-4 h-4" />
+                      <Minus className="w-4 h-4" />
                     </button>
                   )}
                 </div>
@@ -297,8 +297,120 @@ const ServicesPage = () => {
             </button>
           )}
         </section>
+ <section className="container mx-auto  block md:hidden">
+          <div >
+            <button
+              onClick={() => setFiltersOpen(!filtersOpen)}
+              className="w-full flex justify-between items-center md:cursor-default border-b border-[#e0e0e0] py-[8px]"
+            >
+              <h3 className="text-[16px] font-medium text-black md:py-0">
+               Filter by Disciplines or Projects
+              </h3>
+              <span className="md:hidden">
+                {filtersOpen ? <Minus size={18} className="text-[#333333]"/> : <Plus size={18} className="text-[#333333]"/>}
+              </span>
+            </button>
 
-        <section className="py-4 md:py-8 bg-white container mx-auto">
+            <div className={`${filtersOpen ? "block" : "hidden"} md:block pb-3`}>
+              {/* Disciplines */}
+              <div className="mb-4">
+                <h4 className="text-[16px]  font-normal text-black mb-2 ml-[16px] py-[16px] border-b border-[#e0e0e0]">
+                  Disciplines
+                </h4>
+                <div className="flex flex-col gap-[8px] md:gap-[16px] ml-[16px]">
+                  {mainDisciplineFilters.map((filter) => (
+                    <div key={filter} className="relative">
+                      <button
+                        className={`flex items-center gap-[5px] px-2 md:px-4 py-2 rounded-full text-[12px] md:text-sm   transition text-black`}
+                        onClick={() => {
+                          setSelectedDiscipline(filter);
+                          setCurrentPage(1);
+                        }}
+                      >
+                     <Circle className="w-[10px] h-[10px]"/>   {filter}
+                      </button>
+                      {selectedDiscipline === filter && (
+                        <button
+                          onClick={() => {
+                            setSelectedDiscipline("All");
+                            setCurrentPage(1);
+                          }}
+                          className="absolute right-2 top-1/2 -translate-y-1/2 text-white text-xs"
+                          aria-label="Clear filter"
+                        >
+                          <Minus className="w-4 h-4" />
+                        </button>
+                      )}
+                    </div>
+                  ))}
+
+                  {allDisciplines.length > 6 && (
+                    <button
+                      onClick={() => openModal("disciplines")}
+                      className="px-4 py-2 rounded-full border border-gray-300 text-gray-600 flex items-center gap-1 hover:bg-gray-100"
+                    >
+                      View all <Plus className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Project Stages */}
+              <div>
+                <h4 className="text-[16px]  font-normal text-black mb-2 ml-[16px] py-[16px] border-b border-[#e0e0e0]">
+                  Project Stages
+                </h4>
+                <div className="flex flex-col gap-[8px] md:gap-[16px] ml-[16px]">
+                  {mainProjectStageFilters.map((filter) => (
+                    <div key={filter} className="relative">
+                      <button
+                        className={`flex items-center gap-[5px]  px-2 md:px-4 py-2 rounded-full text-[12px] md:text-sm  transition text-black`}
+                        onClick={() => {
+                          setSelectedProjectStage(filter);
+                          setCurrentPage(1);
+                        }}
+                      >
+                       <Circle className="w-[10px] h-[10px]"/>    {filter}
+                      </button>
+                      {selectedProjectStage === filter && (
+                        <button
+                          onClick={() => {
+                            setSelectedProjectStage("All");
+                            setCurrentPage(1);
+                          }}
+                          className="absolute right-2 top-1/2 -translate-y-1/2 text-white text-xs"
+                          aria-label="Clear filter"
+                        >
+                          <Minus className="w-4 h-4" />
+                        </button>
+                      )}
+                    </div>
+                  ))}
+
+                  {allProjectStages.length > 6 && (
+                    <button
+                      onClick={() => openModal("projectStages")}
+                      className="px-4 py-2 rounded-full border border-gray-300 text-gray-600 flex items-center gap-1 hover:bg-gray-100"
+                    >
+                      View all <Plus className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Clear All */}
+              {(selectedDiscipline !== "All" || selectedProjectStage !== "All") && (
+                <button
+                  onClick={clearFilters}
+                  className="text-xs text-blue-600 hover:text-blue-800 underline mt-4"
+                >
+                  Clear all filters
+                </button>
+              )}
+            </div>
+          </div>
+        </section>
+        <section className="pb-4 md:py-8 bg-white container mx-auto pt-[32px] md:pt-4">
           <div ref={listTopRef} />
           <div className="max-w-[958px]">
             <div className="text-sm text-gray-600 mb-2">
@@ -315,7 +427,7 @@ const ServicesPage = () => {
                 <Link href={`/services/${service.slug}`} className="w-full">
                   <div className="hover:px-5 hover:translate-x-2 transition py-4 md:py-6 flex justify-between items-center">
                     <div className="max-w-[90%]">
-                      <h3 className="text-lg md:text-2xl font-bold md:font-normal text-black">
+                      <h3 className="text-lg md:text-2xl font-normal text-black">
                         {service.title}
                       </h3>
                       <p className="text-sm md:text-base text-gray-600 mt-2 md:mt-4">
@@ -406,7 +518,7 @@ const ServicesPage = () => {
                   onClick={() => setModalOpen(false)}
                   aria-label="Close modal"
                 >
-                  <X className="w-6 h-6 hover:rotate-45 transition-transform" />
+                  <Minus className="w-6 h-6 hover:rotate-45 transition-transform" />
                 </button>
 
                 <section className="py-4">

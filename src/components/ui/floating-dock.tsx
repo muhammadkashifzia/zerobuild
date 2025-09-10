@@ -68,7 +68,7 @@ const FloatingDockMobile = ({
                 transition={{ delay: (items.length - 1 - idx) * 0.05 }}
               >
                 <a
-                target="_blank"
+                  target="_blank"
                   href={item.href}
                   key={item.title}
                   className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-50 dark:bg-neutral-900"
@@ -84,7 +84,7 @@ const FloatingDockMobile = ({
         onClick={() => setOpen(!open)}
         className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-50 dark:bg-neutral-800"
       >
-        <IconLayoutNavbarCollapse className="h-5 w-5 text-neutral-500 dark:text-neutral-400" />
+        <IconLayoutNavbarCollapse className="h-[30px] w-[30px] text-neutral-500 dark:text-neutral-400" />
       </button>
     </div>
   );
@@ -104,7 +104,7 @@ const FloatingDockDesktop = ({
       onMouseLeave={() => mouseX.set(Infinity)}
       className={cn(
         "mx-auto hidden h-16 items-center justify-center gap-4 rounded-2xl bg-gray-50 px-4 pb-3 md:flex dark:bg-neutral-900",
-        className,
+        className
       )}
     >
       {items.map((item) => (
@@ -140,7 +140,7 @@ function IconContainer({
   let heightTransformIcon = useTransform(
     distance,
     [-150, 0, 150],
-    [20, 40, 20],
+    [20, 40, 20]
   );
 
   let width = useSpring(widthTransform, {
@@ -168,7 +168,7 @@ function IconContainer({
   const [hovered, setHovered] = useState(false);
 
   return (
-    <a href={href}   target="_blank">
+    <a href={href} target="_blank">
       <motion.div
         ref={ref}
         style={{ width, height }}
