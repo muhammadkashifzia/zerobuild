@@ -8,7 +8,7 @@ import { Service } from "@/types/Service";
 import { ServicesBanner } from "@/types/Service";
 import { AuroraBackground } from "@/components/ui/aurora-background";
 import { motion } from "motion/react";
-import CtaSection from "@/components/CtaSection"
+import CtaSection from "@/components/CtaSection";
 
 const ServicesPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -16,12 +16,13 @@ const ServicesPage = () => {
   const [selectedProjectStage, setSelectedProjectStage] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalView, setModalView] = useState<"disciplines" | "projectStages">("disciplines");
+  const [modalView, setModalView] = useState<"disciplines" | "projectStages">(
+    "disciplines"
+  );
   const [services, setServices] = useState<Service[]>([]);
   const [bannerData, setBannerData] = useState<ServicesBanner | null>(null);
   const listTopRef = useRef<HTMLDivElement | null>(null);
- const [filtersOpen, setFiltersOpen] = useState(false);
-
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   const itemsPerPage = 10;
 
@@ -30,16 +31,21 @@ const ServicesPage = () => {
       const [servicesRes, bannerRes] = await Promise.all([
         getServices(),
         getServicesPageBanner(),
-    
       ]);
       setServices(servicesRes);
       setBannerData(bannerRes);
-     
+
       // Debug logging
-      console.log('Services loaded:', servicesRes.length);
-      console.log('Banner data loaded:', bannerRes);
-      console.log('All project stages:', Array.from(new Set(servicesRes.flatMap((s) => s.projectStage || []))));
-      console.log('All disciplines:', Array.from(new Set(servicesRes.flatMap((s) => s.disciplines || []))));
+      console.log("Services loaded:", servicesRes.length);
+      console.log("Banner data loaded:", bannerRes);
+      console.log(
+        "All project stages:",
+        Array.from(new Set(servicesRes.flatMap((s) => s.projectStage || [])))
+      );
+      console.log(
+        "All disciplines:",
+        Array.from(new Set(servicesRes.flatMap((s) => s.disciplines || [])))
+      );
     };
     fetchData();
   }, []);
@@ -82,10 +88,12 @@ const ServicesPage = () => {
       service.title.toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesDiscipline =
-      selectedDiscipline === "All" || service.disciplines?.includes(selectedDiscipline);
+      selectedDiscipline === "All" ||
+      service.disciplines?.includes(selectedDiscipline);
 
     const matchesProjectStage =
-      selectedProjectStage === "All" || service.projectStage?.includes(selectedProjectStage);
+      selectedProjectStage === "All" ||
+      service.projectStage?.includes(selectedProjectStage);
 
     return matchesSearch && matchesDiscipline && matchesProjectStage;
   });
@@ -106,7 +114,10 @@ const ServicesPage = () => {
     if (typeof window === "undefined") return;
     const offset = 80; // account for fixed header
     if (listTopRef.current) {
-      const y = listTopRef.current.getBoundingClientRect().top + window.pageYOffset - offset;
+      const y =
+        listTopRef.current.getBoundingClientRect().top +
+        window.pageYOffset -
+        offset;
       window.scrollTo({ top: y, behavior: "smooth" });
     } else {
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -187,8 +198,10 @@ const ServicesPage = () => {
         {/* Discipline Filters */}
         <section className="container mx-auto mb-4 hidden md:block">
           <div className="flex items-start gap-3 mb-3 flex-col md:flex-row">
-            <h3 className="text-sm font-medium text-gray-700 mt-0 md:mt-[8px]">Disciplines:</h3>
-                
+            <h3 className="text-sm font-medium text-gray-700 mt-0 md:mt-[8px]">
+              Disciplines:
+            </h3>
+
             <div className="flex flex-wrap items-center gap-[8px] md:gap-[16px]">
               {mainDisciplineFilters.map((filter) => (
                 <div key={filter} className="relative">
@@ -231,7 +244,7 @@ const ServicesPage = () => {
               )}
             </div>
           </div>
-          {(selectedDiscipline !== "All") && (
+          {selectedDiscipline !== "All" && (
             <button
               onClick={clearFilters}
               className="text-xs text-blue-600 hover:text-blue-800 underline"
@@ -244,8 +257,10 @@ const ServicesPage = () => {
         {/* Project Stage Filters */}
         <section className="container mx-auto mb-6 hidden md:block">
           <div className="flex items-start gap-3 mt-[24px] flex-col md:flex-row">
-            <h3 className="text-sm font-medium text-gray-700 mt-0 md:mt-[8px]">Project Stage:</h3>
-         
+            <h3 className="text-sm font-medium text-gray-700 mt-0 md:mt-[8px]">
+              Project Stage:
+            </h3>
+
             <div className="flex flex-wrap items-center gap-3">
               {mainProjectStageFilters.map((filter) => (
                 <div key={filter} className="relative">
@@ -288,7 +303,7 @@ const ServicesPage = () => {
               )}
             </div>
           </div>
-          {(selectedProjectStage !== "All") && (
+          {selectedProjectStage !== "All" && (
             <button
               onClick={clearFilters}
               className="text-xs text-blue-600 hover:text-blue-800 underline"
@@ -297,21 +312,27 @@ const ServicesPage = () => {
             </button>
           )}
         </section>
- <section className="container mx-auto  block md:hidden">
-          <div >
+        <section className="container mx-auto  block md:hidden">
+          <div>
             <button
               onClick={() => setFiltersOpen(!filtersOpen)}
               className="w-full flex justify-between items-center md:cursor-default border-b border-[#e0e0e0] py-[8px]"
             >
               <h3 className="text-[16px] font-medium text-black md:py-0">
-               Filter by Disciplines or Projects
+                Filter by Disciplines or Project Stages
               </h3>
               <span className="md:hidden">
-                {filtersOpen ? <Minus size={18} className="text-[#333333]"/> : <Plus size={18} className="text-[#333333]"/>}
+                {filtersOpen ? (
+                  <Minus size={18} className="text-[#333333]" />
+                ) : (
+                  <Plus size={18} className="text-[#333333]" />
+                )}
               </span>
             </button>
 
-            <div className={`${filtersOpen ? "block" : "hidden"} md:block pb-3`}>
+            <div
+              className={`${filtersOpen ? "block" : "hidden"} md:block pb-3`}
+            >
               {/* Disciplines */}
               <div className="mb-4">
                 <h4 className="text-[16px]  font-normal text-black mb-2 ml-[16px] py-[16px] border-b border-[#e0e0e0]">
@@ -327,7 +348,7 @@ const ServicesPage = () => {
                           setCurrentPage(1);
                         }}
                       >
-                     <Circle className="w-[10px] h-[10px]"/>   {filter}
+                        <Circle className="w-[10px] h-[10px]" /> {filter}
                       </button>
                       {selectedDiscipline === filter && (
                         <button
@@ -370,7 +391,7 @@ const ServicesPage = () => {
                           setCurrentPage(1);
                         }}
                       >
-                       <Circle className="w-[10px] h-[10px]"/>    {filter}
+                        <Circle className="w-[10px] h-[10px]" /> {filter}
                       </button>
                       {selectedProjectStage === filter && (
                         <button
@@ -399,7 +420,8 @@ const ServicesPage = () => {
               </div>
 
               {/* Clear All */}
-              {(selectedDiscipline !== "All" || selectedProjectStage !== "All") && (
+              {(selectedDiscipline !== "All" ||
+                selectedProjectStage !== "All") && (
                 <button
                   onClick={clearFilters}
                   className="text-xs text-blue-600 hover:text-blue-800 underline mt-4"
@@ -453,11 +475,11 @@ const ServicesPage = () => {
                   disabled={currentPage === 1}
                   className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                     currentPage === 1
-                      ? 'text-gray-400 cursor-not-allowed'
-                      : 'text-gray-700 hover:text-black hover:bg-gray-100'
+                      ? "text-gray-400 cursor-not-allowed"
+                      : "text-gray-700 hover:text-black hover:bg-gray-100"
                   }`}
                 >
-                  ← 
+                  ←
                 </button>
 
                 {/* Page Numbers */}
@@ -482,8 +504,8 @@ const ServicesPage = () => {
                         onClick={() => goToPage(pageNum)}
                         className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                           currentPage === pageNum
-                            ? 'bg-black text-white'
-                            : 'text-gray-700 hover:text-black hover:bg-gray-100'
+                            ? "bg-black text-white"
+                            : "text-gray-700 hover:text-black hover:bg-gray-100"
                         }`}
                       >
                         {pageNum}
@@ -498,11 +520,11 @@ const ServicesPage = () => {
                   disabled={currentPage === totalPages}
                   className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                     currentPage === totalPages
-                      ? 'text-gray-400 cursor-not-allowed'
-                      : 'text-gray-700 hover:text-black hover:bg-gray-100'
+                      ? "text-gray-400 cursor-not-allowed"
+                      : "text-gray-700 hover:text-black hover:bg-gray-100"
                   }`}
                 >
-                   →
+                  →
                 </button>
               </div>
             </div>
