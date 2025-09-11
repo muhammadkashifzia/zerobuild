@@ -227,4 +227,16 @@ left:-35px;
 .project-slider::after{
   right:-35px;
 }
+.service-body-content h2{
+  font-size: 20px;
+}
+.service-body-content p{
+  font-size: 14px;
+}
+.service-body-content p strong {
+    font-weight: 500;
+}
+.service-body-content ul{
+    font-size: 14px;
+}
 }

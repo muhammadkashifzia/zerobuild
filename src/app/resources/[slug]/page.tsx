@@ -192,7 +192,7 @@ export default async function Page({
         </div>
 
         {/* Right: CTA */}
-        <div className="lg:col-span-1">
+        <div className="lg:col-span-1 hidden md:block">
           <div className="rounded-[.75rem] border border-[#e0e0e0] p-[2rem] sticky top-[90px]">
             <h3 className="text-[22px] font-semibold mb-2 text-black">
               {resourcesPageBanner?.ctaTitle || "Get in touch with our team"}

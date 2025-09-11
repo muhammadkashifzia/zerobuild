@@ -130,11 +130,11 @@ export default async function Page({
         </div>
       )}
       <div className="container mx-auto px-0 md:px-[16px] pt-[60px]">
-      <h1 className="text-black  text-[40px] leading-9 font-bold">
+      <h1 className="text-black text-[24px] md:text-[40px] leading-9 font-bold">
         {service.title}
       </h1>
       
-      <div className=" grid grid-cols-1 lg:grid-cols-3 gap-[20px] mx-auto pt-0 md:pt-[20px] pb-[60px]">
+      <div className=" grid grid-cols-1 lg:grid-cols-3 gap-[20px] mx-auto pt-0 md:pt-[20px] pb-[20px] md:pb-[60px]">
         {/* Left: Content */}
         <div className="lg:col-span-2 space-y-2">
           {/* Cover Image */}
@@ -176,7 +176,7 @@ export default async function Page({
         </div>
 
         {/* Right: Dynamic CTA */}
-   <div className="lg:col-span-1">
+   <div className="lg:col-span-1 hidden md:block">
 <CtaBoxSection />
 </div>
 
@@ -187,7 +187,7 @@ export default async function Page({
           {/* Heading */}
           <p className="text-sm text-gray-600 mb-2">Explore</p>
           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
-            <h2 className="text-2xl md:text-3xl font-medium mb-4 md:mb-0 text-black">
+            <h2 className="text-[20px] md:text-3xl font-medium mb-4 md:mb-0 text-black">
               Discover more of our expertise:
             </h2>
             <Link href="/services" className="text-black flex items-center gap-2 border border-gray-300 rounded-2xl h-[56px] w-[200px] px-5 py-2 hover:bg-gray-100 transition justify-center relative">

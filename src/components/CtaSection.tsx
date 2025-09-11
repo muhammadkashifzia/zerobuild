@@ -20,10 +20,10 @@ export default function CtaSection() {
     <div className="my-[20px] md:my-[40px] container mx-auto w-full flex items-center justify-between flex-wrap px-[16px]">
       {/* Left: Copy */}
       <div className="max-w-full w-full md:max-w-[740px] md:w-[44%] mb-[15px]">
-        <h2 className="text-black text-[24px] font-semibold mb-[10px]">
+        <h2 className="text-black text-[20px] md:text-[24px] font-semibold mb-[10px]">
           {cta.title}
         </h2>
-        <p className="text-black text-[16px]">{cta.subtext}</p>
+        <p className="text-black text-[14px] md:text-[16px]">{cta.subtext}</p>
       </div>
 
       {/* Right: Pill CTA */}

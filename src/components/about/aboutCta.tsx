@@ -26,7 +26,7 @@ export default function CtaSection({
     <div className="p-4 md:p-8 container mx-auto w-full flex items-center justify-between flex-wrap">
       <div className="max-w-full w-full md:max-w-[740px] md:w-[44%] mb-[15px]">
         {title && (
-          <h2 className="text-black text-[24px] font-semibold mb-[10px]">
+          <h2 className="text-black text-[20px] md:text-[24px] font-semibold mb-[10px]">
             {title}
           </h2>
         )}
