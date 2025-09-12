@@ -17,33 +17,33 @@ const SITE_KEY = recaptchaSiteKey;
 
 const ContactPage = () => {
   const [Features, setFeatures] = useState<Feature[]>([]);
-    const [featureHeading, setFeatureHeading] = useState<FeatureHeading | null>(
-      null
-    );
-    const [loading, setLoading] = useState(true);
+  const [featureHeading, setFeatureHeading] = useState<FeatureHeading | null>(
+    null
+  );
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
-     const fetchData = async () => {
-       try {
-         const [featuresRes, headingRes] = await Promise.all([
-           getFeatures(),
-           getFeatureHeading(),
-         ]);
-         setFeatures(featuresRes);
-         setFeatureHeading(headingRes[0] || null);
-       } catch (error) {
-         console.error("Error fetching data:", error);
-       } finally {
-         setLoading(false);
-       }
-     };
-     fetchData();
-   }, []);
+    const fetchData = async () => {
+      try {
+        const [featuresRes, headingRes] = await Promise.all([
+          getFeatures(),
+          getFeatureHeading(),
+        ]);
+        setFeatures(featuresRes);
+        setFeatureHeading(headingRes[0] || null);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
   const words = [
     {
       text: "Expert",
     },
   ];
- 
+
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [bannerTitle, setBannerTitle] = useState<string>("");
   const [bannerDescription, setBannerDescription] = useState<string>("");
@@ -108,7 +108,10 @@ const ContactPage = () => {
       company: Yup.string().required("Required"),
       message: Yup.string(),
       purpose: Yup.array().min(1, "Select at least one purpose"),
-      privacyConsent: Yup.boolean().oneOf([true], "You must agree to the Privacy Notice to proceed"),
+      privacyConsent: Yup.boolean().oneOf(
+        [true],
+        "You must agree to the Privacy Notice to proceed"
+      ),
     }),
     onSubmit: async (values) => {
       setLoading(true);
@@ -209,8 +212,8 @@ const ContactPage = () => {
 
   return (
     <div>
-      <div className="mx-auto grid w-full container grid-cols-1 gap-10 py-20 px-[16px] md:py-32 lg:grid-cols-2">
-        <div className="relative flex flex-col items-start md:items-center overflow-hidden lg:items-start">
+      <div className="mx-auto grid w-full container grid-cols-1 gap-2 md:gap-10 py-20 px-[16px] md:py-32 lg:grid-cols-2">
+        <div className="relative flex flex-col items-center md:items-center overflow-hidden lg:items-start">
           {bannerLoading ? (
             <div className="w-full animate-pulse">
               <div className="h-8 md:h-10 lg:h-12 w-2/3 bg-neutral-200 rounded-md dark:bg-neutral-800" />
@@ -221,7 +224,7 @@ const ContactPage = () => {
             </div>
           ) : (
             <>
-              <h2 className="bg-gradient-to-b from-neutral-800 to-neutral-900 bg-clip-text text-left text-xl font-bold text-transparent md:text-3xl lg:text-5xl dark:from-neutral-200 dark:to-neutral-300">
+              <h2 className="  block text-center md:text-left text-xl font-bold  md:text-3xl lg:text-5xl text-black">
                 {bannerTitle}
               </h2>
               {bannerDescription && (
@@ -229,65 +232,66 @@ const ContactPage = () => {
                   {bannerDescription}
                 </p>
               )}
-              <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 lg:gap-10 max-w-7xl mx-auto relative z-10">
-                
-              {loading
-            ? Array.from({ length: 6 }).map((_, index) => (
-                <div
-                  key={index}
-                  className="animate-pulse bg-gradient-to-b dark:from-neutral-900 from-neutral-100 dark:to-neutral-950 to-white p-4 md:p-6 rounded-2xl md:rounded-3xl shadow-lg"
-                >
-                  <div className="h-6 w-1/2 bg-gray-300 dark:bg-gray-700 rounded mb-4"></div>
-                  <div className="h-4 w-3/4 bg-gray-200 dark:bg-gray-600 rounded mb-2"></div>
-                  <div className="h-4 w-2/3 bg-gray-200 dark:bg-gray-600 rounded"></div>
-                </div>
-              ))
-            : Features.map((feature, index) => (
-                  <motion.div
-                    key={feature._id}
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{
-                      duration: 0.5,
-                      delay: 0.1 * index,
-                      ease: [0.4, 0.0, 0.2, 1],
-                    }}
-                    className="relative bg-gradient-to-b dark:from-neutral-900 from-neutral-100 dark:to-neutral-950 to-white p-4 md:p-6 rounded-2xl md:rounded-3xl overflow-hidden shadow-lg transition-all duration-300 hover:scale-105"
-                  >
-                    <Grid size={20} />
-                    <div className="relative z-20">
-                      <p className="text-sm md:text-base font-bold text-neutral-800 dark:text-white">
-                        {feature.title}
-                      </p>
-                      <p className="text-xs md:text-sm lg:text-base text-neutral-600 dark:text-neutral-400 mt-2 md:mt-4 font-normal">
-                        {feature.description}
-                      </p>
-                    </div>
-                  </motion.div>
-                ))}
+              <div className="hidden md:grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 lg:gap-10 max-w-7xl mx-auto relative z-10">
+                {loading
+                  ? Array.from({ length: 6 }).map((_, index) => (
+                      <div
+                        key={index}
+                        className="animate-pulse bg-gradient-to-b dark:from-neutral-900 from-neutral-100 dark:to-neutral-950 to-white p-4 md:p-6 rounded-2xl md:rounded-3xl shadow-lg"
+                      >
+                        <div className="h-6 w-1/2 bg-gray-300 dark:bg-gray-700 rounded mb-4"></div>
+                        <div className="h-4 w-3/4 bg-gray-200 dark:bg-gray-600 rounded mb-2"></div>
+                        <div className="h-4 w-2/3 bg-gray-200 dark:bg-gray-600 rounded"></div>
+                      </div>
+                    ))
+                  : Features.map((feature, index) => (
+                      <motion.div
+                        key={feature._id}
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{
+                          duration: 0.5,
+                          delay: 0.1 * index,
+                          ease: [0.4, 0.0, 0.2, 1],
+                        }}
+                        className="relative bg-gradient-to-b dark:from-neutral-900 from-neutral-100 dark:to-neutral-950 to-white p-4 md:p-6 rounded-2xl md:rounded-3xl overflow-hidden shadow-lg transition-all duration-300 hover:scale-105"
+                      >
+                        <Grid size={20} />
+                        <div className="relative z-20">
+                          <p className="text-sm md:text-base font-bold text-neutral-800 dark:text-white">
+                            {feature.title}
+                          </p>
+                          <p className="text-xs md:text-sm lg:text-base text-neutral-600 dark:text-neutral-400 mt-2 md:mt-4 font-normal">
+                            {feature.description}
+                          </p>
+                        </div>
+                      </motion.div>
+                    ))}
               </div>
-              {/* CTA note */}
+           <div className="hidden md:block">
+               {/* CTA note */}
               {cta?.note && (
                 <p className="mt-[40px] italic text-sm text-neutral-600 dark:text-neutral-400 mb-[20px]">
                   {cta?.note}
                 </p>
               )}
-               <a
-        href="https://outlook.office.com/book/ZeroBuildDiscoveryCall@zerobuild.io/s/0j-Jsl27BUuEcZ2ortBjhA2?ismsaljsauthenabled"
-        target="_blank"
-        className="relative flex items-center justify-between px-6 md:px-6 py-1 md:py-2 rounded-full border border-black group overflow-hidden max-w-[400px] h-[fit-content]"
-      >
-        <span className="flex items-center">
-          <span className="text-[20px] md:text-[32px] font-bold text-black mr-[7px]">
-            Talk to an
-          </span>
-          <TypewriterEffect words={words} />
-        </span>
+              <a
+                href="https://outlook.office.com/book/ZeroBuildDiscoveryCall@zerobuild.io/s/0j-Jsl27BUuEcZ2ortBjhA2?ismsaljsauthenabled"
+                target="_blank"
+                className="relative flex items-center justify-between px-6 md:px-6 py-1 md:py-2 rounded-full border border-black group overflow-hidden max-w-[400px] h-[fit-content]"
+              >
+                <span className="flex items-center">
+                  <span className="text-[20px] md:text-[32px] font-bold text-black mr-[7px]">
+                    Talk to an
+                  </span>
+                  <TypewriterEffect words={words} />
+                </span>
 
-        <span className="relative z-10 w-6 h-6 md:w-10 md:h-10 flex items-center justify-center rounded-full  text-white bg-[#484AB7]">
-          <ArrowRight className="w-3 h-3 md:w-6 md:h-6" />
-        </span>
-      </a>
+                <span className="relative z-10 w-6 h-6 md:w-10 md:h-10 flex items-center justify-center rounded-full  text-white bg-[#484AB7]">
+                  <ArrowRight className="w-3 h-3 md:w-6 md:h-6" />
+                </span>
+              </a>
+           </div>
             </>
           )}
 
@@ -326,261 +330,274 @@ const ContactPage = () => {
         </div>
 
         <div className="relative mx-auto flex w-full max-w-2xl flex-col items-start gap-4 overflow-hidden rounded-3xl bg-gradient-to-b from-gray-100 to-gray-200 pt-[30px] pb-[40px] px-[20px] md:px-[40px] dark:from-neutral-900 dark:to-neutral-950">
-            <form onSubmit={formik.handleSubmit} className="space-y-4">
-              {/* Honeypot field for bots */}
-              <div className="hidden" aria-hidden="true">
-                <label>
-                  Do not fill this field
-                  <input
-                    type="text"
-                    name="honeypot"
-                    tabIndex={-1}
-                    autoComplete="off"
-                    value={formik.values.honeypot}
-                    onChange={formik.handleChange}
-                  />
-                </label>
-              </div>
-              <div>
-                <label className="block font-semibold text-black mb-[8px]">
-                  Name <span className="text-[#ff0000]">*</span>
-                </label>
+          <form onSubmit={formik.handleSubmit} className="space-y-4">
+            {/* Honeypot field for bots */}
+            <div className="hidden" aria-hidden="true">
+              <label>
+                Do not fill this field
                 <input
-                  name="name"
                   type="text"
+                  name="honeypot"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={formik.values.honeypot}
                   onChange={formik.handleChange}
-                  value={formik.values.name}
-                  className="w-full border rounded p-2 text-black"
-                  placeholder="Enter your name"
                 />
-                {formik.touched.name && formik.errors.name && (
-                  <p className="text-red-500 text-sm">{formik.errors.name}</p>
-                )}
-              </div>
+              </label>
+            </div>
+            <div>
+              <label className="block font-semibold text-black mb-[8px]">
+                Name <span className="text-[#ff0000]">*</span>
+              </label>
+              <input
+                name="name"
+                type="text"
+                onChange={formik.handleChange}
+                value={formik.values.name}
+                className="w-full border rounded p-2 text-black"
+                placeholder="Enter your name"
+              />
+              {formik.touched.name && formik.errors.name && (
+                <p className="text-red-500 text-sm">{formik.errors.name}</p>
+              )}
+            </div>
 
-              <div>
-                <label className="block font-semibold text-black mb-[8px]">
-                  Email <span className="text-[#ff0000]">*</span>
-                </label>
+            <div>
+              <label className="block font-semibold text-black mb-[8px]">
+                Email <span className="text-[#ff0000]">*</span>
+              </label>
+              <input
+                name="email"
+                type="email"
+                onChange={formik.handleChange}
+                value={formik.values.email}
+                className="text-black w-full border rounded p-2"
+                placeholder="Enter your email"
+              />
+              {formik.touched.email && formik.errors.email && (
+                <p className="text-red-500 text-sm">{formik.errors.email}</p>
+              )}
+            </div>
+
+            <div>
+              <label className="block font-semibold text-black mb-[8px]">
+                Company <span className="text-[#ff0000]">*</span>
+              </label>
+              <input
+                name="company"
+                type="text"
+                onChange={formik.handleChange}
+                value={formik.values.company}
+                className="text-black w-full border rounded p-2"
+                placeholder="Enter your company"
+              />
+              {formik.touched.company && formik.errors.company && (
+                <p className="text-red-500 text-sm">{formik.errors.company}</p>
+              )}
+            </div>
+
+            <div>
+              <label className="block font-semibold text-black mb-[8px]">
+                I&apos;m contacting you as a...
+              </label>
+              <select
+                name="role"
+                onChange={formik.handleChange}
+                value={formik.values.role}
+                className="text-black w-full border rounded p-2"
+              >
+                <option value="">Select Role (Optional)</option>
+                {roleOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="block font-semibold text-black mb-[8px]">
+                What brings you to Zero Build today?{" "}
+                <span className="text-[#ff0000]">*</span>
+              </label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {purposeOptions.map((option) => (
+                  <label
+                    key={option}
+                    className="flex items-center gap-2 text-black text-[15px]"
+                  >
+                    <input
+                      type="checkbox"
+                      name="purpose"
+                      value={option}
+                      checked={formik.values.purpose.includes(option)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          formik.setFieldValue("purpose", [
+                            ...formik.values.purpose,
+                            option,
+                          ]);
+                        } else {
+                          formik.setFieldValue(
+                            "purpose",
+                            formik.values.purpose.filter(
+                              (item) => item !== option
+                            )
+                          );
+                        }
+                      }}
+                    />
+                    {option}
+                  </label>
+                ))}
+              </div>
+              {formik.touched.purpose && formik.errors.purpose && (
+                <p className="text-red-500 text-sm">{formik.errors.purpose}</p>
+              )}
+            </div>
+
+            <div>
+              <label className="block font-semibold text-black mb-[8px]">
+                Message (Optional)
+              </label>
+              <textarea
+                name="message"
+                onChange={formik.handleChange}
+                value={formik.values.message}
+                rows={4}
+                className="w-full border rounded p-2 text-black"
+                placeholder="Enter your message (optional)"
+              />
+              {formik.touched.message && formik.errors.message && (
+                <p className="text-red-500 text-sm">{formik.errors.message}</p>
+              )}
+            </div>
+
+            {/* Privacy Consent Checkbox */}
+            <div className="space-y-1">
+              <label className="flex items-start gap-3 text-black text-[15px]">
                 <input
-                  name="email"
-                  type="email"
+                  type="checkbox"
+                  name="privacyConsent"
+                  checked={formik.values.privacyConsent}
                   onChange={formik.handleChange}
-                  value={formik.values.email}
-                  className="text-black w-full border rounded p-2"
-                  placeholder="Enter your email"
+                  className="mt-1 flex-shrink-0"
                 />
-                {formik.touched.email && formik.errors.email && (
-                  <p className="text-red-500 text-sm">{formik.errors.email}</p>
-                )}
-              </div>
-
-              <div>
-                <label className="block font-semibold text-black mb-[8px]">
-                  Company <span className="text-[#ff0000]">*</span>
-                </label>
-                <input
-                  name="company"
-                  type="text"
-                  onChange={formik.handleChange}
-                  value={formik.values.company}
-                  className="text-black w-full border rounded p-2"
-                  placeholder="Enter your company"
-                />
-                {formik.touched.company && formik.errors.company && (
-                  <p className="text-red-500 text-sm">
-                    {formik.errors.company}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <label className="block font-semibold text-black mb-[8px]">
-                  I&apos;m contacting you as a...
-                </label>
-                <select
-                  name="role"
-                  onChange={formik.handleChange}
-                  value={formik.values.role}
-                  className="text-black w-full border rounded p-2"
-                >
-                  <option value="">Select Role (Optional)</option>
-                  {roleOptions.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="block font-semibold text-black mb-[8px]">
-                  What brings you to Zero Build today?{" "}
-                  <span className="text-[#ff0000]">*</span>
-                </label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {purposeOptions.map((option) => (
-                    <label
-                      key={option}
-                      className="flex items-center gap-2 text-black text-[15px]"
-                    >
-                      <input
-                        type="checkbox"
-                        name="purpose"
-                        value={option}
-                        checked={formik.values.purpose.includes(option)}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            formik.setFieldValue("purpose", [
-                              ...formik.values.purpose,
-                              option,
-                            ]);
-                          } else {
-                            formik.setFieldValue(
-                              "purpose",
-                              formik.values.purpose.filter(
-                                (item) => item !== option
-                              )
-                            );
-                          }
-                        }}
-                      />
-                      {option}
-                    </label>
-                  ))}
-                </div>
-                {formik.touched.purpose && formik.errors.purpose && (
-                  <p className="text-red-500 text-sm">
-                    {formik.errors.purpose}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <label className="block font-semibold text-black mb-[8px]">
-                  Message (Optional)
-                </label>
-                <textarea
-                  name="message"
-                  onChange={formik.handleChange}
-                  value={formik.values.message}
-                  rows={4}
-                  className="w-full border rounded p-2 text-black"
-                  placeholder="Enter your message (optional)"
-                />
-                {formik.touched.message && formik.errors.message && (
-                  <p className="text-red-500 text-sm">
-                    {formik.errors.message}
-                  </p>
-                )}
-              </div>
-
-              {/* Privacy Consent Checkbox */}
-              <div className="space-y-1">
-                <label className="flex items-start gap-3 text-black text-[15px]">
-                  <input
-                    type="checkbox"
-                    name="privacyConsent"
-                    checked={formik.values.privacyConsent}
-                    onChange={formik.handleChange}
-                    className="mt-1 flex-shrink-0"
-                  />
-                  <span>
-                    I agree to the processing of my data as described in the{" "}
-                    <a
-                      href="/privacy"
-                      target="_blank"
-                      className="underline hover:no-underline text-[#484AB7]"
-                    >
-                      Privacy Notice
-                    </a>
-                    . <span className="text-[#ff0000]">*</span>
-                  </span>
-                </label>
-                {formik.touched.privacyConsent && formik.errors.privacyConsent && (
+                <span>
+                  I agree to the processing of my data as described in the{" "}
+                  <a
+                    href="/privacy"
+                    target="_blank"
+                    className="underline hover:no-underline text-[#484AB7]"
+                  >
+                    Privacy Notice
+                  </a>
+                  . <span className="text-[#ff0000]">*</span>
+                </span>
+              </label>
+              {formik.touched.privacyConsent &&
+                formik.errors.privacyConsent && (
                   <p className="text-red-500 text-sm">
                     {formik.errors.privacyConsent}
                   </p>
                 )}
-              </div>
+            </div>
 
-              {/* Marketing Consent Checkbox */}
-              <div>
-                <label className="flex items-start gap-3 text-black text-[15px]">
-                  <input
-                    type="checkbox"
-                    name="marketingConsent"
-                    checked={formik.values.marketingConsent}
-                    onChange={formik.handleChange}
-                    className="mt-1 flex-shrink-0"
-                  />
-                  <span>
-                    Send me updates about tools and resources (optional)
-                  </span>
-                </label>
-              </div>
+            {/* Marketing Consent Checkbox */}
+            <div>
+              <label className="flex items-start gap-3 text-black text-[15px]">
+                <input
+                  type="checkbox"
+                  name="marketingConsent"
+                  checked={formik.values.marketingConsent}
+                  onChange={formik.handleChange}
+                  className="mt-1 flex-shrink-0"
+                />
+                <span>
+                  Send me updates about tools and resources (optional)
+                </span>
+              </label>
+            </div>
 
-              {error && (
-                <div
-                  className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
-                  role="alert"
-                >
-                  <strong className="font-bold">Error!</strong>
-                  <span className="block sm:inline"> {error}</span>
-                </div>
-              )}
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full bg-[#484AB7] text-white border-neutral-200 px-2 rounded-xl max-w-[185px] h-[45px] flex items-center justify-center text-[16px] font-semibold hover:bg-[#3c3f9d] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            {error && (
+              <div
+                className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
+                role="alert"
               >
-                {loading ? (
-                  <>
-                    <svg
-                      className="animate-spin h-5 w-5 mr-2 text-white"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      ></circle>
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-                      ></path>
-                    </svg>
-                    Submitting...
-                  </>
-                ) : (
-                  "Submit"
-                )}
-              </button>
-            </form>
-            {success && (
+                <strong className="font-bold">Error!</strong>
+                <span className="block sm:inline"> {error}</span>
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-[#484AB7] text-white border-neutral-200 px-2 rounded-xl max-w-[185px] h-[45px] flex items-center justify-center text-[16px] font-semibold hover:bg-[#3c3f9d] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? (
+                <>
+                  <svg
+                    className="animate-spin h-5 w-5 mr-2 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                    ></path>
+                  </svg>
+                  Submitting...
+                </>
+              ) : (
+                "Submit"
+              )}
+            </button>
+          </form>
+          {success && (
             <div className="bg-green-100 p-4 rounded text-black mt-4">
               Thanks — we will reply within one business day.
             </div>
           )}
         </div>
+         <div className=" md:hidden flex flex-col items-center">
+               {/* CTA note */}
+              {cta?.note && (
+                <p className="mt-[40px] italic text-sm text-center md:text-left text-neutral-600 dark:text-neutral-400 mb-[20px]">
+                  {cta?.note}
+                </p>
+              )}
+              <a
+                href="https://outlook.office.com/book/ZeroBuildDiscoveryCall@zerobuild.io/s/0j-Jsl27BUuEcZ2ortBjhA2?ismsaljsauthenabled"
+                target="_blank"
+                className="relative flex items-center justify-between px-6 md:px-6 py-1 md:py-2 rounded-full border border-black group overflow-hidden max-w-[270px] h-[fit-content]"
+              >
+                <span className="flex items-center">
+                  <span className="text-[20px] md:text-[32px] font-bold text-black mr-[7px]">
+                    Talk to an
+                  </span>
+                  <TypewriterEffect words={words} />
+                </span>
+
+                <span className="relative z-10 w-6 h-6 md:w-10 md:h-10 flex items-center justify-center rounded-full  text-white bg-[#484AB7]">
+                  <ArrowRight className="w-3 h-3 md:w-6 md:h-6" />
+                </span>
+              </a>
+           </div>
       </div>
     </div>
   );
 };
-const Grid = ({
-  pattern,
-  size,
-}: {
-  pattern?: number[][];
-  size?: number;
-}) => {
+const Grid = ({ pattern, size }: { pattern?: number[][]; size?: number }) => {
   // Use deterministic coordinates instead of random ones to prevent hydration mismatch
   const p = pattern ?? [
     [7, 1],
