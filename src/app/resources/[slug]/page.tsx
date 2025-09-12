@@ -92,7 +92,7 @@ export default async function Page({
       </Link>
    
        <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 !mb-[48px]">
-        <h1 className="text-black text-[32px] md:text-[40px] leading-[1.1] font-normal max-w-[740px]">
+        <h1 className="text-black text-[24px] md:text-[40px] leading-[1.1] font-normal max-w-[740px]">
           {resource.title}
         </h1>
        {resource.purpose && Array.isArray(resource.purpose) ? (
@@ -213,7 +213,7 @@ export default async function Page({
           <div className="lg:col-span-3">
             <p className="text-[20px] text-[#757575] mb-[0px]">Resources</p>
             <div className="flex items-end md:items-center justify-between mb-6 md:flex-row flex-col gap-4">
-              <h2 className="text-[32px] md:text-[38px] font-normal text-black max-w-full md:max-w-[650px]">
+              <h2 className="text-[20px] md:text-[38px] font-normal text-black max-w-full md:max-w-[650px]">
                 Explore more climate & sustainability resources
               </h2>
               <Link
@@ -242,7 +242,7 @@ export default async function Page({
                       </div>
                     )}
                     <div className="mt-[24px]">
-                      <h3 className="text-lg font-semibold text-black mb-2 group-hover:text-blue-600 transition-colors duration-200">
+                      <h3 className="text-[18px] md:text-lg font-semibold text-black mb-2 group-hover:text-blue-600 transition-colors duration-200">
                         {relatedResource.title}
                       </h3>
                       {relatedResource.description && (

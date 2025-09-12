@@ -228,7 +228,7 @@ const ContactPage = () => {
                 {bannerTitle}
               </h2>
               {bannerDescription && (
-                <p className="mt-8 text-center text-base text-neutral-600 md:text-left dark:text-neutral-400 mb-[24px]">
+                <p className="mt-[20px] md:mt-8 text-center text-[14px] md:text-base text-neutral-600 md:text-left dark:text-neutral-400 mb-[24px]">
                   {bannerDescription}
                 </p>
               )}
@@ -572,7 +572,7 @@ const ContactPage = () => {
          <div className=" md:hidden flex flex-col items-center">
                {/* CTA note */}
               {cta?.note && (
-                <p className="mt-[40px] italic text-sm text-center md:text-left text-neutral-600 dark:text-neutral-400 mb-[20px]">
+                <p className="mt-[40px] italic text-[14px] md:text-sm text-center md:text-left text-neutral-600 dark:text-neutral-400 mb-[20px]">
                   {cta?.note}
                 </p>
               )}
