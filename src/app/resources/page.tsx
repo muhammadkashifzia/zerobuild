@@ -265,9 +265,10 @@ const ResourcePage = () => {
             ))}
           </div>
         </section>
+        <CtaSection />
       </div>
 
-      <CtaSection />
+      
     </div>
   );
 };

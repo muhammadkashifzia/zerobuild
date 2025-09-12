@@ -123,7 +123,7 @@ export default function Page() {
             }}
             onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
             onSwiper={(swiper) => setActiveIndex(swiper.realIndex)}
-            className="!overflow-visible mb-12"
+            className="!overflow-visible"
           >
             {projects.map((project, idx) => (
               <SwiperSlide key={idx}>
@@ -203,8 +203,9 @@ export default function Page() {
                 </div>
               </div>
             ))}
+               
       </div>
-      <CtaSection />
+   <div className="px-[16px]"><CtaSection /></div>
     </div>
   );
 }
